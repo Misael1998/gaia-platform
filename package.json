@@ -1,0 +1,36 @@
+{
+  "name": "gaia-pyflor",
+  "version": "1.0.0",
+  "description": "proyecto de la clase de ing del software en la UNAH, primre periodo del 2020",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://misael1998@bitbucket.org/is-802-ing-software/gaia-platform.git"
+  },
+  "keywords": [
+    "gaia",
+    "pyflor"
+  ],
+  "author": "Equipo GAIA-PYFLOR",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/is-802-ing-software/gaia-platform#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.2"
+  }
+}
