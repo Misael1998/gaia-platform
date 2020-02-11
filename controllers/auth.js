@@ -36,26 +36,7 @@ exports.login = async (req, res, next) => {
         role: "admin"
       };
 
-      jwt.sign(
-        payload,
-        process.env.JWT_KEY,
-        { expiresIn: 3600 },
-        (err, token) => {
-          if (err) throw err;
-
-          return res.status(200).json({
-            success: true,
-            token: token,
-            user: {
-              firstName: user.name,
-              lastName: user.lastname,
-              email: user.email,
-              phone: user.phone,
-              address: user.address
-            }
-          });
-        }
-      );
+      return sendTokenResponse(user, payload, 200, res);
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -64,34 +45,14 @@ exports.login = async (req, res, next) => {
         success: false,
         msg: "Invalid credentials"
       });
-    } else {
-      // require sp that gets user role
-      payload = {
-        id: user.idUser,
-        role: ""
-      };
-
-      jwt.sign(
-        payload,
-        process.env.JWT_KEY,
-        { expiresIn: 3600 },
-        (err, token) => {
-          if (err) throw err;
-
-          return res.status(200).json({
-            success: true,
-            token: token,
-            user: {
-              firstName: user.name,
-              lastName: user.lastname,
-              email: user.email,
-              phone: user.phone,
-              address: user.address
-            }
-          });
-        }
-      );
     }
+    // require sp that gets user role
+    payload = {
+      id: user.idUser,
+      role: ""
+    };
+
+    return sendTokenResponse(user, payload, 200, res);
 
     // console.log(query);
     // console.log(user);
@@ -103,4 +64,28 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+//send response
+const sendTokenResponse = (user, payload, statusCode, res) => {
+  jwt.sign(
+    payload,
+    process.env.JWT_KEY,
+    { expiresIn: process.env.JWT_EXPIRE },
+    (err, token) => {
+      if (err) throw err;
+
+      return res.status(200).json({
+        success: true,
+        token: token,
+        user: {
+          firstName: user.name,
+          lastName: user.lastname,
+          email: user.email,
+          phone: user.phone,
+          address: user.address
+        }
+      });
+    }
+  );
 };
