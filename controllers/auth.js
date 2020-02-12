@@ -11,7 +11,7 @@ exports.login = async (req, res, next) => {
   const { ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
 
   try {
-    const query = await new mssql.Request()
+    let query = await new mssql.Request()
       .input("email", mssql.VarChar(100), email)
       .query("select * from TBL_USERS where email = @email");
 
@@ -46,23 +46,28 @@ exports.login = async (req, res, next) => {
         msg: "Invalid credentials"
       });
     }
+
+    query = await new mssql.Request()
+      .input("userId", mssql.VarChar(100), user.idUser)
+      .query("select pyflor.dbo.getUserRole(@userId) role");
+
+    const { role } = query.recordset[0];
+
+    user.role = role;
+
     // require sp that gets user role
     payload = {
       id: user.idUser,
-      role: ""
+      role: role
     };
 
     return sendTokenResponse(user, payload, 200, res);
-
-    // console.log(query);
-    // console.log(user);
-    //
-    // res.status(200).json({
-    //   success: true,
-    //   msg: "auth route"
-    // });
   } catch (err) {
     console.log(err);
+    res.status(500).json({
+      success: false,
+      msg: "server error"
+    });
   }
 };
 
@@ -81,6 +86,7 @@ const sendTokenResponse = (user, payload, statusCode, res) => {
         user: {
           firstName: user.name,
           lastName: user.lastname,
+          role: user.role,
           email: user.email,
           phone: user.phone,
           address: user.address
