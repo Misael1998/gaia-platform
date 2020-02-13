@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mssql = require("mssql");
+const crypto = require("crypto");
+const moment = require("moment");
 
 //@desc     AUTH user
 //@route    GET     /api/auth/login
@@ -11,21 +13,7 @@ exports.login = async (req, res, next) => {
   const { ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
 
   try {
-    let query = await new mssql.Request()
-      .input("email", mssql.VarChar(100), email)
-      .query("select * from TBL_USERS where email = @email");
-
-    const { recordset } = query;
-    const dataExist = recordset.length > 0;
-
-    if (!dataExist) {
-      return res.status(404).json({
-        success: false,
-        msg: "Invalid credentials"
-      });
-    }
-
-    const user = query.recordset[0];
+    const user = await getUser(email, res);
 
     const isAdmin =
       user.email === ADMIN_EMAIL && user.password === ADMIN_PASSWORD;
@@ -69,6 +57,71 @@ exports.login = async (req, res, next) => {
       msg: "server error"
     });
   }
+};
+
+//@desc     Getting a token to reset password
+//@route    POST     /api/auth/forgotpassword
+//@access   Public
+exports.forgotPassword = async (req, res, next) => {
+  const { email } = req.body;
+
+  try {
+    const user = await getUser(email, res);
+
+    const query = new mssql.Request();
+
+    let token = crypto.randomBytes(20).toString("hex");
+    token = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+
+    let expireDate = moment(Date.now() + 10 * 60 * 1000);
+
+    expireDate = expireDate.format("YYYY-MM-DD hh:mm:ss");
+
+    console.log(expireDate);
+    const response = await query.query(
+      `
+        insert into [pyflor].[dbo].[TBL_FORGOT_PASSWORD_TOKENS]
+        values(
+            \'${token}\',
+            \'${expireDate}\',
+            ${user.idUser}
+        )
+        `
+    );
+
+    res.status(201).json({
+      success: true,
+      msg: "token created"
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      msg: "server error"
+    });
+  }
+};
+
+//get user
+const getUser = async (email, res) => {
+  const query = await new mssql.Request()
+    .input("email", mssql.VarChar(100), email)
+    .query("select * from TBL_USERS where email = @email");
+
+  const { recordset } = query;
+  const dataExist = recordset.length > 0;
+
+  if (!dataExist) {
+    return res.status(404).json({
+      success: false,
+      msg: "Invalid credentials"
+    });
+  }
+
+  return recordset[0];
 };
 
 //send response
