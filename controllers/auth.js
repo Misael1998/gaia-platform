@@ -112,8 +112,6 @@ exports.resetPassword = async (req, res, next) => {
   const { password } = req.body;
   const { token } = req.params;
 
-  console.log(password, token);
-
   try {
     const salt = await bcrypt.genSalt(10);
     const newPassword = await bcrypt.hash(password, salt);
@@ -122,7 +120,6 @@ exports.resetPassword = async (req, res, next) => {
       `execute SP_RESET_FORGOT_PASSWORD \'${token}\', \'${newPassword}\'`
     );
 
-    console.log(query);
     res.status(201).json({
       success: true,
       msg: "password reseted"
@@ -134,8 +131,6 @@ exports.resetPassword = async (req, res, next) => {
       msg: "server error"
     });
   }
-
-  res.send("reset password route");
 };
 
 //get user
