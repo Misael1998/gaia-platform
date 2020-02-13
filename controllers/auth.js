@@ -105,6 +105,39 @@ exports.forgotPassword = async (req, res, next) => {
   }
 };
 
+//@desc     Reseting password by sending recuperation token
+//@route    PUT     /api/auth/resetpassword/:token
+//@access   Public
+exports.resetPassword = async (req, res, next) => {
+  const { password } = req.body;
+  const { token } = req.params;
+
+  console.log(password, token);
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const newPassword = await bcrypt.hash(password, salt);
+
+    const query = await mssql.query(
+      `execute SP_RESET_FORGOT_PASSWORD \'${token}\', \'${newPassword}\'`
+    );
+
+    console.log(query);
+    res.status(201).json({
+      success: true,
+      msg: "password reseted"
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      msg: "server error"
+    });
+  }
+
+  res.send("reset password route");
+};
+
 //get user
 const getUser = async (email, res) => {
   const query = await new mssql.Request()
