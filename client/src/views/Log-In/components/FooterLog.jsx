@@ -62,9 +62,9 @@ const FooterLog = () => {
         <hr />
 
         <div className="row">
-          <div class="footer-copyright text-center py-3">
+          <div className="footer-copyright text-center py-3 ml-2">
             © 2020 Copyright:
-            <a href="#"> Link to home</a>
+            <a to="#"> Link to home</a>
           </div>
         </div>
       </div>
