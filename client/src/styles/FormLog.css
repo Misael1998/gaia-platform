@@ -1,6 +1,6 @@
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
-
+/* 
 @font-face {
   font-family: Poppins-Regular;
   src: url("../fonts/poppins/Poppins-Regular.ttf");
@@ -34,7 +34,7 @@
 @font-face {
   font-family: Raleway-Bold;
   src: url("../fonts/raleway/Raleway-Bold.ttf");
-}
+} */
 
 /*//////////////////////////////////////////////////////////////////
   [ RESTYLE TAG ]*/
@@ -234,7 +234,7 @@ iframe {
 }
 
 .bkgImgLogIn {
-  background-image: url("../../../assets/img/pyflor2.jpg");
+  background-image: url("../assets/img/pyflor2.jpg");
 }
 
 .container-login100::before {

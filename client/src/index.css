@@ -1,12 +1,11 @@
 body {
   font-family: Roboto, sans-serif;
-
 }
 .primary-color {
   background-color: #27ae60;
 }
 
-.secondary-color{
+.secondary-color {
   background-color: #2ecc71;
 }
 
@@ -16,6 +15,14 @@ body {
 
 .font-lg {
   font-size: 1.2rem;
+}
+
+.logo {
+  min-width: 30%;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 200px;
+  z-index: 2;
 }
 
 

@@ -1,6 +1,7 @@
 import React from "react";
-import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
-import "../style/FooterLog.css";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import "../../../styles/FooterLog.css";
 
 const FooterLog = () => {
   return (
@@ -9,24 +10,24 @@ const FooterLog = () => {
         <div className="row">
           <div className="col-md-3">
             <h5 className="font-weight-bold text-uppercase mt-4 mb-4">
-              Footer Content
+              PyFlor
             </h5>
-            <p>Contenido del footer</p>
+            <p className="blck-txt">Contenido del footer</p>
           </div>
 
           <div className="col-md-3">
             <h5 className="font-weight-bold text-uppercase mt-4 mb-4">Link</h5>
-            <p>Link 1</p>
+            <p className="blck-txt">Link 1</p>
           </div>
 
           <div className="col-md-3">
             <h5 className="font-weight-bold text-uppercase mt-4 mb-4">Link</h5>
-            <p>Link 1</p>
+            <p className="blck-txt">Link 1</p>
           </div>
 
           <div className="col-md-3">
             <h5 className="font-weight-bold text-uppercase mt-4 mb-4">Link</h5>
-            <p>Link 1</p>
+            <p className="blck-txt">Link 1</p>
           </div>
         </div>
 
@@ -34,27 +35,23 @@ const FooterLog = () => {
 
         <div className="row">
           <ul className="list-unstyled list-inline text-center ml-2">
-            <li className="list-inline-item">
-              <a className="btn-floating btn-fb mx-1">
+            <li className="list-inline-item mr-4">
+              <Link
+                className="btn-floating btn-fb mx-1 blck-txt"
+                to="https://www.facebook.com/Pyflor//"
+              >
                 <FaFacebook size={26} className="mr-2" />
                 Facebook
-              </a>
+              </Link>
             </li>
             <li className="list-inline-item">
-              <a className="btn-floating btn-tw mx-1">
-                <FaTwitter size={26} className="mr-2" /> Twitter
-              </a>
-            </li>
-            <li className="list-inline-item">
-              <a className="btn-floating btn-gplus mx-1">
+              <Link
+                className="btn-floating btn-gplus mx-1 blck-txt"
+                to="https://www.instagram.com/pyflorhn/?hl=es-la"
+              >
                 <FaInstagram size={26} className="mr-2" />
                 Instagram
-              </a>
-            </li>
-            <li className="list-inline-item">
-              <a className="btn-floating btn-li mx-1">
-                <FaLinkedin size={26} className="mr-2" /> LinkedIn
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -63,8 +60,10 @@ const FooterLog = () => {
 
         <div className="row">
           <div className="footer-copyright text-center py-3 ml-2">
-            © 2020 Copyright:
-            <a to="#"> Link to home</a>
+            © 2020 Copyright Ingeniería del Software:
+            <Link className="blue-txt ml-2" to="/">
+              Regresar a la pagina de Inicio
+            </Link>
           </div>
         </div>
       </div>

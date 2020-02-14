@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import shortid from "shortid";
-import "../style/FormLog.css";
-import "../style/util.css";
+import "../../../styles/FormLog.css";
+import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 
@@ -139,7 +139,7 @@ const FormLog = () => {
             <div className="text-center w-full p-t-115">
               <span className="txt1 mr-2">¿No tienes cuenta?</span>
 
-              <Link className="txt1 bo1 hov1" to="">
+              <Link className="txt1 bo1 hov1" to="#">
                 Registrarse
               </Link>
             </div>
