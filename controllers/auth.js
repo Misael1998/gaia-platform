@@ -68,8 +68,6 @@ exports.forgotPassword = async (req, res, next) => {
   try {
     const user = await getUser(email, res);
 
-    const query = new mssql.Request();
-
     let token = crypto.randomBytes(20).toString("hex");
     token = crypto
       .createHash("sha256")
@@ -80,17 +78,19 @@ exports.forgotPassword = async (req, res, next) => {
 
     expireDate = expireDate.format("YYYY-MM-DD hh:mm:ss");
 
-    console.log(expireDate);
-    const response = await query.query(
-      `
-        insert into [pyflor].[dbo].[TBL_FORGOT_PASSWORD_TOKENS]
-        values(
-            \'${token}\',
-            \'${expireDate}\',
-            ${user.idUser}
-        )
-        `
-    );
+    const query = await new mssql.Request()
+      .input("token", mssql.VarChar(mssql.MAX), token)
+      .input("expireDate", mssql.DateTime, expireDate)
+      .input("idUser", mssql.Int, user.idUser)
+      .output("status", mssql.VarChar(7))
+      .execute("SP_SET_FORGOT_PASSWORD_TOKEN");
+
+    if (query.output.status != "success") {
+      return res.status(500).json({
+        success: false,
+        msg: "server error"
+      });
+    }
 
     res.status(201).json({
       success: true,
@@ -116,9 +116,18 @@ exports.resetPassword = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const newPassword = await bcrypt.hash(password, salt);
 
-    const query = await mssql.query(
-      `execute SP_RESET_FORGOT_PASSWORD \'${token}\', \'${newPassword}\'`
-    );
+    const query = await new mssql.Request()
+      .input("token", mssql.VarChar(mssql.MAX), token)
+      .input("newPassword", mssql.VarChar(mssql.MAX), newPassword)
+      .output("status", mssql.VarChar(7))
+      .execute("SP_RESET_FORGOT_PASSWORD");
+
+    if (query.output.status != "success") {
+      return res.status(400).json({
+        success: false,
+        msg: "Invalid token"
+      });
+    }
 
     res.status(201).json({
       success: true,

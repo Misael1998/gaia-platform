@@ -12,10 +12,11 @@ GO
 -- Create the stored procedure in the specified schema
 CREATE PROCEDURE [dbo].[SP_RESET_FORGOT_PASSWORD]
     @token          VARCHAR(max),
-    @newPassword    VARCHAR(max)
+    @newPassword    VARCHAR(max),
+    @status         VARCHAR(7) OUTPUT
 AS
     declare @userId int = null
-    
+    set @status = 'null'
     set @userId = (
         select idUser
         from TBL_FORGOT_PASSWORD_TOKENS
@@ -25,10 +26,14 @@ AS
         )
     )
 
-    if @userId is not NULL     
+    if @userId is not NULL
+    BEGIN     
         UPDATE [pyflor].[dbo].[TBL_USERS]
         SET
             [password] = @newPassword  
             
         WHERE @userId = idUser
+        SET @status = 'success'
+    END;
+  
 GO
