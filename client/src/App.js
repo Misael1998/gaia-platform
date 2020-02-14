@@ -10,8 +10,8 @@ function App() {
     <Router>
       <div className="container-fluid">
         <Switch>
-          {/* <Route exact path="/" component={Home} /> */}
-          <Route exact path="/" component={LogInPage} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={LogInPage} />
         </Switch>
       </div>
     </Router>
