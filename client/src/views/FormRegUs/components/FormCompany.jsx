@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import shortid from "shortid";
-import "../style/FormUser.css";
-import "../style/util.css";
+import "../../../styles/FormLog.css";
+import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 
@@ -15,8 +15,8 @@ const FormCompany = () => {
     address: "",
     companyName: "",
     rtn: "",
-    contactNumber: ""
-    
+    contactNumber: "",
+    businessName: ""
   });
 
   //Funcion que se ejecuta cuando se escribe en un input:
@@ -29,7 +29,7 @@ const FormCompany = () => {
 
   //Funcion para validar el correo:
   const validarEmail = () => {
-    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^  <>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (patron.test(document.getElementById("emailInput").value)) {
       handleErrorEmail(false);
     } else {
@@ -43,8 +43,52 @@ const FormCompany = () => {
   //State para validacion del correo:
   const [errorEmail, handleErrorEmail] = useState(false);
 
+  const [enableButton, setEnableButton] = useState(true);
+
   //Extrayendo los valores con destructuring:
-  const { email, password, phone, address, companyName, rtn, contactNumber } = infoCompany;
+  const {
+    email,
+    password,
+    phone,
+    address,
+    companyName,
+    rtn,
+    contactNumber,
+    businessName
+  } = infoCompany;
+
+
+
+  useEffect(() => {
+ 
+    if (
+      email.trim() !== "" &&
+      password.trim() !== "" &&
+      phone.trim() !== "" &&
+      address.trim() !== "" &&
+      companyName.trim() !== "" &&
+      rtn.trim() !== "" ||
+      rtn.length<14 &&
+      contactNumber.trim() !== "" &&
+      businessName.trim() !== ""
+    ) {
+      setEnableButton(false);
+      return;
+    }else{
+      setEnableButton(true);
+    }
+    
+
+  }, [
+    email,
+    password,
+    phone,
+    address,
+    companyName,
+    rtn,
+    contactNumber,
+    businessName
+  ]);
 
   //Funcion para el boton de login:
   const submitUser = e => {
@@ -53,8 +97,17 @@ const FormCompany = () => {
     validarEmail();
 
     //Validacion:
-    if (email.trim() === "" || password.trim() === "" || phone.trim() === "" || address.trim() === "" 
-        || companyName.trim() === "" || rtn.trim() === ""  || contactNumber.trim() === "") {
+    if (
+      email.trim() === "" ||
+      password.trim() === "" ||
+      phone.trim() === "" ||
+      address.trim() === "" ||
+      companyName.trim() === "" ||
+      rtn.trim() === "" || 
+      rtn.length<14 || 
+      contactNumber.trim() === "" ||
+      businessName.trim() === ""
+    ) {
       handleError(true);
       return;
     }
@@ -96,7 +149,7 @@ const FormCompany = () => {
             </div>
 
             {errorEmail ? (
-              <p className="alert alert-danger error-p">
+              <p className="alert alert-danger error-p text-white">
                 El correo ingresado no es valido!!!
               </p>
             ) : null}
@@ -119,7 +172,6 @@ const FormCompany = () => {
               </span>
             </div>
 
-             
             <div
               className="wrap-input100 validate-input m-b-16"
               data-validate="Password is required"
@@ -174,12 +226,12 @@ const FormCompany = () => {
               </span>
             </div>
 
-
             <div
               className="wrap-input100 validate-input m-b-16"
               data-validate="Password is required"
             >
-              <input
+              <input 
+                maxLength={14}
                 className="input100"
                 type="text"
                 name="rtn"
@@ -193,11 +245,26 @@ const FormCompany = () => {
               </span>
             </div>
 
-
             <div
               className="wrap-input100 validate-input m-b-16"
               data-validate="Password is required"
             >
+              <input
+                className="input100"
+                type="text"
+                name="businessName"
+                placeholder="Razón Social"
+                onChange={handleChangeInfo}
+                value={businessName}
+              />
+              <span className="focus-input100"></span>
+              <span className="symbol-input100">
+                <span className="lnr lnr-license"></span>
+              </span>
+            </div>
+
+            <div className="wrap-input100 validate-input m-b-16"
+              data-validate="Password is required">
               <input
                 className="input100"
                 type="text"
@@ -212,9 +279,8 @@ const FormCompany = () => {
               </span>
             </div>
 
-
             {error ? (
-              <p className="alert alert-danger error-p">
+              <p className="alert alert-danger error-p text-white">
                 Todos los campos son obligatorios!!!
               </p>
             ) : null}
@@ -226,19 +292,13 @@ const FormCompany = () => {
                 type="checkbox"
                 name="remember-me"
               />
-
-              
-
-              
             </div>
 
             <div className="container-login100-form-btn p-t-25">
-              <button type="submit" className="login100-form-btn">
+            <button type="submit" className={!enableButton ? "login100-form-btn" : 'btn btn-lg btn-disabled'}  disabled={enableButton}>
                 Registrarse
               </button>
             </div>
-
-            
           </form>
         </div>
       </div>

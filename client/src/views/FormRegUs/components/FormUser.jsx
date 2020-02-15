@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import shortid from "shortid";
-import "../style/FormUser.css";
-import "../style/util.css";
+import "../../../styles/FormLog.css";
+import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 
@@ -18,6 +18,44 @@ const FormUser = () => {
     birth_date: "",
     register_id: ""
   });
+  
+  const [enableButton, setEnableButton] = useState(true);
+  
+  //Extrayendo los valores con destructuring:
+    const {
+      email,
+      password,
+      phone,
+      address,
+      name,
+      lastname,
+      birth_date,
+      register_id
+    } = infoUser;
+
+
+  useEffect(() => {
+ 
+    if (
+      email.trim() !== "" &&
+      password.trim() !== "" &&
+      phone.trim() !== "" &&
+      address.trim() !== "" &&
+      name.trim() !== "" &&
+      register_id.trim() !== ""
+    ) {
+      setEnableButton(false);
+      return;
+    }
+    
+
+  }, [
+    register_id,
+    name,
+    phone,
+    password,
+    email
+  ]);
 
   //Funcion que se ejecuta cuando se escribe en un input:
   const handleChangeInfo = e => {
@@ -43,8 +81,6 @@ const FormUser = () => {
   //State para validacion del correo:
   const [errorEmail, handleErrorEmail] = useState(false);
 
-  //Extrayendo los valores con destructuring:
-  const { email, password, phone, address, name, lastname, birth_date, register_id } = infoUser;
 
   //Funcion para el boton de login:
   const submitUser = e => {
@@ -53,8 +89,16 @@ const FormUser = () => {
     validarEmail();
 
     //Validacion:
-    if (email.trim() === "" || password.trim() === "" || phone.trim() === "" || address.trim() === "" 
-        || name.trim() === "" || lastname.trim() === "" || birth_date.trim() === "" || register_id.trim() === "") {
+    if (
+      email.trim() === "" ||
+      password.trim() === "" ||
+      phone.trim() === "" ||
+      address.trim() === "" ||
+      name.trim() === "" ||
+      lastname.trim() === "" ||
+      birth_date.trim() === "" ||
+      register_id.trim() === ""
+    ) {
       handleError(true);
       return;
     }
@@ -96,7 +140,7 @@ const FormUser = () => {
             </div>
 
             {errorEmail ? (
-              <p className="alert alert-danger error-p">
+              <p className="alert alert-danger error-p text-white">
                 El correo ingresado no es valido!!!
               </p>
             ) : null}
@@ -119,7 +163,6 @@ const FormUser = () => {
               </span>
             </div>
 
-             
             <div
               className="wrap-input100 validate-input m-b-16"
               data-validate="Password is required"
@@ -174,7 +217,6 @@ const FormUser = () => {
               </span>
             </div>
 
-
             <div
               className="wrap-input100 validate-input m-b-16"
               data-validate="Password is required"
@@ -192,7 +234,6 @@ const FormUser = () => {
                 <span className="lnr lnr-user"></span>
               </span>
             </div>
-
 
             <div
               className="wrap-input100 validate-input m-b-16"
@@ -229,9 +270,8 @@ const FormUser = () => {
               </span>
             </div>
 
-
             {error ? (
-              <p className="alert alert-danger error-p">
+              <p className="alert alert-danger error-p text-white">
                 Todos los campos son obligatorios!!!
               </p>
             ) : null}
@@ -243,19 +283,13 @@ const FormUser = () => {
                 type="checkbox"
                 name="remember-me"
               />
-
-              
-
-              
             </div>
 
             <div className="container-login100-form-btn p-t-25">
-              <button type="submit" className="login100-form-btn">
+              <button type="submit" className={!enableButton ? "login100-form-btn" : 'btn btn-lg btn-disabled'}  disabled={enableButton}>
                 Registrarse
               </button>
             </div>
-
-            
           </form>
         </div>
       </div>
