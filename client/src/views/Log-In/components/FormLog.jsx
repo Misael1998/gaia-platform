@@ -139,7 +139,7 @@ const FormLog = () => {
             <div className="text-center w-full p-t-115">
               <span className="txt1 mr-2">¿No tienes cuenta?</span>
 
-              <Link className="txt1 bo1 hov1" to="#">
+              <Link className="txt1 bo1 hov1" to="/register">
                 Registrarse
               </Link>
             </div>
