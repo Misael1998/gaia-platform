@@ -26,7 +26,7 @@ const NavbarHome = ({ toSection, about, ourProducts, contact }) => {
       </div>
 
       <div className="col-lg-2">
-        <Link className="btn nav-links" to="/">
+        <Link className="btn nav-links" to="/register">
           Registrate
         </Link>
       </div>

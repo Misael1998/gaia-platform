@@ -1,10 +1,14 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Home from "./views/Home/Home";
+
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Home from './views/Home/Home';
 import LogInPage from "./views/Log-In/LogInPage";
-import RecoverPass from "./views/Register/RecoverPass";
-import RecoverForm from "./views/Register/RecoverForm";
+import RecoverPass from './views/Register/RecoverPass';
+import RecoverForm from './views/Register/RecoverForm';
+import RegUser from './views/FormRegUs/RegUser'
+
+
 
 function App() {
   return (
@@ -13,6 +17,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={LogInPage} />
+          <Route exact path="/register" component={RegUser} />
           <Route exact path="/recovery-password" component={RecoverPass} />
           <Route exact path="/recovery-password/form" component={RecoverForm} />
         </Switch>
