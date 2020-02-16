@@ -1,15 +1,20 @@
-CREATE PROCEDURE SP_ADD_USER_INDIVIDUAL(
+CREATE PROCEDURE SP_ADD_USER_ENTERPRISE(
     @email nvarchar(100),
     @password nvarchar(100),
     @phone nvarchar(12),
     @address nvarchar(150),
     @name nvarchar(45),
     @lastname nvarchar(45),
-    @birth_date varchar(45),
-    @register_id nvarchar(13),
+    @company_name nvarchar(45),
+    @contact_name nvarchar(45),
+    @rtn nvarchar(12),
+    @contact_number nvarchar(12),
+    @idCompanyType int,
+    @idSector int,
+    @business_name nvarchar(45),
 	@msjTemp nvarchar(100) out,
     @id_user int out
-    )
+    )       
 AS
 BEGIN
 DECLARE
@@ -19,12 +24,12 @@ DECLARE
     set @msjTemp=' ';
 
 /* Validation of fields EMPTY when ADD user*/
-
+/* nombreEmpr,contact,rtn,correo,contraseña, telefono, razon social,direccion*/
             IF @name='  ' OR @name IS NULL BEGIN 
                 SET @msjTemp='EMPTY FIELD';
                 RETURN;   
             END;  
-            IF @lastname=' ' OR @lastname IS NULL BEGIN
+            IF @contact_name=' ' OR @contact_name IS NULL BEGIN
                 SET @msjTemp='EMPTY FIELD';
                 RETURN;     
             END;               
@@ -45,39 +50,57 @@ DECLARE
                 RETURN;
             END;
            
-            IF @register_id=' ' OR @register_id IS NULL BEGIN 
+            IF @company_name=' ' OR @company_name IS NULL BEGIN 
                 set @msjTemp='EMPTY FIELD';
                 RETURN;
             END;
 
-            SET @VNcount = (SELECT count(*)  FROM TBL_INDIVIDUAL_CLIENTS
-            where register_id=@register_id);
+            IF @rtn=' ' OR @rtn IS NULL BEGIN 
+                set @msjTemp='EMPTY FIELD';
+                RETURN;
+            END;
+
+            IF @business_name=' ' OR @business_name IS NULL BEGIN 
+                set @msjTemp='EMPTY FIELD';
+                RETURN;
+            END;
+
+            SET @VNcount = (SELECT count(*)  FROM TBL_ENTERPRISE_CLIENTS 
+            where rtn=@rtn)
             IF @VNcount>0 BEGIN
                 set @msjTemp='Existing User';
                 RETURN;
             END;
-            
+     
             INSERT INTO TBL_USERS (email,password,phone,address,name,lastname,resetPasswordToken,resetPasswordExpire)
             VALUES(@email,@password,@phone,@address,@name,@lastname,'s',null);
             
             SET @VNid_User =(SELECT MAX(idUser) From TBL_USERS where @email=email );
-            INSERT INTO TBL_INDIVIDUAL_CLIENTS(birth_date,register_id,idUser) 
-            VALUES (cast(@birth_date as date),@register_id,@VNid_User);
+
+            INSERT INTO TBL_ENTERPRISE_CLIENTS(company_name ,contact_name,rtn,contact_number,idUser,idCompanyType,idSector,business_name) 
+            VALUES (@company_name,@contact_name,@rtn,@contact_number,@VNid_User,@idCompanyType,@idSector,@business_name);
             
             SET @msjTemp='Properly Registered User';
             set @id_user=@VNid_User;
 
 END;
 
-drop procedure SP_ADD_USER_INDIVIDUAL
 
-exec SP_ADD_USER_INDIVIDUAL 'estef@.com','pajaritos','658',' colonia','ledys','santos','2018-02-02','0801','bien','1';
+drop procedure SP_ADD_USER_ENTERPRISE
 
-delete from TBL_USERS where idUser=15;
-delete from TBL_INDIVIDUAL_CLIENTS where idUser=15;
+exec SP_ADD_USER_ENTERPRISE 'juan@com', 'pajarito2','9821','col','pizza','hut','PIZZAHUT','juanLopez','0122','9888','1','1','cualq','bien','8';
+
+delete from TBL_COMPANY_TYPE where idCompanyType=3;
+
+select * from TBL_USERS;
+
 
 select * from TBL_INDIVIDUAL_CLIENTS
 
-select * from TBL_USERS
+select * from TBL_SECTORS
+   
+insert into TBL_COMPANY_TYPE values ('hoteles');
+insert into TBL_COMPANY_TYPE values ('restaurante');
 
-
+insert into TBL_SECTORS VALUES ('gourmet');
+insert into TBL_SECTORS VALUES ('vinos');
