@@ -1,0 +1,1 @@
+export const URL_POST_LOGIN = '/api/auth/login'
