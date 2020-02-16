@@ -7,12 +7,10 @@
 body,
 html {
   height: 100%;
- 
 }
 
 /*---------------------------------------------*/
 a {
-  
   font-size: 14px;
   line-height: 1.7;
   color: #666666;
@@ -33,9 +31,6 @@ a:hover {
 }
 
 /*---------------------------------------------*/
-
-
-
 
 ul,
 li {
@@ -129,7 +124,6 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
   [ Utility ]*/
 .txt1 {
-  
   font-size: 16px;
   color: #999999;
   line-height: 1.4;
@@ -180,11 +174,11 @@ iframe {
 }
 
 .bkgImgLogIn {
-  background-image: url("../assets/img/pyflor2.jpg");
+  background: url("../assets/img/pyflor2.jpg") no-repeat center center fixed;
 }
 
-.imgFormRegUs{
-  background-image: url("../assets/img/pyflor1.jpg");
+.imgFormRegUs {
+  background: url("../assets/img/pyflor1.jpg") no-repeat center center fixed;
 }
 
 .container-login100::before {
@@ -223,7 +217,6 @@ iframe {
 }
 
 .login100-form-title {
-  
   font-size: 30px;
   color: #333333;
   line-height: 1.2;
@@ -242,7 +235,6 @@ iframe {
 }
 
 .input100 {
-  
   font-size: 18px;
   line-height: 1.2;
   color: #686868;
@@ -337,7 +329,6 @@ iframe {
 }
 
 .label-checkbox100 {
-  
   font-size: 16px;
   color: #999999;
   line-height: 1.2;
@@ -350,7 +341,7 @@ iframe {
 
 .label-checkbox100::before {
   content: "\f00c";
-  
+
   font-size: 13px;
   color: transparent;
 
@@ -394,7 +385,6 @@ iframe {
 }
 
 .login100-form-btn {
- 
   font-size: 16px;
   line-height: 1.5;
   color: #fff;
@@ -427,7 +417,6 @@ iframe {
   [ Button sign in with ]*/
 .btn-face,
 .btn-google {
-  
   font-size: 16px;
   line-height: 1.2;
 
@@ -499,7 +488,6 @@ iframe {
   right: 8px;
   pointer-events: none;
 
-  
   color: #c80000;
   font-size: 13px;
   line-height: 1.4;
@@ -516,7 +504,7 @@ iframe {
 
 .alert-validate::after {
   content: "\f12a";
-  
+
   display: block;
   position: absolute;
   color: #c80000;
@@ -552,11 +540,11 @@ iframe {
   }
 }
 
-input[type=radio]{
+input[type="radio"] {
   width: 17px;
   height: 17px;
 }
 
-.radio-user{
+.radio-user {
   font-size: 1.1rem;
 }
