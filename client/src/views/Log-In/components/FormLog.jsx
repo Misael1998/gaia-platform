@@ -1,10 +1,11 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import shortid from "shortid";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
+import { loginUser } from "../../../services/Login";
+import Swal from 'sweetalert2'
 
 const FormLog = () => {
   //Creando el state para leer los inputs:
@@ -54,12 +55,27 @@ const FormLog = () => {
 
     handleError(false);
 
-    //Asignando un id:
-    information.id = shortid();
 
-    //Verificar si el usuario existe:
-
-    //Mandar al usuario a la pagina de inicio:
+    //Peticion a endpoint de user
+    loginUser(email, password)
+      .then(res => {
+       
+        Swal.fire(
+          'Login exitoso',
+          `Bienvenido ${res.user.firstName}`,
+          'success'
+        )
+      })
+      .catch(error => {
+        
+        if (error.status === 404) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Usuario no encontrado',
+          })
+        }
+      });
   };
 
   return (
@@ -89,8 +105,8 @@ const FormLog = () => {
             </div>
 
             {errorEmail ? (
-              <p className="alert alert-danger error-p">
-                El correo ingresado no es valido!!!
+              <p className="alert alert-danger error-p text-white">
+                El correo ingresado no es valido
               </p>
             ) : null}
 
@@ -113,8 +129,8 @@ const FormLog = () => {
             </div>
 
             {error ? (
-              <p className="alert alert-danger error-p">
-                Todos los campos son obligatorios!!!
+              <p className="alert alert-danger error-p text-white">
+                La contraseña no puede estar vacia
               </p>
             ) : null}
 
@@ -125,7 +141,7 @@ const FormLog = () => {
                 type="checkbox"
                 name="remember-me"
               />
-              <label className="label-checkbox100" for="ckb1">
+              <label className="label-checkbox100">
                 Recuerdame
               </label>
             </div>
