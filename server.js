@@ -11,9 +11,11 @@ server.use(cors());
 
 //route files
 const auth = require("./routes/auth");
+const user = require("./routes/user");
 
 //mount routes
 server.use("/api/auth", auth);
+server.use("/api/user", user);
 
 //init database
 db();
