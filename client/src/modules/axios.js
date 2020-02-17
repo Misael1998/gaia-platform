@@ -28,6 +28,7 @@ axiosConfig.interceptors.response.use(
     response => response,
     error => {
         if (error.response.status === 401){
+            SessionStorageService.removeToken();
             window.location.href = '/';
             return Promise.reject(error);
         }
