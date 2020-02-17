@@ -6,8 +6,9 @@ import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 import { loginUser } from "../../../services/Login";
 import Swal from 'sweetalert2'
+import LocalStorageService from "../../../services/Storage";
 
-const FormLog = () => {
+const FormLog = ({ history }) => {
   //Creando el state para leer los inputs:
   const [information, handleInformation] = useState({
     email: "",
@@ -59,15 +60,17 @@ const FormLog = () => {
     //Peticion a endpoint de user
     loginUser(email, password)
       .then(res => {
-       
+        LocalStorageService.setToken(res.token);
         Swal.fire(
           'Login exitoso',
           `Bienvenido ${res.user.firstName}`,
           'success'
-        )
+        ).then(res => {
+          history.push('/app');
+        })
       })
       .catch(error => {
-        
+
         if (error.status === 404) {
           Swal.fire({
             icon: 'error',

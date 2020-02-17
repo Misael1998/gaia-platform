@@ -1,5 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, {useState, useEffect } from "react";
 import shortid from "shortid";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
