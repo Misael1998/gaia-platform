@@ -13,9 +13,13 @@ server.use(cors());
 const auth = require("./routes/auth");
 const user = require("./routes/user");
 
+const data = require("./routes/data");
+
 //mount routes
 server.use("/api/auth", auth);
 server.use("/api/user", user);
+
+server.use("/api/data", data);
 
 //init database
 db();
