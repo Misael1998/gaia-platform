@@ -2,10 +2,10 @@ import React, { Fragment } from "react";
 import FormLog from "./components/FormLog";
 import FooterLog from "../../components/Layout/FooterLog";
 
-const LogInPage = () => {
+const LogInPage = ({history}) => {
   return (
     <Fragment>
-      <FormLog />
+      <FormLog history={history} />
       <FooterLog />
     </Fragment>
   );
