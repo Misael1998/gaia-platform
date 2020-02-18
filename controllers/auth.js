@@ -100,11 +100,29 @@ exports.forgotPassword = async (req, res, next) => {
 
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
-    await sendEmail({
-      email: "misalande@gmail.com",
-      subject: "Password reset token",
-      message
-    });
+    if (process.env.NODE_ENV === "development") {
+      await sendEmail({
+        email: process.env.TEST_EMAIL,
+        subject: "Password reset token",
+        message
+      });
+
+      return res.status(201).json({
+        success: true,
+        msg: "token created"
+      });
+    } else {
+      await sendEmail({
+        email: email,
+        subject: "Password reset token",
+        message
+      });
+
+      return res.status(201).json({
+        success: true,
+        msg: "token created"
+      });
+    }
 
     res.status(201).json({
       success: true,
