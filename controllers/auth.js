@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const mssql = require("mssql");
 const crypto = require("crypto");
 const moment = require("moment");
+const sendEmail = require("../utils/sendEmail.js");
 
 //@desc     AUTH user
 //@route    GET     /api/auth/login
@@ -91,6 +92,19 @@ exports.forgotPassword = async (req, res, next) => {
         msg: "server error"
       });
     }
+
+    // Create reset url
+    const resetUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/auth/resetpassword/${token}`;
+
+    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
+    await sendEmail({
+      email: "misalande@gmail.com",
+      subject: "Password reset token",
+      message
+    });
 
     res.status(201).json({
       success: true,
