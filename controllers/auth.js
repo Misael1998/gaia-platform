@@ -100,7 +100,10 @@ exports.forgotPassword = async (req, res, next) => {
 
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
-    if (process.env.NODE_ENV === "development") {
+    if (
+      process.env.NODE_ENV === "development" ||
+      process.env.NODE_ENV === "sprint"
+    ) {
       await sendEmail({
         email: process.env.TEST_EMAIL,
         subject: "Password reset token",
