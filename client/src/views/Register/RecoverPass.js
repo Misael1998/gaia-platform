@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Header from '../../components/Layout/Header';
 import ErrorMessage from '../../components/ErrorMessage';
 import { MdArrowBack } from 'react-icons/md';
+import { recoverPassword } from '../../services/Login';
+import Swal from 'sweetalert2';
+import SessionStorageService from '../../services/Storage';
 
 
 
@@ -23,15 +26,22 @@ const RecoverPass = ({ history }) => {
         }
         setErrorEmail(false);
 
-        //Aqui va el request de correo
-
-        //Se muestra el input de token
-        setShowInput(true);
-
+        //Se hace el request al correo
+        recoverPassword(email)
+            .then(res => {
+                setShowInput(true);
+            })
+            .catch(err => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocurrió un error al solicitar el correo',
+                })
+            })
     }
 
     const verifyToken = (e) => {
-       e.preventDefault();
+        e.preventDefault();
 
         if (token.trim() === '') {
             setErrorToken(true);
@@ -39,19 +49,16 @@ const RecoverPass = ({ history }) => {
         }
 
         setErrorToken(false);
-
-        //Peticion de token valido
-
-
+        SessionStorageService.setItem('resetToken', token);
         // Si el token es valido redirigir al form de recuperacion
         history.push('/recovery-password/form')
     }
 
-    
+
 
     return (
         <div className='row no-gutters'>
-            <Header/>
+            <Header />
             <div className='col-12 mt-4 ml-4'>
                 <button className='btn btn-success btn-sm mb-3 ' onClick={() => history.push('/login')}>
                     <MdArrowBack size={20} color='white' /> Volver
@@ -113,6 +120,7 @@ const RecoverPass = ({ history }) => {
                     errorToken ? <ErrorMessage className='mt-3 text-center' message='El token ingresado no es valido' /> : null
                 }
             </div>
+
         </div>
     );
 };
