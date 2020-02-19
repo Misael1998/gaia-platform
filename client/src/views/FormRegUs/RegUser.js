@@ -23,7 +23,7 @@ const RegUser = ({ history }) => {
     <Fragment>
       <CustomModal showModal={modalShow} onChange={onChange} />
 
-      {user !== "" ? user === "user" ? <FormUser history={history} /> : <FormCompany /> : <div className="container-login100 imgFormRegUs"></div>}
+      {user !== "" ? user === "user" ? <FormUser history={history} /> : <FormCompany history={history} /> : <div className="container-login100 imgFormRegUs"></div>}
 
       <FooterLog />
     </Fragment>

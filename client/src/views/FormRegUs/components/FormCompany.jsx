@@ -1,11 +1,13 @@
-import React, {useState, useEffect } from "react";
+import React, {useState, useEffect } from "react";  
 import shortid from "shortid";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
+import Swal from 'sweetalert2';
+import { registerCompanyUser } from "../../../services/CompanyUser";
 
-const FormCompany = () => {
+const FormCompany = ({history}) => {
   //Creando el state para leer los inputs:
   const [infoCompany, handleCompanyInfo] = useState({
     email: "",
@@ -13,6 +15,7 @@ const FormCompany = () => {
     phone: "",
     address: "",
     companyName: "",
+    contactName: "",
     rtn: "",
     contactNumber: "",
     businessName: ""
@@ -51,6 +54,7 @@ const FormCompany = () => {
     phone,
     address,
     companyName,
+    contactName,
     rtn,
     contactNumber,
     businessName
@@ -66,6 +70,7 @@ const FormCompany = () => {
       phone.trim() !== "" &&
       address.trim() !== "" &&
       companyName.trim() !== "" &&
+      contactName.trim() !== "" &&
       rtn.trim() !== "" ||
       rtn.length<14 &&
       contactNumber.trim() !== "" &&
@@ -84,6 +89,7 @@ const FormCompany = () => {
     phone,
     address,
     companyName,
+    contactName,
     rtn,
     contactNumber,
     businessName
@@ -102,6 +108,7 @@ const FormCompany = () => {
       phone.trim() === "" ||
       address.trim() === "" ||
       companyName.trim() === "" ||
+      contactName.trim() === "" ||
       rtn.trim() === "" || 
       rtn.length<14 || 
       contactNumber.trim() === "" ||
@@ -113,8 +120,27 @@ const FormCompany = () => {
 
     handleError(false);
 
-    //Asignando un id:
-    infoCompany.id = shortid();
+
+    //Peticion a endpoint de user
+    registerCompanyUser(email, password, phone, address, companyName, contactName, rtn, contactNumber, businessName)
+      .then(res => {
+        Swal.fire("Registro Exitoso","Se ha creado el usuario exitosamente","success").then(e => {
+          history.push("/login");
+        });
+        })
+        
+      .catch(error => {
+
+        if (error.status === 404) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No se completó el registro',
+          })
+        }
+      });
+
+  
 
     //Verificar si el usuario existe:
 
@@ -224,6 +250,26 @@ const FormCompany = () => {
                 <span className="lnr lnr-user"></span>
               </span>
             </div>
+
+
+            <div
+              className="wrap-input100 validate-input m-b-16"
+              data-validate="Password is required"
+            >
+              <input
+                className="input100"
+                type="text"
+                name="contactName"
+                placeholder="Nombre Contact"
+                onChange={handleChangeInfo}
+                value={contactName}
+              />
+              <span className="focus-input100"></span>
+              <span className="symbol-input100">
+                <span className="lnr lnr-user"></span>
+              </span>
+            </div>
+
 
             <div
               className="wrap-input100 validate-input m-b-16"
