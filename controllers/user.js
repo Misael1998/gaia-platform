@@ -9,9 +9,6 @@ const app = express();
 app.use(express.json());
 
 
-let msg = "";
-
-
 //Función para comprobar que todos los parámetros sean recibidos.
 // let checkParams = (body) => {
 //   if (!body.email.trim() || !body.name.trim() || !body.password.trim() || !body.phone.trim() || !body.address.trim() ||
@@ -35,7 +32,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
   } = process.env;
   const {
     email,
-    name,
+    // name,
     password,
     phone,
     address,
@@ -51,8 +48,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
 
 
   try {
-
-    let allSent = (email.trim() && name.trim() && password.trim() && phone.trim() && address.trim() &&
+    let allSent = (email.trim() && /*name.trim() &&*/ password.trim() && phone.trim() && address.trim() &&
       company_name.trim() && contact_name.trim() && rtn.trim() && contact_number.trim() &&
       company_type.trim() && sector.trim() && business_name.trim());
 
@@ -63,88 +59,113 @@ exports.registerEnterpriseUser = async (req, res, next) => {
       .input("email", mssql.VarChar(100), email)
       .query("select * from TBL_USERS where email = @email");
 
-
     if (!(query.recordset.length > 0)) {
-      return res.status(404).json({
-        success: false,
-        msg: "Invalid credentials"
-      });
 
-
-      const encryptedPassword = await bcrypt.hash(password, 10);
+      const salt = await bcrypt.genSalt(10);
+      const encryptedPassword = await bcrypt.hash(password, salt);
 
       //Esperando a Ledys para que cree el procedimiento de usuario empresarial.
-
-
       query = await new mssql.Request()
         .input("email", mssql.VarChar(100), email)
-        .input("name", mssql.VarChar(45), name)
-        .input("encryptedPassword", mssql.VarChar(100), encryptedPassword)
+        .input("password", mssql.VarChar(100), encryptedPassword)
         .input("phone", mssql.VarChar(12), phone)
         .input("address", mssql.VarChar(150), address)
+        // .input("name", mssql.VarChar(45), name)
         .input("company_name", mssql.VarChar(45), company_name)
-        .input("company_type", mssql.Int, company_type)
         .input("contact_name", mssql.VarChar(45), contact_name)
+        .input("rtn", mssql.VarChar(12), rtn)
         .input("contact_number", mssql.VarChar(12), contact_number)
-        .input("rtn", mssql.VarChar(14), rtn)
-        .input("sector", mssql.Int, sector)
-        .output("idUser", mssql.Int)
-        .output("status", mssql.Int)
-        .output("msg", mssql.VarChar(mssql.MAX))
-        .output("role", mssql.VarChar(mssql.MAX))
-        .exec("SP_REGISTER_ENTERPRISE")
+        .input("idCompanyType", mssql.Int, company_type)
+        .input("idSector", mssql.Int, sector)
+        .input("business_name", mssql.NVarChar(45), business_name)
+        .output("pcMsj", mssql.VarChar(45))
+        .output("id_user", mssql.Int)
+        .output("CodeState", mssql.Int)
+        // .output("role", mssql.VarChar(mssql.MAX))
+        .execute("SP_ADD_USER_ENTERPRISE")
 
       const {
-        status,
-        idUser,
-        msg,
-        role
+        CodeState,
+        id_user,
+        // role,
+        pcMsj
       } = query.output;
 
       //Valores de prueba
-      // let status = 1;
-      // let msg = "algo";
+      // let CodeState = 1;
+      // let pcMsj = "algo";
       //----------------------
 
-      if (status == 1) {
-        let token = jwt.sign({
-          //Datos del usuario que se deben mandar(payload).
-          id /*user.idUser,*/ ,
-          role
-        }, process.env.JWT_KEY, {
-          expiresIn: process.env.JWT_EXPIRE
-        });
-        return res.status(201).json({
-          success: true,
-          msg,
-          token
-        })
-      } else {
-        return res.status(500).json({
-          success: false,
-          msg
-        })
+
+      switch (CodeState) {
+        case 0:
+          return res.status(500).json({
+            success: false,
+            msg: pcMsj
+          });
+          break;
+        case 1:
+          let token = jwt.sign({
+            id: id_user,
+            role: "Enterpise"
+          }, process.env.JWT_KEY, {
+            expiresIn: process.env.JWT_EXPIRE
+          });
+          return res.status(201).json({
+            success: true,
+            msg: pcMsj,
+            token
+          })
+          break;
+        case 2:
+          return res.status(400).json({
+            success: false,
+            msg: pcMsj
+          });
+          break;
+        case 3:
+          return res.status(400).json({
+            success: false,
+            msg: pcMsj
+          });
+          break;
       }
+      // if (status == 1) {
+      //   let token = jwt.sign({
+      //     //Datos del usuario que se deben mandar(payload).
+      //     id: user.idUser,
+      //     role: "Enterpise"
+      //   }, process.env.JWT_KEY, {
+      //     expiresIn: process.env.JWT_EXPIRE
+      //   });
+      //   return res.status(201).json({
+      //     success: true,
+      //     pcMsj,
+      //     token
+      //   })
+      // } else {
+      //   return res.status(500).json({
+      //     success: false,
+      //     pcMsj
+      //   })
+      // }
 
     } else {
-      msg = "This email is already registered.";
       res.status(400).json({
         success: false,
-        msg
+        msg: "This email is already registered."
       });
     }
   } catch (e) {
     if (e == "TypeError: Cannot read property 'trim' of undefined") {
-      msg = "Not all arguments have been sent";
       res.status(400).json({
         success: false,
-        msg
+        msg: "Not all arguments have been sent"
       })
     } else {
-      msg = `Looks like error ${e.toString().replace("Error: ","")} has occurred`;
       res.status(500).json({
         success: false,
-        msg
+        msg: `Looks like ${e.toString()} has occurred`
       });
     }
   }
