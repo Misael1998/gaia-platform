@@ -70,14 +70,11 @@ const FormLog = ({ history }) => {
         })
       })
       .catch(error => {
-
-        if (error.status === 404) {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Usuario no encontrado',
+            text: 'Ocurrió un error al iniciar sesion',
           })
-        }
       });
   };
 
@@ -155,12 +152,18 @@ const FormLog = ({ history }) => {
               </button>
             </div>
 
+
             <div className="text-center w-full p-t-115">
               <span className="txt1 mr-2">¿No tienes cuenta?</span>
-
               <Link className="txt1 bo1 hov1" to="/register">
                 Registrarse
               </Link>
+              <div className='pt-2'>
+                <span className='txt1 mr-2'>¿Olvidaste tu contraseña?</span>
+                <Link className='txt1 bo1 hov1' to='/recovery-password'>
+                  Recupérala
+              </Link>
+              </div>
             </div>
           </form>
         </div>
