@@ -19,6 +19,8 @@ exports.registerIndividualClient = async (req, res, next) => {
 
   let isValid = false;
 
+  console.log(req.body);
+
   if (
     !(
       email.trim() &&
@@ -52,8 +54,9 @@ exports.registerIndividualClient = async (req, res, next) => {
       .input("lastName", mssql.NVarChar(45), lastName)
       .input("birth_date", mssql.VarChar(45), birthDate)
       .input("register_id", mssql.NVarChar(14), id)
-      .output("msjTemp", mssql.NVarChar(100))
+      .output("pcMsj", mssql.NVarChar(100))
       .output("id_user", mssql.Int)
+      .output("CodeState", mssql.Int)
       .execute("SP_ADD_USER_INDIVIDUAL");
 
     console.log(query);

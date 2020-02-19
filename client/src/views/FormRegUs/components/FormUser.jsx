@@ -1,11 +1,13 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import shortid from "shortid";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
+import { registerNormalUser } from "../../../services/Register";
+import Swal from "sweetalert2";
 
-const FormUser = () => {
+const FormUser = ({ history }) => {
   //Creando el state para leer los inputs:
   const [infoUser, handleUserInfo] = useState({
     email: "",
@@ -17,24 +19,22 @@ const FormUser = () => {
     birth_date: "",
     register_id: ""
   });
-  
-  const [enableButton, setEnableButton] = useState(true);
-  
-  //Extrayendo los valores con destructuring:
-    const {
-      email,
-      password,
-      phone,
-      address,
-      name,
-      lastname,
-      birth_date,
-      register_id
-    } = infoUser;
 
+  const [enableButton, setEnableButton] = useState(true);
+
+  //Extrayendo los valores con destructuring:
+  const {
+    email,
+    password,
+    phone,
+    address,
+    name,
+    lastname,
+    birth_date,
+    register_id
+  } = infoUser;
 
   useEffect(() => {
- 
     if (
       email.trim() !== "" &&
       password.trim() !== "" &&
@@ -46,15 +46,7 @@ const FormUser = () => {
       setEnableButton(false);
       return;
     }
-    
-
-  }, [
-    register_id,
-    name,
-    phone,
-    password,
-    email
-  ]);
+  }, [register_id, name, phone, password, email]);
 
   //Funcion que se ejecuta cuando se escribe en un input:
   const handleChangeInfo = e => {
@@ -80,7 +72,6 @@ const FormUser = () => {
   //State para validacion del correo:
   const [errorEmail, handleErrorEmail] = useState(false);
 
-
   //Funcion para el boton de login:
   const submitUser = e => {
     e.preventDefault();
@@ -104,12 +95,33 @@ const FormUser = () => {
 
     handleError(false);
 
-    //Asignando un id:
-    infoUser.id = shortid();
-
-    //Verificar si el usuario existe:
-
-    //Mandar al usuario a la pagina de inicio:
+    //Peticion al endpoint de usuario normal:
+    registerNormalUser(
+      email,
+      password,
+      phone,
+      address,
+      name,
+      lastname,
+      register_id,
+      birth_date
+    )
+      .then(res => {
+        Swal.fire(
+          "Registro Exitoso",
+          "Se ha creado el usuario exitosamente",
+          "success"
+        ).then(e => {
+          history.push("/login");
+        });
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "No se completo el registro"
+        });
+      });
   };
 
   return (
@@ -262,6 +274,7 @@ const FormUser = () => {
                 placeholder="Número de Identidad"
                 onChange={handleChangeInfo}
                 value={register_id}
+                maxLength={13}
               />
               <span className="focus-input100"></span>
               <span className="symbol-input100">
@@ -285,7 +298,15 @@ const FormUser = () => {
             </div>
 
             <div className="container-login100-form-btn p-t-25">
-              <button type="submit" className={!enableButton ? "login100-form-btn" : 'btn btn-lg btn-disabled'}  disabled={enableButton}>
+              <button
+                type="submit"
+                className={
+                  !enableButton
+                    ? "login100-form-btn"
+                    : "btn btn-lg btn-disabled"
+                }
+                disabled={enableButton}
+              >
                 Registrarse
               </button>
             </div>
