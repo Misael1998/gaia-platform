@@ -21,6 +21,8 @@ exports.registerEnterpriseUser = async (req, res, next) => {
     business_name
   } = req.body;
 
+  console.log(req.body)
+
   let allSent =
     email.trim() &&
     password.trim() &&
@@ -30,8 +32,8 @@ exports.registerEnterpriseUser = async (req, res, next) => {
     contact_name.trim() &&
     rtn.trim() &&
     contact_number.trim() &&
-    company_type.trim() &&
-    sector.trim() &&
+    
+    
     business_name.trim();
 
   if (!allSent)
@@ -129,6 +131,8 @@ exports.registerIndividualClient = async (req, res, next) => {
 
   let isValid = false;
 
+  console.log(req.body);
+
   if (
     !(
       email.trim() &&
@@ -160,8 +164,9 @@ exports.registerIndividualClient = async (req, res, next) => {
       .input("lastName", mssql.NVarChar(45), lastName)
       .input("birth_date", mssql.VarChar(45), birthDate)
       .input("register_id", mssql.NVarChar(14), id)
-      .output("msjTemp", mssql.NVarChar(100))
+      .output("pcMsj", mssql.NVarChar(100))
       .output("id_user", mssql.Int)
+      .output("CodeState", mssql.Int)
       .execute("SP_ADD_USER_INDIVIDUAL");
 
     console.log(query);
