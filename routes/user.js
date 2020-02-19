@@ -1,13 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-// const app = express();
-
 const {
-  registerEnterpriseUser
-} = require('../controllers/user')
+  registerEnterpriseUser,
+  registerIndividualClient
+} = require("../controllers/user");
 
-router.route('/registerenterpriseuser').post(registerEnterpriseUser);
+router.route("/registerenterpriseuser").post(registerEnterpriseUser);
+router.route("/registerindivualclient").post(registerIndividualClient);
 
-
-module.exports = router
+module.exports = router;

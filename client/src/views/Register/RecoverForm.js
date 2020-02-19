@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import Header from '../../components/Layout/Header';
 import ErrorMessage from '../../components/ErrorMessage';
+import { resetPassword } from '../../services/Login';
+import SessionStorageService from '../../services/Storage';
+import Swal from 'sweetalert2';
 
-const RecoverForm = () => {
+
+const RecoverForm = ({ history }) => {
 
     const [newPassword, setNewPassword] = useState('');
     const [verifyPassword, setVerifyPassword] = useState('');
@@ -19,8 +23,27 @@ const RecoverForm = () => {
         }
 
         setError(false);
-
+        const resetToken = SessionStorageService.getItem('resetToken');
         //Peticion al API de cambio de contraseña
+        resetPassword(resetToken, newPassword)
+            .then(res => {
+                Swal.fire(
+                    'Contraseña cambiada',
+                    `La contraseña se cambio con exito`,
+                    'success'
+                ).then(res => {
+                    history.push('/login');
+                })
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocurrió un error al tratar de resetear la contraseña',
+                })
+            })
+
+        SessionStorageService.removeItem('resetToken');
     }
 
     return (
@@ -54,6 +77,7 @@ const RecoverForm = () => {
                     }
                 </form>
             </div>
+
         </div>
     );
 };
