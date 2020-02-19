@@ -50,7 +50,5 @@ const PORT = process.env.PORT || 5000;
 
 //expxose port to server to listend
 server.listen(PORT, () =>
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`
-  )
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );
