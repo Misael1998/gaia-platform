@@ -27,19 +27,23 @@ db();
 //@desc     Default temporal route
 //@route    GET     /
 //@access   Public
-server.get("/", (req, res) => {
-  res.send("gaia-pyflor");
-});
+if (process.env.NODE_ENV === "development") {
+  server.get("/", (req, res) => {
+    res.send("gaia-pyflor");
+  });
+}
+// Serve static assets in production
+if (
+  process.env.NODE_ENV === "production" ||
+  process.env.NODE_ENV === "sprint"
+) {
+  // Set static folder
+  server.use(express.static("client/build"));
 
-// // Serve static assets in production
-// if (process.env.NODE_ENV === 'production') {
-//   // Set static folder
-//   app.use(express.static('client/build'));
-//
-//   app.get('*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-//   });
-// }
+  server.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 //setting port
 const PORT = process.env.PORT || 5000;
