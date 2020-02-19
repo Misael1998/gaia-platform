@@ -21,6 +21,8 @@ exports.registerEnterpriseUser = async (req, res, next) => {
     business_name
   } = req.body;
 
+  console.log(req.body)
+
   let allSent =
     email.trim() &&
     password.trim() &&
@@ -30,8 +32,8 @@ exports.registerEnterpriseUser = async (req, res, next) => {
     contact_name.trim() &&
     rtn.trim() &&
     contact_number.trim() &&
-    company_type.trim() &&
-    sector.trim() &&
+    
+    
     business_name.trim();
 
   if (!allSent)

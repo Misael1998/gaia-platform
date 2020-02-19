@@ -37,23 +37,31 @@ export const registerNormalUser = async (
 
 
 //empresa
-
-
-export const registerCompanyUser = async (name, phone, address, company_name, contact_name, company_type, sector, email,
-    password, rtn, contact_number, business_name) => {
+export const registerCompanyUser = async (
+  phone,
+  address,
+  company_name,
+  contact_name,
+  company_type,
+  sector,
+  email,
+  password,
+  rtn,
+  contact_number,
+  business_name
+) => {
 const payload = {
-        name, 
-        phone, 
-        address, 
-        company_name, 
-        contact_name, 
-        company_type, 
-        sector, 
-        email,
-        password, 
-        rtn, 
-        contact_number, 
-        business_name
+  phone,
+  address,
+  company_name,
+  contact_name,
+  company_type,
+  sector,
+  email,
+  password,
+  rtn,
+  contact_number,
+  business_name
 }
 try {
 const response = await axios.post(UR_POST_ENTERPRISE_USER, payload);
