@@ -5,7 +5,7 @@ import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 import Swal from 'sweetalert2';
-import { registerCompanyUser } from "../../../services/CompanyUser";
+import { registerCompanyUser } from "../../../services/Register";
 
 const FormCompany = ({history}) => {
   //Creando el state para leer los inputs:
