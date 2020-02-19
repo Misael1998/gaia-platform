@@ -40,7 +40,7 @@ exports.login = async (req, res, next) => {
       .input("userId", mssql.VarChar(100), user.idUser)
       .query("select pyflor.dbo.getUserRole(@userId) role");
 
-    const { role } = query.recordset[0];
+    const { role } = recordset[0];
 
     user.role = role;
 
@@ -92,8 +92,6 @@ exports.forgotPassword = async (req, res, next) => {
         msg: "server error"
       });
     }
-
-    
 
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please copy this token into the recovery password form: \n\n ${token}`;
 
