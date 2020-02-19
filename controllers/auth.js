@@ -14,25 +14,7 @@ exports.login = async (req, res, next) => {
   const { ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
 
   try {
-<<<<<<< HEAD
-    let query = await new mssql.Request()
-      .input("email", mssql.VarChar(100), email)
-      .query("select * from TBL_USERS where email = @email");
-
-    const { recordset } = query;
-    const dataExist = recordset.length > 0;
-
-    if (!dataExist) {
-      return res.status(404).json({
-        success: false,
-        msg: "Invalid credentials"
-      });
-    }
-
-    const user = recordset[0];
-=======
     const user = await getUser(email, res);
->>>>>>> 483a159435bec74722b31994ddfeb98a20a02110
 
     const isAdmin =
       user.email === ADMIN_EMAIL && user.password === ADMIN_PASSWORD;
@@ -110,8 +92,6 @@ exports.forgotPassword = async (req, res, next) => {
         msg: "server error"
       });
     }
-
-    
 
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please copy this token into the recovery password form: \n\n ${token}`;
 

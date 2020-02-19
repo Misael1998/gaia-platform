@@ -12,20 +12,14 @@ server.use(cors());
 //route files
 const auth = require("./routes/auth");
 const user = require("./routes/user");
-<<<<<<< HEAD
-=======
 
 const data = require("./routes/data");
->>>>>>> 483a159435bec74722b31994ddfeb98a20a02110
 
 //mount routes
 server.use("/api/auth", auth);
 server.use("/api/user", user);
-<<<<<<< HEAD
-=======
 
 server.use("/api/data", data);
->>>>>>> 483a159435bec74722b31994ddfeb98a20a02110
 
 //init database
 db();
@@ -56,7 +50,5 @@ const PORT = process.env.PORT || 5000;
 
 //expxose port to server to listend
 server.listen(PORT, () =>
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
-  )
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );

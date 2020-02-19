@@ -61,11 +61,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
       .output("CodeState", mssql.Int)
       .execute("SP_ADD_USER_ENTERPRISE");
 
-    const {
-      CodeState,
-      id_user,
-      pcMsj
-    } = query.output;
+    const { CodeState, id_user, pcMsj } = query.output;
 
     switch (CodeState) {
       case 0:
@@ -76,21 +72,17 @@ exports.registerEnterpriseUser = async (req, res, next) => {
         break;
       case 1:
         payload = {
-            id: id_user,
-            role: "enterpise"
+          id: id_user,
+          role: "enterpise"
         };
 
         const user = {
-            email,
-            company_name,
-            company_type,
-            business_name
-        }
-        return res.status(201).json({
-          success: true,
-          msg: pcMsj,
-          token
-        });
+          email,
+          company_name,
+          company_type,
+          business_name
+        };
+        return sendTokenResponse(user, payload, 201, res);
         break;
       case 2:
         return res.status(400).json({
@@ -107,18 +99,18 @@ exports.registerEnterpriseUser = async (req, res, next) => {
     }
   } catch (e) {
     if (e == "TypeError: Cannot read property 'trim' of undefined") {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         msg: "bad request, please send every field"
       });
     } else {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         msg: "server error"
       });
     }
   }
-
+};
 
 //@desc     Register individual user
 //@route    POST     /api/user/registerindivualclient
@@ -154,8 +146,6 @@ exports.registerIndividualClient = async (req, res, next) => {
       msg: "Bad request, make sure to send every field"
     });
   }
-
-  console.log(birthDate);
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -211,8 +201,6 @@ exports.registerIndividualClient = async (req, res, next) => {
     msg: "register client route"
   });
 };
-
-
 
 //send response
 const sendTokenResponse = (user, payload, statusCode, res) => {
