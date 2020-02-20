@@ -40,7 +40,7 @@ exports.login = async (req, res, next) => {
       .input("userId", mssql.VarChar(100), user.idUser)
       .query("select pyflor.dbo.getUserRole(@userId) role");
 
-    const { role } = recordset[0];
+    const { role } = query.recordset[0];
 
     user.role = role;
 
