@@ -73,6 +73,10 @@ exports.login = async (req, res, next) => {
 //@route    POST     /api/auth/forgotpassword
 //@access   Public
 exports.forgotPassword = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
+  }
   const { email } = req.body;
 
   try {
@@ -148,6 +152,10 @@ exports.forgotPassword = async (req, res, next) => {
 //@route    PUT     /api/auth/resetpassword/:token
 //@access   Public
 exports.resetPassword = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
+  }
   const { password } = req.body;
   const { token } = req.params;
 

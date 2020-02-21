@@ -16,7 +16,24 @@ router
     ],
     login
   );
-router.route("/forgotpassword").post(forgotPassword);
-router.route("/resetpassword/:token").put(resetPassword);
+
+router
+  .route("/forgotpassword")
+  .post(
+    [check("email", "please enter a valid email").isEmail()],
+    forgotPassword
+  );
+
+router
+  .route("/resetpassword/:token")
+  .put(
+    [
+      check(
+        "password",
+        "please enter a password of 8 character minimun"
+      ).isLength({ min: 8 })
+    ],
+    resetPassword
+  );
 
 module.exports = router;
