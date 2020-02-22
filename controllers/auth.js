@@ -4,11 +4,18 @@ const mssql = require("mssql");
 const crypto = require("crypto");
 const moment = require("moment");
 const sendEmail = require("../utils/sendEmail.js");
+const { validationResult } = require("express-validator");
+const errorResponse = require("../utils/errorResponse");
 
 //@desc     AUTH user
 //@route    GET     /api/auth/login
 //@access   Public
 exports.login = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
+  }
+
   let payload = {};
   const { email, password } = req.body;
   const { ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
@@ -30,10 +37,12 @@ exports.login = async (req, res, next) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(404).json({
-        success: false,
-        msg: "Invalid credentials"
-      });
+      return errorResponse(
+        400,
+        "Invalid credentials",
+        [{ msg: "Email && password dont match" }],
+        res
+      );
     }
 
     query = await new mssql.Request()
@@ -64,6 +73,10 @@ exports.login = async (req, res, next) => {
 //@route    POST     /api/auth/forgotpassword
 //@access   Public
 exports.forgotPassword = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
+  }
   const { email } = req.body;
 
   try {
@@ -139,6 +152,10 @@ exports.forgotPassword = async (req, res, next) => {
 //@route    PUT     /api/auth/resetpassword/:token
 //@access   Public
 exports.resetPassword = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
+  }
   const { password } = req.body;
   const { token } = req.params;
 
@@ -184,7 +201,7 @@ const getUser = async (email, res) => {
   if (!dataExist) {
     return res.status(404).json({
       success: false,
-      msg: "Invalid credentials"
+      msg: "Invalid credentials, cant find user"
     });
   }
 
