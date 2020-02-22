@@ -1,12 +1,18 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mssql = require("mssql");
+const { validationResult } = require("express-validator");
+const errorResponse = require("../utils/errorResponse");
 
 //@desc     Register enterpise clients
 //@route    POST     /api/user/enterpriseclient
 //@access   Public
 exports.registerEnterpriseUser = async (req, res, next) => {
-  const { ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
+  }
+
   const {
     email,
     password,
@@ -20,27 +26,6 @@ exports.registerEnterpriseUser = async (req, res, next) => {
     sector,
     business_name
   } = req.body;
-
-  console.log(req.body)
-
-  let allSent =
-    email.trim() &&
-    password.trim() &&
-    phone.trim() &&
-    address.trim() &&
-    company_name.trim() &&
-    contact_name.trim() &&
-    rtn.trim() &&
-    contact_number.trim() &&
-    
-    
-    business_name.trim();
-
-  if (!allSent)
-    return res.status(400).json({
-      success: false,
-      msg: "Bad request, please send every field"
-    });
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -99,18 +84,12 @@ exports.registerEnterpriseUser = async (req, res, next) => {
         });
         break;
     }
-  } catch (e) {
-    if (e == "TypeError: Cannot read property 'trim' of undefined") {
-      return res.status(400).json({
-        success: false,
-        msg: "bad request, please send every field"
-      });
-    } else {
-      return res.status(500).json({
-        success: false,
-        msg: "server error"
-      });
-    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      msg: "server error"
+    });
   }
 };
 
@@ -129,26 +108,9 @@ exports.registerIndividualClient = async (req, res, next) => {
     birthDate
   } = req.body;
 
-  let isValid = false;
-
-  console.log(req.body);
-
-  if (
-    !(
-      email.trim() &&
-      password.trim() &&
-      phone.trim() &&
-      address.trim() &&
-      name.trim() &&
-      lastName.trim() &&
-      id.trim() &&
-      birthDate.trim()
-    )
-  ) {
-    return res.status(400).json({
-      success: false,
-      msg: "Bad request, make sure to send every field"
-    });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
   }
 
   try {
