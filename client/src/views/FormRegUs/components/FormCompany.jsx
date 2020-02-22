@@ -162,13 +162,11 @@ const FormCompany = ({ history }) => {
       })
 
       .catch(error => {
-        if (error.status === 404) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "No se completó el registro"
-          });
-        }
+        Swal.fire({
+          icon: "error",
+          title: error.title,
+          text: error.text
+        });
       });
 
     //Verificar si el usuario existe:

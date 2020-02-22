@@ -13,7 +13,7 @@ const errorResponse = require("../utils/errorResponse");
 exports.login = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorResponse(400, "Validaton errors", errors.array(), res);
+    return errorResponse(400, "Validation errors", errors.array(), res);
   }
 
   let payload = {};
@@ -75,7 +75,7 @@ exports.login = async (req, res, next) => {
 exports.forgotPassword = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorResponse(400, "Validaton errors", errors.array(), res);
+    return errorResponse(400, "Validation errors", errors.array(), res);
   }
   const { email } = req.body;
 
@@ -91,14 +91,13 @@ exports.forgotPassword = async (req, res, next) => {
     let expireDate = moment(Date.now() + 10 * 60 * 1000);
 
     expireDate = expireDate.format("YYYY-MM-DD hh:mm:ss");
-
+    
     const query = await new mssql.Request()
       .input("token", mssql.VarChar(mssql.MAX), token)
       .input("expireDate", mssql.DateTime, expireDate)
       .input("idUser", mssql.Int, user.idUser)
       .output("status", mssql.VarChar(7))
       .execute("SP_SET_FORGOT_PASSWORD_TOKEN");
-
     if (query.output.status != "success") {
       return res.status(500).json({
         success: false,
@@ -154,7 +153,7 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorResponse(400, "Validaton errors", errors.array(), res);
+    return errorResponse(400, "Validation errors", errors.array(), res);
   }
   const { password } = req.body;
   const { token } = req.params;
