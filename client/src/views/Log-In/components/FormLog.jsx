@@ -70,11 +70,11 @@ const FormLog = ({ history }) => {
         })
       })
       .catch(error => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Ocurrió un error al iniciar sesion',
-          })
+        Swal.fire({
+          icon: 'error',
+          title: error.title,
+          text: error.text,
+        })
       });
   };
 
