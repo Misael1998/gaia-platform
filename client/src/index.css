@@ -2,7 +2,7 @@ body {
   font-family: Roboto, sans-serif;
 }
 .primary-color {
-  background-color: #27ae60;
+  background-color: #27ae60!important;
 }
 
 .secondary-color {
@@ -15,6 +15,10 @@ body {
 
 .font-lg {
   font-size: 1.2rem;
+}
+
+.side-icon:hover {
+  color: #2ecc71;
 }
 
 .logo {

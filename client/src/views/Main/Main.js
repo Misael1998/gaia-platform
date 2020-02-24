@@ -1,27 +1,33 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom'
+import { Redirect, BrowserRouter as Router, Switch } from 'react-router-dom'
 import SessionStorageService from '../../services/Storage';
+import SideNavbar from '../../components/Layout/SideNavbar'
+import {MdHome, MdShoppingCart, MdPerson, MdExitToApp, } from 'react-icons/md'
+import {IoMdCalendar } from 'react-icons/io'
 
-import logo from '../../assets/img/logo.png'
 
 const Main = () => {
 
+    const items = [
+        {name: 'home', label: 'Inicio', icon: <MdHome size={30}/>},
+        {name: 'cart', label: 'Carrito', icon: <MdShoppingCart size={30}/> },
+        {name: 'orders', label: 'Ordenes', icon: <IoMdCalendar size={30}/>},
+        {name: 'user', label: 'Perfil', icon:<MdPerson size={30}/>},
+        {name: 'logout', label: 'Cerrar sesion', icon: <MdExitToApp size={30}/>}
+    ]
     const token = SessionStorageService.getToken();
 
     return (
+        <>
+            {/* {token === null ? <Redirect exact from='/app' to='/' /> : null} */}
+            <Router>
+                <SideNavbar items={items}/>
+               
+                <Switch>
 
-        <div className='row w-100 h-100 primary-color '>
-            {token === null ? <Redirect exact from='/app' to='/' /> : null}
-            <div className='col-12 text-center m-t-100 m-b-200 p-t-100 p-b-100 text-white  '>
-                <div className='logo w-25 ml-auto mr-auto'>
-                    <img src={logo} alt='logo' className='img-fluid  p-4' />
-                </div>
-
-                <h2>Sitio en construccion</h2>
-                <h4>Estamos trabajando para darte la mejor experiencia</h4>
-            </div>
-        </div>
-
+                </Switch>
+            </Router>
+        </>
     );
 };
 

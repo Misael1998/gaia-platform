@@ -8,6 +8,7 @@ import RecoverPass from './views/Register/RecoverPass';
 import RecoverForm from './views/Register/RecoverForm';
 import RegUser from './views/FormRegUs/RegUser'
 import Main from './views/Main/Main';
+import Portal from './views/Portal/Portal';
 import SessionStorageService from './services/Storage';
 
 
@@ -17,15 +18,21 @@ import SessionStorageService from './services/Storage';
 function App() {
 
   const token = SessionStorageService.getToken();
+  const role = SessionStorageService.getItem('role');
+  let route = '/app';
 
+  if (role && role === 'employee') {
+    route = '/portal'
+  }
 
   return (
     <Router>
-      {token ? <Redirect from="/" to='/app' /> : null}
+      {token ? <Redirect from="/" to={route} /> : null}
       <div className="container-fluid p-0">
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/app" component={Main} />
+          <Route exact path="/portal" component={Portal} />
           <Route exact path="/login" component={LogInPage} />
           <Route exact path="/register" component={RegUser} />
           <Route exact path="/recovery-password" component={RecoverPass} />
