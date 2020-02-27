@@ -115,9 +115,7 @@ DECLARE
         phone,
         address,
         name,
-        lastname,
-        resetPasswordToken,
-        resetPasswordExpire
+        lastname
     )
     VALUES(
         @email,
@@ -125,8 +123,6 @@ DECLARE
         @phone,
         @address,
         @company_name,
-        null,
-        null,
         null
     );
 
