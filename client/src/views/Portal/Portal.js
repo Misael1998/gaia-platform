@@ -1,23 +1,26 @@
 import React from 'react';
 import SideNavbar from '../../components/Layout/SideNavbar';
-import { MdHome, MdShoppingBasket, MdList, MdExitToApp } from 'react-icons/md';
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { MdHome, MdShoppingBasket,  MdExitToApp, MdAddShoppingCart } from 'react-icons/md';
+
 
 const Portal = () => {
 
     const items = [
-        { name: 'home', label: 'Inicio', icon: <MdHome size={30} /> },
-        { name: 'purchases', label: 'Compras', icon: <MdShoppingBasket size={30} /> },
-        { name: 'exit', label: 'Cerrar sesión', icon: <MdExitToApp size={30} /> }
+        { name: 'home', label: 'Inicio', icon: <MdHome size={30} />, link: '/portal' },
+        {
+            name: 'purchases',
+            label: 'Compras',
+            icon: <MdShoppingBasket size={30} />,
+            subitems: [{ name: 'addPurchase', label: 'Añadir solicitud', icon: <MdAddShoppingCart size={30} />, link: '/portal/purchases/add' }],
+            link: '/portal/purchases'
+        },
+        { name: 'exit', label: 'Cerrar sesión', icon: <MdExitToApp size={30} />, }
     ]
 
     return (
-        <Router>
+        <div>
             <SideNavbar items={items} />
-            <Switch>
-
-            </Switch>
-        </Router>
+        </div>
     );
 };
 

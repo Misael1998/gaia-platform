@@ -17,6 +17,10 @@ body {
   font-size: 1.2rem;
 }
 
+.font-m {
+  font-size: 1rem;
+}
+
 .side-icon:hover {
   color: #2ecc71;
 }

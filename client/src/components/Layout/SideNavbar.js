@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { ListGroup, ListGroupItem } from 'react-bootstrap'
+import React from 'react';
 import './styles/sidebar.css'
 import logo from '../../assets/img/logo.png'
 import SidebarItem from './SidebarItem';
+import SidebarDrop from './SidebarDrop'
 
 
 const SideNavbar = ({ items, show }) => {
@@ -16,13 +16,24 @@ const SideNavbar = ({ items, show }) => {
             </div>
             <div className='h-100 bg-gray'>
 
-                {items.map(item => (
-                    <SidebarItem
-                        key={item.name}
-                        icon={item.icon}
-                        label={item.label}
-                    />
-                ))}
+                {items.map(item => {
+                    if (Array.isArray(item.subitems)) {
+                        return <SidebarDrop 
+                            key={item.name}
+                            icon={item.icon}
+                            name={item.label}
+                            subitems={item.subitems}
+                        />
+                    } else {   
+                       return <SidebarItem
+                            key={item.name}
+                            icon={item.icon}
+                            label={item.label}
+                            link={item.link}
+                        />
+                    }
+
+                })}
             </div>
         </nav>
     );
