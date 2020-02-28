@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import fruit from '../../assets/img/fresas.png'
-import { MdAdd, MdRemove } from 'react-icons/md';
+import { MdAdd, MdRemove, MdShoppingBasket } from 'react-icons/md';
 import './styles/main.css'
 import Swal from 'sweetalert2';
+import Title from './components/Title';
 
 const ProductDetail = () => {
 
@@ -26,6 +27,7 @@ const ProductDetail = () => {
 
     return (
         <div className='row p-5'>
+            <Title icon={<MdShoppingBasket size={40} />} title='Detalle de producto'/>
             <div className='col-3'>
                 <img src={fruit} alt='Fruta' className='img-fluid' />
             </div>
