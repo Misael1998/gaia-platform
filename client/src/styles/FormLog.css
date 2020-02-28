@@ -181,6 +181,10 @@ iframe {
   background: url("../assets/img/pyflor2.jpg") no-repeat center center fixed;
 }
 
+.bkg-request {
+  background-color: springgreen;
+}
+
 .container-login100::before {
   content: "";
   display: block;
@@ -198,6 +202,13 @@ iframe {
 
 .wrap-login100 {
   width: 450px;
+  background: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.wrap-login200 {
+  width: 850px;
   background: #fff;
   border-radius: 3px;
   overflow: hidden;
