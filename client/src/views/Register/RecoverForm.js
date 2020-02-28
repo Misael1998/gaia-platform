@@ -38,8 +38,8 @@ const RecoverForm = ({ history }) => {
             .catch(error => {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: 'Ocurrió un error al tratar de resetear la contraseña',
+                    title: error.title,
+                    text: error.text,
                 })
             })
 

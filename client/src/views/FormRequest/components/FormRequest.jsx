@@ -108,8 +108,8 @@ const FormRequest = () => {
   };
 
   return (
-    <div className="limiter">
-      <div className="container-login100 bkg-request">
+    <div className="limiter lim2">
+      <div className="container-login200 bkg-request">
         <div className="wrap-login200 p-l-50 p-r-50 p-t-50 p-b-30">
           <form
             className="login100-form validate-form"

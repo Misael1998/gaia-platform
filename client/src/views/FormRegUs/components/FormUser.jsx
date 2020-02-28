@@ -118,8 +118,8 @@ const FormUser = ({ history }) => {
       .catch(error => {
         Swal.fire({
           icon: "error",
-          title: "Oops...",
-          text: "No se completo el registro"
+          title: error.title,
+          text: error.text,
         });
       });
   };

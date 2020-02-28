@@ -26,8 +26,6 @@ CREATE TABLE [pyflor].[dbo].[TBL_USERS] (
   address VARCHAR(150) NOT NULL,
   name VARCHAR(45) NOT NULL,
   lastname VARCHAR(45) NULL,
-  resetPasswordToken VARCHAR(MAX) NULL,
-  resetPasswordExpire DATETIME NULL,
   PRIMARY KEY (idUser))
 ;
 

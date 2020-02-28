@@ -173,6 +173,27 @@ iframe {
   z-index: 1;
 }
 
+.container-login200 {
+  width: 1400px;
+  height: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.lim2 {
+  height: 119vh !important;
+}
+
 .bkgImgLogIn {
   background: url("../assets/img/pyflor2.jpg") no-repeat center center fixed;
 }

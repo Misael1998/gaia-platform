@@ -30,7 +30,20 @@ export const registerNormalUser = async (
       throw new Error(response);
     }
   } catch (error) {
-    return error.response;
+    let errorObj;
+    const { response } = error;
+    if (response.status === 400) {
+      errorObj = {
+        title: 'Usuario no registrado',
+        text: 'Ocurrió un error al intentar crear un usuario'
+      }
+    } else {
+      errorObj = {
+        title: 'Error',
+        text: 'Ocurrió un error con el servidor, intente de nuevo'
+      }
+    }
+    throw errorObj
   }
 };
 
@@ -50,27 +63,40 @@ export const registerCompanyUser = async (
   contact_number,
   business_name
 ) => {
-const payload = {
-  phone,
-  address,
-  company_name,
-  contact_name,
-  company_type,
-  sector,
-  email,
-  password,
-  rtn,
-  contact_number,
-  business_name
-}
-try {
-const response = await axios.post(UR_POST_ENTERPRISE_USER, payload);
-if (response.status === 200) {
-return response.data;
-} else {
-throw new Error(response);
-}
-} catch (error) {
-return error.response;
-}
+  const payload = {
+    phone,
+    address,
+    company_name,
+    contact_name,
+    company_type,
+    sector,
+    email,
+    password,
+    rtn,
+    contact_number,
+    business_name
+  }
+  try {
+    const response = await axios.post(UR_POST_ENTERPRISE_USER, payload);
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(response);
+    }
+  } catch (error) {
+    let errorObj;
+    const { response } = error;
+    if (response.status === 400) {
+      errorObj = {
+        title: 'Usuario no registrado',
+        text: 'Ocurrió un error al intentar crear el usuario'
+      }
+    } else {
+      errorObj = {
+        title: 'Error',
+        text: 'Ocurrió un error con el servidor, intente de nuevo'
+      }
+    }
+    throw errorObj
+  }
 }
