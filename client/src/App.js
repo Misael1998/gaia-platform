@@ -7,15 +7,12 @@ import history from './services/history'
 
 
 
-
 function App() {
-
-  
 
   return (
     <Router history={history}>
       <div className="container-fluid p-0">
-        <Routes/>
+        <Routes />
       </div>
     </Router>
   );
