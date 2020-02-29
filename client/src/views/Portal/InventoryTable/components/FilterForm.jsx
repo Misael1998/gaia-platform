@@ -3,7 +3,7 @@ import InptInsumo from "./InptInsumo";
 import InptEmpleado from "./InptEmpleado";
 import InptOrden from "./InptOrden";
 import InptFechas from "./InptFechas";
-import "../../../styles/FormLog.css";
+import "../../../../styles/FormLog.css";
 
 const FilterForm = ({ option }) => {
   return (

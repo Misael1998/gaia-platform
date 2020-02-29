@@ -8,7 +8,6 @@ import RecoverForm from "../views/Register/RecoverForm";
 import RegUser from "../views/FormRegUs/RegUser";
 import Main from "../views/Main/Main";
 import Portal from "../views/Portal/Portal";
-import Inventory from "../views/InventoryTable/Inventory";
 
 const Routes = () => {
   return (
@@ -17,7 +16,6 @@ const Routes = () => {
       <Route exact path="/app" component={Main} isPrivate />
       <Route exact path="/portal" component={Portal} isPrivate />
       <Route exact path="/login" component={LogInPage} />
-      <Route exact path="/inventory" component={Inventory} />
       <Route exact path="/register" component={RegUser} />
       <Route exact path="/recovery-password" component={RecoverPass} />
       <Route exact path="/portal/purchases" />
