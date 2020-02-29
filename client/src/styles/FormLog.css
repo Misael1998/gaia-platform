@@ -173,6 +173,15 @@ iframe {
   z-index: 1;
 }
 
+.container-loginFilter {
+  padding: 10px 10px;
+  margin: 10px 10px;
+}
+
+.r-filter {
+  width: 900px;
+}
+
 .bkgImgLogIn {
   background: url("../assets/img/pyflor2.jpg") no-repeat center center fixed;
 }
@@ -203,6 +212,13 @@ iframe {
   overflow: hidden;
 }
 
+.wrap-filter {
+  width: 100%;
+  background: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
 /*------------------------------------------------------------------
   [  ]*/
 .login100-form {
@@ -222,9 +238,20 @@ iframe {
   line-height: 1.2;
   text-transform: uppercase;
   text-align: center;
-
   width: 100%;
   display: block;
+}
+
+.login100-form-title2 {
+  font-size: 30px;
+  color: #333333;
+  line-height: 1.2;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+.mt-6 {
+  margin-top: 31px;
 }
 
 /*---------------------------------------------*/
