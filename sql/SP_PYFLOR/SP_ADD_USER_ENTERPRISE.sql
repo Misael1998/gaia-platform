@@ -34,16 +34,16 @@ DECLARE
     @rtnTMP int;
     SET @VNcount = 0;
     SET @pcMsj=' ';
-   
+
 
 /* Validation of fields EMPTY when ADD user*/
 /* nombreEmpr,contact_name,rtn,correo,contraseña, telefono, razon social,direccion OBLIGLATORY*/
     IF @email=' ' OR @email IS NULL BEGIN
         SET @pcMsj='EMPTY FIELD';
         SET @CodeState=2;
-        RETURN;     
-    END;  
-    IF @rtn=' ' OR @rtn IS NULL BEGIN 
+        RETURN;
+    END;
+    IF @rtn=' ' OR @rtn IS NULL BEGIN
         SET @pcMsj='EMPTY FIELD';
         SET @CodeState=2;
         RETURN;
@@ -76,29 +76,29 @@ DECLARE
     IF @contact_name=' ' OR @contact_name IS NULL BEGIN
         SET @pcMsj='EMPTY FIELD';
         SET @CodeState=2;
-        RETURN;     
-    END;               
+        RETURN;
+    END;
     IF @phone =' ' OR @phone IS NULL BEGIN
         SET @pcMsj='EMPTY FIELD';
         SET @CodeState=2;
         RETURN;
-    END;       
-    IF @password=' ' OR @password IS NULL BEGIN 
+    END;
+    IF @password=' ' OR @password IS NULL BEGIN
         SET @pcMsj='EMPTY FIELD';
         SET @CodeState=2;
         RETURN;
     END;
-    IF @address=' ' OR @address IS NULL BEGIN 
-        SET @pcMsj='EMPTY FIELD';
-        SET @CodeState=2;
-        RETURN;
-    END;  
-    IF @company_name=' ' OR @company_name IS NULL BEGIN 
+    IF @address=' ' OR @address IS NULL BEGIN
         SET @pcMsj='EMPTY FIELD';
         SET @CodeState=2;
         RETURN;
     END;
-    IF @business_name=' ' OR @business_name IS NULL BEGIN 
+    IF @company_name=' ' OR @company_name IS NULL BEGIN
+        SET @pcMsj='EMPTY FIELD';
+        SET @CodeState=2;
+        RETURN;
+    END;
+    IF @business_name=' ' OR @business_name IS NULL BEGIN
         SET @pcMsj='EMPTY FIELD';
         SET @CodeState=2;
         RETURN;
@@ -115,9 +115,7 @@ DECLARE
         phone,
         address,
         name,
-        lastname,
-        resetPasswordToken,
-        resetPasswordExpire
+        lastname
     )
     VALUES(
         @email,
@@ -125,11 +123,9 @@ DECLARE
         @phone,
         @address,
         @company_name,
-        null,
-        null,
         null
     );
-    
+
     SET @VNid_User =(SELECT MAX(idUser) From TBL_USERS where @email=email);
 
     INSERT INTO TBL_ENTERPRISE_CLIENTS(
@@ -141,7 +137,7 @@ DECLARE
         idCompanyType,
         idSector,
         business_name
-    ) 
+    )
     VALUES (
         @company_name,
         @contact_name,
@@ -152,12 +148,12 @@ DECLARE
         @idSector,
         @business_name
     );
-    
+
     IF  @VNid_User IS NULL BEGIN
         SET @pcMsj='User Registration Error';
         SET @CodeState=0;
     END
-    ELSE BEGIN 
+    ELSE BEGIN
         SET @pcMsj='Properly Registered User';
         SET @id_user=@VNid_User;
         SET @CodeState=1;

@@ -34,8 +34,8 @@ const RecoverPass = ({ history }) => {
             .catch(err => {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: 'Ocurrió un error al solicitar el correo',
+                    title: err.title,
+                    text: err.text,
                 })
             })
     }

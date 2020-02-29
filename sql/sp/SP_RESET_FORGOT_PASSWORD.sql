@@ -22,18 +22,18 @@ AS
         from TBL_FORGOT_PASSWORD_TOKENS
         where (
             token = @token AND
-            tokenExpire < getdate()
+            tokenExpire > getdate()
         )
     )
 
     if @userId is not NULL
-    BEGIN     
+    BEGIN
         UPDATE [pyflor].[dbo].[TBL_USERS]
         SET
-            [password] = @newPassword  
-            
+            [password] = @newPassword
+
         WHERE @userId = idUser
         SET @status = 'success'
     END;
-  
+
 GO

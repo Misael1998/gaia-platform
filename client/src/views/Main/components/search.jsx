@@ -1,5 +1,7 @@
     import React, { useState } from 'react';
 import ImgList from './imgList';
+import Title from '../../Main/components/Title'
+import {MdCardGiftcard} from 'react-icons/md' 
 
 
 const Search = () => {
@@ -39,21 +41,21 @@ const Search = () => {
 
     return(
         <div className="container">
-            <div className="jumbotron">
-                <h1 className=" text-center mb-5">Buscador de productos</h1>
+            <div >
+           
                 <form onSubmit={
                     submitProduct
                 } >
             <div className="row">
                 <div className="form group col-md-8">
 
-                <div class="form-group">
+                <div className="form-group">
                 
-                <select class="form-control" id="sel1">
+                <select className="form-control form-control-lg" id="sel1">
                     <option>Verduras</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
+                    <option>Plantas</option>
+                    <option>Hierbas</option>
+                    <option>Pilones</option>
                 </select>
                 </div>
 
@@ -64,7 +66,7 @@ const Search = () => {
                         onChange={handleSaveTerm}
                     />
                 </div>
-                <div className="form group col-md-4">
+                <div className="form group col-md-4 ">
                     <input 
                         type="submit"
                         className="btn- btn-lg btn-success btn-block"
