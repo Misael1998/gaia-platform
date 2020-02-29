@@ -191,7 +191,7 @@ iframe {
 }
 
 .lim2 {
-  height: 119vh !important;
+  height: 144vh !important;
 }
 
 .bkgImgLogIn {
@@ -229,10 +229,13 @@ iframe {
 }
 
 .wrap-login200 {
-  width: 850px;
+  width: 950px;
+  /* height: 800px; */
   background: #fff;
   border-radius: 3px;
   overflow: hidden;
+  margin-left: 0px;
+  margin-right: 233px;
 }
 
 /*------------------------------------------------------------------
@@ -333,6 +336,31 @@ iframe {
   display: flex;
   align-items: center;
   position: absolute;
+  border-radius: 25px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-left: 23px;
+  padding-bottom: 5px;
+  pointer-events: none;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.symbol-input200 {
+  font-size: 30px;
+  color: #999999;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
   border-radius: 25px;
   bottom: 0;
   left: 0;

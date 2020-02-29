@@ -121,21 +121,32 @@ const FormRequest = () => {
 
             <div className="col-lg-6">
               <div
-                className="wrap-input100 validate-input m-b-16"
+                className="wrap-input100 validate-input m-b-16 row"
                 data-validate="Valid email is required: ex@abc.xyz"
               >
-                <input
-                  className="input100"
-                  type="text"
-                  name="nombreInsumo"
-                  placeholder="Nombre del Insumo"
-                  onChange={handleChangeInfo}
-                  value={nombreInsumo}
-                />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-leaf"></span>
-                </span>
+                <div className="col-lg-10  p-r-0">
+                  <input
+                    className="input100"
+                    type="text"
+                    name="nombreInsumo"
+                    placeholder="Nombre del Insumo"
+                    onChange={handleChangeInfo}
+                    value={nombreInsumo}
+                  />
+
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-leaf m-l-5"></span>
+                  </span>
+                </div>
+                <div className="col-lg-2 p-l-0 p-r-0">
+                  <button>
+                    <span className="focus-input100"></span>
+                    <span className="symbol-input200">
+                      <span className="lnr lnr-plus-circle"></span>
+                    </span>
+                  </button>
+                </div>
               </div>
 
               <div

@@ -29,7 +29,6 @@ const Request = () => {
           <FormRequest />
         </div>
       </div>
-      <FooterLog />
     </Fragment>
   );
 };
