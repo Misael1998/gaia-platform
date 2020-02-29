@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "../../../styles/FormLog.css";
-import "../../../styles/util.css";
+import "../../../../styles/FormLog.css";
+import "../../../../styles/util.css";
 
 const FormRequest = () => {
   //Creando el state para leer los inputs:
@@ -108,65 +108,11 @@ const FormRequest = () => {
   };
 
   return (
-    <div className="limiter lim2">
-      <div className="container-login200 bkg-request">
-        <div className="wrap-login200 p-l-50 p-r-50 p-t-50 p-b-30">
-          <form
-            className="login100-form validate-form"
-            onSubmit={submitRequest}
-          >
-            <span className="login100-form-title p-b-25">
-              Formulario Solicitudes
-            </span>
-
+    <div className="limiter">
+      <div className="container-login200">
+        <div className="wrap-login200 p-l-40 p-r-40 p-t-5 p-b-30">
+          <form className="login100-form" onSubmit={submitRequest}>
             <div className="col-lg-6">
-              <div
-                className="wrap-input100 validate-input m-b-16 row"
-                data-validate="Valid email is required: ex@abc.xyz"
-              >
-                <div className="col-lg-10  p-r-0">
-                  <input
-                    className="input100"
-                    type="text"
-                    name="nombreInsumo"
-                    placeholder="Nombre del Insumo"
-                    onChange={handleChangeInfo}
-                    value={nombreInsumo}
-                  />
-
-                  <span className="focus-input100"></span>
-                  <span className="symbol-input100">
-                    <span className="lnr lnr-leaf m-l-5"></span>
-                  </span>
-                </div>
-                <div className="col-lg-2 p-l-0 p-r-0">
-                  <button>
-                    <span className="focus-input100"></span>
-                    <span className="symbol-input200">
-                      <span className="lnr lnr-plus-circle"></span>
-                    </span>
-                  </button>
-                </div>
-              </div>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <input
-                  className="input100"
-                  type="number"
-                  name="cantidadInsumo"
-                  placeholder="Cantidad"
-                  onChange={handleChangeInfo}
-                  value={cantidadInsumo}
-                />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-list"></span>
-                </span>
-              </div>
-
               <div
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Password is required"
@@ -384,6 +330,56 @@ const FormRequest = () => {
                 <span className="symbol-input100">
                   <span className="lnr lnr-user"></span>
                 </span>
+              </div>
+            </div>
+
+            <div className="row m-l-16">
+              <div className="col-lg-5 p-r-0">
+                <div
+                  className="wrap-input100 validate-input m-b-16 row"
+                  data-validate="Valid email is required: ex@abc.xyz"
+                >
+                  <input
+                    className="input100 p-r-0"
+                    type="text"
+                    name="nombreInsumo"
+                    placeholder="Nombre del Insumo"
+                    onChange={handleChangeInfo}
+                    value={nombreInsumo}
+                  />
+
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-leaf m-l-5 p-l-3"></span>
+                  </span>
+                </div>
+              </div>
+              <div className="col-lg-5 p-r-0">
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Password is required"
+                >
+                  <input
+                    className="input100"
+                    type="number"
+                    name="cantidadInsumo"
+                    placeholder="Cantidad"
+                    onChange={handleChangeInfo}
+                    value={cantidadInsumo}
+                  />
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-list"></span>
+                  </span>
+                </div>
+              </div>
+              <div className="col-lg-2 p-r-0 p-l-0">
+                <button>
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input200">
+                    <span className="lnr lnr-plus-circle"></span>
+                  </span>
+                </button>
               </div>
             </div>
 

@@ -343,7 +343,6 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS] (
   idProducts INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   description VARCHAR(45) NULL,
-  unit_price FLOAT NOT NULL,
   idSarTypes INT NOT NULL,
   PRIMARY KEY (idProducts),
   CONSTRAINT fk_TBL_PRODUCTS_TBL_SAR_TYPES1
@@ -353,6 +352,32 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS] (
    )
 ;
 
+CREATE TABLE [pyflor].[dbo].[TBL_PRICES] (
+  idPrices INT NOT NULL IDENTITY(1,1),
+  unit_price FLOAT NOT NULL,
+  PRIMARY KEY (idPrices),
+  )
+;
+
+CREATE TABLE [pyflor].[dbo].[TBL_PRODUCT_HAS_PRICES](
+  idProduct INT NOT NULL,
+  idPrice INT NOT NULL,
+  idCompanyType INT NOT NULL,
+  CONSTRAINT fk_TBL_PRODUCTS_PRICES
+    FOREIGN KEY (idProduct)
+    REFERENCES TBL_PRODUCTS (idProducts)
+    ,
+  CONSTRAINT fk_TBL_PRICES_1
+    FOREIGN KEY (idPrice)
+    REFERENCES TBL_PRICES (idPrices)
+    ,
+  CONSTRAINT fk_TBL_COMPANY_PRICE
+    FOREIGN KEY (idCompanyType)
+    REFERENCES TBL_COMPANY_TYPE (idCompanyType)
+
+
+)
+;
 
 -- -----------------------------------------------------
 -- Table [pyflor].[dbo].[TBL_REFFERALS]
