@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import FormRequest from "./components/FormRequest";
-import FooterLog from "../../components/Layout/FooterLog";
 import SideNavbar from "../../components/Layout/SideNavbar";
 import { MdHome, MdShoppingBasket, MdExitToApp } from "react-icons/md";
 import "./style/Request.css";
