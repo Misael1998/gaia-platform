@@ -2,7 +2,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Router } from 'react-router-dom'
-import Routes from './modules/Routes';
+import Routes from './modules/Routes'
 import history from './services/history'
 
 
