@@ -1,6 +1,6 @@
     import React, { useState } from 'react';
-import ImgList from './imgList';
-import Title from '../../Main/components/Title'
+import ImgList from './ImgList';
+import Title from './Title'
 import {MdCardGiftcard} from 'react-icons/md' 
 
 
