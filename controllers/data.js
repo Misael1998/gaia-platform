@@ -33,8 +33,8 @@ exports.sectors = async (req, res, next) => {
 
 exports.supplies = async (req,res)=>{
   try {
-    const request = await new mssql.Request().query("SELECT * FROM TBL_SUPPLIES");
-    const data = request.recordset;
+    const query = await new mssql.Request().query("SELECT * FROM F_SUPPLIES()");
+    const data = query.recordset;
 
     if(data.length == 0){
       return res.status(200).json({
@@ -50,6 +50,7 @@ exports.supplies = async (req,res)=>{
       });
     }
   } catch (e) {
+    console.log(e);
     res.status(500).json({
       success: false,
       msg: "Server error"
