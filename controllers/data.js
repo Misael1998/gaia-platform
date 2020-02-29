@@ -30,3 +30,36 @@ exports.sectors = async (req, res, next) => {
     });
   }
 };
+
+//@desc     get the inventory of supplies
+//@route    GET     /api/data/inventory
+//@access   Private
+exports.inventory = async (req,res,next) => {
+  try {
+    const query = await new mssql.Request()
+    .query("select * from F_Get_Supplies_Inventory() ");
+
+    const data = query.recordset;
+
+    if (data.length === 0) {
+      return res.status(500).json({
+        success: false,
+        msg: "Inventory empty"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      msg: "inventory data",
+      data: data
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      msg: "sever error"
+    });
+  }
+};
+
+
