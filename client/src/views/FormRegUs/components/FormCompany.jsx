@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import shortid from "shortid";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
@@ -31,6 +30,8 @@ const FormCompany = ({ history }) => {
 
   //State para el error:
   const [error, handleError] = useState(false);
+  //state del error de rtn
+  const [errorRTN, hanldeErrorRTN] = useState(false);
 
   //State para validacion del correo:
   const [errorEmail, handleErrorEmail] = useState(false);
@@ -70,7 +71,7 @@ const FormCompany = ({ history }) => {
         address.trim() !== "" &&
         companyName.trim() !== "" &&
         contactName.trim() !== "" &&
-        rtn.trim() !== "") ||
+        rtn!== "") ||
       (rtn.length < 14 &&
         contactNumber.trim() !== "" &&
         businessName.trim() !== "")
@@ -127,15 +128,21 @@ const FormCompany = ({ history }) => {
       companyType.trim() === "" ||
       sector.trim() === "" ||
       rtn.trim() === "" ||
-      rtn.length < 14 ||
+      rtn.trim() ==="" ||
       contactNumber.trim() === "" ||
       businessName.trim() === ""
     ) {
       handleError(true);
       return;
+    }else{
+      if(rtn.length<14){
+        hanldeErrorRTN(true)
+        return;
+      }
     }
 
     handleError(false);
+    hanldeErrorRTN(false);
 
     //Peticion a endpoint de user
     registerCompanyUser(
@@ -313,7 +320,7 @@ const FormCompany = ({ history }) => {
                   value={sector}
                 >
                   {sectors.map(sector => (
-                    <option value={sector.id}>{sector.sector}</option>
+                    <option key={sector.id} value={sector.id}>{sector.sector}</option>
                   ))}
                 </select>
 
@@ -366,6 +373,12 @@ const FormCompany = ({ history }) => {
                 </span>
               </div>
 
+              {errorRTN ? (
+                <p className="alert alert-danger error-p text-white">
+                  El RTN debe tener 14 caractéres
+                </p>
+              ) : null}
+
               <div
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Password is required"
@@ -403,6 +416,7 @@ const FormCompany = ({ history }) => {
               </div>
 
               {error ? (
+                 
                 <p className="alert alert-danger error-p text-white">
                   Todos los campos son obligatorios!!!
                 </p>

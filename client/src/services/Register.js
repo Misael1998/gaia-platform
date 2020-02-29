@@ -86,6 +86,7 @@ export const registerCompanyUser = async (
   } catch (error) {
     let errorObj;
     const { response } = error;
+    console.log(response);
     if (response.status === 400) {
       errorObj = {
         title: 'Usuario no registrado',
