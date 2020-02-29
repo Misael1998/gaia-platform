@@ -3,8 +3,8 @@ import React from "react";
 const InventoryTable = () => {
   return (
     <div className="">
-      <table className="table table-bordered table-dark">
-        <thead>
+      <table className="table table-bordered table-striped">
+        <thead className="primary-color text-white">
           <tr>
             <th scope="col">N° de Orden</th>
             <th scope="col">Nombre Insumo</th>
@@ -15,8 +15,8 @@ const InventoryTable = () => {
             <th scope="col">Empleado que Recibio</th>
           </tr>
         </thead>
-        <tbody>
-          <tr className="bg-primary">
+        <tbody className="">
+          <tr className="">
             <th scope="row">1</th>
             <td>Vodka</td>
             <td>900</td>
@@ -26,7 +26,7 @@ const InventoryTable = () => {
             <td>Rony</td>
           </tr>
 
-          <tr className="bg-success">
+          <tr className="">
             <th scope="row">2</th>
             <td>Miller Draft</td>
             <td>30</td>

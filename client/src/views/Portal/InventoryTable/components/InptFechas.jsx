@@ -43,7 +43,7 @@ const InptFechas = () => {
           >
             <label>Fecha Inicio</label>
             <input
-              className="input100"
+              className="input300"
               type="date"
               name="fechaInicio"
               onChange={handleChangeInfo}
@@ -61,7 +61,7 @@ const InptFechas = () => {
           >
             <label>Fecha Fin</label>
             <input
-              className="input100"
+              className="input300"
               type="date"
               name="fechaFin"
               onChange={handleChangeInfo}
@@ -75,7 +75,7 @@ const InptFechas = () => {
         </div>
         <div className="col-lg-6">
           <div className="container-login100-form-btn">
-            <button type="submit" className="login100-form-btn mt-6">
+            <button type="submit" className="login100-form-btn2 mt-6">
               Buscar
             </button>
           </div>

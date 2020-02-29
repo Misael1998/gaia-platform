@@ -2,6 +2,8 @@ import React, { Fragment, useState } from "react";
 import OptFilter from "./components/OptFilter";
 import InventoryTable from "./components/InventoryTable";
 import FilterForm from "./components/FilterForm";
+import Title from "../../../components/Title";
+import { FaTable } from "react-icons/fa";
 
 const Inventory = () => {
   //Opcion de filtro:
@@ -22,9 +24,14 @@ const Inventory = () => {
 
   return (
     <Fragment>
-      <OptFilter takeFilter={takeFilter} />
-      {show ? <FilterForm option={option} /> : null}
-      <InventoryTable />
+      <div className="row p-5">
+        <Title icon={<FaTable size={40} />} title="Inventario" />
+        <div className="col-12">
+          <OptFilter takeFilter={takeFilter} />
+          {show ? <FilterForm option={option} /> : null}
+          <InventoryTable />
+        </div>
+      </div>
     </Fragment>
   );
 };

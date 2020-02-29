@@ -44,9 +44,6 @@ const OptFilter = ({ takeFilter }) => {
       <div className="container-loginFilter">
         <div className="wrap-filter">
           <form className="login100-form validate-form" onSubmit={submitFilter}>
-            <span className="login100-form-title p-b-25 text-left">
-              Filtrar en la Tabla de Inventario
-            </span>
             <div className="row r-filter">
               <div className="col-lg-6">
                 <div
@@ -54,7 +51,7 @@ const OptFilter = ({ takeFilter }) => {
                   data-validate="Password is required"
                 >
                   <select
-                    className="input100"
+                    className="input300"
                     type="number"
                     name="filter"
                     onChange={handleSelect}
@@ -76,7 +73,7 @@ const OptFilter = ({ takeFilter }) => {
 
               <div className="col-lg-6">
                 <div className="container-login100-form-btn">
-                  <button type="submit" className="login100-form-btn">
+                  <button type="submit" className="login100-form-btn2">
                     Filtrar
                   </button>
                 </div>

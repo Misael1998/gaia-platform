@@ -41,7 +41,7 @@ const InptInsumo = ({ takeSearch }) => {
             data-validate="Valid email is required: ex@abc.xyz"
           >
             <input
-              className="input100"
+              className="input300"
               type="text"
               name="insumo"
               placeholder="Nombre Insumo"
@@ -56,7 +56,7 @@ const InptInsumo = ({ takeSearch }) => {
         </div>
         <div className="col-lg-6">
           <div className="container-login100-form-btn">
-            <button type="submit" className="login100-form-btn">
+            <button type="submit" className="login100-form-btn2">
               Buscar
             </button>
           </div>
