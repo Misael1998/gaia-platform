@@ -1,27 +1,32 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom'
 import SessionStorageService from '../../services/Storage';
+import ProductDetail from './ProductDetail'
+import Route from '../../modules/Route'
+import items from '../../constants/mainNavigation'
+import SideNavbar from '../../components/Layout/SideNavbar';
+import Cart from './Cart';
 
-import logo from '../../assets/img/logo.png'
 
-const Main = () => {
+const Main = ({ match }) => {
+
 
     const token = SessionStorageService.getToken();
 
     return (
-
-        <div className='row w-100 h-100 primary-color '>
-            {token === null ? <Redirect exact from='/app' to='/' /> : null}
-            <div className='col-12 text-center m-t-100 m-b-200 p-t-100 p-b-100 text-white  '>
-                <div className='logo w-25 ml-auto mr-auto'>
-                    <img src={logo} alt='logo' className='img-fluid  p-4' />
-                </div>
-
-                <h2>Sitio en construccion</h2>
-                <h4>Estamos trabajando para darte la mejor experiencia</h4>
+        <div className='row'>
+            <div className='col-2'>
+                <SideNavbar items={items} />
             </div>
-        </div>
+            <div className='col-10'>
 
+                <Route exact path={`${match.path}/product/:id`} component={ProductDetail} />
+                <Route path={`${match.path}/orders`} />
+                <Route path={`${match.path}/profile`} />
+                <Route path={`${match.path}/cart`} component={Cart}/>
+                <Route path={`${match.path}/products`} />
+            </div>
+
+        </div>
     );
 };
 
