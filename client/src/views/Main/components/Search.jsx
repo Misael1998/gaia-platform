@@ -3,10 +3,6 @@ import ImgList from './ImgList';
 
 const Search = () => {
 
-
-
-
-
     const [term, saveTerm] = useState({ nombreProd: "" });
 
     //funcion que se ejecuta cuando se escriba en el input
@@ -59,6 +55,7 @@ const Search = () => {
 
                             <input
                                 type="text"
+                                name='nombreProd'
                                 className="form-control form-control-lg"
                                 placeholder="Busca un producto"
                                 onChange={handleSaveTerm}
