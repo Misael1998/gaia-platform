@@ -37,7 +37,7 @@ exports.sectors = async (req, res, next) => {
 exports.inventory = async (req,res,next) => {
   try {
     const query = await new mssql.Request()
-    .query("select * from F_Get_Supplies_Inventory() ");
+    .query("select No_Orden,Supplie_Name,unit_price,quantity,emission_date,Receiver_Employee from f_get_supplies_inventory()");
 
     const data = query.recordset;
 

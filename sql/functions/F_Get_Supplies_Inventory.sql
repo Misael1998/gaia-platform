@@ -14,4 +14,3 @@ RETURN
         INNER JOIN TBL_USERS us ON us.idUser=em.idUser
 );  
 
-select * from F_Get_Supplies_Inventory()
