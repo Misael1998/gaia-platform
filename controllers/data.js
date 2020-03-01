@@ -31,6 +31,35 @@ exports.sectors = async(req, res, next) => {
     }
 };
 
+//@desc     get all supplies
+//@route    GET     /api/data/products
+//@access   Private
+exports.supplies = async (req,res)=>{
+  try {
+    const query = await new mssql.Request().query("SELECT * FROM F_SUPPLIES()");
+    const data = query.recordset;
+
+    if(data.length == 0){
+      return res.status(200).json({
+        success: true,
+        msg: "There are no supplies",
+        data
+      })
+    }else{
+      return res.status(200).json({
+        success: true,
+        msg: "supplies data",
+        data
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      msg: "Server error"
+    });
+  }
+}
 
 //@desc     database all products
 //@route    GET     /api/data/products
