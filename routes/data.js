@@ -5,9 +5,11 @@ const router = express.Router();
 
 const isLogged = require('../middleware/data');
 
-const { sectors,supplies } = require("../controllers/data");
+const { sectors,supplies,individualProduct,products } = require("../controllers/data");
 
 router.route("/supplies").get(isLogged,supplies);
 router.route("/sectors").get(sectors);
+router.route("/products").get(products);
+router.route("/products/:id").get(individualProduct);
 
 module.exports = router;

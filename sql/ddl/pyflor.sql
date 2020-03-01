@@ -262,12 +262,10 @@ CREATE TABLE [pyflor].[dbo].[TBL_PAYMENT_METHODS] (
 CREATE TABLE [pyflor].[dbo].[TBL_ORDERS] (
   idOrders INT NOT NULL IDENTITY(1,1),
   emission_date DATETIME NOT NULL,
-  payment_method VARCHAR(45) NOT NULL,
   expired_date DATETIME NOT NULL,
   total INT NOT NULL,
   value VARCHAR(45) NOT NULL,
   isv VARCHAR(45) NOT NULL,
-  provider VARCHAR(45) NOT NULL,
   idEmployees INT NOT NULL,
   idProviders INT NOT NULL,
   idSarTypes INT NOT NULL,
@@ -324,7 +322,6 @@ CREATE TABLE [pyflor].[dbo].[TBL_SUPPLIES] (
   name VARCHAR(45) NOT NULL,
   type VARCHAR(45) NOT NULL,
   unit_price VARCHAR(45) NOT NULL,
-  SAR_type VARCHAR(1) NOT NULL,
   TBL_SAR_TYPES_idSarTypes INT NOT NULL,
   PRIMARY KEY (idSupplies),
   CONSTRAINT fk_TBL_SUPPLIES_TBL_SAR_TYPES1
@@ -342,6 +339,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_SUPPLIES] (
 CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS] (
   idProducts INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
+  productImage IMAGE NOT NULL,
   description VARCHAR(45) NULL,
   idSarTypes INT NOT NULL,
   PRIMARY KEY (idProducts),
@@ -420,7 +418,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_INVENTORY] (
 
 CREATE TABLE [pyflor].[dbo].[TBL_BILLS] (
   idBills INT NOT NULL IDENTITY(1,1),
-  emission_date VARCHAR(45) NOT NULL,
+  emission_date DATE NOT NULL,
   idOrders INT NULL,
   idRequests INT NULL,
   num_bill VARCHAR(100) NOT NULL UNIQUE,
@@ -446,7 +444,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_BILLS] (
 CREATE TABLE [pyflor].[dbo].[TBL_ORDER_DETAILS] (
   idSupplies INT NOT NULL,
   idOrders INT NOT NULL,
-  quantity VARCHAR(45) NOT NULL,
+  quantity INT NOT NULL,
   unit VARCHAR(45) NOT NULL,
   PRIMARY KEY (idSupplies, idOrders),
   CONSTRAINT fk_TBL_SUPPLIES_has_TBL_ORDERS_TBL_SUPPLIES1
