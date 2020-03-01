@@ -15,6 +15,7 @@ function App() {
     <Router history={history}>
       <Provider store={store}>
         <div className="container-fluid p-0">
+
           <Routes />
         </div>
       </Provider>
