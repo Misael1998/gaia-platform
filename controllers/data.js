@@ -98,3 +98,40 @@ exports.individualProduct = async(req, res) => {
 
     }
 }
+
+//@desc     database all employees
+//@route    GET     /api/data/employees
+//@access   Private
+exports.employees = async(req, res) => {
+    try {
+        const query = await new mssql.Request().query(
+            'SELECT e.idEmployees, u.name userName,  u.lastname, j.name jobTitle,' +
+            'd.name departmentName, e.admission_date, u.email, u.phone, u.address ' +
+            'FROM TBL_EMPLOYEES e ' +
+            'INNER JOIN TBL_USERS u ON e.idUser = u.idUser ' +
+            'INNER JOIN TBL_JOB_TITLES j ON e.idJobTitle = j.idJobTitle ' +
+            'INNER JOIN TBL_DEPARTMENTS d ON e.idDepartments = d.idDepartments ' +
+            'ORDER BY u.name asc'
+        )
+        const data = query.recordset;
+        if (data.length == 0) {
+            return res.status(200).json({
+                success: true,
+                msg: "There are no employees",
+                data
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            msg: "employees data",
+            data
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            success: false,
+            msg: "server error"
+        })
+
+    }
+}
