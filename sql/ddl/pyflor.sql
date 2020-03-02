@@ -339,7 +339,12 @@ CREATE TABLE [pyflor].[dbo].[TBL_SUPPLIES] (
 CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS] (
   idProducts INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
+<<<<<<< HEAD
   description VARCHAR(200) NULL,
+=======
+  productImage IMAGE NOT NULL,
+  description VARCHAR(45) NULL,
+>>>>>>> 200ddbbe0f57384e22e9fe62c15af96504155c92
   idSarTypes INT NOT NULL,
   PRIMARY KEY (idProducts),
   CONSTRAINT fk_TBL_PRODUCTS_TBL_SAR_TYPES1

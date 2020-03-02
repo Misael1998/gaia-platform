@@ -5,6 +5,8 @@ import Route from '../../modules/Route'
 import items from '../../constants/mainNavigation'
 import SideNavbar from '../../components/Layout/SideNavbar';
 import Cart from './Cart';
+import Products from './Products'
+
 
 
 const Main = ({ match }) => {
@@ -23,7 +25,7 @@ const Main = ({ match }) => {
                 <Route path={`${match.path}/orders`} />
                 <Route path={`${match.path}/profile`} />
                 <Route path={`${match.path}/cart`} component={Cart}/>
-                <Route path={`${match.path}/products`} />
+                <Route path={`${match.path}/products`} component={Products} />
             </div>
 
         </div>
