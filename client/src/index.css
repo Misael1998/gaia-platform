@@ -2,7 +2,7 @@ body {
   font-family: Roboto, sans-serif;
 }
 .primary-color {
-  background-color: #27ae60!important;
+  background-color: #27ae60 !important;
 }
 
 .secondary-color {
@@ -33,4 +33,12 @@ body {
   z-index: 2;
 }
 
-
+.app-header-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.2rem;
+  height: 4.2rem;
+  border-radius: 50%;
+  padding: 0.8rem;
+}

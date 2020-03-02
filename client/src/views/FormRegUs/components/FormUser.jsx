@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import shortid from "shortid";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
