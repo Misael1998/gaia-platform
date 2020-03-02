@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import ImgList from './ImgList';
 
+
 const Search = () => {
 
-    const [term, saveTerm] = useState({ nombreProd: "" });
+
+
+
+
+
+    const [term, saveTerm] = useState({ nombreProd: "", category: "" });
+
+
+    //extrayendo los valores con el desctructuring
+    const {nombreProd, category} = term;
 
     //funcion que se ejecuta cuando se escriba en el input
     const handleSaveTerm = e => {
@@ -16,7 +26,7 @@ const Search = () => {
     //state para el error
     const [error, handleError] = useState(false);
 
-    const { nombreProd } = term;
+    
 
 
     const submitProduct = e => {
@@ -45,7 +55,8 @@ const Search = () => {
 
                             <div className="form-group">
 
-                                <select className="form-control form-control-lg" id="sel1">
+                                <select className="form-control form-control-lg" id="sel1" 
+                                onChange={handleSaveTerm}  name="category">
                                     <option>Verduras</option>
                                     <option>Plantas</option>
                                     <option>Hierbas</option>
