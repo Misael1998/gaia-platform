@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Search from "./components/Search";
 import { MdCardGiftcard } from "react-icons/md"
 import Title from '../../components/Title';

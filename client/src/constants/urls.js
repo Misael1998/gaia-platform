@@ -10,3 +10,4 @@ export const URL_GET_PRODUCTS = "/api/data/products";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = (token) => `/api/auth/resetpassword/${token}`
+export const URL_GET_PRODUCT_BY_ID = (id) => `/api/data/products/${id}`

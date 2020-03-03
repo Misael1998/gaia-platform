@@ -185,7 +185,7 @@ exports.individualProduct = async (req, res) => {
                 'category, ' +
                 'sarType, ' +
                 'companyType, ' +
-                'unit_price' +
+                'unit_price ' +
                 'FROM [dbo].[FT_GET_SINGLE_PRODUCT_DATA](@id);'
             )
         const data = query.recordset;

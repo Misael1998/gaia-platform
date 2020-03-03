@@ -68,7 +68,6 @@ const Search = () => {
     useEffect(() => {
       getProducts()
         .then(res => {
-            console.log(res);
           handleProducts(res);
           handleFilter(res);
           setLoading(false);
