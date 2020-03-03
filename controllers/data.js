@@ -133,16 +133,18 @@ exports.sar_type = async (req, res, next) => {
 exports.providers = async (req, res, next) => {
   try {
     const request = await new mssql.Request().query(
-      "select idProviders id, name providers from tbl_providers"
+      "select * from FT_PROVIDERS()"
     );
 
     const data = request.recordset;
 
     if (data.length === 0) {
-      return res.status(500).json({
-        success: false,
-        msg: "sever error"
-      });
+      return errorResponse(
+        404,
+        "No data",
+        [{ msg: "Cant find any data" }],
+        res
+      );
     }
 
     return res.status(200).json({
@@ -151,11 +153,48 @@ exports.providers = async (req, res, next) => {
       data: data
     });
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
     return res.status(500).json({
       success: false,
       msg: "sever error"
     });
+  }
+};
+
+//@desc     get provider by id
+//@route    GET     /api/data/providers/:id
+//@access   Private
+exports.getProvider = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const request = await new mssql.Request()
+      .input("id", mssql.Int, id)
+      .query("select * from FT_GET_PROVIDER(@id)");
+
+    const data = request.recordset;
+
+    if (data.length === 0) {
+      return errorResponse(
+        404,
+        "No data",
+        [{ msg: "Cant find any data" }],
+        res
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      msg: "sectors data",
+      data: data
+    });
+  } catch (err) {
+    console.log(err.message);
+    return errorResponse(
+      500,
+      "sever error",
+      [{ msg: "internal server error" }],
+      res
+    );
   }
 };
 
