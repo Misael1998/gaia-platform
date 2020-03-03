@@ -38,9 +38,11 @@ exports.sectors = async(req, res, next) => {
 exports.products = async(req, res) => {
     //console.log(req.url);
     try {
-        const query = await new mssql.Request().query(
-            "SELECT * FROM TBL_PRODUCTS"
-        )
+        const query = await new mssql.Request()
+            .query(
+                'SELECT idProducts, productName, productImage, productDescription, sarType, companyType, unit_price' +
+                'FROM [dbo].[FT_GET_ALL_PRODUCTS_DATA]();'
+            )
         const data = query.recordset;
         if (data.length == 0) {
             return res.status(200).json({
@@ -74,7 +76,10 @@ exports.individualProduct = async(req, res) => {
     try {
         const query = await new mssql.Request()
             .input('id', mssql.Int, idProduct)
-            .query("SELECT * FROM TBL_PRODUCTS WHERE @id = idProducts")
+            .query(
+                'SELECT idProducts, productName, productImage, productDescription, sarType, companyType, unit_price' +
+                'FROM [dbo].[FT_GET_SINGLE_PRODUCT_DATA](@id);'
+            )
         const data = query.recordset;
         if (data.length == 0) {
 
