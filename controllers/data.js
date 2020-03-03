@@ -15,7 +15,7 @@ exports.sectors = async (req, res, next) => {
     if (data.length === 0) {
       return res.status(500).json({
         success: false,
-        msg: "sever error"
+        msg: "server error"
       });
     }
 
@@ -28,7 +28,7 @@ exports.sectors = async (req, res, next) => {
     console.log(err);
     return res.status(500).json({
       success: false,
-      msg: "sever error"
+      msg: "server error"
     });
   }
 };
@@ -234,20 +234,68 @@ exports.individualProduct = async (req, res) => {
   /*res.send(`id: ${req.params.id}`)*/
   const idProduct = req.params.id;
   try {
-    const query = await new mssql.Request()
-      .input("id", mssql.Int, idProduct)
-      .query("SELECT * FROM TBL_PRODUCTS WHERE @id = idProducts");
+    const query = await new mssql.Request().query(
+      "SELECT idEmployees, " +
+        "userName, " +
+        "lastname, " +
+        "jobTitle, " +
+        "departmentName, " +
+        "admission_date, " +
+        "email, " +
+        "phone, " +
+        "address" +
+        "FROM [dbo].[FT_GET_EMPLOYEES_DATA]();"
+    );
     const data = query.recordset;
     if (data.length == 0) {
       return res.status(200).json({
         success: true,
-        msg: "There is no product with this id",
+        msg: "No data",
         data
       });
     }
     return res.status(200).json({
       success: true,
-      msg: "product data",
+      msg: "employees data",
+      data
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      success: false,
+      msg: "server error"
+    });
+  }
+};
+
+//@desc     database all employees
+//@route    GET     /api/data/employees
+//@access   Private
+exports.employees = async (req, res) => {
+  try {
+    const query = await new mssql.Request().query(
+      "SELECT idEmployees, " +
+        "userName, " +
+        "lastname, " +
+        "jobTitle, " +
+        "departmentName, " +
+        "admission_date, " +
+        "email, " +
+        "phone, " +
+        "address" +
+        "FROM [dbo].[FT_GET_EMPLOYEES_DATA]();"
+    );
+    const data = query.recordset;
+    if (data.length == 0) {
+      return res.status(200).json({
+        success: true,
+        msg: "No data",
+        data
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      msg: "employees data",
       data
     });
   } catch (error) {

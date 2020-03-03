@@ -12,7 +12,8 @@ const {
   providers,
   getProvider,
   sar_type,
-  inventory
+  inventory,
+  employees
 } = require("../controllers/data");
 
 router.route("/supplies").get(isLogged, supplies);
@@ -22,6 +23,7 @@ router.route("/providers/:id").get(auth, getProvider);
 router.route("/sar_type").get(sar_type);
 router.route("/inventory").get(inventory);
 router.route("/products").get(products);
+router.route("/employees").get(employees);
 router.route("/products/:id").get(individualProduct);
 
 module.exports = router;
