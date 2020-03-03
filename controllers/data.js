@@ -13,7 +13,7 @@ exports.sectors = async(req, res, next) => {
         if (data.length === 0) {
             return res.status(500).json({
                 success: false,
-                msg: "sever error"
+                msg: "server error"
             });
         }
 
@@ -26,7 +26,7 @@ exports.sectors = async(req, res, next) => {
         console.log(err);
         return res.status(500).json({
             success: false,
-            msg: "sever error"
+            msg: "server error"
         });
     }
 };
@@ -40,14 +40,20 @@ exports.products = async(req, res) => {
     try {
         const query = await new mssql.Request()
             .query(
-                'SELECT idProducts, productName, productImage, productDescription, sarType, companyType, unit_price' +
+                'SELECT idProducts, ' +
+                'productName, ' +
+                'productImage, ' +
+                'productDescription, ' +
+                'sarType, ' +
+                'companyType, ' +
+                'unit_price' +
                 'FROM [dbo].[FT_GET_ALL_PRODUCTS_DATA]();'
             )
         const data = query.recordset;
         if (data.length == 0) {
             return res.status(200).json({
                 success: true,
-                msg: "There are no products",
+                msg: "No data",
                 data
             })
         }
@@ -77,7 +83,13 @@ exports.individualProduct = async(req, res) => {
         const query = await new mssql.Request()
             .input('id', mssql.Int, idProduct)
             .query(
-                'SELECT idProducts, productName, productImage, productDescription, sarType, companyType, unit_price' +
+                'SELECT idProducts, ' +
+                'productName, ' +
+                'productImage, ' +
+                'productDescription, ' +
+                'sarType, ' +
+                'companyType, ' +
+                'unit_price' +
                 'FROM [dbo].[FT_GET_SINGLE_PRODUCT_DATA](@id);'
             )
         const data = query.recordset;
@@ -85,7 +97,7 @@ exports.individualProduct = async(req, res) => {
 
             return res.status(200).json({
                 success: true,
-                msg: "There is no product with this id",
+                msg: "No data ",
                 data
             })
         }
@@ -110,19 +122,22 @@ exports.individualProduct = async(req, res) => {
 exports.employees = async(req, res) => {
     try {
         const query = await new mssql.Request().query(
-            'SELECT e.idEmployees, u.name userName,  u.lastname, j.name jobTitle,' +
-            'd.name departmentName, e.admission_date, u.email, u.phone, u.address ' +
-            'FROM TBL_EMPLOYEES e ' +
-            'INNER JOIN TBL_USERS u ON e.idUser = u.idUser ' +
-            'INNER JOIN TBL_JOB_TITLES j ON e.idJobTitle = j.idJobTitle ' +
-            'INNER JOIN TBL_DEPARTMENTS d ON e.idDepartments = d.idDepartments ' +
-            'ORDER BY u.name asc'
+            'SELECT idEmployees, ' +
+            'userName, ' +
+            'lastname, ' +
+            'jobTitle, ' +
+            'departmentName, ' +
+            'admission_date, ' +
+            'email, ' +
+            'phone, ' +
+            'address' +
+            'FROM [dbo].[FT_GET_EMPLOYEES_DATA]();'
         )
         const data = query.recordset;
         if (data.length == 0) {
             return res.status(200).json({
                 success: true,
-                msg: "There are no employees",
+                msg: "No data",
                 data
             })
         }
