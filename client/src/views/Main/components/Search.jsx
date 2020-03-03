@@ -90,11 +90,13 @@ const Search = () => {
   //state para el error
   const [error, handleError] = useState(false);
 
+  
+
   const submitProduct = e => {
     e.preventDefault();
 
     //validacion
-    if (nombreProd.trim() === "") {
+    if (nombreProd.trim() === "" || category=== "") {
       handleError(true);
       return;
     }
