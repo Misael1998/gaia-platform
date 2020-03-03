@@ -126,5 +126,5 @@ DECLARE
         SET @id_user=@VNid_User;
         SET @CodeState=1;
     END;
-END; 
+END;
 GO
