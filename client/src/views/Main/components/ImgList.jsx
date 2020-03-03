@@ -1,17 +1,10 @@
 import React from 'react'
 import Image from './Image';
 
-const ImgList = ({images}) => {
+const ImgList = ({products}) => {
     return ( 
         <div className="col-12 p-5 row">
-            <Image />
-            <Image />
-            <Image />
-            <Image />
-            <Image />
-            <Image />
-            <Image />
-            <Image /> 
+            {products.map(product => <Image key={product.id} product={product}/> )}
             
         </div>
      );
