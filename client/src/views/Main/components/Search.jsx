@@ -158,7 +158,10 @@ const Search = () => {
             </div>
 
             <div className="row justify-content-center">
+            {
+              filter.length === 0 ? <h2 className='text-center mt-4 '>Todavia no hay productos para la venta, espera un poco mas...</h2>: 
               <ImgList products={filter} />
+            }
             </div>
           </form>
         </div>
