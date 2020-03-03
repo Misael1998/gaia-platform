@@ -10,7 +10,7 @@ export const getProducts = async () => {
         const response = await axios.get(URL_GET_PRODUCTS);
         if (response.status === 200) {
             console.log(response);
-          return response;
+          return response.data.data;
         } else {
           throw new Error(response);
         }
