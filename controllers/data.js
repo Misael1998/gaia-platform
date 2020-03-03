@@ -1,4 +1,6 @@
 const mssql = require("mssql");
+const errorResponse = require("../utils/errorResponse");
+
 //@desc     database public data
 //@route    GET     /api/data/sectors
 //@access   Public
