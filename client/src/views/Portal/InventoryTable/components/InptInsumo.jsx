@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const InptInsumo = ({ takeSearch }) => {
+const InptInsumo = ({ filterData }) => {
   //State para la busqueda:
   const [findIns, handleFindIns] = useState({
     insumo: ""
@@ -27,6 +27,8 @@ const InptInsumo = ({ takeSearch }) => {
       return;
     }
     handleError(false);
+
+    filterData(insumo);
   };
 
   return (

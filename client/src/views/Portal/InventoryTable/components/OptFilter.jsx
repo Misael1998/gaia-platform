@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const OptFilter = ({ takeFilter }) => {
+const OptFilter = ({ takeFilter, filterData }) => {
   //State para leer el select:
   const [infoSelec, handleInfoSelec] = useState({
     filter: ""
@@ -36,7 +36,7 @@ const OptFilter = ({ takeFilter }) => {
     //Pasando el filtro:
     takeFilter(filter);
 
-    // console.log(filter);
+    filterData("0");
   };
 
   return (
