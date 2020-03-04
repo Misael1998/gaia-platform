@@ -8,7 +8,7 @@ const {
   products,
   providers,
   getProvider,
-  sar_type,
+  sartype,
   inventory,
   employees
 } = require("../controllers/data");
@@ -17,7 +17,7 @@ router.route("/supplies").get(auth, supplies);
 router.route("/sectors").get(sectors);
 router.route("/providers").get(auth, providers);
 router.route("/providers/:id").get(auth, getProvider);
-router.route("/sar_type").get(sar_type);
+router.route("/sartype").get(sartype);
 router.route("/inventory").get(inventory);
 router.route("/products").get(products);
 router.route("/employees").get(employees);

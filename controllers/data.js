@@ -75,15 +75,15 @@ exports.inventory = async (req, res, next) => {
     const data = query.recordset;
 
     if (data.length === 0) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
-        msg: "Inventory empty"
+        msg: "Not Found"
       });
     }
 
     return res.status(200).json({
       success: true,
-      msg: "inventory data",
+      msg: "Successful",
       data: data
     });
   } catch (err) {
@@ -96,26 +96,26 @@ exports.inventory = async (req, res, next) => {
 };
 
 //@desc     get all types of SAR
-//@route    GET     /api/data/sar_type
+//@route    GET     /api/data/sartype
 //@access   Private
-exports.sar_type = async (req, res, next) => {
+exports.sartype = async (req, res, next) => {
   try {
     const query = await new mssql.Request().query(
-      "select description from tbl_sar_types"
+      "select idSarTypes ,description from tbl_sar_types"
     );
 
     const data = query.recordset;
 
     if (data.length === 0) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
-        msg: "sar_type empty"
+        msg: "Not Found"
       });
     }
 
     return res.status(200).json({
       success: true,
-      msg: "sar_type data",
+      msg: "Successful",
       data: data
     });
   } catch (err) {
