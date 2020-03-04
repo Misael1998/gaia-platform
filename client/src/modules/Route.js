@@ -16,9 +16,9 @@ export default function RouteWrapper({
     if (!isPrivate && token) {
         const role = SessionStorageService.getItem('role');
         if (role === 'employee') {
-            return <Redirect to='/portal' />
+            return <Redirect to='/portal' path='/portal'/>
         } else {
-            return <Redirect to='/app' />
+            return <Redirect to='/app' path='/app'/>
         }
     }
 
