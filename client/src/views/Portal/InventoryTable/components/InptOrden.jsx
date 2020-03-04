@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const InptOrden = ({ takeSearch }) => {
+const InptOrden = ({ filterData }) => {
   //State para la busqueda:
   const [findOrder, handleFindOrder] = useState({
     numOrden: ""
@@ -27,6 +27,10 @@ const InptOrden = ({ takeSearch }) => {
       return;
     }
     handleError(false);
+
+    console.log("Desde InptOrden: ", numOrden);
+
+    filterData(numOrden);
   };
 
   return (
@@ -42,7 +46,7 @@ const InptOrden = ({ takeSearch }) => {
           >
             <input
               className="input300"
-              type="number"
+              type="text"
               name="numOrden"
               placeholder="N° de Orden"
               onChange={handleChangeInfo}

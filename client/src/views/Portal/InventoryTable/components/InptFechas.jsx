@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const InptFechas = () => {
+const InptFechas = ({ filterData }) => {
   //State para la busqueda:
   const [finDates, handleFinDates] = useState({
     fechaInicio: "",
@@ -28,6 +28,8 @@ const InptFechas = () => {
       return;
     }
     handleError(false);
+
+    filterData(finDates);
   };
 
   return (

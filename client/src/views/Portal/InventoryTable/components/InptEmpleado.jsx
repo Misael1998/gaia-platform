@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const InptEmpleado = ({ takeSearch }) => {
+const InptEmpleado = ({ filterData }) => {
   //State para la busqueda:
   const [findEmp, handleFindEmp] = useState({
     nombreEmpleado: ""
@@ -27,6 +27,10 @@ const InptEmpleado = ({ takeSearch }) => {
       return;
     }
     handleError(false);
+
+    console.log("Desde InptEmpleado: ", nombreEmpleado);
+
+    filterData(nombreEmpleado);
   };
 
   return (
