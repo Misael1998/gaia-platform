@@ -20,6 +20,8 @@ const Search = () => {
     const filterProducts = (term) => {
         let filterArray;
         let regex;
+        
+        
 
         let f=term.nombreProd+term.category;
 
@@ -29,30 +31,31 @@ const Search = () => {
         switch(f){
             case  term.nombreProd + "1" :
                 console.log(term.nombreProd, "categoría 1");
-                regex=new RegExp(term.nombreProd, "i")
+                regex=new RegExp(term.nombreProd, "i")  
                 filterArray=products.filter(item => {
-                    if (regex.test(item.name)) return item;
+                  if (regex.test(item.productName) &&  item.category==="verdura") return item;
                 })
             break;
             case term.nombreProd + "2":
                 console.log(term.nombreProd, "categoría 2");
                 regex=new RegExp(term.nombreProd, "i")
                 filterArray=products.filter(item => {
-                    if (regex.test(item.name)) return item;
+                  if (regex.test(item.productName) && item.category==="planta") return item;
                 })
             break;
             case term.nombreProd +"3":
                 console.log(term.nombreProd, "categoría 3");
                 regex=new RegExp(term.nombreProd, "i")
+                
                 filterArray=products.filter(item => {
-                    if (regex.test(item.name)) return item;
+                  if (regex.test(item.productName) && item.category==="hierba" ) return item;
                 })
             break;
             case term.nombreProd +"4":
                 console.log(term.nombreProd, "categoría 4");
                 regex=new RegExp(term.nombreProd, "i")
                 filterArray=products.filter(item => {
-                    if (regex.test(item.name)) return item;
+                    if (regex.test(item.productName) && item.category==="pilon") return item;
                 })
             break;
 
