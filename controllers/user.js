@@ -104,8 +104,8 @@ exports.registerIndividualClient = async (req, res, next) => {
     address,
     name,
     lastName,
-    id,
-    birthDate
+    register_id,
+    birth_date
   } = req.body;
 
   const errors = validationResult(req);
@@ -124,8 +124,8 @@ exports.registerIndividualClient = async (req, res, next) => {
       .input("address", mssql.NVarChar(150), address)
       .input("name", mssql.NVarChar(45), name)
       .input("lastName", mssql.NVarChar(45), lastName)
-      .input("birth_date", mssql.VarChar(45), birthDate)
-      .input("register_id", mssql.NVarChar(14), id)
+      .input("birth_date", mssql.VarChar(45), birth_date)
+      .input("register_id", mssql.NVarChar(14), register_id)
       .output("pcMsj", mssql.NVarChar(100))
       .output("id_user", mssql.Int)
       .output("CodeState", mssql.Int)
@@ -133,6 +133,7 @@ exports.registerIndividualClient = async (req, res, next) => {
 
     console.log(query);
     const { id_user, msjTemp } = query.output;
+    
     if (!id_user) {
       return res.status(400).json({
         success: false,
