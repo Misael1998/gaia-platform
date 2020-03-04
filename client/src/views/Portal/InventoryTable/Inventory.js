@@ -42,32 +42,26 @@ const Inventory = () => {
     } else {
       switch (option) {
         case "1":
-          console.log("Filtro de num orden: ", filtro);
           regex = new RegExp(filtro, "i");
           filterArray = regInventory.filter(item => {
             if (regex.test(item.Supplie_Name)) return item;
           });
-          console.log("El arreglo filtrado es: ", filterArray);
           break;
 
         case "2":
-          console.log("Filtro de num orden: ", filtro);
           let numConvert = parseInt(filtro);
           filterArray = regInventory.filter(item => {
             console.log(typeof item.No_Orden);
             console.log(typeof numConvert);
             if (item.No_Orden === numConvert) return item;
           });
-          console.log("El arreglo filtrado es: ", filterArray);
           break;
 
         case "3":
-          console.log("Filtro de num orden: ", filtro);
           regex = new RegExp(filtro, "i");
           filterArray = regInventory.filter(item => {
             if (regex.test(item.Receiver_Employee)) return item;
           });
-          console.log("El arreglo filtrado es: ", filterArray);
           break;
 
         case "4":
