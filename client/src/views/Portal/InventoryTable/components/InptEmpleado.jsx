@@ -28,8 +28,6 @@ const InptEmpleado = ({ filterData }) => {
     }
     handleError(false);
 
-    console.log("Desde InptEmpleado: ", nombreEmpleado);
-
     filterData(nombreEmpleado);
   };
 

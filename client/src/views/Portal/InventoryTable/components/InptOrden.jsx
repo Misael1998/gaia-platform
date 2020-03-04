@@ -28,8 +28,6 @@ const InptOrden = ({ filterData }) => {
     }
     handleError(false);
 
-    console.log("Desde InptOrden: ", numOrden);
-
     filterData(numOrden);
   };
 
