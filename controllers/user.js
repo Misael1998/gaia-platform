@@ -132,12 +132,11 @@ exports.registerIndividualClient = async (req, res, next) => {
       .execute("SP_ADD_USER_INDIVIDUAL");
 
     console.log(query);
-    const { id_user, msjTemp } = query.output;
-    
+    const { id_user, pcMsj } = query.output;
     if (!id_user) {
       return res.status(400).json({
         success: false,
-        msg: "Can't add user"
+        msg: pcMsj
       });
     }
 
