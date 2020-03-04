@@ -21,8 +21,7 @@ const Search = () => {
         let filterArray;
         let regex;
         
-        
-
+        //f trae el nombre del producto y le agrega la categoría
         let f=term.nombreProd+term.category;
 
 
@@ -48,7 +47,7 @@ const Search = () => {
                 regex=new RegExp(term.nombreProd, "i")
                 
                 filterArray=products.filter(item => {
-                  if (regex.test(item.productName) && item.category==="hierba" ) return item;
+                  if (regex.test(item.productName) && item.category==="hierba") return item;
                 })
             break;
             case term.nombreProd +"4":
@@ -129,9 +128,9 @@ const Search = () => {
                     value={category}
                   >
                     <option value="0" >Seleccione la categoría</option>
-                    <option value="1" >Verduras</option>
-                    <option value="2">Plantas</option>
-                    <option value="3">Hierbas</option>
+                    <option value="1" >Verdura</option>
+                    <option value="2">Planta</option>
+                    <option value="3">Hierba</option>
                     <option value="4">Pilones</option>
                   </select>
                 </div>
