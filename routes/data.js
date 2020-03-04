@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const isLogged = require("../middleware/data");
+const auth = require("../middleware/data");
 const {
   sectors,
   supplies,
@@ -13,7 +13,7 @@ const {
   employees
 } = require("../controllers/data");
 
-router.route("/supplies").get(isLogged, supplies);
+router.route("/supplies").get(auth, supplies);
 router.route("/sectors").get(sectors);
 router.route("/providers").get(auth, providers);
 router.route("/providers/:id").get(auth, getProvider);

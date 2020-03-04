@@ -5,6 +5,9 @@ import {
     MdExitToApp,
     MdAddShoppingCart
 } from "react-icons/md";
+import {
+    GoPackage
+}from 'react-icons/go'
 
 
 const items = [
@@ -27,6 +30,12 @@ const items = [
             }
         ],
         link: "/portal/purchases"
+    },
+    {
+        name: 'inventory',
+        label: 'Inventario',
+        icon:  <GoPackage size={30}/>,
+        link: '/portal/inventory'
     },
     { name: "exit", label: "Cerrar sesión", icon: <MdExitToApp size={30} /> }
 ];
