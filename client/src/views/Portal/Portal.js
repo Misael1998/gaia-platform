@@ -37,7 +37,7 @@ const Portal = ({ match }) => {
 
   return (
     <div className="row">
-      <div className="col-2 p-r-0 bg-gray">
+      <div className="col-2 p-r-0 bg-gray p-r-0 cl-container">
         <SideNavbar items={items} />
       </div>
       <div className="col-10 p-0">
