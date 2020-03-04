@@ -1,42 +1,128 @@
 const mssql = require('mssql');
-// const {validationResult} = require("express-validator");
-// const errorResponse = require("../utils/errorResponse");
+const {
+  validationResult
+} = require("express-validator");
+const errorResponse = require("../utils/errorResponse");
 
-exports.providerOrder = (req,res) =>{
+
+
+//@desc     insert order into DB
+//@route    post     /api/data/products
+//@access   Private
+exports.providerOrder = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
+  }
   const {
-    emission_date,
-    provider,
-    bill_num,
-    supply_name,
-    supply_measure,
-    amount,
-    unit_price,
-    payment_method,
-    expiration_date,
-    requester_employee,
-    reciever_employee,
-    sender_employee,
-    exempt_taxes
+    emissionDate,
+    expireDate,
+    idCreatedEmployee,
+    idProvider,
+    idSarType,
+    idPaymentMethod,
+    idSenderEmployee,
+    idReceiverEmployee,
+    idAddressEmployee,
+    numBill,
+    idSupply,
+    quantity,
+    unit
   } = req.body;
 
 
-  const data = {
-    emission_date,
-    provider,
-    bill_num,
-    supply_name,
-    supply_measure,
-    amount,
-    unit_price,
-    payment_method,
-    expiration_date,
-    requester_employee,
-    reciever_employee,
-    sender_employee,
-    exempt_taxes
-  };
+  try {
+
+    query = await new mssql.Request()
+      .input("emissionDate", mssql.Date, emissionDate)
+      .input("expiredDate", mssql.Date, expireDate)
+      .input("idCreatedEmployee", mssql.Int, idCreatedEmployee)
+      .input("idProviders", mssql.Int, idProvider)
+      .input("idSarType", mssql.Int, idSarType)
+      .input("idPaymentMethods", mssql.Int, idPaymentMethod)
+      .input("idSenderEmployee", mssql.Int, idSenderEmployee)
+      .input("idReceiverEmployee", mssql.Int, idReceiverEmployee)
+      .input("idAddressEmployee", mssql.Int, idAddressEmployee)
+      .input("numBill", mssql.VarChar(100), numBill)
+      .input("idSupplie", mssql.Int, idSupply)
+      .input("quantity", mssql.VarChar(45), quantity)
+      .input("unit", mssql.VarChar(45), unit)
+      .output("pcMsj", mssql.VarChar(100))
+      .output("CodeState", mssql.Int)
+      .output("employeeName", mssql.VarChar(45))
+      .output("providersName", mssql.VarChar(45))
+      .output("sarDescription", mssql.VarChar(45))
+      .output("paymentMethodName", mssql.VarChar(45))
+      .output("supplyName", mssql.VarChar(45))
+      .output("senderName", mssql.VarChar(45))
+      .output("receiverName", mssql.VarChar(45))
+      .output("addressName", mssql.VarChar(45))
+      .output("idOrder",mssql.Int)
+      .output("total",mssql.Float)
+      .output("isv",mssql.Float)
+      .output("value",mssql.Float)
+      .execute("SP_ADD_ORDER");
+
+    const { 
+      CodeState,
+      pcMsj,
+      employeeName,
+      providersName,
+      sarDescription,
+      paymentMethodName,
+      supplyName,
+      senderName,
+      receiverName,
+      addressName,
+      idOrder,
+      total,
+      isv,
+      value
+    } = query.output;
 
 
+    const data = {
+      success:true,
+      msg:pcMsj,
+      idOrder,
+      emissionDate,
+      expireDate,
+      total,
+      value,
+      isv,
+      employeeName,
+      providersName,
+      sarDescription,
+      paymentMethodName,
+      supplyName,
+      senderName,
+      receiverName,
+      addressName
+    }
 
-  res.json(data);
+
+    switch (CodeState) {
+      case 1:
+        return res.status(201).json(data);
+        break;
+      case 2:
+        return res.status(400).json({
+          success: false,
+          msg: pcMsj
+        });
+        break;
+      default:
+        return res.status(500).json({
+          CodeState,
+          pcMsj
+        });
+        break;
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      msg: "server error"
+    });
+  }
 }

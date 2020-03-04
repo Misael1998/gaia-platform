@@ -14,7 +14,7 @@ const {
 
 router.route("/supplies").get(isLogged, supplies);
 router.route("/sectors").get(sectors);
-router.route("/sar_type").get(sar_type);
+router.route("/sar-type").get(sar_type);
 router.route("/inventory").get(inventory);
 router.route("/products").get(products);
 router.route("/products/:id").get(individualProduct);
