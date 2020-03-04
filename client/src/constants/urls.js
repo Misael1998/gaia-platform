@@ -7,7 +7,10 @@ export const URL_POST_RECOVER_PASS = "/api/auth/forgotpassword";
 export const URL_GET_SAR = "/api/data/sar_type";
 export const URL_GET_SUPPLIES = "/api/data/supplies";
 export const URL_GET_PROVIDERS = "/api/data/providers";
+export const URL_GET_PRODUCTS = "/api/data/products";
+export const URL_GET_INVENTORY = "/api/data/inventory";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = token =>
   `/api/auth/resetpassword/${token}`;
+export const URL_GET_PRODUCT_BY_ID = id => `/api/data/products/${id}`;

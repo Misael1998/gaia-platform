@@ -1,0 +1,13 @@
+import React from 'react'
+import Image from './Image';
+
+const ImgList = ({products}) => {
+    return ( 
+        <div className="col-12 p-5 row">
+            {products.map(product => <Image key={product.idProducts} product={product}/> )}
+            
+        </div>
+     );
+}
+ 
+export default ImgList;

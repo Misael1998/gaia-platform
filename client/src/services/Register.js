@@ -19,17 +19,19 @@ export const registerNormalUser = async (
     address,
     name,
     lastName,
-    id,
-    birthDate
+    register_id: id,
+    birth_date: birthDate,
   };
   try {
     const response = await axios.post(URL_POST_NORMAL_USER, payload);
+    
     if (response.status === 200) {
       return response.data;
     } else {
       throw new Error(response);
     }
   } catch (error) {
+    console.log(error.response);
     let errorObj;
     const { response } = error;
     if (response.status === 400) {
@@ -86,6 +88,7 @@ export const registerCompanyUser = async (
   } catch (error) {
     let errorObj;
     const { response } = error;
+    console.log(response);
     if (response.status === 400) {
       errorObj = {
         title: 'Usuario no registrado',

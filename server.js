@@ -12,13 +12,13 @@ server.use(cors());
 //route files
 const auth = require("./routes/auth");
 const user = require("./routes/user");
-
+const order = require("./routes/order");
 const data = require("./routes/data");
 
 //mount routes
 server.use("/api/auth", auth);
 server.use("/api/user", user);
-
+server.use("/api/order", order);
 server.use("/api/data", data);
 
 //init database

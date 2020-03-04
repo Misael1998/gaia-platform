@@ -27,7 +27,7 @@ router
   );
 
 router
-  .route("/registerindivualclient")
+  .route("/registerindividualclient")
   .post(
     [
       check("email").isEmail(),

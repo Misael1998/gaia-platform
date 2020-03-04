@@ -5,4 +5,11 @@
 
 .cl-container {
   max-width: 230px;
+  max-width: 200px;
+  height: 100vh;
+}
+
+.clg-container {
+  max-width: 200px;
+  padding-right: 0%;
 }
