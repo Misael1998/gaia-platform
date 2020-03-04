@@ -25,8 +25,19 @@ CREATE PROCEDURE dbo.SP_ADD_ORDER
     @quantity varchar(45),
     @unit VARCHAR(45),
 	@pcMsj varchar(100) out,
-    @CodeState int out /*codeState:  1=successful, 2=unsuccessfully */
-
+    @CodeState int out, /*codeState:  1=successful, 2=unsuccessfully */
+    @employeeName VARCHAR(45) out,
+    @providersName VARCHAR(45) out,
+    @sarDescription VARCHAR(45) out,
+    @paymentMethodName VARCHAR(45) out,
+    @supplyName VARCHAR(45) out,
+    @senderName VARCHAR(45) out,
+    @receiverName VARCHAR(45) out,
+    @addressName VARCHAR(45) out,
+    @idOrder INT out,
+    @total FLOAT out,
+    @isv FLOAT out,
+    @value FLOAT out
 
 AS
 BEGIN
@@ -126,6 +137,131 @@ DECLARE
         /*cambios por si la cago*/
         SET @CodeState=1;
         SET @pcMsj = 'Successful';
+
+        /*---------------------------------------------------*/
+
+
+        SET @employeeName = (
+        select 
+            users.name username 
+        from 
+            TBL_EMPLOYEES employee 
+        INNER join 
+            TBL_USERS users
+        ON 
+            employee.idUser = users.idUser
+        WHERE
+            employee.idEmployees = @idCreatedEmployee
+        );
+
+        SET @senderName = (
+        select 
+            users.name username 
+        from 
+            TBL_EMPLOYEES employee 
+        INNER join 
+            TBL_USERS users
+        ON 
+            employee.idUser = users.idUser
+        WHERE
+            employee.idEmployees = @idSenderEmployee
+        );
+
+
+
+        SET @receiverName = (
+        select 
+            users.name username 
+        from 
+            TBL_EMPLOYEES employee 
+        INNER join 
+            TBL_USERS users
+        ON 
+            employee.idUser = users.idUser
+        WHERE
+            employee.idEmployees = @idReceiverEmployee
+        );
+
+
+        SET @addressName = (
+        select 
+            users.name username 
+        from 
+            TBL_EMPLOYEES employee 
+        INNER join 
+            TBL_USERS users
+        ON 
+            employee.idUser = users.idUser
+        WHERE
+            employee.idEmployees = @idAddressEmployee
+        );
+
+        SET @providersName = (
+        select 
+            name 
+        from 
+            TBL_PROVIDERS as providers
+        WHERE
+            providers.idProviders = @idProviders
+        );
+
+        SET @sarDescription = (
+        select 
+            [description]
+        from 
+            TBL_SAR_TYPES as sarTpyes
+        WHERE
+            sarTpyes.idSarTypes = @idSartype
+        );
+
+        SET @paymentMethodName = (
+        select 
+            [description]
+        from 
+            TBL_PAYMENT_METHODS as paymentMethods
+        WHERE
+            paymentMethods.idPaymentMethods = @idPaymentMethods
+        );
+
+        SET @supplyName = (
+        select 
+            name
+        from 
+            TBL_SUPPLIES as supplies
+        WHERE
+            supplies.idSupplies = @idSupplie
+        );
+
+        SET @idOrder = (
+        select 
+            MAX(idOrders)
+        from 
+            TBL_ORDERS
+        );
+
+        SET @isv = (
+        select 
+            MAX(isv)
+        from 
+            TBL_ORDERS
+        );
+
+        SET @total = (
+        select 
+            MAX(total)
+        from 
+            TBL_ORDERS
+        );
+
+        SET @value = (
+        select 
+            MAX(value)
+        from 
+            TBL_ORDERS
+        );
+
+        /*---------------------------------------------*/
+        
         RETURN
 
     END
@@ -259,11 +395,137 @@ DECLARE
             @numBill
         );
 
-        SET @pcMsj='Succesful';
+        SET @pcMsj='Successful';
         SET @CodeState=1;
+
+                /*---------------------------------------------------*/
+
+
+        SET @employeeName = (
+        select 
+            users.name username 
+        from 
+            TBL_EMPLOYEES employee 
+        INNER join 
+            TBL_USERS users
+        ON 
+            employee.idUser = users.idUser
+        WHERE
+            employee.idEmployees = @idCreatedEmployee
+        );
+
+        SET @senderName = (
+        select 
+            users.name username 
+        from 
+            TBL_EMPLOYEES employee 
+        INNER join 
+            TBL_USERS users
+        ON 
+            employee.idUser = users.idUser
+        WHERE
+            employee.idEmployees = @idSenderEmployee
+        );
+
+
+
+        SET @receiverName = (
+        select 
+            users.name username 
+        from 
+            TBL_EMPLOYEES employee 
+        INNER join 
+            TBL_USERS users
+        ON 
+            employee.idUser = users.idUser
+        WHERE
+            employee.idEmployees = @idReceiverEmployee
+        );
+
+
+        SET @addressName = (
+        select 
+            users.name username 
+        from 
+            TBL_EMPLOYEES employee 
+        INNER join 
+            TBL_USERS users
+        ON 
+            employee.idUser = users.idUser
+        WHERE
+            employee.idEmployees = @idAddressEmployee
+        );
+
+        SET @providersName = (
+        select 
+            name 
+        from 
+            TBL_PROVIDERS as providers
+        WHERE
+            providers.idProviders = @idProviders
+        );
+
+        SET @sarDescription = (
+        select 
+            [description]
+        from 
+            TBL_SAR_TYPES as sarTpyes
+        WHERE
+            sarTpyes.idSarTypes = @idSartype
+        );
+
+        SET @paymentMethodName = (
+        select 
+            [description]
+        from 
+            TBL_PAYMENT_METHODS as paymentMethods
+        WHERE
+            paymentMethods.idPaymentMethods = @idPaymentMethods
+        );
+
+        SET @supplyName = (
+        select 
+            name
+        from 
+            TBL_SUPPLIES as supplies
+        WHERE
+            supplies.idSupplies = @idSupplie
+        );
+
+        SET @idOrder = (
+        select 
+            MAX(idOrders)
+        from 
+            TBL_ORDERS 
+        );
+
+
+        SET @isv = (
+        select 
+            MAX(isv)
+        from 
+            TBL_ORDERS
+        );
+
+        SET @total = (
+        select 
+            MAX(total)
+        from 
+            TBL_ORDERS
+        );
+
+        SET @value = (
+        select 
+            MAX(value)
+        from 
+            TBL_ORDERS
+        );
+        /*---------------------------------------------*/
+
 
 END;  
 GO  
+
 
 
 /*
