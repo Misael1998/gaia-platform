@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "../../../../styles/FormLog.css";
 import "../../../../styles/util.css";
+import { selectSupplies } from "../../../../constants/urls";
+import { selectProviders } from "../../../../constants/urls";
+import { selectSar } from "../../../../constants/urls";
 
 const FormRequest = () => {
   //Creando el state para leer los inputs:
   const [infoRequest, handleRequest] = useState({
     nombreInsumo: "",
     cantidadInsumo: "",
-    precioUnitario: "",
+    // precioUnitario: "",
     medidaInsumo: "",
     formaPago: "",
     fechaEmision: "",
@@ -17,7 +20,8 @@ const FormRequest = () => {
     exentImpuesto: "",
     fechaExpiracion: "",
     empleadoSolicita: "",
-    empleadoEnvia: ""
+    empleadoEnvia: "",
+    empleadoCrea: ""
   });
 
   //Funcion que se ejecuta cuando se escribe en un input:
@@ -32,7 +36,7 @@ const FormRequest = () => {
   const {
     nombreInsumo,
     cantidadInsumo,
-    precioUnitario,
+    // precioUnitario,
     medidaInsumo,
     formaPago,
     fechaEmision,
@@ -42,7 +46,8 @@ const FormRequest = () => {
     exentImpuesto,
     fechaExpiracion,
     empleadoSolicita,
-    empleadoEnvia
+    empleadoEnvia,
+    empleadoCrea
   } = infoRequest;
 
   //State para el error:
@@ -87,7 +92,7 @@ const FormRequest = () => {
     if (
       nombreInsumo.trim() === "" ||
       cantidadInsumo.trim() === "" ||
-      precioUnitario.trim() === "" ||
+      // precioUnitario.trim() === "" ||
       medidaInsumo.trim() === "" ||
       formaPago.trim() === "" ||
       fechaEmision.trim() === "" ||
@@ -122,8 +127,8 @@ const FormRequest = () => {
                   type="number"
                   name="precioUnitario"
                   placeholder="Precio Unitario"
-                  onChange={handleChangeInfo}
-                  value={precioUnitario}
+                  // onChange={handleChangeInfo}
+                  // value={precioUnitario}
                 />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
@@ -143,9 +148,10 @@ const FormRequest = () => {
                   value={medidaInsumo}
                 >
                   <option value="0">Medida Insumo</option>
-                  <option value="1">Libras</option>
-                  <option value="2">Kilogramos</option>
-                  <option value="3">Unidad</option>
+                  <option value="Libras">Libras</option>
+                  <option value="Kilogramos">Kilogramos</option>
+                  <option value="Unidad">Unidad</option>
+                  <option value="Gramos">Gramos</option>
                 </select>
 
                 <span className="focus-input100"></span>
@@ -200,14 +206,40 @@ const FormRequest = () => {
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Valid email is required: ex@abc.xyz"
               >
-                <input
+                <select
                   className="input100"
                   type="text"
                   name="empleadoRecibe"
-                  placeholder="Empleado que Recibe"
                   onChange={handleChangeInfo}
                   value={empleadoRecibe}
-                />
+                >
+                  <option value="0">Empleado Recibe</option>
+                  <option value="1">Empleado 1</option>
+                  <option value="2">Empleado 2</option>
+                </select>
+
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <span className="lnr lnr-user"></span>
+                </span>
+              </div>
+
+              <div
+                className="wrap-input100 validate-input m-b-16"
+                data-validate="Valid email is required: ex@abc.xyz"
+              >
+                <select
+                  className="input100"
+                  type="text"
+                  name="empleadoCrea"
+                  onChange={handleChangeInfo}
+                  value={empleadoCrea}
+                >
+                  <option value="0">Empleado Crea</option>
+                  <option value="1">Empleado 1</option>
+                  <option value="2">Empleado 2</option>
+                </select>
+
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <span className="lnr lnr-user"></span>
@@ -222,14 +254,18 @@ const FormRequest = () => {
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Valid email is required: ex@abc.xyz"
               >
-                <input
+                <select
                   className="input100"
                   type="text"
                   name="proveedor"
                   placeholder="Nombre Proveedor"
                   onChange={handleChangeInfo}
                   value={proveedor}
-                />
+                >
+                  <option value="0">Nombre Proveedor</option>
+                  <option value="1">Proveedor 1</option>
+                  <option value="2">Proveedor 2</option>
+                </select>
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <span className="lnr lnr-user"></span>
@@ -265,9 +301,9 @@ const FormRequest = () => {
                   onChange={handleChangeInfo}
                   value={exentImpuesto}
                 >
-                  <option value="0">Excento de Impuestos</option>
-                  <option value="1">Si</option>
-                  <option value="2">No</option>
+                  <option value="0">Tipo de SAR</option>
+                  <option value="1">Agravado</option>
+                  <option value="2">Excento</option>
                 </select>
 
                 <span className="focus-input100"></span>
@@ -300,14 +336,17 @@ const FormRequest = () => {
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Valid email is required: ex@abc.xyz"
               >
-                <input
+                <select
                   className="input100"
                   type="text"
                   name="empleadoSolicita"
-                  placeholder="Empleado que Solicita"
                   onChange={handleChangeInfo}
                   value={empleadoSolicita}
-                />
+                >
+                  <option value="0">Empleado Solicita</option>
+                  <option value="1">Empleado 1</option>
+                  <option value="2">Empleado 2</option>
+                </select>
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <span className="lnr lnr-user"></span>
@@ -318,14 +357,17 @@ const FormRequest = () => {
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Valid email is required: ex@abc.xyz"
               >
-                <input
+                <select
                   className="input100"
                   type="text"
                   name="empleadoEnvia"
-                  placeholder="Empleado que Envia"
                   onChange={handleChangeInfo}
                   value={empleadoEnvia}
-                />
+                >
+                  <option value="0">Empleado Envia</option>
+                  <option value="1">Empleado 1</option>
+                  <option value="2">Empleado 2</option>
+                </select>
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <span className="lnr lnr-user"></span>
@@ -339,14 +381,18 @@ const FormRequest = () => {
                   className="wrap-input100 validate-input m-b-16 row"
                   data-validate="Valid email is required: ex@abc.xyz"
                 >
-                  <input
+                  <select
                     className="input100 p-r-0"
                     type="text"
                     name="nombreInsumo"
                     placeholder="Nombre del Insumo"
                     onChange={handleChangeInfo}
                     value={nombreInsumo}
-                  />
+                  >
+                    <option value="0">Nombre del Insumo</option>
+                    <option value="1">Insumo 1</option>
+                    <option value="2">Insumo 2</option>
+                  </select>
 
                   <span className="focus-input100"></span>
                   <span className="symbol-input100">
