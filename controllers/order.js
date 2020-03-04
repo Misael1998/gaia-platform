@@ -106,10 +106,10 @@ exports.providerOrder = async (req, res) => {
         return res.status(201).json(data);
         break;
       case 2:
-        return res.status(400).json({
+        return errorResponse(400,"Parameters errors",errors.array(),res)/*res.status(400).json({
           success: false,
           msg: pcMsj
-        });
+        });*/
         break;
       default:
         return res.status(500).json({
@@ -120,9 +120,9 @@ exports.providerOrder = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
+    return errorResponse(500,"Server Error",errors.array(),res)/*res.status(500).json({
       success: false,
       msg: "server error"
-    });
+    });*/
   }
 }
