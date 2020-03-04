@@ -24,7 +24,7 @@ export const registerNormalUser = async (
   };
   try {
     const response = await axios.post(URL_POST_NORMAL_USER, payload);
-    console.log(response);
+    
     if (response.status === 200) {
       return response.data;
     } else {
