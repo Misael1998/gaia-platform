@@ -5,7 +5,7 @@ import "../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 import { loginUser } from "../../../services/Login";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import SessionStorageService from "../../../services/Storage";
 
 const FormLog = ({ history }) => {
@@ -56,31 +56,31 @@ const FormLog = ({ history }) => {
 
     handleError(false);
 
-
     //Peticion a endpoint de user
     loginUser(email, password)
       .then(res => {
         const { user } = res;
+
         SessionStorageService.setToken(res.token);
-        SessionStorageService.setItem('role', user.role);
+        SessionStorageService.setItem("role", user.role);
         Swal.fire(
-          'Login exitoso',
+          "Login exitoso",
           `Bienvenido ${user.firstName}`,
-          'success'
+          "success"
         ).then(res => {
-          if (user.role === 'employee') {
-            history.push('/portal');
+          if (user.role === "employee") {
+            history.push("/portal");
           } else {
-            history.push('/app');
+            history.push("/app");
           }
-        })
+        });
       })
       .catch(error => {
         Swal.fire({
-          icon: 'error',
+          icon: "error",
           title: error.title,
-          text: error.text,
-        })
+          text: error.text
+        });
       });
   };
 
@@ -147,9 +147,7 @@ const FormLog = ({ history }) => {
                 type="checkbox"
                 name="remember-me"
               />
-              <label className="label-checkbox100">
-                Recuerdame
-              </label>
+              <label className="label-checkbox100">Recuerdame</label>
             </div>
 
             <div className="container-login100-form-btn p-t-25">
@@ -158,17 +156,16 @@ const FormLog = ({ history }) => {
               </button>
             </div>
 
-
             <div className="text-center w-full p-t-115">
               <span className="txt1 mr-2">¿No tienes cuenta?</span>
               <Link className="txt1 bo1 hov1" to="/register">
                 Registrarse
               </Link>
-              <div className='pt-2'>
-                <span className='txt1 mr-2'>¿Olvidaste tu contraseña?</span>
-                <Link className='txt1 bo1 hov1' to='/recovery-password'>
+              <div className="pt-2">
+                <span className="txt1 mr-2">¿Olvidaste tu contraseña?</span>
+                <Link className="txt1 bo1 hov1" to="/recovery-password">
                   Recupérala
-              </Link>
+                </Link>
               </div>
             </div>
           </form>

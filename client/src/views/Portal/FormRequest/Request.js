@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import FormRequest from "./components/FormRequest";
 import "./style/Request.css";
-import Title from "../../Main/components/Title";
+import Title from "../../../components/Title";
 import { FaWpforms } from "react-icons/fa";
 
 const Request = () => {

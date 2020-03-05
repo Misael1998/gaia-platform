@@ -25,19 +25,7 @@ CREATE PROCEDURE dbo.SP_ADD_ORDER
     @quantity varchar(45),
     @unit VARCHAR(45),
 	@pcMsj varchar(100) out,
-    @CodeState int out, /*codeState:  1=successful, 2=unsuccessfully */
-    @employeeName VARCHAR(45) out,
-    @providersName VARCHAR(45) out,
-    @sarDescription VARCHAR(45) out,
-    @paymentMethodName VARCHAR(45) out,
-    @supplyName VARCHAR(45) out,
-    @senderName VARCHAR(45) out,
-    @receiverName VARCHAR(45) out,
-    @addressName VARCHAR(45) out,
-    @idOrder INT out,
-    @total FLOAT out,
-    @isv FLOAT out,
-    @value FLOAT out
+    @CodeState int out /*codeState:  1=successful, 2=unsuccessfully */
 
 AS
 BEGIN
@@ -65,6 +53,7 @@ DECLARE
             FROM TBL_BILLS
             WHERE num_bill=@numBill
         )
+		print (@VN_count);
 
     IF @VN_count>0 BEGIN
 
@@ -75,13 +64,14 @@ DECLARE
         END;
 
         SET @VN_TempID_order = (
-            SELECT idOrders
+            SELECT MAX(idOrders)
             FROM TBL_ORDERS
             WHERE(SELECT idProviders 
                 FROM TBL_ORDERS ord
                 INNER JOIN TBL_BILLS b ON b.idOrders=ord.idOrders
                 WHERE num_bill=@numBill)=@idProviders
         )
+		print (@VN_TempID_order);
         IF @VN_TempID_order=' ' OR @VN_TempID_order IS NULL BEGIN
             SET @pcMsj='NOT FOUND ';
             SET @CodeState=2;
@@ -134,133 +124,9 @@ DECLARE
                total = @VN_total_TEMP
         WHERE idOrders=@VN_TempID_order 
         AND idProviders=@idProviders
-        /*cambios por si la cago*/
         SET @CodeState=1;
         SET @pcMsj = 'Successful';
 
-        /*---------------------------------------------------*/
-
-
-        SET @employeeName = (
-        select 
-            users.name username 
-        from 
-            TBL_EMPLOYEES employee 
-        INNER join 
-            TBL_USERS users
-        ON 
-            employee.idUser = users.idUser
-        WHERE
-            employee.idEmployees = @idCreatedEmployee
-        );
-
-        SET @senderName = (
-        select 
-            users.name username 
-        from 
-            TBL_EMPLOYEES employee 
-        INNER join 
-            TBL_USERS users
-        ON 
-            employee.idUser = users.idUser
-        WHERE
-            employee.idEmployees = @idSenderEmployee
-        );
-
-
-
-        SET @receiverName = (
-        select 
-            users.name username 
-        from 
-            TBL_EMPLOYEES employee 
-        INNER join 
-            TBL_USERS users
-        ON 
-            employee.idUser = users.idUser
-        WHERE
-            employee.idEmployees = @idReceiverEmployee
-        );
-
-
-        SET @addressName = (
-        select 
-            users.name username 
-        from 
-            TBL_EMPLOYEES employee 
-        INNER join 
-            TBL_USERS users
-        ON 
-            employee.idUser = users.idUser
-        WHERE
-            employee.idEmployees = @idAddressEmployee
-        );
-
-        SET @providersName = (
-        select 
-            name 
-        from 
-            TBL_PROVIDERS as providers
-        WHERE
-            providers.idProviders = @idProviders
-        );
-
-        SET @sarDescription = (
-        select 
-            [description]
-        from 
-            TBL_SAR_TYPES as sarTpyes
-        WHERE
-            sarTpyes.idSarTypes = @idSartype
-        );
-
-        SET @paymentMethodName = (
-        select 
-            [description]
-        from 
-            TBL_PAYMENT_METHODS as paymentMethods
-        WHERE
-            paymentMethods.idPaymentMethods = @idPaymentMethods
-        );
-
-        SET @supplyName = (
-        select 
-            name
-        from 
-            TBL_SUPPLIES as supplies
-        WHERE
-            supplies.idSupplies = @idSupplie
-        );
-
-        SET @idOrder = (
-        select 
-            MAX(idOrders)
-        from 
-            TBL_ORDERS
-        );
-
-        SET @isv = (
-        select 
-            MAX(isv)
-        from 
-            TBL_ORDERS
-        );
-
-        SET @total = (
-        select 
-            MAX(total)
-        from 
-            TBL_ORDERS
-        );
-
-        SET @value = (
-        select 
-            MAX(value)
-        from 
-            TBL_ORDERS
-        );
-
-        /*---------------------------------------------*/
         
         RETURN
 
@@ -398,148 +264,8 @@ DECLARE
         SET @pcMsj='Successful';
         SET @CodeState=1;
 
-                /*---------------------------------------------------*/
-
-
-        SET @employeeName = (
-        select 
-            users.name username 
-        from 
-            TBL_EMPLOYEES employee 
-        INNER join 
-            TBL_USERS users
-        ON 
-            employee.idUser = users.idUser
-        WHERE
-            employee.idEmployees = @idCreatedEmployee
-        );
-
-        SET @senderName = (
-        select 
-            users.name username 
-        from 
-            TBL_EMPLOYEES employee 
-        INNER join 
-            TBL_USERS users
-        ON 
-            employee.idUser = users.idUser
-        WHERE
-            employee.idEmployees = @idSenderEmployee
-        );
-
-
-
-        SET @receiverName = (
-        select 
-            users.name username 
-        from 
-            TBL_EMPLOYEES employee 
-        INNER join 
-            TBL_USERS users
-        ON 
-            employee.idUser = users.idUser
-        WHERE
-            employee.idEmployees = @idReceiverEmployee
-        );
-
-
-        SET @addressName = (
-        select 
-            users.name username 
-        from 
-            TBL_EMPLOYEES employee 
-        INNER join 
-            TBL_USERS users
-        ON 
-            employee.idUser = users.idUser
-        WHERE
-            employee.idEmployees = @idAddressEmployee
-        );
-
-        SET @providersName = (
-        select 
-            name 
-        from 
-            TBL_PROVIDERS as providers
-        WHERE
-            providers.idProviders = @idProviders
-        );
-
-        SET @sarDescription = (
-        select 
-            [description]
-        from 
-            TBL_SAR_TYPES as sarTpyes
-        WHERE
-            sarTpyes.idSarTypes = @idSartype
-        );
-
-        SET @paymentMethodName = (
-        select 
-            [description]
-        from 
-            TBL_PAYMENT_METHODS as paymentMethods
-        WHERE
-            paymentMethods.idPaymentMethods = @idPaymentMethods
-        );
-
-        SET @supplyName = (
-        select 
-            name
-        from 
-            TBL_SUPPLIES as supplies
-        WHERE
-            supplies.idSupplies = @idSupplie
-        );
-
-        SET @idOrder = (
-        select 
-            MAX(idOrders)
-        from 
-            TBL_ORDERS 
-        );
-
-
-        SET @isv = (
-        select 
-            MAX(isv)
-        from 
-            TBL_ORDERS
-        );
-
-        SET @total = (
-        select 
-            MAX(total)
-        from 
-            TBL_ORDERS
-        );
-
-        SET @value = (
-        select 
-            MAX(value)
-        from 
-            TBL_ORDERS
-        );
-        /*---------------------------------------------*/
-
+        RETURN
 
 END;  
 GO  
 
-
-
-/*
-
-
-SELECT * from TBL_SUPPLIES
-
-delete from TBL_BILLS
-delete from TBL_ORDER_DETAILS
-delete from TBL_ORDERS
-
-SELECT * from TBL_BILLS
-SELECT * from TBL_ORDERS
-SELECT * from TBL_ORDER_DETAILS
-
-select * from TBL_ORDER_DETAILS
-*/

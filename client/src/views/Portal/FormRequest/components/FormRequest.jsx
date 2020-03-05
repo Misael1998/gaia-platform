@@ -1,28 +1,35 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import "../../../../styles/FormLog.css";
 import "../../../../styles/util.css";
-import { selectSupplies } from "../../../../constants/urls";
-import { selectProviders } from "../../../../constants/urls";
-import { selectSar } from "../../../../constants/urls";
+import { selectSupplies } from "../../../../services/Supplies";
+import { selectProviders } from "../../../../services/Providers";
+import { selectSar } from "../../../../services/Sar";
+import { makeOrder } from "../../../../services/Orders";
+import moment from "moment";
 
 const FormRequest = () => {
   //Creando el state para leer los inputs:
   const [infoRequest, handleRequest] = useState({
-    nombreInsumo: "",
-    cantidadInsumo: "",
-    // precioUnitario: "",
-    medidaInsumo: "",
-    formaPago: "",
-    fechaEmision: "",
-    empleadoRecibe: "",
-    proveedor: "",
-    numFactura: "",
-    exentImpuesto: "",
-    fechaExpiracion: "",
-    empleadoSolicita: "",
-    empleadoEnvia: "",
-    empleadoCrea: ""
+    supplies: [],
+    unit: "",
+    idPaymentMethod: "",
+    emissionDate: "",
+    idReceiverEmployee: "",
+    idProvider: "",
+    numBill: "",
+    idSarType: "",
+    expireDate: "",
+    idAddressEmployee: "",
+    idSenderEmployee: "",
+    idCreatedEmployee: ""
   });
+
+  const [supply, setSupply] = useState("");
+  const [quantity, setQuantity] = useState("");
+
+  //State para los insumos:
+  const [supplyarray, handleSupplyArray] = useState([]);
 
   //Funcion que se ejecuta cuando se escribe en un input:
   const handleChangeInfo = e => {
@@ -34,39 +41,59 @@ const FormRequest = () => {
 
   //Extrayendo los valores con destructuring:
   const {
-    nombreInsumo,
-    cantidadInsumo,
-    // precioUnitario,
-    medidaInsumo,
-    formaPago,
-    fechaEmision,
-    empleadoRecibe,
-    proveedor,
-    numFactura,
-    exentImpuesto,
-    fechaExpiracion,
-    empleadoSolicita,
-    empleadoEnvia,
-    empleadoCrea
+    supplies,
+    unit,
+    idPaymentMethod,
+    emissionDate,
+    idReceiverEmployee,
+    idProvider,
+    numBill,
+    idSarType,
+    expireDate,
+    idAddressEmployee,
+    idSenderEmployee,
+    idCreatedEmployee
   } = infoRequest;
+
+  //Funcion que toma el insumo y la cantidad:
+  const obtainSupply = () => {
+    let supplyToAdd = {
+      idSupply: supply,
+      quantity
+    };
+    console.log(supplyToAdd);
+    let newSupplies = [...infoRequest.supplies, supplyToAdd];
+    console.log(newSupplies);
+    handleRequest({ ...infoRequest, supplies: newSupplies });
+  };
 
   //State para el error:
   const [error, handleError] = useState(false);
 
+  //State de los tipos de sar
+  const [sar, handleSar] = useState([]);
+
   //State para habilitar el boton:
   const [enableButton, setEnableButton] = useState(true);
+
+  useEffect(() => {
+    // selectSupplies()
+    //   .then(res => {
+    //     handleSupplyArray(res);
+    //   })
+    //   .catch(err => console.log(err));
+  }, []);
 
   //Funcion para los campos requeridos hasta habilitar el boton:
   useEffect(() => {
     if (
-      nombreInsumo.trim() !== "" &&
-      formaPago.trim() !== "" &&
-      fechaEmision.trim() !== "" &&
-      empleadoRecibe.trim() !== "" &&
-      proveedor.trim() !== "" &&
-      fechaExpiracion.trim() !== "" &&
-      empleadoSolicita.trim() !== "" &&
-      empleadoEnvia.trim() !== ""
+      idPaymentMethod.trim() !== "" &&
+      emissionDate.trim() !== "" &&
+      idReceiverEmployee.trim() !== "" &&
+      idProvider.trim() !== "" &&
+      expireDate.trim() !== "" &&
+      idAddressEmployee.trim() !== "" &&
+      idSenderEmployee.trim() !== ""
     ) {
       setEnableButton(false);
       return;
@@ -74,15 +101,18 @@ const FormRequest = () => {
       setEnableButton(true);
     }
   }, [
-    nombreInsumo,
-    formaPago,
-    fechaEmision,
-    empleadoRecibe,
-    proveedor,
-    fechaExpiracion,
-    empleadoSolicita,
-    empleadoEnvia
+    idPaymentMethod,
+    emissionDate,
+    idReceiverEmployee,
+    idProvider,
+    expireDate,
+    idAddressEmployee,
+    idSenderEmployee
   ]);
+
+  //Formateando las fechas:
+  const formatEmission = moment(emissionDate);
+  const formatExpire = moment(expireDate);
 
   //Funcion para el boton Realizar Solicitud:
   const submitRequest = e => {
@@ -90,26 +120,57 @@ const FormRequest = () => {
 
     //Validacion:
     if (
-      nombreInsumo.trim() === "" ||
-      cantidadInsumo.trim() === "" ||
-      // precioUnitario.trim() === "" ||
-      medidaInsumo.trim() === "" ||
-      formaPago.trim() === "" ||
-      fechaEmision.trim() === "" ||
-      empleadoRecibe.trim() === "" ||
-      proveedor.trim() === "" ||
-      numFactura.trim() === "" ||
-      exentImpuesto.trim() === "" ||
-      fechaExpiracion.trim() === "" ||
-      empleadoSolicita.trim() === "" ||
-      empleadoEnvia.trim() === ""
+      quantity.trim() === "" ||
+      unit.trim() === "" ||
+      idPaymentMethod.trim() === "" ||
+      emissionDate.trim() === "" ||
+      idReceiverEmployee.trim() === "" ||
+      idProvider.trim() === "" ||
+      numBill.trim() === "" ||
+      idSarType.trim() === "" ||
+      expireDate.trim() === "" ||
+      idAddressEmployee.trim() === "" ||
+      idSenderEmployee.trim() === ""
     ) {
       handleError(true);
       return;
     }
 
     handleError(false);
+
     //Peticion al endpoint:
+    makeOrder(
+      formatEmission.format("MM/DD/YYYY"),
+      formatExpire.format("MM/DD/YYYY"),
+      idCreatedEmployee,
+      idProvider,
+      idSarType,
+      idPaymentMethod,
+      idSenderEmployee,
+      idReceiverEmployee,
+      idAddressEmployee,
+      numBill,
+      unit,
+      supplies
+    )
+      .then(res => {
+        console.log("Lo que retorna el endpoint: ", res);
+
+        Swal.fire(
+          "Creacion de Orden Exitosa",
+          "La orden se ha creado",
+          "success"
+        ).then(e => {});
+      })
+
+      .catch(error => {
+        console.log("Lo que retorna el endpoint: ", error);
+        Swal.fire({
+          icon: "error",
+          title: error.title,
+          text: error.text
+        });
+      });
   };
 
   return (
@@ -143,9 +204,9 @@ const FormRequest = () => {
                 <select
                   className="input100"
                   type="number"
-                  name="medidaInsumo"
+                  name="unit"
                   onChange={handleChangeInfo}
-                  value={medidaInsumo}
+                  value={unit}
                 >
                   <option value="0">Medida Insumo</option>
                   <option value="Libras">Libras</option>
@@ -167,9 +228,9 @@ const FormRequest = () => {
                 <select
                   className="input100"
                   type="number"
-                  name="formaPago"
+                  name="idPaymentMethod"
                   onChange={handleChangeInfo}
-                  value={formaPago}
+                  value={idPaymentMethod}
                 >
                   <option value="0">Forma de Pago</option>
                   <option value="1">Efectivo</option>
@@ -192,9 +253,9 @@ const FormRequest = () => {
                   className="input100"
                   type="date"
                   placeholder="Fecha de Emision"
-                  name="fechaEmision"
+                  name="emissionDate"
                   onChange={handleChangeInfo}
-                  value={fechaEmision}
+                  value={emissionDate}
                 />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
@@ -209,9 +270,9 @@ const FormRequest = () => {
                 <select
                   className="input100"
                   type="text"
-                  name="empleadoRecibe"
+                  name="idReceiverEmployee"
                   onChange={handleChangeInfo}
-                  value={empleadoRecibe}
+                  value={idReceiverEmployee}
                 >
                   <option value="0">Empleado Recibe</option>
                   <option value="1">Empleado 1</option>
@@ -231,9 +292,9 @@ const FormRequest = () => {
                 <select
                   className="input100"
                   type="text"
-                  name="empleadoCrea"
+                  name="idCreatedEmployee"
                   onChange={handleChangeInfo}
-                  value={empleadoCrea}
+                  value={idCreatedEmployee}
                 >
                   <option value="0">Empleado Crea</option>
                   <option value="1">Empleado 1</option>
@@ -257,14 +318,16 @@ const FormRequest = () => {
                 <select
                   className="input100"
                   type="text"
-                  name="proveedor"
+                  name="idProvider"
                   placeholder="Nombre Proveedor"
                   onChange={handleChangeInfo}
-                  value={proveedor}
+                  value={idProvider}
                 >
                   <option value="0">Nombre Proveedor</option>
                   <option value="1">Proveedor 1</option>
                   <option value="2">Proveedor 2</option>
+                  <option value="3">Proveedor 3</option>
+                  <option value="4">Proveedor 4</option>
                 </select>
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
@@ -279,10 +342,10 @@ const FormRequest = () => {
                 <input
                   className="input100"
                   type="number"
-                  name="numFactura"
+                  name="numBill"
                   placeholder="Numero de Factura"
                   onChange={handleChangeInfo}
-                  value={numFactura}
+                  value={numBill}
                 />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
@@ -297,12 +360,12 @@ const FormRequest = () => {
                 <select
                   className="input100"
                   type="number"
-                  name="exentImpuesto"
+                  name="idSarType"
                   onChange={handleChangeInfo}
-                  value={exentImpuesto}
+                  value={idSarType}
                 >
                   <option value="0">Tipo de SAR</option>
-                  <option value="1">Agravado</option>
+                  <option value="1">Gravado</option>
                   <option value="2">Excento</option>
                 </select>
 
@@ -322,9 +385,9 @@ const FormRequest = () => {
                   className="input100"
                   type="date"
                   placeholder="Fecha de Expiración"
-                  name="fechaExpiracion"
+                  name="expireDate"
                   onChange={handleChangeInfo}
-                  value={fechaExpiracion}
+                  value={expireDate}
                 />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
@@ -339,9 +402,9 @@ const FormRequest = () => {
                 <select
                   className="input100"
                   type="text"
-                  name="empleadoSolicita"
+                  name="idAddressEmployee"
                   onChange={handleChangeInfo}
-                  value={empleadoSolicita}
+                  value={idAddressEmployee}
                 >
                   <option value="0">Empleado Solicita</option>
                   <option value="1">Empleado 1</option>
@@ -360,9 +423,9 @@ const FormRequest = () => {
                 <select
                   className="input100"
                   type="text"
-                  name="empleadoEnvia"
+                  name="idSenderEmployee"
                   onChange={handleChangeInfo}
-                  value={empleadoEnvia}
+                  value={idSenderEmployee}
                 >
                   <option value="0">Empleado Envia</option>
                   <option value="1">Empleado 1</option>
@@ -384,14 +447,22 @@ const FormRequest = () => {
                   <select
                     className="input100 p-r-0"
                     type="text"
-                    name="nombreInsumo"
+                    name="idSupply"
                     placeholder="Nombre del Insumo"
-                    onChange={handleChangeInfo}
-                    value={nombreInsumo}
+                    onChange={e => setSupply(e.target.value)}
+                    value={supply}
                   >
-                    <option value="0">Nombre del Insumo</option>
-                    <option value="1">Insumo 1</option>
-                    <option value="2">Insumo 2</option>
+                    <option value="0">Nombre Insumo</option>
+                    <option value="1">Supply 1</option>
+                    <option value="2">Supply 2</option>
+                    <option value="3">Supply 3</option>
+                    <option value="4">Supply 4</option>
+                    <option value="5">Supply 5</option>
+                    {/* {supplyarray.map(supp => (
+                      <option key={supp.idSupplies} value={supp.name}>
+                        {supp.name}
+                      </option>
+                    ))} */}
                   </select>
 
                   <span className="focus-input100"></span>
@@ -408,10 +479,10 @@ const FormRequest = () => {
                   <input
                     className="input100"
                     type="number"
-                    name="cantidadInsumo"
+                    name="quantity"
                     placeholder="Cantidad"
-                    onChange={handleChangeInfo}
-                    value={cantidadInsumo}
+                    onChange={e => setQuantity(e.target.value)}
+                    value={quantity}
                   />
                   <span className="focus-input100"></span>
                   <span className="symbol-input100">
@@ -420,12 +491,29 @@ const FormRequest = () => {
                 </div>
               </div>
               <div className="col-lg-2 p-r-0 p-l-0">
-                <button>
+                <button type="button" onClick={obtainSupply}>
                   <span className="focus-input100"></span>
                   <span className="symbol-input200">
                     <span className="lnr lnr-plus-circle"></span>
                   </span>
                 </button>
+              </div>
+              <div className="col-12">
+                <ul>
+                  {supplies.length !== 0 ? (
+                    supplies.map(supply => {
+                      return (
+                        <li key={supply.idSupply}>
+                          idInsumo: {supply.idSupply}
+                          cantidad:
+                          <span className="m-l-4">{supply.quantity}</span>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <p>No existen insumos para esta peticion</p>
+                  )}
+                </ul>
               </div>
             </div>
 
