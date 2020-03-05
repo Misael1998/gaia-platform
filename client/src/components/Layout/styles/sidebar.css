@@ -1,4 +1,10 @@
 .sidebar {
+  max-width: 230px;
+  height: 105vh;
+}
+
+.cl-container {
+  max-width: 230px;
   max-width: 200px;
   height: 100vh;
 }

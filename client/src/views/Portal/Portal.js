@@ -2,6 +2,7 @@ import React from "react";
 import SideNavbar from "../../components/Layout/SideNavbar";
 import Route from "../../modules/Route";
 import Inventory from "../Portal/InventoryTable/Inventory";
+import Request from "./FormRequest/Request";
 import items from "../../constants/portalNavigation";
 
 const Portal = ({ match }) => {
@@ -11,7 +12,16 @@ const Portal = ({ match }) => {
         <SideNavbar items={items} />
       </div>
       <div className="col-10">
-        <Route path={`${match.path}/inventory`} component={Inventory} isPrivate/>
+        <Route
+          path={`${match.path}/inventory`}
+          component={Inventory}
+          isPrivate
+        />
+        <Route
+          path={`${match.path}/purchases-request`}
+          component={Request}
+          isPrivate
+        />
       </div>
     </div>
   );

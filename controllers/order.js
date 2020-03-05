@@ -1,10 +1,6 @@
-const mssql = require('mssql');
-const {
-  validationResult
-} = require("express-validator");
+const mssql = require("mssql");
+const { validationResult } = require("express-validator");
 const errorResponse = require("../utils/errorResponse");
-
-
 
 //@desc     insert order into DB
 //@route    post     /api/data/products
@@ -14,6 +10,7 @@ exports.providerOrder = async (req, res) => {
   if (!errors.isEmpty()) {
     return errorResponse(400, "Validaton errors", errors.array(), res);
   }
+
   const {
     emissionDate,
     expireDate,
@@ -30,9 +27,7 @@ exports.providerOrder = async (req, res) => {
     unit
   } = req.body;
 
-
   try {
-
     query = await new mssql.Request()
       .input("emissionDate", mssql.Date, emissionDate)
       .input("expiredDate", mssql.Date, expireDate)
@@ -49,21 +44,9 @@ exports.providerOrder = async (req, res) => {
       .input("unit", mssql.VarChar(45), unit)
       .output("pcMsj", mssql.VarChar(100))
       .output("CodeState", mssql.Int)
-      .output("employeeName", mssql.VarChar(45))
-      .output("providersName", mssql.VarChar(45))
-      .output("sarDescription", mssql.VarChar(45))
-      .output("paymentMethodName", mssql.VarChar(45))
-      .output("supplyName", mssql.VarChar(45))
-      .output("senderName", mssql.VarChar(45))
-      .output("receiverName", mssql.VarChar(45))
-      .output("addressName", mssql.VarChar(45))
-      .output("idOrder",mssql.Int)
-      .output("total",mssql.Float)
-      .output("isv",mssql.Float)
-      .output("value",mssql.Float)
       .execute("SP_ADD_ORDER");
 
-    const { 
+    const {
       CodeState,
       pcMsj,
       employeeName,
@@ -80,10 +63,9 @@ exports.providerOrder = async (req, res) => {
       value
     } = query.output;
 
-
     const data = {
-      success:true,
-      msg:pcMsj,
+      success: true,
+      msg: pcMsj,
       idOrder,
       emissionDate,
       expireDate,
@@ -98,15 +80,19 @@ exports.providerOrder = async (req, res) => {
       senderName,
       receiverName,
       addressName
-    }
-
+    };
 
     switch (CodeState) {
       case 1:
         return res.status(201).json(data);
         break;
       case 2:
-        return errorResponse(400,"Parameters errors",errors.array(),res)/*res.status(400).json({
+        return errorResponse(
+          400,
+          "Parameters errors",
+          errors.array(),
+          res
+        ); /*res.status(400).json({
           success: false,
           msg: pcMsj
         });*/
@@ -120,9 +106,14 @@ exports.providerOrder = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    return errorResponse(500,"Server Error",errors.array(),res)/*res.status(500).json({
+    return errorResponse(
+      500,
+      "Server Error",
+      errors.array(),
+      res
+    ); /*res.status(500).json({
       success: false,
       msg: "server error"
     });*/
   }
-}
+};
