@@ -232,6 +232,7 @@ DECLARE
                value = @VN_value_TEMP,
                total = @VN_total_TEMP
         WHERE  idOrders=@VN_TempID_order
+        AND idProviders=@idProviders
 
         INSERT INTO TBL_ORDER_DETAILS(
             idSupplies,
