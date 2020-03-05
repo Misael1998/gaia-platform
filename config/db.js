@@ -1,23 +1,13 @@
-const mysql = require("mysql");
-const util = require("util");
+const mssql = require("mssql");
 
-const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
-
-const db = () => {
-  const connection = mysql.createConnection({
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASSWORD,
-    database: DB_DATABASE
-  });
-
-  connection.connect(err => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Database connected");
+const db = async() => {
+    try {
+        await mssql.connect(process.env.MSSQL_URI);
+        console.log("SQL server connected");
+    } catch (err) {
+        console.log(err.message);
+        process.exit(1);
     }
-  });
 };
 
 module.exports = db;
