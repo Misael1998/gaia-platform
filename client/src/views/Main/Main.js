@@ -10,7 +10,7 @@ import { Redirect } from "react-router-dom";
 const Main = ({ match }) => {
   return (
     <div className="row">
-      <div className="col-2 bg-gray">
+      <div className="col-2 bg-gray clg-container">
         <SideNavbar items={items} />
       </div>
       <div className="col-10">

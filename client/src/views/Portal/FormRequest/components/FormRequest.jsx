@@ -61,9 +61,9 @@ const FormRequest = () => {
       idSupply: supply,
       quantity
     };
-    console.log(supplyToAdd);
+
     let newSupplies = [...infoRequest.supplies, supplyToAdd];
-    console.log(newSupplies);
+
     handleRequest({ ...infoRequest, supplies: newSupplies });
   };
 
@@ -154,17 +154,30 @@ const FormRequest = () => {
       supplies
     )
       .then(res => {
-        console.log("Lo que retorna el endpoint: ", res);
 
         Swal.fire(
           "Creacion de Orden Exitosa",
           "La orden se ha creado",
           "success"
-        ).then(e => {});
+        ).then(e => {
+          handleRequest({
+            supplies: [],
+            unit: "",
+            idPaymentMethod: "",
+            emissionDate: "",
+            idReceiverEmployee: "",
+            idProvider: "",
+            numBill: "",
+            idSarType: "",
+            expireDate: "",
+            idAddressEmployee: "",
+            idSenderEmployee: "",
+            idCreatedEmployee: ""
+          })
+        });
       })
 
       .catch(error => {
-        console.log("Lo que retorna el endpoint: ", error);
         Swal.fire({
           icon: "error",
           title: error.title,
@@ -179,7 +192,7 @@ const FormRequest = () => {
         <div className="wrap-login200 p-l-40 p-r-40 p-t-5 p-b-30">
           <form className="login100-form" onSubmit={submitRequest}>
             <div className="col-lg-6">
-              <div
+              {/* <div
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Password is required"
               >
@@ -188,60 +201,33 @@ const FormRequest = () => {
                   type="number"
                   name="precioUnitario"
                   placeholder="Precio Unitario"
-                  // onChange={handleChangeInfo}
-                  // value={precioUnitario}
+                // onChange={handleChangeInfo}
+                // value={precioUnitario}
                 />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <span className="lnr lnr-tag"></span>
                 </span>
-              </div>
+              </div> */}
 
               <div
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Password is required"
               >
-                <select
+                <input
                   className="input100"
                   type="number"
-                  name="unit"
+                  name="numBill"
+                  placeholder="Numero de Factura"
                   onChange={handleChangeInfo}
-                  value={unit}
-                >
-                  <option value="0">Medida Insumo</option>
-                  <option value="Libras">Libras</option>
-                  <option value="Kilogramos">Kilogramos</option>
-                  <option value="Unidad">Unidad</option>
-                  <option value="Gramos">Gramos</option>
-                </select>
-
+                  value={numBill}
+                />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
-                  <span className="lnr lnr-cart"></span>
+                  <span className="lnr lnr-paperclip"></span>
                 </span>
               </div>
 
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <select
-                  className="input100"
-                  type="number"
-                  name="idPaymentMethod"
-                  onChange={handleChangeInfo}
-                  value={idPaymentMethod}
-                >
-                  <option value="0">Forma de Pago</option>
-                  <option value="1">Efectivo</option>
-                  <option value="2">Tarjeta</option>
-                </select>
-
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-diamond  "></span>
-                </span>
-              </div>
 
               <label className="mb-0">Fecha Emision:</label>
 
@@ -275,8 +261,10 @@ const FormRequest = () => {
                   value={idReceiverEmployee}
                 >
                   <option value="0">Empleado Recibe</option>
-                  <option value="1">Empleado 1</option>
-                  <option value="2">Empleado 2</option>
+                  <option value="2">Sergio Edgardo</option>
+                  <option value="3">Nelson Damián</option>
+                  <option value="4">Keila Samaria</option>
+                  <option value="5">Wilson Alexis</option>
                 </select>
 
                 <span className="focus-input100"></span>
@@ -297,10 +285,35 @@ const FormRequest = () => {
                   value={idCreatedEmployee}
                 >
                   <option value="0">Empleado Crea</option>
-                  <option value="1">Empleado 1</option>
-                  <option value="2">Empleado 2</option>
+                  <option value="2">Sergio Edgardo</option>
+                  <option value="3">Nelson Damián</option>
+                  <option value="4">Keila Samaria</option>
+                  <option value="5">Wilson Alexis</option>
                 </select>
 
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <span className="lnr lnr-user"></span>
+                </span>
+              </div>
+
+              <div
+                className="wrap-input100 validate-input m-b-16"
+                data-validate="Valid email is required: ex@abc.xyz"
+              >
+                <select
+                  className="input100"
+                  type="text"
+                  name="idSenderEmployee"
+                  onChange={handleChangeInfo}
+                  value={idSenderEmployee}
+                >
+                  <option value="0">Empleado Envia</option>
+                  <option value="2">Sergio Edgardo</option>
+                  <option value="3">Nelson Damián</option>
+                  <option value="4">Keila Samaria</option>
+                  <option value="5">Wilson Alexis</option>
+                </select>
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <span className="lnr lnr-user"></span>
@@ -324,54 +337,13 @@ const FormRequest = () => {
                   value={idProvider}
                 >
                   <option value="0">Nombre Proveedor</option>
-                  <option value="1">Proveedor 1</option>
-                  <option value="2">Proveedor 2</option>
-                  <option value="3">Proveedor 3</option>
-                  <option value="4">Proveedor 4</option>
+                  <option value="1">Agritade</option>
+                  <option value="2">Del Campo</option>
+                  <option value="3">Alas</option>
                 </select>
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <span className="lnr lnr-user"></span>
-                </span>
-              </div>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <input
-                  className="input100"
-                  type="number"
-                  name="numBill"
-                  placeholder="Numero de Factura"
-                  onChange={handleChangeInfo}
-                  value={numBill}
-                />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-paperclip"></span>
-                </span>
-              </div>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <select
-                  className="input100"
-                  type="number"
-                  name="idSarType"
-                  onChange={handleChangeInfo}
-                  value={idSarType}
-                >
-                  <option value="0">Tipo de SAR</option>
-                  <option value="1">Gravado</option>
-                  <option value="2">Excento</option>
-                </select>
-
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-license"></span>
                 </span>
               </div>
 
@@ -395,6 +367,51 @@ const FormRequest = () => {
                 </span>
               </div>
 
+
+              <div
+                className="wrap-input100 validate-input m-b-16"
+                data-validate="Password is required"
+              >
+                <select
+                  className="input100"
+                  type="number"
+                  name="idSarType"
+                  onChange={handleChangeInfo}
+                  value={idSarType}
+                >
+                  <option value="0">Tipo de SAR</option>
+                  <option value="1">Gravado</option>
+                  <option value="2">Excento</option>
+                </select>
+
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <span className="lnr lnr-license"></span>
+                </span>
+              </div>
+
+              <div
+                className="wrap-input100 validate-input m-b-16"
+                data-validate="Password is required"
+              >
+                <select
+                  className="input100"
+                  type="number"
+                  name="idPaymentMethod"
+                  onChange={handleChangeInfo}
+                  value={idPaymentMethod}
+                >
+                  <option value="0">Forma de Pago</option>
+                  <option value="1">Efectivo</option>
+                  <option value="2">Tarjeta</option>
+                </select>
+
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <span className="lnr lnr-diamond  "></span>
+                </span>
+              </div>
+
               <div
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Valid email is required: ex@abc.xyz"
@@ -407,8 +424,10 @@ const FormRequest = () => {
                   value={idAddressEmployee}
                 >
                   <option value="0">Empleado Solicita</option>
-                  <option value="1">Empleado 1</option>
-                  <option value="2">Empleado 2</option>
+                  <option value="2">Sergio Edgardo</option>
+                  <option value="3">Nelson Damián</option>
+                  <option value="4">Keila Samaria</option>
+                  <option value="5">Wilson Alexis</option>
                 </select>
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
@@ -416,30 +435,11 @@ const FormRequest = () => {
                 </span>
               </div>
 
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Valid email is required: ex@abc.xyz"
-              >
-                <select
-                  className="input100"
-                  type="text"
-                  name="idSenderEmployee"
-                  onChange={handleChangeInfo}
-                  value={idSenderEmployee}
-                >
-                  <option value="0">Empleado Envia</option>
-                  <option value="1">Empleado 1</option>
-                  <option value="2">Empleado 2</option>
-                </select>
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-user"></span>
-                </span>
-              </div>
+
             </div>
 
             <div className="row m-l-16">
-              <div className="col-lg-5 p-r-0">
+              <div className="col-lg-4 p-r-0">
                 <div
                   className="wrap-input100 validate-input m-b-16 row"
                   data-validate="Valid email is required: ex@abc.xyz"
@@ -453,11 +453,11 @@ const FormRequest = () => {
                     value={supply}
                   >
                     <option value="0">Nombre Insumo</option>
-                    <option value="1">Supply 1</option>
-                    <option value="2">Supply 2</option>
-                    <option value="3">Supply 3</option>
-                    <option value="4">Supply 4</option>
-                    <option value="5">Supply 5</option>
+                    <option value="1">Semillas</option>
+                    <option value="2">Fertilizante Pony</option>
+                    <option value="4">Bandeja de siembra</option>
+                    <option value="5">Clamp de empaque</option>
+                    <option value="8">Insecticida Bayer</option>
                     {/* {supplyarray.map(supp => (
                       <option key={supp.idSupplies} value={supp.name}>
                         {supp.name}
@@ -471,7 +471,7 @@ const FormRequest = () => {
                   </span>
                 </div>
               </div>
-              <div className="col-lg-5 p-r-0">
+              <div className="col-lg-3 p-r-0">
                 <div
                   className="wrap-input100 validate-input m-b-16"
                   data-validate="Password is required"
@@ -490,7 +490,32 @@ const FormRequest = () => {
                   </span>
                 </div>
               </div>
-              <div className="col-lg-2 p-r-0 p-l-0">
+              <div className='col-lg-4'>
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Password is required"
+                >
+                  <select
+                    className="input100"
+                    type="number"
+                    name="unit"
+                    onChange={handleChangeInfo}
+                    value={unit}
+                  >
+                    <option value="0">Medida Insumo</option>
+                    <option value="Libras">Libras</option>
+                    <option value="Kilogramos">Kilogramos</option>
+                    <option value="Unidad">Unidad</option>
+                    <option value="Gramos">Gramos</option>
+                  </select>
+
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-cart"></span>
+                  </span>
+                </div>
+              </div>
+              <div className="col-lg-1 p-r-0 p-l-0">
                 <button type="button" onClick={obtainSupply}>
                   <span className="focus-input100"></span>
                   <span className="symbol-input200">
@@ -499,20 +524,19 @@ const FormRequest = () => {
                 </button>
               </div>
               <div className="col-12">
-                <ul>
+                <ul className='list-group'>
                   {supplies.length !== 0 ? (
                     supplies.map(supply => {
                       return (
-                        <li key={supply.idSupply}>
-                          idInsumo: {supply.idSupply}
-                          cantidad:
-                          <span className="m-l-4">{supply.quantity}</span>
+                        <li className='list-group-item' key={supply.idSupply}>
+                          Codigo del insumo: {` ${supply.idSupply}`}
+                          <span className="ml-4">Cantidad: {`${supply.quantity}`}</span>
                         </li>
                       );
                     })
                   ) : (
-                    <p>No existen insumos para esta peticion</p>
-                  )}
+                      <p>No existen insumos para esta peticion</p>
+                    )}
                 </ul>
               </div>
             </div>

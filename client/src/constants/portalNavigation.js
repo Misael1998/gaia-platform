@@ -6,6 +6,7 @@ import {
   MdAddShoppingCart
 } from "react-icons/md";
 import { GoPackage } from "react-icons/go";
+import {logout} from '../modules/helper'
 
 const items = [
   {
@@ -34,7 +35,7 @@ const items = [
     icon: <GoPackage size={30} />,
     link: "/portal/inventory"
   },
-  { name: "exit", label: "Cerrar sesión", icon: <MdExitToApp size={30} /> }
+  { name: 'logout', label: 'Cerrar sesion', icon: <MdExitToApp size={30} />, onClick: logout }
 ];
 
 export default items;
