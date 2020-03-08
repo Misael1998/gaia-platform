@@ -317,3 +317,17 @@ exports.getProvider = async (req, res, next) => {
     );
   }
 };
+
+//@desc     get request type
+//@route    GET     /api/data/request
+//@access   Private
+exports.getRequestType = (req, res, next) => {
+  res.send("get request type");
+};
+
+//@desc     get delivery type
+//@route    GET     /api/data/delivery
+//@access   Private
+exports.getDeliveryType = (req, res, next) => {
+  res.send("get delivery type");
+};
