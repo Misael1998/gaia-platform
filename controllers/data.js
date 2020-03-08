@@ -321,13 +321,71 @@ exports.getProvider = async (req, res, next) => {
 //@desc     get request type
 //@route    GET     /api/data/request
 //@access   Private
-exports.getRequestType = (req, res, next) => {
-  res.send("get request type");
+exports.getRequestType = async (req, res, next) => {
+  try {
+    const request = await new mssql.Request().query(
+      "select * from [pyflor].[dbo].FT_GET_REQUEST_TYPE()"
+    );
+    const data = request.recordset;
+    if (data.length === 0) {
+      return errorResponse(
+        404,
+        "no data",
+        [{ msg: "no data in database" }],
+        res
+      );
+    }
+    res.status(200).json({
+      success: true,
+      msg: "request type data",
+      data
+    });
+  } catch (err) {
+    console.log(err);
+    if (err.number === 208) {
+      return errorResponse(
+        500,
+        "server error",
+        [{ msg: "database error" }],
+        res
+      );
+    }
+    errorResponse(500, "server error", [{ msg: "internal server error" }], res);
+  }
 };
 
 //@desc     get delivery type
 //@route    GET     /api/data/delivery
 //@access   Private
-exports.getDeliveryType = (req, res, next) => {
-  res.send("get delivery type");
+exports.getDeliveryType = async (req, res, next) => {
+  try {
+    const request = await new mssql.Request().query(
+      "select * from [pyflor].[dbo].FT_GET_DELIVERY_TYPE()"
+    );
+    const data = request.recordset;
+    if (data.length === 0) {
+      return errorResponse(
+        404,
+        "no data",
+        [{ msg: "no data in database" }],
+        res
+      );
+    }
+    res.status(200).json({
+      success: true,
+      msg: "request type data",
+      data
+    });
+  } catch (err) {
+    console.log(err.number);
+    if (err.number === 208) {
+      return errorResponse(
+        500,
+        "server error",
+        [{ msg: "database error" }],
+        res
+      );
+    }
+    errorResponse(500, "server error", [{ msg: "internal server error" }], res);
+  }
 };
