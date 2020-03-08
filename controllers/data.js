@@ -341,7 +341,7 @@ exports.getRequestType = async (req, res, next) => {
       data
     });
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
     if (err.number === 208) {
       return errorResponse(
         500,
@@ -377,7 +377,7 @@ exports.getDeliveryType = async (req, res, next) => {
       data
     });
   } catch (err) {
-    console.log(err.number);
+    console.log(err.message);
     if (err.number === 208) {
       return errorResponse(
         500,
