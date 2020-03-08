@@ -7,12 +7,12 @@ import { selectProviders } from "../../../../services/Providers";
 import { selectSar } from "../../../../services/Sar";
 import { makeOrder } from "../../../../services/Orders";
 import moment from "moment";
+import Spinner from "../../../../components/Spinner";
 
 const FormRequest = () => {
   //Creando el state para leer los inputs:
   const [infoRequest, handleRequest] = useState({
     supplies: [],
-    unit: "",
     idPaymentMethod: "",
     emissionDate: "",
     idReceiverEmployee: "",
@@ -27,9 +27,19 @@ const FormRequest = () => {
 
   const [supply, setSupply] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [supUnit, setUnit] = useState("");
 
   //State para los insumos:
   const [supplyarray, handleSupplyArray] = useState([]);
+
+  //State de los proveedores
+  const [providers, handleProviders] = useState([]);
+
+  //State para el tipo de sar:
+  const [sarArray, handleSar] = useState([]);
+
+  //State para el spinner:
+  const [loading, setLoading] = useState(true);
 
   //Funcion que se ejecuta cuando se escribe en un input:
   const handleChangeInfo = e => {
@@ -42,7 +52,6 @@ const FormRequest = () => {
   //Extrayendo los valores con destructuring:
   const {
     supplies,
-    unit,
     idPaymentMethod,
     emissionDate,
     idReceiverEmployee,
@@ -59,7 +68,8 @@ const FormRequest = () => {
   const obtainSupply = () => {
     let supplyToAdd = {
       idSupply: supply,
-      quantity
+      quantity,
+      supUnit
     };
 
     let newSupplies = [...infoRequest.supplies, supplyToAdd];
@@ -70,18 +80,22 @@ const FormRequest = () => {
   //State para el error:
   const [error, handleError] = useState(false);
 
-  //State de los tipos de sar
-  const [sar, handleSar] = useState([]);
-
   //State para habilitar el boton:
   const [enableButton, setEnableButton] = useState(true);
 
   useEffect(() => {
-    // selectSupplies()
-    //   .then(res => {
-    //     handleSupplyArray(res);
-    //   })
-    //   .catch(err => console.log(err));
+    selectSupplies().then(res => {
+      handleSupplyArray(res);
+    });
+    selectSar().then(res => {
+      handleSar(res);
+    });
+    selectProviders()
+      .then(res => {
+        handleProviders(res);
+        setLoading(false);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   //Funcion para los campos requeridos hasta habilitar el boton:
@@ -121,7 +135,7 @@ const FormRequest = () => {
     //Validacion:
     if (
       quantity.trim() === "" ||
-      unit.trim() === "" ||
+      supUnit.trim() === "" ||
       idPaymentMethod.trim() === "" ||
       emissionDate.trim() === "" ||
       idReceiverEmployee.trim() === "" ||
@@ -150,11 +164,9 @@ const FormRequest = () => {
       idReceiverEmployee,
       idAddressEmployee,
       numBill,
-      unit,
       supplies
     )
       .then(res => {
-
         Swal.fire(
           "Creacion de Orden Exitosa",
           "La orden se ha creado",
@@ -162,7 +174,6 @@ const FormRequest = () => {
         ).then(e => {
           handleRequest({
             supplies: [],
-            unit: "",
             idPaymentMethod: "",
             emissionDate: "",
             idReceiverEmployee: "",
@@ -173,7 +184,7 @@ const FormRequest = () => {
             idAddressEmployee: "",
             idSenderEmployee: "",
             idCreatedEmployee: ""
-          })
+          });
         });
       })
 
@@ -186,292 +197,33 @@ const FormRequest = () => {
       });
   };
 
-  return (
-    <div className="limiter">
-      <div className="container-login200">
-        <div className="wrap-login200 p-l-40 p-r-40 p-t-5 p-b-30">
-          <form className="login100-form" onSubmit={submitRequest}>
-            <div className="col-lg-6">
-              {/* <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <input
-                  className="input100"
-                  type="number"
-                  name="precioUnitario"
-                  placeholder="Precio Unitario"
-                // onChange={handleChangeInfo}
-                // value={precioUnitario}
-                />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-tag"></span>
-                </span>
-              </div> */}
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <input
-                  className="input100"
-                  type="number"
-                  name="numBill"
-                  placeholder="Numero de Factura"
-                  onChange={handleChangeInfo}
-                  value={numBill}
-                />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-paperclip"></span>
-                </span>
-              </div>
-
-
-              <label className="mb-0">Fecha Emision:</label>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <input
-                  className="input100"
-                  type="date"
-                  placeholder="Fecha de Emision"
-                  name="emissionDate"
-                  onChange={handleChangeInfo}
-                  value={emissionDate}
-                />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-calendar-full"></span>
-                </span>
-              </div>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Valid email is required: ex@abc.xyz"
-              >
-                <select
-                  className="input100"
-                  type="text"
-                  name="idReceiverEmployee"
-                  onChange={handleChangeInfo}
-                  value={idReceiverEmployee}
+  if (loading) {
+    return <Spinner />;
+  } else {
+    return (
+      <div className="limiter">
+        <div className="container-login200">
+          <div className="wrap-login200 p-l-40 p-r-40 p-t-5 p-b-30">
+            <form className="login100-form" onSubmit={submitRequest}>
+              <div className="col-lg-6">
+                {/* <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Password is required"
                 >
-                  <option value="0">Empleado Recibe</option>
-                  <option value="2">Sergio Edgardo</option>
-                  <option value="3">Nelson Damián</option>
-                  <option value="4">Keila Samaria</option>
-                  <option value="5">Wilson Alexis</option>
-                </select>
-
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-user"></span>
-                </span>
-              </div>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Valid email is required: ex@abc.xyz"
-              >
-                <select
-                  className="input100"
-                  type="text"
-                  name="idCreatedEmployee"
-                  onChange={handleChangeInfo}
-                  value={idCreatedEmployee}
-                >
-                  <option value="0">Empleado Crea</option>
-                  <option value="2">Sergio Edgardo</option>
-                  <option value="3">Nelson Damián</option>
-                  <option value="4">Keila Samaria</option>
-                  <option value="5">Wilson Alexis</option>
-                </select>
-
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-user"></span>
-                </span>
-              </div>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Valid email is required: ex@abc.xyz"
-              >
-                <select
-                  className="input100"
-                  type="text"
-                  name="idSenderEmployee"
-                  onChange={handleChangeInfo}
-                  value={idSenderEmployee}
-                >
-                  <option value="0">Empleado Envia</option>
-                  <option value="2">Sergio Edgardo</option>
-                  <option value="3">Nelson Damián</option>
-                  <option value="4">Keila Samaria</option>
-                  <option value="5">Wilson Alexis</option>
-                </select>
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-user"></span>
-                </span>
-              </div>
-            </div>
-
-            {/*****************Segunda columna****************** */}
-
-            <div className="col-lg-6">
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Valid email is required: ex@abc.xyz"
-              >
-                <select
-                  className="input100"
-                  type="text"
-                  name="idProvider"
-                  placeholder="Nombre Proveedor"
-                  onChange={handleChangeInfo}
-                  value={idProvider}
-                >
-                  <option value="0">Nombre Proveedor</option>
-                  <option value="1">Agritade</option>
-                  <option value="2">Del Campo</option>
-                  <option value="3">Alas</option>
-                </select>
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-user"></span>
-                </span>
-              </div>
-
-              <label className="mb-0">Fecha Expiración: </label>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <input
-                  className="input100"
-                  type="date"
-                  placeholder="Fecha de Expiración"
-                  name="expireDate"
-                  onChange={handleChangeInfo}
-                  value={expireDate}
-                />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-calendar-full"></span>
-                </span>
-              </div>
-
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <select
-                  className="input100"
-                  type="number"
-                  name="idSarType"
-                  onChange={handleChangeInfo}
-                  value={idSarType}
-                >
-                  <option value="0">Tipo de SAR</option>
-                  <option value="1">Gravado</option>
-                  <option value="2">Excento</option>
-                </select>
-
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-license"></span>
-                </span>
-              </div>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-              >
-                <select
-                  className="input100"
-                  type="number"
-                  name="idPaymentMethod"
-                  onChange={handleChangeInfo}
-                  value={idPaymentMethod}
-                >
-                  <option value="0">Forma de Pago</option>
-                  <option value="1">Efectivo</option>
-                  <option value="2">Tarjeta</option>
-                </select>
-
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-diamond  "></span>
-                </span>
-              </div>
-
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Valid email is required: ex@abc.xyz"
-              >
-                <select
-                  className="input100"
-                  type="text"
-                  name="idAddressEmployee"
-                  onChange={handleChangeInfo}
-                  value={idAddressEmployee}
-                >
-                  <option value="0">Empleado Solicita</option>
-                  <option value="2">Sergio Edgardo</option>
-                  <option value="3">Nelson Damián</option>
-                  <option value="4">Keila Samaria</option>
-                  <option value="5">Wilson Alexis</option>
-                </select>
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-user"></span>
-                </span>
-              </div>
-
-
-            </div>
-
-            <div className="row m-l-16">
-              <div className="col-lg-4 p-r-0">
-                <div
-                  className="wrap-input100 validate-input m-b-16 row"
-                  data-validate="Valid email is required: ex@abc.xyz"
-                >
-                  <select
-                    className="input100 p-r-0"
-                    type="text"
-                    name="idSupply"
-                    placeholder="Nombre del Insumo"
-                    onChange={e => setSupply(e.target.value)}
-                    value={supply}
-                  >
-                    <option value="0">Nombre Insumo</option>
-                    <option value="1">Semillas</option>
-                    <option value="2">Fertilizante Pony</option>
-                    <option value="4">Bandeja de siembra</option>
-                    <option value="5">Clamp de empaque</option>
-                    <option value="8">Insecticida Bayer</option>
-                    {/* {supplyarray.map(supp => (
-                      <option key={supp.idSupplies} value={supp.name}>
-                        {supp.name}
-                      </option>
-                    ))} */}
-                  </select>
-
+                  <input
+                    className="input100"
+                    type="number"
+                    name="precioUnitario"
+                    placeholder="Precio Unitario"
+                  // onChange={handleChangeInfo}
+                  // value={precioUnitario}
+                  />
                   <span className="focus-input100"></span>
                   <span className="symbol-input100">
-                    <span className="lnr lnr-leaf m-l-5 p-l-3"></span>
+                    <span className="lnr lnr-tag"></span>
                   </span>
-                </div>
-              </div>
-              <div className="col-lg-3 p-r-0">
+                </div> */}
+
                 <div
                   className="wrap-input100 validate-input m-b-16"
                   data-validate="Password is required"
@@ -479,18 +231,159 @@ const FormRequest = () => {
                   <input
                     className="input100"
                     type="number"
-                    name="quantity"
-                    placeholder="Cantidad"
-                    onChange={e => setQuantity(e.target.value)}
-                    value={quantity}
+                    name="numBill"
+                    placeholder="Numero de Factura"
+                    onChange={handleChangeInfo}
+                    value={numBill}
                   />
                   <span className="focus-input100"></span>
                   <span className="symbol-input100">
-                    <span className="lnr lnr-list"></span>
+                    <span className="lnr lnr-paperclip"></span>
+                  </span>
+                </div>
+
+                <label className="mb-0">Fecha Emision:</label>
+
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Password is required"
+                >
+                  <input
+                    className="input100"
+                    type="date"
+                    placeholder="Fecha de Emision"
+                    name="emissionDate"
+                    onChange={handleChangeInfo}
+                    value={emissionDate}
+                  />
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-calendar-full"></span>
+                  </span>
+                </div>
+
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Valid email is required: ex@abc.xyz"
+                >
+                  <select
+                    className="input100"
+                    type="text"
+                    name="idReceiverEmployee"
+                    onChange={handleChangeInfo}
+                    value={idReceiverEmployee}
+                  >
+                    <option value="0">Empleado Recibe</option>
+                    <option value="2">Sergio Edgardo</option>
+                    <option value="3">Nelson Damián</option>
+                    <option value="4">Keila Samaria</option>
+                    <option value="5">Wilson Alexis</option>
+                  </select>
+
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-user"></span>
+                  </span>
+                </div>
+
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Valid email is required: ex@abc.xyz"
+                >
+                  <select
+                    className="input100"
+                    type="text"
+                    name="idCreatedEmployee"
+                    onChange={handleChangeInfo}
+                    value={idCreatedEmployee}
+                  >
+                    <option value="0">Empleado Crea</option>
+                    <option value="2">Sergio Edgardo</option>
+                    <option value="3">Nelson Damián</option>
+                    <option value="5">Keila Samaria</option>
+                    <option value="6">Wilson Alexis</option>
+                  </select>
+
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-user"></span>
+                  </span>
+                </div>
+
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Valid email is required: ex@abc.xyz"
+                >
+                  <select
+                    className="input100"
+                    type="text"
+                    name="idSenderEmployee"
+                    onChange={handleChangeInfo}
+                    value={idSenderEmployee}
+                  >
+                    <option value="0">Empleado Envia</option>
+                    <option value="2">Sergio Edgardo</option>
+                    <option value="3">Nelson Damián</option>
+                    <option value="5">Keila Samaria</option>
+                    <option value="6">Wilson Alexis</option>
+                  </select>
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-user"></span>
                   </span>
                 </div>
               </div>
-              <div className='col-lg-4'>
+
+              {/*****************Segunda columna****************** */}
+
+              <div className="col-lg-6">
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Valid email is required: ex@abc.xyz"
+                >
+                  <select
+                    className="input100"
+                    type="text"
+                    name="idProvider"
+                    placeholder="Nombre Proveedor"
+                    onChange={handleChangeInfo}
+                    value={idProvider}
+                  >
+                    <option value="0">Nombre Proveedor</option>
+                    {providers.map(prov => {
+                      return (
+                        <option key={prov.id} value={prov.id}>
+                          {prov.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-user"></span>
+                  </span>
+                </div>
+
+                <label className="mb-0">Fecha Expiración: </label>
+
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Password is required"
+                >
+                  <input
+                    className="input100"
+                    type="date"
+                    placeholder="Fecha de Expiración"
+                    name="expireDate"
+                    onChange={handleChangeInfo}
+                    value={expireDate}
+                  />
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-calendar-full"></span>
+                  </span>
+                </div>
+
                 <div
                   className="wrap-input100 validate-input m-b-16"
                   data-validate="Password is required"
@@ -498,74 +391,201 @@ const FormRequest = () => {
                   <select
                     className="input100"
                     type="number"
-                    name="unit"
+                    name="idSarType"
                     onChange={handleChangeInfo}
-                    value={unit}
+                    value={idSarType}
                   >
-                    <option value="0">Medida Insumo</option>
-                    <option value="Libras">Libras</option>
-                    <option value="Kilogramos">Kilogramos</option>
-                    <option value="Unidad">Unidad</option>
-                    <option value="Gramos">Gramos</option>
+                    <option value="0">Tipo de SAR</option>
+                    {sarArray.map(s => {
+                      return (
+                        <option key={s.idSarTypes} value={s.idSarTypes}>
+                          {s.description}
+                        </option>
+                      );
+                    })}
                   </select>
 
                   <span className="focus-input100"></span>
                   <span className="symbol-input100">
-                    <span className="lnr lnr-cart"></span>
+                    <span className="lnr lnr-license"></span>
+                  </span>
+                </div>
+
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Password is required"
+                >
+                  <select
+                    className="input100"
+                    type="number"
+                    name="idPaymentMethod"
+                    onChange={handleChangeInfo}
+                    value={idPaymentMethod}
+                  >
+                    <option value="0">Forma de Pago</option>
+                    <option value="1">Efectivo</option>
+                    <option value="2">Crédito</option>
+                  </select>
+
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-diamond  "></span>
+                  </span>
+                </div>
+
+                <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Valid email is required: ex@abc.xyz"
+                >
+                  <select
+                    className="input100"
+                    type="text"
+                    name="idAddressEmployee"
+                    onChange={handleChangeInfo}
+                    value={idAddressEmployee}
+                  >
+                    <option value="0">Empleado Solicita</option>
+                    <option value="2">Sergio Edgardo</option>
+                    <option value="3">Nelson Damián</option>
+                    <option value="5">Keila Samaria</option>
+                    <option value="6">Wilson Alexis</option>
+                  </select>
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-user"></span>
                   </span>
                 </div>
               </div>
-              <div className="col-lg-1 p-r-0 p-l-0">
-                <button type="button" onClick={obtainSupply}>
-                  <span className="focus-input100"></span>
-                  <span className="symbol-input200">
-                    <span className="lnr lnr-plus-circle"></span>
-                  </span>
-                </button>
-              </div>
-              <div className="col-12">
-                <ul className='list-group'>
-                  {supplies.length !== 0 ? (
-                    supplies.map(supply => {
-                      return (
-                        <li className='list-group-item' key={supply.idSupply}>
-                          Codigo del insumo: {` ${supply.idSupply}`}
-                          <span className="ml-4">Cantidad: {`${supply.quantity}`}</span>
-                        </li>
-                      );
-                    })
-                  ) : (
+
+              <div className="row m-l-16">
+                <div className="col-lg-4 p-r-0">
+                  <div
+                    className="wrap-input100 validate-input m-b-16 row"
+                    data-validate="Valid email is required: ex@abc.xyz"
+                  >
+                    <select
+                      className="input100 p-r-0"
+                      type="text"
+                      name="idSupply"
+                      placeholder="Nombre del Insumo"
+                      onChange={e => setSupply(e.target.value)}
+                      value={supply}
+                    >
+                      <option value="0">Nombre Insumo</option>
+                      {supplyarray.map(supp => (
+                        <option key={supp.idSupplies} value={supp.idSupplies}>
+                          {supp.name}
+                        </option>
+                      ))}
+                    </select>
+
+                    <span className="focus-input100"></span>
+                    <span className="symbol-input100">
+                      <span className="lnr lnr-leaf m-l-5 p-l-3"></span>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-lg-3 p-r-0">
+                  <div
+                    className="wrap-input100 validate-input m-b-16"
+                    data-validate="Password is required"
+                  >
+                    <input
+                      className="input100"
+                      type="number"
+                      name="quantity"
+                      placeholder="Cantidad"
+                      onChange={e => setQuantity(e.target.value)}
+                      value={quantity}
+                    />
+                    <span className="focus-input100"></span>
+                    <span className="symbol-input100">
+                      <span className="lnr lnr-list"></span>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-lg-4">
+                  <div
+                    className="wrap-input100 validate-input m-b-16"
+                    data-validate="Password is required"
+                  >
+                    <select
+                      className="input100"
+                      type="text"
+                      name="unit"
+                      onChange={e => setUnit(e.target.value)}
+                      value={supUnit}
+                    >
+                      <option value="0">Medida Insumo</option>
+                      <option value="Libras">Libras</option>
+                      <option value="Kilogramos">Kilogramos</option>
+                      <option value="Unidad">Unidad</option>
+                      <option value="Gramos">Gramos</option>
+                    </select>
+
+                    <span className="focus-input100"></span>
+                    <span className="symbol-input100">
+                      <span className="lnr lnr-cart"></span>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-lg-1 p-r-0 p-l-0">
+                  <button type="button" onClick={obtainSupply}>
+                    <span className="focus-input100"></span>
+                    <span className="symbol-input200">
+                      <span className="lnr lnr-plus-circle"></span>
+                    </span>
+                  </button>
+                </div>
+                <div className="col-12">
+                  <ul className="list-group">
+                    {supplies.length !== 0 ? (
+                      supplies.map(supply => {
+                        return (
+                          <li className="list-group-item" key={supply.idSupply}>
+                            Codigo del insumo: {` ${supply.idSupply}`}
+                            <span className="ml-4">
+                              Cantidad: {`${supply.quantity}`}
+                            </span>
+                            <span className="ml-4">
+                              Medida: {`${supply.supUnit}`}
+                            </span>
+                          </li>
+                        );
+                      })
+                    ) : (
                       <p>No existen insumos para esta peticion</p>
                     )}
-                </ul>
+                  </ul>
+                </div>
               </div>
-            </div>
 
-            {error ? (
-              <p className="alert alert-danger error-p text-white text-center">
-                Todos los campos son obligatorios
-              </p>
-            ) : null}
+              {error ? (
+                <p className="alert alert-danger error-p text-white text-center">
+                  Todos los campos son obligatorios
+                </p>
+              ) : null}
 
-            {/*Aqui comienza el boton!!!*/}
-            <div className="container-login100-form-btn p-t-25">
-              <button
-                type="submit"
-                className={
-                  !enableButton
-                    ? "login100-form-btn"
-                    : "btn btn-lg btn-disabled"
-                }
-                disabled={enableButton}
-              >
-                Realizar Solicitud
-              </button>
-            </div>
-          </form>
+              {/*Aqui comienza el boton!!!*/}
+              <div className="container-login100-form-btn p-t-25">
+                <button
+                  type="submit"
+                  className={
+                    !enableButton
+                      ? "login100-form-btn"
+                      : "btn btn-lg btn-disabled"
+                  }
+                  disabled={enableButton}
+                >
+                  Realizar Solicitud
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default FormRequest;
