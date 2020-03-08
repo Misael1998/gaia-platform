@@ -12,6 +12,9 @@ VALUES
 ),
 (
  'verdura'
+),
+(
+ 'pilón'
 )
 -- Add more rows here
 GO

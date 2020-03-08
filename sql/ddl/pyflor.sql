@@ -341,7 +341,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS] (
   idProducts INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   description VARCHAR(200) NULL,
-  productImage IMAGE NOT NULL,
+  productImage IMAGE NULL,
   idSarTypes INT NOT NULL,
   PRIMARY KEY (idProducts),
   CONSTRAINT fk_TBL_PRODUCTS_TBL_SAR_TYPES1
