@@ -10,6 +10,7 @@ export const URL_GET_PROVIDERS = "/api/data/providers";
 export const URL_GET_PRODUCTS = "/api/data/products";
 export const URL_GET_INVENTORY = "/api/data/inventory";
 export const URL_POST_ORDER = "/api/order/provider/order";
+export const URL_GET_EMPLOYEES = "/api/data/employees";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = token =>

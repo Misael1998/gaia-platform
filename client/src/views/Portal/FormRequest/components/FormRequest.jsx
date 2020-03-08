@@ -5,6 +5,7 @@ import "../../../../styles/util.css";
 import { selectSupplies } from "../../../../services/Supplies";
 import { selectProviders } from "../../../../services/Providers";
 import { selectSar } from "../../../../services/Sar";
+import { selectEmployee } from "../../../../services/Employees";
 import { makeOrder } from "../../../../services/Orders";
 import moment from "moment";
 import Spinner from "../../../../components/Spinner";
@@ -40,6 +41,9 @@ const FormRequest = () => {
 
   //State para el spinner:
   const [loading, setLoading] = useState(true);
+
+  //State para los empleados:
+  const [employees, handleEmployees] = useState([]);
 
   //Funcion que se ejecuta cuando se escribe en un input:
   const handleChangeInfo = e => {
@@ -86,6 +90,9 @@ const FormRequest = () => {
   useEffect(() => {
     selectSupplies().then(res => {
       handleSupplyArray(res);
+    });
+    selectEmployee().then(res => {
+      handleEmployees(res);
     });
     selectSar().then(res => {
       handleSar(res);
@@ -274,10 +281,11 @@ const FormRequest = () => {
                     value={idReceiverEmployee}
                   >
                     <option value="0">Empleado Recibe</option>
-                    <option value="2">Sergio Edgardo</option>
-                    <option value="3">Nelson Damián</option>
-                    <option value="4">Keila Samaria</option>
-                    <option value="5">Wilson Alexis</option>
+                    {employees.map(emp => (
+                      <option key={emp.idEmployees} value={emp.idEmployees}>
+                        {emp.userName + " " + emp.lastname}
+                      </option>
+                    ))}
                   </select>
 
                   <span className="focus-input100"></span>
@@ -298,10 +306,11 @@ const FormRequest = () => {
                     value={idCreatedEmployee}
                   >
                     <option value="0">Empleado Crea</option>
-                    <option value="2">Sergio Edgardo</option>
-                    <option value="3">Nelson Damián</option>
-                    <option value="5">Keila Samaria</option>
-                    <option value="6">Wilson Alexis</option>
+                    {employees.map(emp => (
+                      <option key={emp.idEmployees} value={emp.idEmployees}>
+                        {emp.userName + " " + emp.lastname}
+                      </option>
+                    ))}
                   </select>
 
                   <span className="focus-input100"></span>
@@ -322,10 +331,11 @@ const FormRequest = () => {
                     value={idSenderEmployee}
                   >
                     <option value="0">Empleado Envia</option>
-                    <option value="2">Sergio Edgardo</option>
-                    <option value="3">Nelson Damián</option>
-                    <option value="5">Keila Samaria</option>
-                    <option value="6">Wilson Alexis</option>
+                    {employees.map(emp => (
+                      <option key={emp.idEmployees} value={emp.idEmployees}>
+                        {emp.userName + " " + emp.lastname}
+                      </option>
+                    ))}
                   </select>
                   <span className="focus-input100"></span>
                   <span className="symbol-input100">
@@ -445,10 +455,11 @@ const FormRequest = () => {
                     value={idAddressEmployee}
                   >
                     <option value="0">Empleado Solicita</option>
-                    <option value="2">Sergio Edgardo</option>
-                    <option value="3">Nelson Damián</option>
-                    <option value="5">Keila Samaria</option>
-                    <option value="6">Wilson Alexis</option>
+                    {employees.map(emp => (
+                      <option key={emp.idEmployees} value={emp.idEmployees}>
+                        {emp.userName + " " + emp.lastname}
+                      </option>
+                    ))}
                   </select>
                   <span className="focus-input100"></span>
                   <span className="symbol-input100">
