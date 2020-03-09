@@ -1,34 +1,107 @@
 const { validationResult } = require("express-validator");
 const errorResponse = require("../utils/errorResponse");
 const moment = require("moment");
+const mssql = require("mssql");
 
 //@desc     insert order into DB
 //@route    post     /api/data/products
 //@access   Private
-exports.request = (req, res, next) => {
+exports.request = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorResponse(400, "Validation errors", errors.array(), res);
   }
-  const {
-    emissionDate,
-    shipping,
-    requestType,
-    deliveryType,
-    products
-  } = req.body;
+  const { emissionDate, shipping, requestType, deliveryType } = req.body;
+  let products = req.body.products.map(product => {
+    tmp = {
+      product: product.product,
+      quantity: product.quantity,
+      inserted: false
+    };
+    return tmp;
+  });
 
-  isDateValid = moment(emissionDate).isValid();
+  // isDateValid = moment(emissionDate).isValid();
 
-  if (!isDateValid) {
+  // if (!isDateValid) {
+  //   return errorResponse(
+  //     400,
+  //     "Validation errors",
+  //     [{ msg: "invalid date" }],
+  //     res
+  //   );
+  // }
+  try {
+    let userType = [];
+    const { userId, role } = req.user;
+    if (role === "individual") {
+      userType = [null, userId];
+    }
+    if (role === "enterprise") {
+      userType = [userId, null];
+    }
+
+    const request = await new mssql.Request()
+      .input("deliveryID", mssql.Int, deliveryType)
+      .input("requestTypeID", mssql.Int, requestType)
+      .input("date", mssql.DateTime, emissionDate)
+      .input("shipping", mssql.Float, shipping)
+      .input("eClientID", mssql.Int, userType[0])
+      .input("iClientID", mssql.Int, userType[1])
+      .output("msj", mssql.VarChar(100))
+      .output("err", mssql.VarChar(100))
+      .output("id", mssql.Int)
+      .execute("SP_INSERT_REQUEST");
+
+    const { msj } = request.output;
+    if (msj !== "success") {
+      return errorResponse(400, "Bad request", [{ msj: msj }], res);
+    }
+
+    for (let product of products) {
+      if (!product.inserted) {
+        const productsRequest = await new mssql.Request()
+          .input("productId", mssql.Int, product.product)
+          .input("requestId", mssql.Int, request.output.id)
+          .input("quantity", mssql.Int, product.quantity)
+          .output("msj", mssql.VarChar(100))
+          .output("err", mssql.VarChar(100))
+          .execute("SP_INSERT_PRODUCTS_IN_ORDER");
+        if (productsRequest.output.msj === "success") {
+          product.inserted = true;
+        }
+      }
+    }
+
+    return res.status(201).json({
+      success: true,
+      msg: "request palce",
+      data: products
+    });
+    //continue here
+  } catch (err) {
+    console.log(err.message);
+    if (err.number === 547) {
+      if (err.procName === "SP_INSERT_PRODUCTS_IN_ORDER") {
+        return errorResponse(
+          400,
+          "Bad request",
+          [{ msg: "products.product values may be invalids", data: products }],
+          res
+        );
+      }
+      return errorResponse(
+        400,
+        "Bad request",
+        [{ msg: "requestType or deliveryType values may be invalids" }],
+        res
+      );
+    }
     return errorResponse(
-      400,
-      "Validation errors",
-      { msg: "invalid date" },
+      500,
+      "server error",
+      [{ msg: "internal server error" }],
       res
     );
   }
-
-  console.log(req.body);
-  res.send("request route");
 };
