@@ -1,10 +1,11 @@
 import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { CustomToggle } from "../CustomToggle";
-import { Link } from "react-router-dom";
+import CustomLink from './CustomLink'
+
 
 const SidebarDrop = ({ name, subitems, icon }) => {
-  console.log(subitems);
+
   return (
     <Dropdown drop="right">
       <Dropdown.Toggle as={CustomToggle} id="sidebarDrop">
@@ -12,11 +13,11 @@ const SidebarDrop = ({ name, subitems, icon }) => {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {subitems.map(item => (
-          <Link to={item.link} key={item.name}>
-            <Dropdown.Item>
-              {item.icon} {item.label}
-            </Dropdown.Item>
-          </Link>
+
+          <Dropdown.Item as={CustomLink} key={item.name} link={item.link}>
+            {item.icon} {item.label}
+          </Dropdown.Item>
+
         ))}
       </Dropdown.Menu>
     </Dropdown>
