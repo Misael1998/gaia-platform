@@ -17,17 +17,16 @@ const items = [
   },
   {
     name: "purchases",
-    label: "Añadir compra",
+    label: "Compras",
     icon: <MdShoppingBasket size={30} />,
-    // subitems: [
-    //   {
-    //     name: "addPurchase",
-    //     label: "Añadir solicitud",
-    //     icon: <MdAddShoppingCart size={30} />,
-    //     link: "/portal/purchase-request"
-    //   }
-    // ],
-    link: "/portal/purchases-request"
+    subitems: [
+      {
+        name: "addPurchase",
+        label: "Ingresar compra",
+        icon: <MdAddShoppingCart size={30} />,
+        link: "/portal/purchases-request"
+      }
+    ],
   },
   {
     name: "inventory",

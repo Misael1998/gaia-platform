@@ -75,7 +75,7 @@ const Cart = () => {
                 <span className="font-weight-bold ">Total:</span> L {total}
               </div>
               <div className="mt-5">
-                <button className="btn btn-success btn-block">
+                <button className="btn btn-success btn-block" disabled>
                   Proceder con el pago
                 </button>
               </div>
