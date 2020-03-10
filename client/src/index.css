@@ -59,3 +59,13 @@ body {
   background-color: #219953!important;
   cursor: pointer;
 }
+
+
+.bubble-style {
+  display: flex;
+  width: 2.0em;
+  height: 2.0em;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
