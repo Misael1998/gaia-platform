@@ -6,23 +6,24 @@ const authorize = require("../middleware/authorize");
 
 const { request } = require("../controllers/request");
 
-router
-  .route("/")
-  .post(
+router.route("/").post(
+  [
     [
-      [
-        check("emissionDate", "submit a valid date").matches(
-          /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/
-        ),
-        check("shipping", "submit shipping").exists(),
-        check("requestType", "submit a request type").exists(),
-        check("deliveryType", "submit a delivery type").exists(),
-        check("products", "submit an array of products").isArray()
-      ],
-      auth,
-      authorize("enterprise", "individual")
+      check("emissionDate", "submit a valid date").matches(
+        /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/
+      ),
+      check("shipping", "submit shipping").exists(),
+      check("requestType", "submit a request type").exists(),
+      check("deliveryType", "submit a delivery type").exists(),
+      check("products", "submit an array of products")
+        .isArray()
+        .not()
+        .isEmpty()
     ],
-    request
-  );
+    auth,
+    authorize("enterprise", "individual")
+  ],
+  request
+);
 
 module.exports = router;

@@ -72,7 +72,7 @@ exports.request = async (req, res, next) => {
 
     return res.status(201).json({
       success: true,
-      msg: "request palce",
+      msg: "request palced",
       data: products
     });
   } catch (err) {
@@ -80,8 +80,8 @@ exports.request = async (req, res, next) => {
     if (err.number === 547) {
       if (err.procName === "SP_INSERT_PRODUCTS_IN_ORDER") {
         return errorResponse(
-          400,
-          "Bad request",
+          202,
+          "Request acepted",
           [
             {
               msg:
