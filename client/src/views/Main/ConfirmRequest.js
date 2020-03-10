@@ -4,6 +4,7 @@ import { FaClipboardCheck } from 'react-icons/fa'
 import SummaryItem from './components/SummaryItem';
 import BuySummary from './components/BuySummary';
 import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment } from 'react-icons/md'
+import BubbleIcon from '../../components/BubbleIcon';
 
 
 const ConfirmRequest = () => {
@@ -27,15 +28,11 @@ const ConfirmRequest = () => {
                     <div className='col-12 mt-3'>
                         <div className='row'>
                             <div className='col-6 d-flex flex-row align-items-center justify-content-center'>
-                                <span className='bubble-style primary-color text-white mr-2'>
-                                    <MdLocalShipping />
-                                </span>
+                                <BubbleIcon icon={<MdLocalShipping />} />
                                 <span className='font-weight-bold'>Tipo de envio:{' '} </span> Tipo de envio
                             </div>
                             <div className='col-6 d-flex flex-row align-items-center justify-content-center'>
-                                <span className='bubble-style primary-color text-white mr-2'>
-                                    <MdPayment />
-                                </span>
+                                <BubbleIcon icon={<MdPayment />} />
                                 <span className='font-weight-bold'>Tipo de pago:{' '} </span> Tipo de pago
                             </div>
                         </div>
