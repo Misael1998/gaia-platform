@@ -3,8 +3,8 @@ const errorResponse = require("../utils/errorResponse");
 const moment = require("moment");
 const mssql = require("mssql");
 
-//@desc     insert order into DB
-//@route    post     /api/data/products
+//@desc     insert request with products into DB
+//@route    post     /api/request
 //@access   Private
 exports.request = async (req, res, next) => {
   const errors = validationResult(req);
