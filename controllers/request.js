@@ -13,6 +13,14 @@ exports.request = async (req, res, next) => {
   }
   const { emissionDate, shipping, requestType, deliveryType } = req.body;
   let products = req.body.products.map(product => {
+    if (product.quantity < 1 || product.quantity === null) {
+      return errorResponse(
+        400,
+        "Validation errors",
+        [{ msg: "Quantity value in products must be a number greater than 0" }],
+        res
+      );
+    }
     tmp = {
       product: product.product,
       quantity: product.quantity,
@@ -20,17 +28,6 @@ exports.request = async (req, res, next) => {
     };
     return tmp;
   });
-
-  // isDateValid = moment(emissionDate).isValid();
-
-  // if (!isDateValid) {
-  //   return errorResponse(
-  //     400,
-  //     "Validation errors",
-  //     [{ msg: "invalid date" }],
-  //     res
-  //   );
-  // }
   try {
     let userType = [];
     const { userId, role } = req.user;
@@ -78,7 +75,6 @@ exports.request = async (req, res, next) => {
       msg: "request palce",
       data: products
     });
-    //continue here
   } catch (err) {
     console.log(err.message);
     if (err.number === 547) {
