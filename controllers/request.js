@@ -82,7 +82,13 @@ exports.request = async (req, res, next) => {
         return errorResponse(
           400,
           "Bad request",
-          [{ msg: "products.product values may be invalids", data: products }],
+          [
+            {
+              msg:
+                "Order placed with or without some produts, products.product values may be invalids",
+              data: products
+            }
+          ],
           res
         );
       }
