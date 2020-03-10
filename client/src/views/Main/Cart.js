@@ -3,6 +3,7 @@ import { MdShoppingCart } from "react-icons/md";
 import { useSelector } from 'react-redux'
 import CartItem from "./components/CartItem";
 import Title from "../../components/Title";
+import BuySummary from "./components/BuySummary";
 
 
 const Cart = () => {
@@ -47,33 +48,7 @@ const Cart = () => {
               }
             </div>
             <div className="col-4">
-              <div className="mb-4">
-                <h4 className="text-center">Resumen de compra</h4>
-              </div>
-              <div className="mb-2">
-                <span className="font-weight-bold m-r-170">Subtotal:</span>L
-                {sum}
-              </div>
-              <div className="mb-2">
-                <span className="font-weight-bold m-r-173">ISV 15%:</span>L {isv}
-              </div>
-              <div className="mb-2">
-                <span className="font-weight-bold m-r-173">ISV 18%:</span>L 0.00
-              </div>
-              <div className="mb-2">
-                <span className="font-weight-bold m-r-135">Total Excento:</span>L
-                {sumExcent}
-              </div>
-              <div className="mb-2">
-                <span className="font-weight-bold m-r-130">Total Gravado:</span>L
-                {sumGrav}
-              </div>
-              <div>
-                <hr />
-              </div>
-              <div className="mt-3 text-center fa-lg">
-                <span className="font-weight-bold ">Total:</span> L {total}
-              </div>
+              <BuySummary subtotal={sum} isv15={isv} excent={sumExcent} grav={sumGrav} total={total}/>
               <div className="mt-5">
                 <button className="btn btn-success btn-block" disabled>
                   Proceder con el pago
