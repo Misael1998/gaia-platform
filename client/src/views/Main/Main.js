@@ -20,7 +20,7 @@ const Main = ({ match }) => {
         <Route path={`${match.path}/profile`} isPrivate />
         <Route path={`${match.path}/cart`} component={Cart} isPrivate />
         <Route path={`${match.path}/products`} component={Products} isPrivate />
-        <Route path={`${match.path}/orders`} component={Orders} isPrivate/>
+        <Route path={`${match.path}/requests`} component={Orders} isPrivate/>
         <Route path={`${match.path}/confirm`} component={ConfirmRequest} isPrivate/>
         <Route path={`${match.path}/product/:id`} component={ProductDetail} isPrivate />
         
