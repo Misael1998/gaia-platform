@@ -6,10 +6,10 @@ module.exports = (...roles) => {
     if (!roles.includes(req.user.role)) {
       return errorResponse(
         403,
-        "Acces denied",
+        "Access denied",
         [
           {
-            msg: `User with ${req.user.role} role is not authorize to access this route`
+            msg: `User with ${req.user.role} role is not authorize to access this resource`
           }
         ],
         res
