@@ -26,7 +26,13 @@ const items = [
         label: "Ingresar compra",
         icon: <MdAddShoppingCart size={30} />,
         link: "/portal/purchases-request"
-      }
+      },
+      {
+        name: "referrals",
+        label: "Remisiones",
+        icon: <FaExchangeAlt size={30} />,
+        link: "/portal/referrals"
+      },
     ],
   },
   {
@@ -34,12 +40,6 @@ const items = [
     label: "Inventario",
     icon: <GoPackage size={30} />,
     link: "/portal/inventory"
-  },
-  {
-    name: "referrals",
-    label: "Remisiones",
-    icon: <FaExchangeAlt size={30} />,
-    link: "/portal/referrals"
   },
   { name: 'logout', label: 'Cerrar sesion', icon: <MdExitToApp size={30} />, onClick: logout }
 ];
