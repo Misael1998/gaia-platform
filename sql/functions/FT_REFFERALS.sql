@@ -8,8 +8,8 @@ RETURN
     SELECT 
         r.idRefferals idRefferal,
         r.idOrders as idOrder,
-        o.expired_date,
         o.emission_date,
+        o.expired_date,
         userCreated.name + ' '+ userCreated.lastname as CreatedEmployee,
         senderUser.name + ' '+senderUser.lastname as SenderEmployee,
         receiverUser.name + ' '+receiverUser.lastname as ReceiverEmployee,

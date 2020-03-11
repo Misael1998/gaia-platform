@@ -323,13 +323,14 @@ exports.getProvider = async (req, res, next) => {
 //@access   Private
 exports.refferals = async (req,res) => {
   try {
-    const query = await new mssql.Request().query("select * from FT_REFFERALS()");
+    const query = await new mssql.Request().query("select * FROM FT_REFFERALS()");
     const data = query.recordset;
     if(data.length == 0){
-      return errorResponse(404,
-        "No refferals found",
-        [{msg:"No refferals found"}],
-        res);
+      return res.status(200).json({
+        success:true,
+        msg:"No refferals data yet",
+        data
+      })
     }
     return res.status(200).json({
       success:true,
