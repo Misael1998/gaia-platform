@@ -189,6 +189,10 @@ iframe {
   z-index: 1;
 }
 
+.container-loginEmp {
+  width: 1300px;
+}
+
 .lim2 {
   height: 144vh !important;
 }
@@ -245,6 +249,18 @@ iframe {
   margin-left: 0px;
   margin-right: 233px;
 }
+
+.wrap-login300 {
+  width: 1000x;
+  /* height: 800px; */
+  background: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-left: 0px;
+  margin-right: 120px;
+  margin-left: 120px;
+}
+
 .wrap-filter {
   width: 100%;
   background: #fff;

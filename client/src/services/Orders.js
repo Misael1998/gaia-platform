@@ -12,7 +12,6 @@ export const makeOrder = async (
   idReceiverEmployee,
   idAddressEmployee,
   numBill,
-  unit,
   supplies
 ) => {
   for (var i = 0; i < supplies.length; i++) {
@@ -29,7 +28,7 @@ export const makeOrder = async (
       numBill,
       idSupply: supplies[i].idSupply,
       quantity: supplies[i].quantity,
-      unit
+      unit: supplies[i].supUnit
     };
 
     console.log("Payload: ", payload);

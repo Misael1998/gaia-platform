@@ -79,6 +79,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_ENTERPRISE_CLIENTS] (
   idEnterpriseClients INT NOT NULL IDENTITY(1,1),
   company_name VARCHAR(45) NOT NULL,
   contact_name VARCHAR(45) NOT NULL,
+  business_name VARCHAR(100),
   RTN VARCHAR(14) NOT NULL,
   contact_number VARCHAR(12) NULL,
   idUser INT NOT NULL,
@@ -119,10 +120,10 @@ CREATE TABLE [pyflor].[dbo].[TBL_DELIVERY_TYPES] (
 -- Table [pyflor].[dbo].[TBL_ORDER_TYPES]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_ORDER_TYPES] (
-  idOrderType INT NOT NULL IDENTITY(1,1),
+CREATE TABLE [pyflor].[dbo].[TBL_REQUEST_TYPES] (
+  idRequestType INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idOrderType))
+  PRIMARY KEY (idRequestType))
 ;
 
 
@@ -136,7 +137,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS] (
   idDeliveryType INT NOT NULL,
   emission_date DATETIME NOT NULL,
   shipping FLOAT NULL,
-  idOrderType INT NOT NULL,
+  idRequestType INT NOT NULL,
   idEnterpriseClient INT NULL,
   idIndividualClient INT NULL,
   PRIMARY KEY (idRequests),
@@ -145,9 +146,9 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS] (
     REFERENCES TBL_DELIVERY_TYPES (idDeliveryType)
 
    ,
-  CONSTRAINT fk_TBL_REQUESTS_TBL_ORDER_TYPES1
-    FOREIGN KEY (idOrderType)
-    REFERENCES TBL_ORDER_TYPES (idOrderType)
+  CONSTRAINT fk_TBL_REQUESTS_TBL_REQUEST_TYPES
+    FOREIGN KEY (idRequestType)
+    REFERENCES TBL_REQUEST_TYPES (idRequestType)
 
    ,
   CONSTRAINT fk_TBL_REQUESTS_TBL_ENTERPRISE_CLIENTS1
@@ -263,9 +264,9 @@ CREATE TABLE [pyflor].[dbo].[TBL_ORDERS] (
   idOrders INT NOT NULL IDENTITY(1,1),
   emission_date DATETIME NOT NULL,
   expired_date DATETIME NOT NULL,
-  total INT NOT NULL,
-  value VARCHAR(45) NOT NULL,
-  isv VARCHAR(45) NOT NULL,
+  total FLOAT NOT NULL,
+  value FLOAT NOT NULL,
+  isv FLOAT NOT NULL,
   idEmployees INT NOT NULL,
   idProviders INT NOT NULL,
   idSarTypes INT NOT NULL,
@@ -340,7 +341,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS] (
   idProducts INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   description VARCHAR(200) NULL,
-  productImage IMAGE NOT NULL,
+  productImage IMAGE NULL,
   idSarTypes INT NOT NULL,
   PRIMARY KEY (idProducts),
   CONSTRAINT fk_TBL_PRODUCTS_TBL_SAR_TYPES1
@@ -394,22 +395,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_REFFERALS] (
 ;
 
 
--- -----------------------------------------------------
--- Table [pyflor].[dbo].[TBL_INVENTORY]
--- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_INVENTORY] (
-  idInventory INT NOT NULL IDENTITY(1,1),
-  in_date DATE NOT NULL,
-  out_date DATE NOT NULL,
-  idSupplies INT NOT NULL,
-  PRIMARY KEY (idInventory),
-  CONSTRAINT fk_TBL_INVENTORY_TBL_SUPPLIES1
-    FOREIGN KEY (idSupplies)
-    REFERENCES TBL_SUPPLIES (idSupplies)
-
-   )
-;
 
 
 -- -----------------------------------------------------
@@ -561,11 +547,11 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRO_BILL] (
 
 
 -- -----------------------------------------------------
--- Table [pyflor].[dbo].[TBL_DISCOUTS]
+-- Table [pyflor].[dbo].[TBL_DISCOUNTS]
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_DISCOUTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_DISCOUNTS] (
   idDiscounts INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   percentage INT NOT NULL,
@@ -587,22 +573,22 @@ CREATE TABLE [pyflor].[dbo].[TBL_TAXES] (
 
 
 -- -----------------------------------------------------
--- Table [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_DISCOUTS]
+-- Table [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_DISCOUNTS]
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_DISCOUTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_DISCOUNTS] (
   idCaiBills INT NOT NULL,
   idDiscounts INT NOT NULL,
   PRIMARY KEY (idCaiBills, idDiscounts),
-  CONSTRAINT fk_TBL_CAI_BILL_has_TBL_DISCOUTS_TBL_CAI_BILL1
+  CONSTRAINT fk_TBL_CAI_BILL_has_TBL_DISCOUNTS_TBL_CAI_BILL1
     FOREIGN KEY (idCaiBills)
     REFERENCES TBL_CAI_BILL (idCaiBills)
 
    ,
-  CONSTRAINT fk_TBL_CAI_BILL_has_TBL_DISCOUTS_TBL_DISCOUTS1
+  CONSTRAINT fk_TBL_CAI_BILL_has_TBL_DISCOUNTS_TBL_DISCOUNTS1
     FOREIGN KEY (idDiscounts)
-    REFERENCES TBL_DISCOUTS (idDiscounts)
+    REFERENCES TBL_DISCOUNTS (idDiscounts)
 
    )
 ;
@@ -662,3 +648,18 @@ CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_REDUCTIONS] (
 
    )
 ;
+
+
+-- Create the table in the specified schema
+CREATE TABLE [pyflor].[dbo].[TBL_FORGOT_PASSWORD_TOKENS]
+(
+    [idTokens] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    [token] VARCHAR(MAX) NOT NULL,
+    [tokenExpire] DATETIME NOT NULL,
+    [idUser] INT NOT NULL
+    CONSTRAINT [fk_TBL_FORGOT_PASSWORD_TOKENS] 
+    FOREIGN KEY([idUser])
+    REFERENCES [pyflor].[dbo].[TBL_USERS] ([idUser])
+)
+;
+
