@@ -16,6 +16,7 @@ const user = require("./routes/user");
 const order = require("./routes/order");
 const data = require("./routes/data");
 const request = require("./routes/request");
+const employees = require("./routes/employees");
 
 //mount routes
 server.use("/api/auth", auth);
@@ -23,6 +24,7 @@ server.use("/api/user", user);
 server.use("/api/order", order);
 server.use("/api/data", data);
 server.use("/api/request", request);
+server.use("/api/employees", employees);
 
 //init database
 db();

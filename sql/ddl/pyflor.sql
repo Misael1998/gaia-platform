@@ -47,6 +47,22 @@ CREATE TABLE [pyflor].[dbo].[TBL_INDIVIDUAL_CLIENTS] (
    )
 ;
 
+-- -----------------------------------------------------
+-- Table [pyflor].[dbo].[TBL_ADMINS]
+-- -----------------------------------------------------
+
+CREATE TABLE [pyflor].[dbo].[TBL_ADMINS] (
+  idAdmin INT NOT NULL IDENTITY(1,1),
+  idUser INT NOT NULL,
+  PRIMARY KEY (idAdmin),
+
+  CONSTRAINT fk_TBL_ADMIN_TBL_USERS
+    FOREIGN KEY (idUser)
+    REFERENCES TBL_USERS (idUser)
+
+   )
+;
+
 
 -- -----------------------------------------------------
 -- Table [pyflor].[dbo].[TBL_COMPANY_TYPE]
