@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Title from '../../../components/Title'
 import { FaExchangeAlt } from 'react-icons/fa'
+import { MdPrint } from 'react-icons/md';
 
 const Referrals = () => {
 
@@ -63,7 +64,12 @@ const Referrals = () => {
                     filter !== '' ? filterInput : null
                 }
             </div>
-            <div className='col-12 mt-4'>
+            <div className='offset-10 col-2 mt-4'>
+                <button className='btn btn-large btn-success'>
+                    <MdPrint className='mr-2'/> Imprimir
+                </button>
+            </div>
+            <div className='col-12 mt-2'>
                 <table className="table table-bordered table-striped">
                     <thead className="primary-color text-white">
                         <tr>
