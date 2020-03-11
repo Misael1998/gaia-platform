@@ -6,7 +6,8 @@ import {
   MdAddShoppingCart
 } from "react-icons/md";
 import { GoPackage } from "react-icons/go";
-import {logout} from '../modules/helper'
+import { FaExchangeAlt } from 'react-icons/fa'
+import { logout } from '../modules/helper'
 
 const items = [
   {
@@ -33,6 +34,12 @@ const items = [
     label: "Inventario",
     icon: <GoPackage size={30} />,
     link: "/portal/inventory"
+  },
+  {
+    name: "referrals",
+    label: "Remisiones",
+    icon: <FaExchangeAlt size={30} />,
+    link: "/portal/referrals"
   },
   { name: 'logout', label: 'Cerrar sesion', icon: <MdExitToApp size={30} />, onClick: logout }
 ];
