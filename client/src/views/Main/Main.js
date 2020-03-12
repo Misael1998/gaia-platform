@@ -5,6 +5,7 @@ import SideNavbar from "../../components/Layout/SideNavbar";
 import Cart from "./Cart";
 import ProductDetail from "./ProductDetail";
 import Products from "./Products";
+import Shipping from "./Shipping";
 import { Redirect } from "react-router-dom";
 
 const Main = ({ match }) => {
@@ -18,6 +19,7 @@ const Main = ({ match }) => {
         <Route path={`${match.path}/profile`} isPrivate />
         <Route path={`${match.path}/cart`} component={Cart} isPrivate />
         <Route path={`${match.path}/products`} component={Products} isPrivate />
+        <Route path={`${match.path}/shipping`} component={Shipping} isPrivate />
         <Route
           path={`${match.path}/product/:id`}
           component={ProductDetail}
