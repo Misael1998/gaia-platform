@@ -3,7 +3,7 @@ import "../../../../styles/FormLog.css";
 import "../../../../styles/util.css";
 import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
-// import { registerEmployee } from "../../../services/";
+import { registerEmployee } from "../../../../services/RegEmployee";
 import Swal from "sweetalert2";
 import Title from "../../../../components/Title";
 import { FaWpforms } from "react-icons/fa";
@@ -111,34 +111,32 @@ const FormRegEmp = ({ history }) => {
 
     handleError(false);
 
-    //Peticion al endpoint de usuario normal:
-    // registerEmployee(
-    //   empName,
-    //   empLast,
-    //   address,
-    //   phone,
-    //   email,
-    //   jobTitle,
-    //   department,
-    //   admissionDate,
-    //   password
-    // )
-    //   .then(res => {
-    //     Swal.fire(
-    //       "Registro Exitoso",
-    //       "Se ha creado el usuario exitosamente",
-    //       "success"
-    //     ).then(e => {
-    //       history.push("/login");
-    //     });
-    //   })
-    //   .catch(error => {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: error.title,
-    //       text: error.text
-    //     });
-    //   });
+    //Peticion al endpoint de registro empleado:
+    registerEmployee(
+      empName,
+      empLast,
+      address,
+      phone,
+      email,
+      jobTitle,
+      department,
+      admissionDate,
+      password
+    )
+      .then(res => {
+        Swal.fire(
+          "Registro Exitoso",
+          "Se ha creado el empleado exitosamente",
+          "success"
+        );
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: "error",
+          title: error.title,
+          text: error.text
+        });
+      });
 
     //Reiniciando el state:
     handleEnpInfo({
