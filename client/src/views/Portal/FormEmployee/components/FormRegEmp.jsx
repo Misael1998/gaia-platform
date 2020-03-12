@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../../../../styles/FormLog.css";
 import "../../../../styles/util.css";
-import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
-import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
+import "../../../../styles/fonts/font-awesome-4.7.0/css/font-awesome.min.css";
+import "../../../../styles/fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 import { registerEmployee } from "../../../../services/RegEmployee";
 import Swal from "sweetalert2";
 import Title from "../../../../components/Title";
