@@ -5,6 +5,7 @@ import Inventory from "../Portal/InventoryTable/Inventory";
 import Request from "./FormRequest/Request";
 import items from "../../constants/portalNavigation";
 import FormRegEmp from "../Portal/FormEmployee/components/FormRegEmp";
+import Referrals from "./Referrals/Referrals";
 
 const Portal = ({ match }) => {
   return (
@@ -26,6 +27,11 @@ const Portal = ({ match }) => {
         <Route
           path={`${match.path}/form-emp`}
           component={FormRegEmp}
+          isPrivate
+        />
+        <Route
+          path={`${match.path}/referrals`}
+          component={Referrals}
           isPrivate
         />
       </div>
