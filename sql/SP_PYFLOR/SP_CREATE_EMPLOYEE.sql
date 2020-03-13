@@ -4,7 +4,7 @@ GO
 -- Drop the stored procedure if it already exists
 IF EXISTS (
 SELECT *
-    FROM INFORMATION_SCHEMA.ROUTINES
+FROM INFORMATION_SCHEMA.ROUTINES
 WHERE SPECIFIC_SCHEMA = N'dbo'
     AND SPECIFIC_NAME = N'SP_CREATE_EMPLOYEE'
     AND ROUTINE_TYPE = N'PROCEDURE'
@@ -26,130 +26,146 @@ CREATE PROCEDURE dbo.SP_CREATE_EMPLOYEE
     @msj VARCHAR(50) OUTPUT,
     @err VARCHAR(50) OUTPUT
 AS
-    declare @userId TABLE (id int)
-    declare @adminId INT
-    declare @tmpJobTitle INT = 0
-    DECLARE @tmpDepartment INT = 0
+declare @userId TABLE (id int)
+declare @adminId INT
+declare @tmpJobTitle INT = 0
+DECLARE @tmpDepartment INT = 0
 
-    if @jobTitle is null
+if @jobTitle is null
     BEGIN
-        set @msj = 'error'
-        set @err = 'job title field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'job title field cant be empty'
+    return 0
+END
 
-    set @tmpJobTitle = (
+set @tmpJobTitle = (
         select count(idJobTitle)
-        from [pyflor].[dbo].[TBL_JOB_TITLES]
-        WHERE idJobTitle = @jobTitle
+from [pyflor].[dbo].[TBL_JOB_TITLES]
+WHERE idJobTitle = @jobTitle
     )
 
-    IF @tmpJobTitle = 0
+IF @tmpJobTitle = 0
     BEGIN
-        set @msj = 'error'
-        set @err = 'invalid value for job title id'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'invalid value for job title id'
+    return 0
+END
 
-    if @department is null
+if @department is null
     BEGIN
-        set @msj = 'error'
-        set @err = 'department field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'department field cant be empty'
+    return 0
+END
 
-    set @tmpDepartment = (
+set @tmpDepartment = (
         select count(idDepartments)
-        from [pyflor].[dbo].[TBL_DEPARTMENTS]
-        WHERE idDepartments = @department
+from [pyflor].[dbo].[TBL_DEPARTMENTS]
+WHERE idDepartments = @department
     )
 
-    IF @tmpDepartment = 0
+IF @tmpDepartment = 0
     BEGIN
-        set @msj = 'error'
-        set @err = 'invalid value for department id'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'invalid value for department id'
+    return 0
+END
 
-    if @name is null or @name = ''
+if @name is null or @name = ''
     BEGIN
-        set @msj = 'error'
-        set @err = 'name field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'name field cant be empty'
+    return 0
+END
 
-    if @address is null or @address = ''
+if @address is null or @address = ''
     BEGIN
-        set @msj = 'error'
-        set @err = 'address field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'address field cant be empty'
+    return 0
+END
 
-    if @phone is null or @phone = ''
+if @phone is null or @phone = ''
     BEGIN
-        set @msj = 'error'
-        set @err = 'phone field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'phone field cant be empty'
+    return 0
+END
 
-    if @email is null or @email = ''
+if @email is null or @email = ''
     BEGIN
-        set @msj = 'error'
-        set @err = 'email field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'email field cant be empty'
+    return 0
+END
 
-    if @password is null or @password = ''
+if @password is null or @password = ''
     BEGIN
-        set @msj = 'error'
-        set @err = 'password field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'password field cant be empty'
+    return 0
+END
 
-    if @admin is null
+if @admin is null
     BEGIN
-        set @msj = 'error'
-        set @err = 'admin field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'admin field cant be empty'
+    return 0
+END
 
-    if @admissionDate is null or @admissionDate = ''
+if @admissionDate is null or @admissionDate = ''
     BEGIN
-        set @msj = 'error'
-        set @err = 'admission date field cant be empty'
-        return 0
-    END
+    set @msj = 'error'
+    set @err = 'admission date field cant be empty'
+    return 0
+END
 
-    set @adminId = (
+set @adminId = (
         select idAdmin
-        from [pyflor].[dbo].[TBL_ADMINS]
-        where idUser = @admin
+from [pyflor].[dbo].[TBL_ADMINS]
+where idUser = @admin
     )
 
-    INSERT INTO [pyflor].[dbo].[TBL_USERS]
-    OUTPUT inserted.idUser into @userId
-    VALUES(
-       @email,
-       @password,
-       @phone,
-       @address,
-       @name,
-       @lastName 
+INSERT INTO [pyflor].[dbo].[TBL_USERS]
+    (
+    email,
+    password,
+    phone,
+    address,
+    name,
+    lastname
+    )
+OUTPUT inserted.idUser into @userId
+VALUES(
+        @email,
+        @password,
+        @phone,
+        @address,
+        @name,
+        @lastName 
     )
 
-    INSERT INTO [pyflor].[dbo].[TBL_EMPLOYEES]
-    VALUES(
+INSERT INTO [pyflor].[dbo].[TBL_EMPLOYEES]
+    (
+    admission,
+    idUser,
+    idDepartments,
+    idJobTitle,
+    idAdmin
+    )
+VALUES(
         @admissionDate,
-        (select id from @userId),
+        (select id
+        from @userId),
         @department,
         @jobTitle,
         @adminId
     )
 
-    set @msj = 'success'
-    set @err = 'none'
+set @msj = 'success'
+set @err = 'none'
 
-    RETURN 1
+RETURN 1
 GO
 -- example to execute the stored procedure we just created
 -- EXECUTE dbo.SP_CREATE_EMPLOYEE 1 /*value_for_param1*/, 2 /*value_for_param2*/
