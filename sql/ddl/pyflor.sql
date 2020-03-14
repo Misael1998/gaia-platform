@@ -138,6 +138,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS] (
   emission_date DATETIME NOT NULL,
   shipping FLOAT NULL,
   idRequestType INT NOT NULL,
+  idPaymentMethods INT NOT NULL,
   idEnterpriseClient INT NULL,
   idIndividualClient INT NULL,
   PRIMARY KEY (idRequests),
@@ -160,6 +161,10 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS] (
     FOREIGN KEY (idIndividualClient)
     REFERENCES TBL_INDIVIDUAL_CLIENTS (idIndividualClients)
 
+    ,
+  CONSTRAINT fk_TBL_REQUESTS_TBL_PAYMENT_METHODS
+    FOREIGN KEY (idPaymentMethods)
+    REFERENCES TBL_PAYMENT_METHODS (idPaymentMethods)
    )
 ;
 
