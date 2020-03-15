@@ -4,6 +4,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 import { MdPrint } from "react-icons/md";
 import { getRefferal } from "../../../services/Referrals";
 import Spinner from "../../../components/Spinner";
+import moment from "moment";
 
 const Referrals = () => {
   const [filter, setFilter] = useState("");
@@ -18,17 +19,94 @@ const Referrals = () => {
   //State para la tabla:
   const [regReferral, handleRegReferral] = useState([]);
 
+  //Funcion para traer la info:
+  useEffect(() => {
+    getRefferal()
+      .then(res => {
+        handleRegReferral(res);
+        handleFilteredReferral(res);
+        setLoading(false);
+      })
+      .catch(err => console.log("El error es:", err));
+  }, []);
+
+  //Funcion para el filtrado por numero de orden:
+  const filtradoOrden = () => {
+    let filteredArray;
+    let regex;
+
+    regex = new RegExp(filterValue, "i");
+    filteredArray = regReferral.filter(item => {
+      if (regex.test(item.idOrder)) return item;
+    });
+
+    console.log("Arreglo Filtrado:", filteredArray);
+    handleFilteredReferral(filteredArray);
+  };
+
+  //Funcion para el filtrado por empleado:
+  const filtradoEmpleado = () => {
+    let filteredArray;
+    let regex;
+
+    regex = new RegExp(filterValue, "i");
+    filteredArray = regReferral.filter(item => {
+      if (
+        regex.test(item.CreatedEmployee) ||
+        regex.test(item.SenderEmployee) ||
+        regex.test(item.ReceiverEmployee) ||
+        regex.test(item.AddresseeEmployee)
+      )
+        return item;
+    });
+
+    console.log("Arreglo Filtrado:", filteredArray);
+    handleFilteredReferral(filteredArray);
+  };
+
+  //Funcion para el filtrado por fecha:
+  const filtradoFecha = () => {
+    let filteredArray;
+    let regex;
+
+    let fechaI = moment(initialDate);
+    let fechaF = moment(finalDate);
+    filteredArray = regReferral.filter(item => {
+      let fecha = moment(item.emission_date);
+      let fecha2 = moment(item.expired_date);
+      if (fecha.isBetween(fechaI, fechaF) || fecha2.isBetween(fechaI, fechaF))
+        return item;
+    });
+
+    console.log("Arreglo Filtrado:", filteredArray);
+    handleFilteredReferral(filteredArray);
+  };
+
   let filterInput;
   if (filter !== "") {
     switch (filter) {
       case "1":
         filterInput = (
-          <input
-            type="text"
-            placeholder="N° de Orden"
-            className="form-control"
-            onChange={e => setFilterValue(e.target.value)}
-          />
+          <div className="row">
+            <div className="col-lg-9">
+              <input
+                type="text"
+                placeholder="N° de Orden"
+                className="form-control"
+                onChange={e => setFilterValue(e.target.value)}
+              />
+            </div>
+            <div className="col-lg-3">
+              <button
+                type="button"
+                onClick={filtradoOrden}
+                //onClick={filterData("1")}
+                className="btn btn-success"
+              >
+                Buscar
+              </button>
+            </div>
+          </div>
         );
         break;
       case "2":
@@ -51,32 +129,41 @@ const Referrals = () => {
                 onChange={e => setFinalDate(e.target.value)}
               />
             </div>
+            <button
+              onClick={filtradoFecha}
+              type="button"
+              className="btn btn-success mt-3 m-l-250"
+            >
+              Buscar
+            </button>
           </div>
         );
         break;
       case "4":
         filterInput = (
-          <input
-            type="text"
-            placeholder="Nombre del empleado"
-            className="form-control"
-            onChange={e => setFilterValue(e.target.value)}
-          />
+          <div className="row">
+            <div className="col-lg-9">
+              <input
+                type="text"
+                placeholder="Nombre del empleado"
+                className="form-control"
+                onChange={e => setFilterValue(e.target.value)}
+              />
+            </div>
+            <div className="col-lg-3">
+              <button
+                onClick={filtradoEmpleado}
+                type="button"
+                className="btn btn-success"
+              >
+                Buscar
+              </button>
+            </div>
+          </div>
         );
         break;
     }
   }
-
-  //Funcion para traer la info:
-  useEffect(() => {
-    getRefferal()
-      .then(res => {
-        handleRegReferral(res);
-        handleFilteredReferral(res);
-        setLoading(false);
-      })
-      .catch(err => console.log("El error es:", err));
-  }, []);
 
   if (loading) {
     return <Spinner />;
@@ -116,19 +203,19 @@ const Referrals = () => {
               </tr>
             </thead>
             <tbody className="">
-              {/* {filteredReferral.map(reg => (
-                <tr key={reg.numOrden} className="">
-                  <th scope="row">{reg.numOrden}</th>
-                  <td>{reg.fechaEmision}</td>
-                  <td>{reg.fechaExpiracion}</td>
-                  <td>{reg.empSolicitante}</td>
-                  <td>{reg.empReceptor}</td>
-                  <td>{reg.empEnvia}</td>
-                  <td>{reg.empHizoOrden}</td>
+              {filteredReferral.map(reg => (
+                <tr key={reg.idRefferal} className="">
+                  <th scope="row">{reg.idOrder}</th>
+                  <td>{reg.emission_date}</td>
+                  <td>{reg.expired_date}</td>
+                  <td>{reg.AddresseeEmployee}</td>
+                  <td>{reg.ReceiverEmployee}</td>
+                  <td>{reg.SenderEmployee}</td>
+                  <td>{reg.CreatedEmployee}</td>
                 </tr>
-              ))} */}
+              ))}
 
-              <tr className="">
+              {/* <tr className="">
                 <th scope="row">080819</th>
                 <td>15/01/2020</td>
                 <td>15/03/2020</td>
@@ -136,7 +223,7 @@ const Referrals = () => {
                 <td>Nelson Ponce</td>
                 <td>Ana Lia Bulnes</td>
                 <td>Saul Mendoza</td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
         </div>
