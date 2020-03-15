@@ -12,6 +12,8 @@ export const URL_GET_INVENTORY = "/api/data/inventory";
 export const URL_POST_ORDER = "/api/order/provider/order";
 export const URL_GET_EMPLOYEES = "/api/data/employees";
 export const URL_POST_REG_EMPLOYEE = "/api/employees";
+export const URL_GET_JOB_TITLE = "";
+export const URL_GET_DEPARTMENT = "";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = token =>
