@@ -429,7 +429,7 @@ exports.jobTittle = async (req,res) => {
     const data = query.recordset;
     if(data.length==0){
       return res.status(200).json({
-        success: false,
+        success: true,
         msg: "no data found",
         data
       })
