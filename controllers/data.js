@@ -420,12 +420,11 @@ exports.getDeliveryType = async (req, res, next) => {
 //@desc     get job tittle of employee
 //@route    GET     /api/data/jobtittle/id
 //@access   Private
-exports.jobTittle = async (req,res) => {
+exports.jobTittles = async (req,res) => {
   const idEmployee = req.params.id;
   try {
     const query = await new mssql.Request()
-    .input("id",mssql.Int,idEmployee)
-    .query("select * from FT_getJobTittle(@id)");
+    .query("select * from FT_getJobTittles()");
     const data = query.recordset;
     if(data.length==0){
       return res.status(200).json({
@@ -436,7 +435,7 @@ exports.jobTittle = async (req,res) => {
     }
     res.status(200).json({
       success:true,
-      msg: "Employee job tittle data",
+      msg: "Job tittles data",
       data
     })
   } catch (error) {
