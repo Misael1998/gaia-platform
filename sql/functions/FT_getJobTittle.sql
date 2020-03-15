@@ -6,7 +6,7 @@ RETURNS TABLE
 AS
 RETURN
 SELECT
-    jt.idJobTitle,
+    jt.idJobTitle as id,
     jt.name
 FROM
     TBL_EMPLOYEES AS e
