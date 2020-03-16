@@ -14,7 +14,7 @@ const {
   refferals,
   getRequestType,
   getDeliveryType,
-  jobTittles
+  jobTitles
 } = require("../controllers/data");
 
 router.route("/supplies").get(auth, supplies);
@@ -29,6 +29,6 @@ router.route("/products/:id").get(individualProduct);
 router.route("/refferals").get(auth,refferals);
 router.route("/request").get(auth, getRequestType);
 router.route("/delivery").get(auth, getDeliveryType);
-router.route('/jobtittles').get(auth,jobTittles);
+router.route('/jobtitles').get(auth,jobTitles);
 
 module.exports = router;

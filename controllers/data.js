@@ -420,7 +420,7 @@ exports.getDeliveryType = async (req, res, next) => {
 //@desc     get job tittle of employee
 //@route    GET     /api/data/jobtittle/id
 //@access   Private
-exports.jobTittles = async (req,res) => {
+exports.jobTitles = async (req,res) => {
   const idEmployee = req.params.id;
   try {
     const query = await new mssql.Request()
