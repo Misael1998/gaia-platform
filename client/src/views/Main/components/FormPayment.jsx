@@ -205,7 +205,7 @@ const FormPayment = ( {updateShowPayment} ) => {
                     <option value="0">Seleccione el tipo de pago</option>
                     <option value="1">Paypal</option>
                     <option value="2">Tarjeta de crédito</option>
-                    <option value="3">Tipo 3</option>
+                    <option value="3">Efectivo</option>
                   </select>
 
                   <span className="focus-input100"></span>
