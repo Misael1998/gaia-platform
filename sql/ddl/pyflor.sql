@@ -5,8 +5,8 @@ GO
 -- Create the new database if it does not exist already
 IF NOT EXISTS (
   SELECT [name]
-    FROM sys.databases
-    WHERE [name] = N'pyflor'
+FROM sys.databases
+WHERE [name] = N'pyflor'
 )
 CREATE DATABASE pyflor
 GO
@@ -18,7 +18,8 @@ GO
 -- Table [pyflor].[dbo].[TBL_USERS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_USERS] (
+CREATE TABLE [pyflor].[dbo].[TBL_USERS]
+(
   idUser INT NOT NULL IDENTITY(1,1),
   email VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(100) NOT NULL,
@@ -26,14 +27,16 @@ CREATE TABLE [pyflor].[dbo].[TBL_USERS] (
   address VARCHAR(150) NOT NULL,
   name VARCHAR(45) NOT NULL,
   lastname VARCHAR(45) NULL,
-  PRIMARY KEY (idUser))
+  PRIMARY KEY (idUser)
+)
 ;
 
 -- -----------------------------------------------------
 -- Table [pyflor].[dbo].[TBL_INDIVIDUAL_CLIENTS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_INDIVIDUAL_CLIENTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_INDIVIDUAL_CLIENTS]
+(
   idIndividualClients INT NOT NULL IDENTITY(1,1),
   birth_date DATE NOT NULL,
   register_id VARCHAR(13) NOT NULL,
@@ -44,7 +47,24 @@ CREATE TABLE [pyflor].[dbo].[TBL_INDIVIDUAL_CLIENTS] (
     FOREIGN KEY (idUser)
     REFERENCES TBL_USERS (idUser)
 
-   )
+)
+;
+
+-- -----------------------------------------------------
+-- Table [pyflor].[dbo].[TBL_ADMINS]
+-- -----------------------------------------------------
+
+CREATE TABLE [pyflor].[dbo].[TBL_ADMINS]
+(
+  idAdmin INT NOT NULL IDENTITY(1,1),
+  idUser INT NOT NULL,
+  PRIMARY KEY (idAdmin),
+
+  CONSTRAINT fk_TBL_ADMIN_TBL_USERS
+    FOREIGN KEY (idUser)
+    REFERENCES TBL_USERS (idUser)
+
+)
 ;
 
 
@@ -53,10 +73,12 @@ CREATE TABLE [pyflor].[dbo].[TBL_INDIVIDUAL_CLIENTS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_COMPANY_TYPE] (
+CREATE TABLE [pyflor].[dbo].[TBL_COMPANY_TYPE]
+(
   idCompanyType INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idCompanyType))
+  PRIMARY KEY (idCompanyType)
+)
 ;
 
 
@@ -64,10 +86,12 @@ CREATE TABLE [pyflor].[dbo].[TBL_COMPANY_TYPE] (
 -- Table [pyflor].[dbo].[TBL_SECTORS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_SECTORS] (
+CREATE TABLE [pyflor].[dbo].[TBL_SECTORS]
+(
   idSector INT NOT NULL IDENTITY(1,1),
   description VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idSector))
+  PRIMARY KEY (idSector)
+)
 ;
 
 
@@ -75,7 +99,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_SECTORS] (
 -- Table [pyflor].[dbo].[TBL_ENTERPRISE_CLIENTS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_ENTERPRISE_CLIENTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_ENTERPRISE_CLIENTS]
+(
   idEnterpriseClients INT NOT NULL IDENTITY(1,1),
   company_name VARCHAR(45) NOT NULL,
   contact_name VARCHAR(45) NOT NULL,
@@ -100,7 +125,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_ENTERPRISE_CLIENTS] (
     FOREIGN KEY (idSector)
     REFERENCES TBL_SECTORS (idSector)
 
-   )
+)
 ;
 
 
@@ -109,10 +134,12 @@ CREATE TABLE [pyflor].[dbo].[TBL_ENTERPRISE_CLIENTS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_DELIVERY_TYPES] (
+CREATE TABLE [pyflor].[dbo].[TBL_DELIVERY_TYPES]
+(
   idDeliveryType INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idDeliveryType))
+  PRIMARY KEY (idDeliveryType)
+)
 ;
 
 
@@ -120,19 +147,34 @@ CREATE TABLE [pyflor].[dbo].[TBL_DELIVERY_TYPES] (
 -- Table [pyflor].[dbo].[TBL_ORDER_TYPES]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_REQUEST_TYPES] (
+CREATE TABLE [pyflor].[dbo].[TBL_REQUEST_TYPES]
+(
   idRequestType INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idRequestType))
+  PRIMARY KEY (idRequestType)
+)
 ;
 
+
+-- -----------------------------------------------------
+-- Table [pyflor].[dbo].[TBL_PAYMENT_METHODS]
+-- -----------------------------------------------------
+
+CREATE TABLE [pyflor].[dbo].[TBL_PAYMENT_METHODS]
+(
+  idPaymentMethods INT NOT NULL IDENTITY(1,1),
+  description VARCHAR(45) NOT NULL,
+  PRIMARY KEY (idPaymentMethods)
+)
+;
 
 -- -----------------------------------------------------
 -- Table [pyflor].[dbo].[TBL_REQUESTS]
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS]
+(
   idRequests INT NOT NULL IDENTITY(1,1),
   idDeliveryType INT NOT NULL,
   emission_date DATETIME NOT NULL,
@@ -174,10 +216,12 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_DEPARTMENTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_DEPARTMENTS]
+(
   idDepartments INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idDepartments))
+  PRIMARY KEY (idDepartments)
+)
 ;
 
 
@@ -186,10 +230,12 @@ CREATE TABLE [pyflor].[dbo].[TBL_DEPARTMENTS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_JOB_TITLES] (
+CREATE TABLE [pyflor].[dbo].[TBL_JOB_TITLES]
+(
   idJobTitle INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idJobTitle))
+  PRIMARY KEY (idJobTitle)
+)
 ;
 
 
@@ -198,9 +244,11 @@ CREATE TABLE [pyflor].[dbo].[TBL_JOB_TITLES] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_EMPLOYEES] (
+CREATE TABLE [pyflor].[dbo].[TBL_EMPLOYEES]
+(
   idEmployees INT NOT NULL IDENTITY(1,1),
   admission_date DATE NOT NULL,
+  idAdmin INT NOT NULL,
   idUser INT NOT NULL,
   idDepartments INT NOT NULL,
   idJobTitle INT NOT NULL,
@@ -219,7 +267,12 @@ CREATE TABLE [pyflor].[dbo].[TBL_EMPLOYEES] (
     FOREIGN KEY (idJobTitle)
     REFERENCES TBL_JOB_TITLES (idJobTitle)
 
-   )
+   ,
+  CONSTRAINT fk_TBL_EMPLOYEES_TBL_ADMINS1
+    FOREIGN KEY (idAdmin)
+    REFERENCES TBL_ADMINS (idAdmin)
+
+)
 ;
 
 
@@ -228,12 +281,14 @@ CREATE TABLE [pyflor].[dbo].[TBL_EMPLOYEES] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_PROVIDERS] (
+CREATE TABLE [pyflor].[dbo].[TBL_PROVIDERS]
+(
   idProviders INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   phone_contact VARCHAR(12) NOT NULL,
   email VARCHAR(150) NOT NULL,
-  PRIMARY KEY (idProviders))
+  PRIMARY KEY (idProviders)
+)
 ;
 
 
@@ -242,22 +297,14 @@ CREATE TABLE [pyflor].[dbo].[TBL_PROVIDERS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_SAR_TYPES] (
+CREATE TABLE [pyflor].[dbo].[TBL_SAR_TYPES]
+(
   idSarTypes INT NOT NULL IDENTITY(1,1),
   description VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idSarTypes))
+  PRIMARY KEY (idSarTypes)
+)
 ;
 
-
--- -----------------------------------------------------
--- Table [pyflor].[dbo].[TBL_PAYMENT_METHODS]
--- -----------------------------------------------------
-
-CREATE TABLE [pyflor].[dbo].[TBL_PAYMENT_METHODS] (
-  idPaymentMethods INT NOT NULL IDENTITY(1,1),
-  description VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idPaymentMethods))
-;
 
 
 -- -----------------------------------------------------
@@ -265,7 +312,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_PAYMENT_METHODS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_ORDERS] (
+CREATE TABLE [pyflor].[dbo].[TBL_ORDERS]
+(
   idOrders INT NOT NULL IDENTITY(1,1),
   emission_date DATETIME NOT NULL,
   expired_date DATETIME NOT NULL,
@@ -315,7 +363,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_ORDERS] (
     FOREIGN KEY (idAddresseeEmployee)
     REFERENCES TBL_EMPLOYEES (idEmployees)
 
-   )
+)
 ;
 
 
@@ -323,7 +371,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_ORDERS] (
 -- Table [pyflor].[dbo].[TBL_SUPPLIES]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_SUPPLIES] (
+CREATE TABLE [pyflor].[dbo].[TBL_SUPPLIES]
+(
   idSupplies INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   type VARCHAR(45) NOT NULL,
@@ -334,7 +383,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_SUPPLIES] (
     FOREIGN KEY (TBL_SAR_TYPES_idSarTypes)
     REFERENCES TBL_SAR_TYPES (idSarTypes)
 
-   )
+)
 ;
 
 
@@ -342,7 +391,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_SUPPLIES] (
 -- Table [pyflor].[dbo].[TBL_PRODUCTS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS]
+(
   idProducts INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   description VARCHAR(200) NULL,
@@ -353,17 +403,19 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRODUCTS] (
     FOREIGN KEY (idSarTypes)
     REFERENCES TBL_SAR_TYPES (idSarTypes)
 
-   )
+)
 ;
 
-CREATE TABLE [pyflor].[dbo].[TBL_PRICES] (
+CREATE TABLE [pyflor].[dbo].[TBL_PRICES]
+(
   idPrices INT NOT NULL IDENTITY(1,1),
   unit_price FLOAT NOT NULL,
   PRIMARY KEY (idPrices),
-  )
+)
 ;
 
-CREATE TABLE [pyflor].[dbo].[TBL_PRODUCT_HAS_PRICES](
+CREATE TABLE [pyflor].[dbo].[TBL_PRODUCT_HAS_PRICES]
+(
   idProduct INT NOT NULL,
   idPrice INT NOT NULL,
   idCompanyType INT NOT NULL,
@@ -387,7 +439,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRODUCT_HAS_PRICES](
 -- Table [pyflor].[dbo].[TBL_REFFERALS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_REFFERALS] (
+CREATE TABLE [pyflor].[dbo].[TBL_REFFERALS]
+(
   idRefferals INT NOT NULL IDENTITY(1,1),
   date DATE NULL,
   idOrders INT NOT NULL,
@@ -396,7 +449,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_REFFERALS] (
     FOREIGN KEY (idOrders)
     REFERENCES TBL_ORDERS (idOrders)
 
-   )
+)
 ;
 
 
@@ -407,7 +460,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_REFFERALS] (
 -- Table [pyflor].[dbo].[TBL_BILLS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_BILLS] (
+CREATE TABLE [pyflor].[dbo].[TBL_BILLS]
+(
   idBills INT NOT NULL IDENTITY(1,1),
   emission_date DATE NOT NULL,
   idOrders INT NULL,
@@ -423,7 +477,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_BILLS] (
     FOREIGN KEY (idRequests)
     REFERENCES TBL_REQUESTS (idRequests)
 
-   )
+)
 ;
 
 
@@ -432,7 +486,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_BILLS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_ORDER_DETAILS] (
+CREATE TABLE [pyflor].[dbo].[TBL_ORDER_DETAILS]
+(
   idSupplies INT NOT NULL,
   idOrders INT NOT NULL,
   quantity INT NOT NULL,
@@ -447,7 +502,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_ORDER_DETAILS] (
     FOREIGN KEY (idOrders)
     REFERENCES TBL_ORDERS (idOrders)
 
-   )
+)
 ;
 
 
@@ -456,10 +511,12 @@ CREATE TABLE [pyflor].[dbo].[TBL_ORDER_DETAILS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_CATEGORIES] (
+CREATE TABLE [pyflor].[dbo].[TBL_CATEGORIES]
+(
   idCategories INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idCategories))
+  PRIMARY KEY (idCategories)
+)
 ;
 
 
@@ -468,7 +525,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_CATEGORIES] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[PRODUCTS_has_CATEGORIES] (
+CREATE TABLE [pyflor].[dbo].[PRODUCTS_has_CATEGORIES]
+(
   idProducts INT NOT NULL,
   idCategories INT NOT NULL,
   PRIMARY KEY (idProducts, idCategories),
@@ -481,7 +539,7 @@ CREATE TABLE [pyflor].[dbo].[PRODUCTS_has_CATEGORIES] (
     FOREIGN KEY (idCategories)
     REFERENCES TBL_CATEGORIES (idCategories)
 
-   )
+)
 ;
 
 
@@ -490,7 +548,8 @@ CREATE TABLE [pyflor].[dbo].[PRODUCTS_has_CATEGORIES] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[REQUESTS_has_PRODUCTS] (
+CREATE TABLE [pyflor].[dbo].[REQUESTS_has_PRODUCTS]
+(
   idProducts INT NOT NULL,
   idRequest INT NOT NULL,
   quantity INT NOT NULL,
@@ -504,7 +563,7 @@ CREATE TABLE [pyflor].[dbo].[REQUESTS_has_PRODUCTS] (
     FOREIGN KEY (idRequest)
     REFERENCES TBL_REQUESTS (idRequests)
 
-   )
+)
 ;
 
 
@@ -513,7 +572,8 @@ CREATE TABLE [pyflor].[dbo].[REQUESTS_has_PRODUCTS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL] (
+CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL]
+(
   idCaiBills INT NOT NULL IDENTITY(1,1),
   idBills INT NOT NULL,
   sub_total FLOAT NULL,
@@ -526,7 +586,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL] (
     FOREIGN KEY (idBills)
     REFERENCES TBL_BILLS (idBills)
 
-   )
+)
 ;
 
 
@@ -536,7 +596,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL] (
 
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_PRO_BILL] (
+CREATE TABLE [pyflor].[dbo].[TBL_PRO_BILL]
+(
   idProBills INT NOT NULL IDENTITY(1,1),
   idBills INT NOT NULL,
   description VARCHAR(45) NOT NULL,
@@ -547,7 +608,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRO_BILL] (
     FOREIGN KEY (idBills)
     REFERENCES TBL_BILLS (idBills)
 
-   )
+)
 ;
 
 
@@ -556,11 +617,13 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRO_BILL] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_DISCOUNTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_DISCOUNTS]
+(
   idDiscounts INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   percentage INT NOT NULL,
-  PRIMARY KEY (idDiscounts))
+  PRIMARY KEY (idDiscounts)
+)
 ;
 
 
@@ -569,11 +632,13 @@ CREATE TABLE [pyflor].[dbo].[TBL_DISCOUNTS] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_TAXES] (
+CREATE TABLE [pyflor].[dbo].[TBL_TAXES]
+(
   idTaxes INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   percentage INT NOT NULL,
-  PRIMARY KEY (idTaxes))
+  PRIMARY KEY (idTaxes)
+)
 ;
 
 
@@ -582,7 +647,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_TAXES] (
 -- -----------------------------------------------------
 
 
-CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_DISCOUNTS] (
+CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_DISCOUNTS]
+(
   idCaiBills INT NOT NULL,
   idDiscounts INT NOT NULL,
   PRIMARY KEY (idCaiBills, idDiscounts),
@@ -595,7 +661,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_DISCOUNTS] (
     FOREIGN KEY (idDiscounts)
     REFERENCES TBL_DISCOUNTS (idDiscounts)
 
-   )
+)
 ;
 
 
@@ -603,7 +669,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_DISCOUNTS] (
 -- Table [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_TAXES]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_TAXES] (
+CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_TAXES]
+(
   idCaiBills INT NOT NULL,
   idTaxes INT NOT NULL,
   PRIMARY KEY (idCaiBills, idTaxes),
@@ -616,7 +683,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_TAXES] (
     FOREIGN KEY (idTaxes)
     REFERENCES TBL_TAXES (idTaxes)
 
-   )
+)
 ;
 
 
@@ -624,12 +691,14 @@ CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_TAXES] (
 -- Table [pyflor].[dbo].[TBL_REDUCTIONS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_REDUCTIONS] (
+CREATE TABLE [pyflor].[dbo].[TBL_REDUCTIONS]
+(
   idReduttcions INT NOT NULL IDENTITY(1,1),
   name VARCHAR(45) NOT NULL,
   description VARCHAR(45) NULL,
   percentage INT NOT NULL,
-  PRIMARY KEY (idReduttcions))
+  PRIMARY KEY (idReduttcions)
+)
 ;
 
 
@@ -637,7 +706,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_REDUCTIONS] (
 -- Table [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_REDUCTIONS]
 -- -----------------------------------------------------
 
-CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_REDUCTIONS] (
+CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_REDUCTIONS]
+(
   idCaiBills INT NOT NULL,
   idReduttcions INT NOT NULL,
   PRIMARY KEY (idCaiBills, idReduttcions),
@@ -651,17 +721,17 @@ CREATE TABLE [pyflor].[dbo].[TBL_CAI_BILL_has_TBL_REDUCTIONS] (
     FOREIGN KEY (idReduttcions)
     REFERENCES TBL_REDUCTIONS (idReduttcions)
 
-   )
+)
 ;
 
 
 -- Create the table in the specified schema
 CREATE TABLE [pyflor].[dbo].[TBL_FORGOT_PASSWORD_TOKENS]
 (
-    [idTokens] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    [token] VARCHAR(MAX) NOT NULL,
-    [tokenExpire] DATETIME NOT NULL,
-    [idUser] INT NOT NULL
+  [idTokens] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  [token] VARCHAR(MAX) NOT NULL,
+  [tokenExpire] DATETIME NOT NULL,
+  [idUser] INT NOT NULL
     CONSTRAINT [fk_TBL_FORGOT_PASSWORD_TOKENS] 
     FOREIGN KEY([idUser])
     REFERENCES [pyflor].[dbo].[TBL_USERS] ([idUser])

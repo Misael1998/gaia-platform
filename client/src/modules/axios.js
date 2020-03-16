@@ -1,5 +1,6 @@
 import axios from "axios";
 import SessionStorageService from "../services/Storage";
+import Swal from "sweetalert2";
 
 const axiosConfig = axios.create({
   baseURL: "http://localhost:5000/",
@@ -24,10 +25,15 @@ axiosConfig.interceptors.request.use(
 
 axiosConfig.interceptors.response.use(
   response => response,
-  error => {
+  async error => {
     if (error.response.status === 401) {
+      await Swal.fire(
+        'Sesion expirada',
+        'Tu sesion acaba de caducar, seras redirigido a la pagina de inicio',
+        'info')
       SessionStorageService.removeToken();
       window.location.href = "/";
+
       return Promise.reject(error);
     }
 
