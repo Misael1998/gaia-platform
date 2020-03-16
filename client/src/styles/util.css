@@ -7531,3 +7531,34 @@
   right: 0px;
   bottom: 0px;
 }
+
+/*Formularios de envío pago etc... */
+
+.containerShipping{
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: darkgrey;
+  margin: auto;
+
+}
+.containerPayment{
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: darkgrey;
+  max-width: 100%;
+
+}
+
+.iconCenter{
+  margin:auto;
+}
+
+.espaciado{
+  margin:5%;
+}
+
+.botones{
+  margin: auto;
+}

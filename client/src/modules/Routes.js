@@ -9,6 +9,7 @@ import RegUser from "../views/FormRegUs/RegUser";
 import Main from "../views/Main/Main";
 import Portal from "../views/Portal/Portal";
 
+
 const Routes = () => {
   return (
     <>
@@ -20,6 +21,7 @@ const Routes = () => {
         <Route exact path="/register" component={RegUser} />
         <Route exact path="/recovery-password" component={RecoverPass} />
         <Route exact path="/recovery-password/form" component={RecoverForm} />
+        
       </Switch>
     </>
   );

@@ -5,6 +5,7 @@ import SideNavbar from "../../components/Layout/SideNavbar";
 import Cart from "./Cart";
 import ProductDetail from "./ProductDetail";
 import Products from "./Products";
+import Shipping from "./Shipping";
 import ConfirmRequest from "./ConfirmRequest";
 import Orders from "./Orders";
 import { Redirect } from "react-router-dom";

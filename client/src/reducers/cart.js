@@ -2,11 +2,17 @@ import {
     ADD_PRODUCT_TO_CART,
     ADD_QUANTITY_PRODUCT,
     SUBSTRACT_QUANTITY_PRODUCT,
-    REMOVE_PRODUCT_FROM_CART
+    REMOVE_PRODUCT_FROM_CART,
+    //tipo de envio y tipo de pago
+    ADD_SHIPPING_TYPE,
+    ADD_PAYMENT_TYPE
+    
 } from '../constants/actionTypes'
 
 const initialState = {
     cart: [],
+    shippingType: "",
+    paymentType: "",
     error: false,
 }
 
@@ -44,7 +50,17 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 cart: state.cart.filter(product => product.idProducts !== action.payload)
-            }
+            };
+        case ADD_SHIPPING_TYPE:
+            return {
+                ...state,
+                shippingType: action.payload
+                };
+        case ADD_PAYMENT_TYPE:
+            return {
+                    ...state,
+                    paymentType: action.payload
+                    };
         default:
             return state;
     }
