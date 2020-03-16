@@ -82,14 +82,14 @@ const Referrals = () => {
     handleFilteredReferral(filteredArray);
   };
 
+  const limpiar = () => {
+    handleFilteredReferral(regReferral);
+    setFilter("0");
+  };
+
   let filterInput;
   if (filter !== "") {
     switch (filter) {
-      case "0":
-        console.log("Se escogio el filtro 0!!!");
-        //handleFilteredReferral(regReferral);
-        break;
-
       case "1":
         filterInput = (
           <div className="row">
@@ -179,16 +179,30 @@ const Referrals = () => {
       <div className="row p-5">
         <Title title="Remisiones" icon={<FaExchangeAlt size={40} />} />
         <div className="col-6 mt-4">
-          <select
-            className="form-control"
-            onChange={e => setFilter(e.target.value)}
-          >
-            <option value="0">Seleccione un filtro</option>
-            <option value="1">N° de Orden</option>
-            <option value="2">Fecha de emision</option>
-            <option value="3">Fecha de expiracion</option>
-            <option value="4">Nombre de empleado</option>
-          </select>
+          <div className="row">
+            <div className="col-lg-9">
+              <select
+                id="selectFilter"
+                className="form-control"
+                onChange={e => setFilter(e.target.value)}
+              >
+                <option value="0">Seleccione un filtro</option>
+                <option value="1">N° de Orden</option>
+                <option value="2">Fecha de emision</option>
+                <option value="3">Fecha de expiracion</option>
+                <option value="4">Nombre de empleado</option>
+              </select>
+            </div>
+            <div className="col-lg-3">
+              <button
+                type="button"
+                onClick={limpiar}
+                className="btn btn-success"
+              >
+                Limpiar
+              </button>
+            </div>
+          </div>
         </div>
         <div className="col-6 mt-4">{filter !== "" ? filterInput : null}</div>
         <div className="offset-10 col-2 mt-4">
