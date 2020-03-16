@@ -8,6 +8,7 @@ import Shipping from "../Main/Shipping";
 import {Link} from "react-router-dom";
 import Cartg from "./components/Cartg";
 import {Switch} from "react-router-dom";
+import BuySummary from "./components/BuySummary";
 
 
 const Cart = ({match}) => {

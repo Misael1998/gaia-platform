@@ -6,7 +6,7 @@ export const selectProviders = async () => {
     const response = await axios.get(URL_GET_PROVIDERS);
     if (response.status === 200) {
       console.log("Respuesta de Services/Providers: ", response);
-      return response;
+      return response.data.data;
     } else {
       throw new Error(response);
     }

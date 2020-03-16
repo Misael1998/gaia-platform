@@ -18,22 +18,9 @@ exports.login = async (req, res, next) => {
 
   let payload = {};
   const { email, password } = req.body;
-  const { ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
 
   try {
     const user = await getUser(email, res);
-
-    const isAdmin =
-      user.email === ADMIN_EMAIL && user.password === ADMIN_PASSWORD;
-
-    if (isAdmin) {
-      payload = {
-        id: user.idUser,
-        role: "admin"
-      };
-
-      return sendTokenResponse(user, payload, 200, res);
-    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -91,7 +78,7 @@ exports.forgotPassword = async (req, res, next) => {
     let expireDate = moment(Date.now() + 10 * 60 * 1000);
 
     expireDate = expireDate.format("YYYY-MM-DD hh:mm:ss");
-    
+
     const query = await new mssql.Request()
       .input("token", mssql.VarChar(mssql.MAX), token)
       .input("expireDate", mssql.DateTime, expireDate)
