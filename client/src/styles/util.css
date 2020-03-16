@@ -7562,3 +7562,8 @@
 .botones{
   margin: auto;
 }
+
+.Left{
+  text-align: left;
+  margin-bottom: 2%;
+}
