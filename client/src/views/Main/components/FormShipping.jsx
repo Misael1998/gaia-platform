@@ -1,6 +1,9 @@
 import React, { Fragment, useState } from 'react';
+import "../../../styles/util.css";
 import { FaShippingFast } from "react-icons/fa";
 import Title from '../../../components/Title';
+import { useDispatch } from 'react-redux'
+import { addShippingType } from '../../../../src/actions/shippingActions';
 import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment } from 'react-icons/md'
 
 const FormShipping = ({updateShowShipping}) => {
@@ -9,6 +12,19 @@ const FormShipping = ({updateShowShipping}) => {
   const [infoShipping, handleinfoShipping] = useState({
       ShippingType: ""
   });
+
+
+
+  //Configuracion de dispatch 
+  const dispatch = useDispatch();
+  const add_Shipping_Type = () => {
+    //Objeto a enviar al store
+    let shippingType = {
+      infoShipping
+    }
+    //Se despacha la accion
+    dispatch(addShippingType(shippingType))
+  }
 
 
   
@@ -25,7 +41,14 @@ const FormShipping = ({updateShowShipping}) => {
     handleinfoShipping({
       ...infoShipping,
       [e.target.name]: e.target.value
+      
     });
+
+    if(e.target.value==="0"){
+      handleError(true);
+      return;
+    }
+    handleError(false);
   };
 
 
@@ -58,11 +81,11 @@ const FormShipping = ({updateShowShipping}) => {
             <Title icon={<FaShippingFast size={40} />} title="Tipo de Envío" />
         </div>
 
-        <div className="container ">
+        <div className="container">
 
-            <div className="col-lg-6">
+          <div className="col-lg-6 containerShipping">
 
-            <form onSubmit={submitShipping}>
+            <form onSubmit={submitShipping} className="espaciado">
 
             <h3 className="mb-4">Selecciona el Tipo de Envío:</h3>
 
@@ -96,37 +119,41 @@ const FormShipping = ({updateShowShipping}) => {
                 </p>
                 ) : null}
 
-                <div className="container-login100-form-btn p-t-25">
+                <div className="container-login100-form-btn p-t-1  botones">
                 
                 <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
 
-<div className='mr-2'>
+                <div className='mr-2'>
 
-    <button className='btn btn-success btn-lg'>
+                    <button className='btn btn-success btn-lg'>
 
-        <MdCancel className='text-white mr-1' /> Cancelar
+                        <MdCancel className='text-white mr-1' /> Cancelar
 
-    </button>
+                    </button>
 
-</div>
+                </div>
 
-<div className='ml-2'>
+                <div className='ml-2'>
 
-    <button className='btn btn-success btn-lg'>
+                    <button className='btn btn-success btn-lg' onClick={add_Shipping_Type}>
 
-        <MdCheckCircle className='text-white mr-1' /> Siguiente
+                        <MdCheckCircle className='text-white mr-1' /> Siguiente
 
-    </button>
+                    </button>
 
-</div>
+                </div>
 
-</div>
+                </div>
                 
               </div>
+
 
             </form>
 
         </div>
+
+        
+                  
 
             </div>
             
