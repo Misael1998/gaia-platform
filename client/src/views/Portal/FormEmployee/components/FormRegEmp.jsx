@@ -323,14 +323,11 @@ const FormRegEmp = ({ history }) => {
                     value={jobTitle}
                   >
                     <option value="0">Puesto de Trabajo</option>
-                    {/* {jobArray.map(job => (
+                    {jobArray.map(job => (
                       <option key={job.id} value={job.id}>
                         {job.name}
                       </option>
-                    ))} */}
-                    <option value="1">Gerente</option>
-                    <option value="2">Asistente</option>
-                    <option value="3">Administrador de Cuentas</option>
+                    ))}
                   </select>
 
                   <span className="focus-input100"></span>
