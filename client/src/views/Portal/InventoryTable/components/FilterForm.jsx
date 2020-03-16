@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import InptInsumo from "./InptInsumo";
 import InptEmpleado from "./InptEmpleado";
 import InptOrden from "./InptOrden";
