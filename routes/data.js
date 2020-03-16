@@ -11,6 +11,7 @@ const {
   sartype,
   inventory,
   employees,
+  refferals,
   getRequestType,
   getDeliveryType
 } = require("../controllers/data");
@@ -24,6 +25,7 @@ router.route("/inventory").get(inventory);
 router.route("/products").get(products);
 router.route("/employees").get(employees);
 router.route("/products/:id").get(individualProduct);
+router.route("/refferals").get(auth,refferals);
 router.route("/request").get(auth, getRequestType);
 router.route("/delivery").get(auth, getDeliveryType);
 

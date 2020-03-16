@@ -318,6 +318,33 @@ exports.getProvider = async (req, res, next) => {
   }
 };
 
+//@desc     get all refferal data
+//@route    GET     /api/data/refferals
+//@access   Private
+exports.refferals = async (req,res) => {
+  try {
+    const query = await new mssql.Request().query("select * FROM FT_REFFERALS()");
+    const data = query.recordset;
+    if(data.length == 0){
+      return res.status(200).json({
+        success:true,
+        msg:"No refferals data yet",
+        data
+      })
+    }
+    return res.status(200).json({
+      success:true,
+      msg:"Refferals data",
+      data
+    })
+  } catch (error) {
+    console.log(error);
+    return errorResponse(500,
+      "Server error",
+      [{msg:"Server error"}],
+      res);
+  }
+}
 //@desc     get request type
 //@route    GET     /api/data/request
 //@access   Private
