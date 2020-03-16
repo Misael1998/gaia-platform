@@ -417,7 +417,7 @@ exports.getDeliveryType = async (req, res, next) => {
   }
 };
 
-//@desc     get job tittle of employee
+//@desc     get job title of employee
 //@route    GET     /api/data/jobtittle/id
 //@access   Private
 exports.jobTitles = async (req,res) => {
