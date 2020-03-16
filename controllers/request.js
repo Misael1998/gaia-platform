@@ -114,20 +114,26 @@ exports.requestDetails = async(req, res, next) => {
             const query = await new mssql.Request()
                 .input("id", mssql.Int, userId)
                 .query(
-                    "SELECT * FROM [dbo].[FT_GET_REQUEST_DETAIL_INDIVIDUAL](@id)"
+                    "SELECT idRequests, " +
+                    "emission_date, " +
+                    "deliveryType, " +
+                    "paymentMethod, " +
+                    "product, " +
+                    "quantity, " +
+                    "subtotal " +
+                    "FROM [dbo].[FT_GET_REQUEST_DETAIL_INDIVIDUAL](@id)"
                 );
             const data = query.recordset;
             if (data.length === 0) {
                 return res.status(404).json({
                     success: false,
                     msg: "Not Found ",
-                    data
                 });
             }
             return res.status(200).json({
                 success: true,
                 msg: "Successful",
-                data
+                data: data
             });
         } catch (error) {
             console.log(error);
@@ -143,20 +149,26 @@ exports.requestDetails = async(req, res, next) => {
             const query = await new mssql.Request()
                 .input("id", mssql.Int, userId)
                 .query(
-                    "SELECT * FROM [dbo].[FT_GET_REQUEST_DETAIL_ENTERPRISE](@id)"
+                    "SELECT idRequests, " +
+                    "emission_date, " +
+                    "deliveryType, " +
+                    "paymentMethod, " +
+                    "product, " +
+                    "quantity, " +
+                    "subtotal " +
+                    "FROM [dbo].[FT_GET_REQUEST_DETAIL_ENTERPRISE](@id)"
                 );
             const data = query.recordset;
             if (data.length === 0) {
                 return res.status(404).json({
                     success: false,
                     msg: "Not Found ",
-                    data
                 });
             }
             return res.status(200).json({
                 success: true,
                 msg: "Successful",
-                data
+                data: data
             });
         } catch (error) {
             console.log(error);

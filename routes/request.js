@@ -26,6 +26,6 @@ router.route("/").post(
     request
 );
 
-router.get("/:id/details", auth, authorize("individual", "enterprise"), requestDetails);
+router.route("/:id/details").get(auth, authorize("individual", "enterprise"), requestDetails);
 
 module.exports = router;

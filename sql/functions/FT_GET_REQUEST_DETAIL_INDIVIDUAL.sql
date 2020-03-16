@@ -42,8 +42,7 @@ BEGIN
 		INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
 		INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
 		INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills
-		WHERE r.idEnterpriseClient = NULL
-		AND u.idUser = @id
+		WHERE u.idUser = @id
 	RETURN
 	END;
 
@@ -67,8 +66,7 @@ BEGIN
 		INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
 		INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
 		INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills 
-		WHERE r.idEnterpriseClient = NULL
-		AND u.idUser = @id
+		WHERE u.idUser = @id
 	RETURN
 	END;
 

@@ -22,7 +22,7 @@ BEGIN
 	FROM TBL_BILLS b
 	INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills
 
-	IF (@billIdP >= 0) 
+	IF (@billIdP > 0) 
 	BEGIN
 		INSERT INTO @requestDetail
 		SELECT r.idRequests,
@@ -42,12 +42,10 @@ BEGIN
 		INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
 		INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
 		INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills
-		WHERE r.idIndividualClient = NULL
 		AND u.idUser = @id
-	RETURN 
-	END;
-		
-	IF (@billIdC >= 0)
+	RETURN
+	ElSE
+	IF (@billIdC > 0)
 	BEGIN
 		INSERT INTO @requestDetail
 		SELECT r.idRequests,
@@ -66,8 +64,7 @@ BEGIN
 		INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
 		INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
 		INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
-		INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills
-		WHERE r.idIndividualClient = NULL 
+		INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills 
 		AND u.idUser = @id
 	RETURN 
 	END;
