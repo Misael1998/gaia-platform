@@ -418,7 +418,7 @@ exports.getDeliveryType = async (req, res, next) => {
 };
 
 //@desc     get job title of employee
-//@route    GET     /api/data/jobtittle/id
+//@route    GET     /api/data/jobtitle
 //@access   Private
 exports.jobTitles = async (req,res) => {
   const idEmployee = req.params.id;
