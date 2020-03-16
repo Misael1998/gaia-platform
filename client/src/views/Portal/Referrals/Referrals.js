@@ -67,10 +67,10 @@ const Referrals = () => {
   //Funcion para el filtrado por fecha:
   const filtradoFecha = () => {
     let filteredArray;
-    let regex;
 
     let fechaI = moment(initialDate);
     let fechaF = moment(finalDate);
+
     filteredArray = regReferral.filter(item => {
       let fecha = moment(item.emission_date);
       let fecha2 = moment(item.expired_date);
@@ -85,6 +85,11 @@ const Referrals = () => {
   let filterInput;
   if (filter !== "") {
     switch (filter) {
+      case "0":
+        console.log("Se escogio el filtro 0!!!");
+        //handleFilteredReferral(regReferral);
+        break;
+
       case "1":
         filterInput = (
           <div className="row">
@@ -109,6 +114,7 @@ const Referrals = () => {
           </div>
         );
         break;
+
       case "2":
       case "3":
         filterInput = (
@@ -139,6 +145,7 @@ const Referrals = () => {
           </div>
         );
         break;
+
       case "4":
         filterInput = (
           <div className="row">
@@ -214,16 +221,6 @@ const Referrals = () => {
                   <td>{reg.CreatedEmployee}</td>
                 </tr>
               ))}
-
-              {/* <tr className="">
-                <th scope="row">080819</th>
-                <td>15/01/2020</td>
-                <td>15/03/2020</td>
-                <td>Sergio Martinez</td>
-                <td>Nelson Ponce</td>
-                <td>Ana Lia Bulnes</td>
-                <td>Saul Mendoza</td>
-              </tr> */}
             </tbody>
           </table>
         </div>
