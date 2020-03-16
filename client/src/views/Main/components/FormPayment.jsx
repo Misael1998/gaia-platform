@@ -30,7 +30,7 @@ const FormPayment = ( {updateShowPayment} ) => {
     //states para cada caso
     //state par leer inputs de paypal
   const [infoPaypal, handleinfoPaypal] = useState ({
-    paymentType: "1",
+    paymentType: "3",
     account: ""
   });
 
@@ -77,7 +77,7 @@ const FormPayment = ( {updateShowPayment} ) => {
         return;
       }
 
-      if (e.target.value==="1"){
+      if (e.target.value==="3"){
         updateShowPaypal(true);
       }
 
@@ -99,7 +99,7 @@ const FormPayment = ( {updateShowPayment} ) => {
 
     const handleSavePaypal = e => {
 
-    
+      handleErrorPaypal(false);
       handleinfoPaypal({
         ...infoPaypal,
         [e.target.name]: e.target.value
@@ -141,7 +141,7 @@ const FormPayment = ( {updateShowPayment} ) => {
         handleError(true);
         return;
         }else{
-          if(paymentType==="1"){
+          if(paymentType==="3"){
             if(account.trim()===""){
               handleErrorPaypal(true);
               return; 
@@ -203,9 +203,9 @@ const FormPayment = ( {updateShowPayment} ) => {
                     
                   >
                     <option value="0">Seleccione el tipo de pago</option>
-                    <option value="1">Paypal</option>
+                    <option value="1">Efectivo</option>
                     <option value="2">Tarjeta de crédito</option>
-                    <option value="3">Efectivo</option>
+                    <option value="3">Paypal</option>
                   </select>
 
                   <span className="focus-input100"></span>
