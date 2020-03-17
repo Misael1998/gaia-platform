@@ -57,7 +57,7 @@ const FormShipping = ({updateShowShipping}) => {
 
   
 
-   const submitShipping = e => {
+   const  submitShipping = e => {
      e.preventDefault();
  
      //validacion

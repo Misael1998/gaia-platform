@@ -7567,3 +7567,18 @@
   text-align: left;
   margin-bottom: 2%;
 }
+
+.ContainerDetail{
+  text-align: left;
+  width: 100%;
+  margin-top: 8%;
+}
+
+.btnDetail{
+  float: left;
+  width: 25%;
+}
+
+.centrado{
+  margin: auto;
+}

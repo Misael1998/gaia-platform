@@ -1,7 +1,6 @@
 import React,{Fragment} from 'react'
 import Title from '../../../components/Title';
 import { FaClipboardCheck } from 'react-icons/fa';
-import BuySummary from '../components/BuySummary';
 import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment } from 'react-icons/md'
 import ItemsShippingDetails from '../components/ItemsShippingDetails';
 import "../../../styles/util.css"
@@ -77,21 +76,13 @@ const ShippingDetails = () => {
 
         <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
 
-            <div className='mr-2'>
-
-                <button className='btn btn-success btn-lg'>
-
-                    <MdCancel className='text-white mr-1' /> Cancelar pedido
-
-                </button>
-
-            </div>
+            
 
             <div className='ml-2'>
 
                 <button className='btn btn-success btn-lg'>
 
-                    <MdCheckCircle className='text-white mr-1' /> Confirmar
+                    <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido 
 
                 </button>
 
