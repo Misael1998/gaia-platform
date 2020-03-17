@@ -18,6 +18,7 @@ const data = require("./routes/data");
 const request = require("./routes/request");
 const employees = require("./routes/employees");
 const caibill = require("./routes/caibill");
+const probill = require("./routes/probill");
 
 
 //mount routes
@@ -28,6 +29,7 @@ server.use("/api/data", data);
 server.use("/api/request", request);
 server.use("/api/employees", employees);
 server.use("/api/caibill", caibill);
+server.use("/api/probill", probill);
 
 
 //init database

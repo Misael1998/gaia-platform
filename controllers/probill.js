@@ -6,10 +6,10 @@ const express = require('express');
 const app = express();
 
 
-//@desc     insert cai bill into DB 
-//@route    POST    /api/caibill
+//@desc     insert pro bill into DB 
+//@route    POST    /api/probill
 //@access   Private
-exports.CAIbill = async (req, res, next) => {
+exports.PRObill = async (req, res, next) => {
     const error = validationResult(req);
     if (!error.isEmpty()) {
         return errorResponse(400, "Validation errors", error.array(), res);
@@ -83,7 +83,7 @@ exports.CAIbill = async (req, res, next) => {
             //  Se crea ésta ruta a la cual se redirecciona automaticamente, 
             //  si se efectuo el pago correctamente y seguido se hace el INSERT
             //@desc     payment in paypal 
-            //@route   GET  /api/caibill/successpay
+            //@route   GET  /api/probill/successpay
             //@acces    Private
             app.get('/successpay', (req, res) => {
                 console.log(req.query);
@@ -115,23 +115,19 @@ exports.CAIbill = async (req, res, next) => {
                             //console.log('hecho');
                             try {
 
-                                const { idRequest, num_bill, emission_date, idtaxes,
-                                    imports, exent, total, subtotal, idDiscounts, idReductions
+                                const { idRequest, num_bill, emission_date, description,
+                                        maquila,netPlant
                                         } = req.body;
                                 query = new mssql.Request()
                                     .input("idRequests", mssql.Int, idRequest)
                                     .input("num_bill", mssql.VARCHAR(100), num_bill)
                                     .input("emission_date", mssql.Date, emission_date)
-                                    .input("idTaxes", mssql.Int, idtaxes)
-                                    .input("import", mssql.Float, imports)
-                                    .input("exent", mssql.Float, exent)
-                                    .input("total", mssql.Float, total)
-                                    .input("subTotal", mssql.Float, subtotal)
-                                    .input("idDiscounts", mssql.Int, idDiscounts)
-                                    .input("idReductions", mssql.Int, idReductions)
+                                    .input("description", mssql.VARCHAR(45), description)
+                                    .input("maquila", mssql.Decimal(10,2), maquila)
+                                    .input("netPlant", mssql.Decimal(10,2), netPlant)
                                     .output("msj", mssql.VarChar(100))
                                     .output("err", mssql.VarChar(100))
-                                    .execute("SP_ADD_CAIBILL");
+                                    .execute("SP_ADD_PROBILL");
                                     res.redirect('http://localhost:5000/app/products')
                                       //res.send("Success");
                             } catch (error) {
@@ -169,19 +165,16 @@ exports.CAIbill = async (req, res, next) => {
                     imports, exent, total, subtotal, idDiscounts, idReductions
                         } = req.body;
                 query = new mssql.Request()
-                    .input("idRequests", mssql.Int, idRequest)
-                    .input("num_bill", mssql.VARCHAR(100), num_bill)
-                    .input("emission_date", mssql.Date, emission_date)
-                    .input("idTaxes", mssql.Int, idtaxes)
-                    .input("import", mssql.Float, imports)
-                    .input("exent", mssql.Float, exent)
-                    .input("total", mssql.Float, total)
-                    .input("subTotal", mssql.Float, subtotal)
-                    .input("idDiscounts", mssql.Int, idDiscounts)
-                    .input("idReductions", mssql.Int, idReductions)
-                    .output("msj", mssql.VarChar(100))
-                    .output("err", mssql.VarChar(100))
-                    .execute("SP_ADD_CAIBILL");
+                .input("idRequests", mssql.Int, idRequest)
+                .input("num_bill", mssql.VARCHAR(100), num_bill)
+                .input("emission_date", mssql.Date, emission_date)
+                .input("description", mssql.VARCHAR(45), description)
+                .input("maquila", mssql.Decimal(10,2), maquila)
+                .input("netPlant", mssql.Decimal(10,2), netPlant)
+                .output("msj", mssql.VarChar(100))
+                .output("err", mssql.VarChar(100))
+                .execute("SP_ADD_PROBILL");
+                
                       //res.send("Success");
             } catch (error) {
                 console.log(err);
