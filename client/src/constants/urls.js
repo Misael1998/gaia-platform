@@ -14,6 +14,7 @@ export const URL_GET_EMPLOYEES = "/api/data/employees";
 export const URL_POST_REG_EMPLOYEE = "/api/employees";
 export const URL_GET_JOB_TITLE = "/api/data/jobtitles";
 export const URL_GET_DEPARTMENT = "";
+export const URL_GET_REFERRALS = "/api/data/refferals";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = token =>
