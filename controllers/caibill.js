@@ -132,7 +132,7 @@ exports.CAIbill = async (req, res, next) => {
                                     .output("msj", mssql.VarChar(100))
                                     .output("err", mssql.VarChar(100))
                                     .execute("SP_ADD_CAIBILL");
-                                    res.redirect('http://localhost:3000/')
+                                    res.redirect('http://localhost:5000/app/products')
                                       //res.send("Success");
                             } catch (error) {
                                 console.log(err);
@@ -154,7 +154,7 @@ exports.CAIbill = async (req, res, next) => {
                 });
             });
             //en caso que el cliente cancele el pago, se debe redireccionar res.redirect(url);
-            app.get('/cancelpay', (req, res) =>  res.redirect('http://localhost:3000/'));
+            app.get('/cancelpay', (req, res) =>  res.redirect('http://localhost:5000/app/products'));
 
             
 
