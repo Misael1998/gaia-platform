@@ -438,7 +438,7 @@ exports.jobTitles = async (req, res) => {
       data
     });
   } catch (error) {
-    cosnsole.log(error);
+    console.log(error);
     return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
   }
 };

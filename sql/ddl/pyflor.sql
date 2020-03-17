@@ -157,6 +157,18 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUEST_TYPES]
 
 
 -- -----------------------------------------------------
+-- Table [pyflor].[dbo].[TBL_PAYMENT_METHODS]
+-- -----------------------------------------------------
+
+CREATE TABLE [pyflor].[dbo].[TBL_PAYMENT_METHODS]
+(
+  idPaymentMethods INT NOT NULL IDENTITY(1,1),
+  description VARCHAR(45) NOT NULL,
+  PRIMARY KEY (idPaymentMethods)
+)
+;
+
+-- -----------------------------------------------------
 -- Table [pyflor].[dbo].[TBL_REQUESTS]
 -- -----------------------------------------------------
 
@@ -168,6 +180,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS]
   emission_date DATETIME NOT NULL,
   shipping FLOAT NULL,
   idRequestType INT NOT NULL,
+  idPaymentMethods INT NOT NULL,
   idEnterpriseClient INT NULL,
   idIndividualClient INT NULL,
   PRIMARY KEY (idRequests),
@@ -190,7 +203,11 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS]
     FOREIGN KEY (idIndividualClient)
     REFERENCES TBL_INDIVIDUAL_CLIENTS (idIndividualClients)
 
-)
+    ,
+  CONSTRAINT fk_TBL_REQUESTS_TBL_PAYMENT_METHODS
+    FOREIGN KEY (idPaymentMethods)
+    REFERENCES TBL_PAYMENT_METHODS (idPaymentMethods)
+   )
 ;
 
 
@@ -288,18 +305,6 @@ CREATE TABLE [pyflor].[dbo].[TBL_SAR_TYPES]
 )
 ;
 
-
--- -----------------------------------------------------
--- Table [pyflor].[dbo].[TBL_PAYMENT_METHODS]
--- -----------------------------------------------------
-
-CREATE TABLE [pyflor].[dbo].[TBL_PAYMENT_METHODS]
-(
-  idPaymentMethods INT NOT NULL IDENTITY(1,1),
-  description VARCHAR(45) NOT NULL,
-  PRIMARY KEY (idPaymentMethods)
-)
-;
 
 
 -- -----------------------------------------------------
