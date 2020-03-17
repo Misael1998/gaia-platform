@@ -106,30 +106,24 @@ exports.request = async(req, res, next) => {
 //@route    GET     /api/request/:id/details
 //@access   Private, individual enterprise
 exports.requestDetails = async(req, res, next) => {
-    console.log(req);
     const { userId, role } = req.user
 
     if (role === 'individual') {
         try {
             const query = await new mssql.Request()
                 .input("id", mssql.Int, userId)
+                .input("idReq", mssql.Int, req.params.id)
                 .query(
-                    "SELECT idRequests, " +
-                    "emission_date, " +
-                    "deliveryType, " +
-                    "paymentMethod, " +
-                    "product, " +
-                    "quantity, " +
-                    "subtotal " +
-                    "FROM [dbo].[FT_GET_REQUEST_DETAIL_INDIVIDUAL](@id)"
+                    "SELECT * FROM [dbo].[FT_GET_REQUEST_DETAIL_INDIVIDUAL](@id, @idReq)"
                 );
-            const data = query.recordset;
+            let data = query.recordset;
             if (data.length === 0) {
                 return res.status(404).json({
                     success: false,
                     msg: "Not Found ",
                 });
             }
+            data = data.map(tmp => { delete tmp['success']; return tmp });
             return res.status(200).json({
                 success: true,
                 msg: "Successful",
@@ -148,23 +142,18 @@ exports.requestDetails = async(req, res, next) => {
         try {
             const query = await new mssql.Request()
                 .input("id", mssql.Int, userId)
+                .input("idReq", mssql.Int, req.params.id)
                 .query(
-                    "SELECT idRequests, " +
-                    "emission_date, " +
-                    "deliveryType, " +
-                    "paymentMethod, " +
-                    "product, " +
-                    "quantity, " +
-                    "subtotal " +
-                    "FROM [dbo].[FT_GET_REQUEST_DETAIL_ENTERPRISE](@id)"
+                    "SELECT * FROM [dbo].[FT_GET_REQUEST_DETAIL_ENTERPRISE](@id, @idReq)"
                 );
-            const data = query.recordset;
+            let data = query.recordset;
             if (data.length === 0) {
                 return res.status(404).json({
                     success: false,
                     msg: "Not Found ",
                 });
             }
+            data = data.map(tmp => { delete tmp['success']; return tmp });
             return res.status(200).json({
                 success: true,
                 msg: "Successful",

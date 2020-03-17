@@ -1,4 +1,8 @@
-CREATE FUNCTION [dbo].[FT_GET_REQUEST_DETAIL_INDIVIDUAL](@id INT)
+IF OBJECT_ID (N'FT_GET_REQUEST_DETAIL_INDIVIDUAL') IS NOT NULL  
+    DROP FUNCTION FT_GET_REQUEST_DETAIL_INDIVIDUAL;  
+GO 
+
+CREATE FUNCTION [dbo].[FT_GET_REQUEST_DETAIL_INDIVIDUAL](@id INT, @idReq INT)
 RETURNS @requestDetail TABLE (
 	idRequest INT NULL,
 	emissionDate DATETIME NULL,
@@ -13,14 +17,15 @@ AS
 BEGIN	
 	DECLARE @billIdP INT = null;
 	DECLARE @billIdC INT = null;
+	declare @tmp int = 0;
 
 	SELECT @billIdP = COUNT(b.idBills)   
 	FROM TBL_BILLS b
-	INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills
+	INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills;
 
 	SELECT @billIdC = COUNT(b.idBills)   
 	FROM TBL_BILLS b
-	INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills
+	INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills;
 
 	IF (@billIdP > 0) 
 	BEGIN
@@ -42,8 +47,12 @@ BEGIN
 		INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
 		INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
 		INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills
-		WHERE u.idUser = @id
-	RETURN
+		WHERE u.idUser = @id AND r.idRequests = @idReq
+		select @tmp = count(*) from @requestDetail
+		if @tmp > 0
+		begin
+		RETURN
+		end;
 	END;
 
 	IF (@billIdC > 0)
@@ -66,8 +75,12 @@ BEGIN
 		INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
 		INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
 		INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills 
-		WHERE u.idUser = @id
-	RETURN
+		WHERE u.idUser = @id AND r.idRequests = @idReq
+		select @tmp = count(*) from @requestDetail
+		if @tmp > 0
+		begin
+		RETURN
+		end;
 	END;
 
 RETURN

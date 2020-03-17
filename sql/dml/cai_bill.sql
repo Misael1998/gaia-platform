@@ -9,14 +9,14 @@ INSERT INTO [pyflor].[dbo].[TBL_CAI_BILL]
 )
 VALUES
 ( 
- 3,
+ 9,
  56.90,
  null,
  null,
  56.90
 ),
 ( 
- 4,
+ 11,
  105.4,
  null,
  null,
@@ -24,3 +24,4 @@ VALUES
 )
 -- Add more rows here
 GO
+

@@ -408,3 +408,30 @@ exports.getDeliveryType = async(req, res, next) => {
         errorResponse(500, "server error", [{ msg: "internal server error" }], res);
     }
 };
+
+//@desc     get job title of employee
+//@route    GET     /api/data/jobtitle
+//@access   Private
+exports.jobTitles = async(req, res) => {
+    const idEmployee = req.params.id;
+    try {
+        const query = await new mssql.Request()
+            .query("select * from FT_getJobTitles()");
+        const data = query.recordset;
+        if (data.length == 0) {
+            return res.status(200).json({
+                success: true,
+                msg: "no data found",
+                data
+            })
+        }
+        res.status(200).json({
+            success: true,
+            msg: "Job titles data",
+            data
+        })
+    } catch (error) {
+        cosnsole.log(error);
+        return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
+    }
+}

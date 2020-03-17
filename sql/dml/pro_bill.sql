@@ -8,13 +8,13 @@ INSERT INTO [pyflor].[dbo].[TBL_PRO_BILL]
 )
 VALUES
 ( 
- 1,
+ 10,
  'descripcion 1',
  45.8,
  60.9
 ),
 ( 
- 2,
+ 12,
  'descripcion 2',
  89.9,
  45.7

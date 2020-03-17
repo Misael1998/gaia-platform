@@ -1,21 +1,20 @@
 -- Insert rows into table '' in schema '[dbo]'
-INSERT INTO [pyflor].[dbo].[TBL_SECTORS]
+INSERT INTO [pyflor].[dbo].[TBL_ADMINS]
 ( -- Columns to insert data into
- [description]
+ [idUser]
 )
 VALUES
-( 
- 'A'
-),
-( 
- 'B'
+(
+  1
 ),
 (
- 'C'
+  2
 ),
 (
- 'D'
+  4
+),
+(
+  3
 )
 -- Add more rows here
 GO
-

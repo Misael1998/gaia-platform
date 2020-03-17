@@ -15,9 +15,9 @@ VALUES
  'La Colonia',
  'Juan Perez',
  'Negocio 1',
- '12345097',
- '99104567',
- 2,
+ '123745097',
+ '99894567',
+ 5,
  3,
  1
 ),
@@ -25,31 +25,12 @@ VALUES
  'Wendys',
  'Maria Mendoza',
  'Negocio 2 ',
- '8326472',
- '33097854',
- 3,
+ '83278872',
+ '33009854',
+ 6,
  2,
  3
-),
-(
- 'Marriot',
- 'Ana Molina',
- 'Negocio 3',
- '3853824',
- '32095678',
- 4,
- 1,
- 4
-),
-(
- 'Pais',
- 'Pedro Rodriguez',
- 'Negocio 4',
- '932754',
- '98332011',
- 1,
- 3,
- 2
 )
 -- Add more rows here
 GO
+
