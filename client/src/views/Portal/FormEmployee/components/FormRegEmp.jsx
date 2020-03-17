@@ -348,15 +348,11 @@ const FormRegEmp = ({ history }) => {
                     value={department}
                   >
                     <option value="0">Departamento de Trabajo</option>
-                    {/* {departArray.map(d => (
+                    {departArray.map(d => (
                       <option key={d.id} value={d.id}>
                         {d.name}
                       </option>
-                    ))} */}
-                    <option value="1">Contabilidad</option>
-                    <option value="2">Administracion</option>
-                    <option value="3">Marketing</option>
-                    <option value="4">Produccion</option>
+                    ))}
                   </select>
 
                   <span className="focus-input100"></span>
