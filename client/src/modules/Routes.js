@@ -8,7 +8,7 @@ import RecoverForm from "../views/Register/RecoverForm";
 import RegUser from "../views/FormRegUs/RegUser";
 import Main from "../views/Main/Main";
 import Portal from "../views/Portal/Portal";
-
+import Admin from "../views/Admin/Admin";
 
 const Routes = () => {
   return (
@@ -17,11 +17,11 @@ const Routes = () => {
         <Route exact path="/" component={Home} />
         <Route path="/app" component={Main} isPrivate />
         <Route path="/portal" component={Portal} isPrivate />
+        <Route path="/admin" component={Admin} isPrivate />
         <Route exact path="/login" component={LogInPage} />
         <Route exact path="/register" component={RegUser} />
         <Route exact path="/recovery-password" component={RecoverPass} />
         <Route exact path="/recovery-password/form" component={RecoverForm} />
-        
       </Switch>
     </>
   );
