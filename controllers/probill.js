@@ -35,9 +35,10 @@ exports.PRObill = async (req, res, next) => {
             //Al confirmar que es un pago mediante paypal comienza la configuración 
             paypal.configure({
                 'mode': 'sandbox', //sandbox or live
-                'client_id': 'AfJLqLD1KZKe3i291BuZgOddEGIb7tqOSR5D5CIm969vDdZUWXlvaMW_G40-Jx5KTJA0EW5j9IVGzTN6',
-                'client_secret': 'EGj0NHveyXMiUq0J2skKOQ9B75hF0swFm7vVWSs8G7RXvYG6eT3Cn4j5jyAKn73L60VoVPl-NN1KgKv7'
+                'client_id': process.env.PAYPAL_CLIENT,
+                'client_secret': process.env.PAYPAL_CLIENT_SECRET
             });
+            const { num_bill,total,subtotal } = req.body;
             const create_payment_json = {
                 "intent": "sale",
                 "payer": {
@@ -50,22 +51,22 @@ exports.PRObill = async (req, res, next) => {
                 "transactions": [{
                     "item_list": {
                         "items": [{
-                            "name": "s1",
+                            "name": "Sub Total",
                             "sku": "001",
-                            "price": "25.00",
+                            "price": subtotal,
                             "currency": "USD",
                             "quantity": 1
                         }]
                     },
                     "amount": {
                         "currency": "USD",
-                        "total": "25.00"
+                        "total": total
 
                     },
-                    "description": "PYFLOR COMPANY "
+                    "description": "Factura:"+ num_bill + "PYFLOR COMPANY "
                 }]
             };
-           // console.log(create_payment_json);
+           
            //Redirecciona a la ventana de paypal para realizar el pago
             paypal.payment.create(create_payment_json, function (error, payment) {
                 if (error) {
@@ -74,29 +75,28 @@ exports.PRObill = async (req, res, next) => {
                     for (let i = 0; i < payment.links.length; i++) {
                         if (payment.links[i].rel === 'approval_url') {
                             res.redirect(payment.links[i].href);
-                            //console.log(payment.links[i].href);
+                           
                         }
                     }
 
                 }
             });
+
             //  Se crea ésta ruta a la cual se redirecciona automaticamente, 
             //  si se efectuo el pago correctamente y seguido se hace el INSERT
             //@desc     payment in paypal 
             //@route   GET  /api/probill/successpay
             //@acces    Private
+            
             app.get('/successpay', (req, res) => {
-                console.log(req.query);
-                const total = req.query.total;
                 const payerId = req.query.PayerID;
                 const paymentId = req.query.paymentId;
-
                 const execute_payment_json = {
                     "payer_id": payerId,
                     "transactions": [{
                         "amount": {
                             "currency": "USD",
-                            "total": "25.00"
+                            "total": "2.00"
                         }
                     }]
                 };
@@ -108,28 +108,28 @@ exports.PRObill = async (req, res, next) => {
                     } else {
 
                         var dataPay = JSON.stringify(payment, ['state']); // capturando el estado del pago
-                        console.log(dataPay);
+                        
                         var ap = {};
                         ap.state = "approved";
                         if (ap = dataPay) {
-                            //console.log('hecho');
+                      
                             try {
 
-                                const { idRequest, num_bill, emission_date, description,
-                                        maquila,netPlant
+                                const { idRequest, num_bill, emission_date, idtaxes,
+                                    imports, exent, total, subtotal, idDiscounts, idReductions
                                         } = req.body;
-                                query = new mssql.Request()
-                                    .input("idRequests", mssql.Int, idRequest)
-                                    .input("num_bill", mssql.VARCHAR(100), num_bill)
-                                    .input("emission_date", mssql. VARCHAR(45), emission_date)
-                                    .input("description", mssql.VARCHAR(45), description)
-                                    .input("maquila", mssql.Decimal(10,2), maquila)
-                                    .input("netPlant", mssql.Decimal(10,2), netPlant)
-                                    .output("msj", mssql.VarChar(100))
-                                    .output("err", mssql.VarChar(100))
-                                    .execute("SP_ADD_PROBILL");
-                                    res.redirect('http://localhost:5000/app/products')
-                                      //res.send("Success");
+                                    query = new mssql.Request()
+                                        .input("idRequests", mssql.Int, idRequest)
+                                        .input("num_bill", mssql.VARCHAR(100), num_bill)
+                                        .input("emission_date", mssql. VARCHAR(45), emission_date)
+                                        .input("description", mssql.VARCHAR(45), description)
+                                        .input("maquila", mssql.Decimal(10,2), maquila)
+                                        .input("netPlant", mssql.Decimal(10,2), netPlant)
+                                        .output("msj", mssql.VarChar(100))
+                                        .output("err", mssql.VarChar(100))
+                                        .execute("SP_ADD_PROBILL");
+                                        res.redirect('http://localhost:5000/app/products')
+                         
                             } catch (error) {
                                 console.log(err);
                                 return errorResponse(
@@ -154,30 +154,27 @@ exports.PRObill = async (req, res, next) => {
 
             
 
-
-
-
         } else {
-            //console.log('hola1 pago efectivo');
+            //Otro pago que sea en linea.
             try {
 
                 const { idRequest, num_bill, emission_date, idtaxes,
                     imports, exent, total, subtotal, idDiscounts, idReductions
                         } = req.body;
-                query = new mssql.Request()
-                .input("idRequests", mssql.Int, idRequest)
-                .input("num_bill", mssql.VARCHAR(100), num_bill)
-                .input("emission_date", mssql. VARCHAR(45), emission_date)
-                .input("description", mssql.VARCHAR(45), description)
-                .input("maquila", mssql.Decimal(10,2), maquila)
-                .input("netPlant", mssql.Decimal(10,2), netPlant)
-                .output("msj", mssql.VarChar(100))
-                .output("err", mssql.VarChar(100))
-                .execute("SP_ADD_PROBILL");
+                    query = new mssql.Request()
+                        .input("idRequests", mssql.Int, idRequest)
+                        .input("num_bill", mssql.VARCHAR(100), num_bill)
+                        .input("emission_date", mssql. VARCHAR(45), emission_date)
+                        .input("description", mssql.VARCHAR(45), description)
+                        .input("maquila", mssql.Decimal(10,2), maquila)
+                        .input("netPlant", mssql.Decimal(10,2), netPlant)
+                        .output("msj", mssql.VarChar(100))
+                        .output("err", mssql.VarChar(100))
+                        .execute("SP_ADD_PROBILL");
+                        res.redirect('http://localhost:5000/app/products')
                 
-                      //res.send("Success");
             } catch (error) {
-                console.log(err);
+                console.log(error);
                 return errorResponse(
                     400,
                     "Failed",
