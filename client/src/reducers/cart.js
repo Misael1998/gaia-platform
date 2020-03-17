@@ -5,7 +5,8 @@ import {
     REMOVE_PRODUCT_FROM_CART,
     //tipo de envio y tipo de pago
     ADD_SHIPPING_TYPE,
-    ADD_PAYMENT_TYPE
+    ADD_PAYMENT_TYPE,
+    DELETE_CART
     
 } from '../constants/actionTypes'
 
@@ -61,6 +62,8 @@ export default (state = initialState, action) => {
                     ...state,
                     paymentType: action.payload
                     };
+        case DELETE_CART:
+            return state;
         default:
             return state;
     }
