@@ -1,14 +1,19 @@
 import React from "react";
+import Route from "../../modules/Route";
 import { MdShoppingCart } from "react-icons/md";
 import { useSelector } from 'react-redux'
 import CartItem from "./components/CartItem";
 import Title from "../../components/Title";
+import Shipping from "../Main/Shipping";
+import {Link} from "react-router-dom";
+import Cartg from "./components/Cartg";
+import {Switch} from "react-router-dom";
 import BuySummary from "./components/BuySummary";
 
 
-const Cart = () => {
+const Cart = ({match}) => {
 
-  const cart = useSelector(state => state.cart.cart);
+  /*const cart = useSelector(state => state.cart.cart);
   let sum = 0, isv = 0, sumExcent = 0, sumGrav = 0;
 
   cart.forEach(product => {
@@ -33,34 +38,37 @@ const Cart = () => {
         </div>
       </div>
     )
-  } else {
+  } else { */
 
     return (
       <div className="row p-5">
         <Title icon={<MdShoppingCart size={40} />} title="Carrito" />
         <div className="col-12 mt-4 ">
-          <div className="row">
-            <div className="col-8">
-              {
-                cart.map(product => (
-                  <CartItem key={product.idProducts} product={product} />
-                ))
-              }
-            </div>
-            <div className="col-4">
-              <BuySummary subtotal={sum} isv15={isv} excent={sumExcent} grav={sumGrav} total={total}/>
-              <div className="mt-5">
-                <button className="btn btn-success btn-block" disabled>
-                  Proceder con el pago
-                </button>
-              </div>
-            </div>
-          </div>
+          
+
+         <Switch>
+
+         <Route exact path={`${match.path}`} component={Cartg} isPrivate/>
+         <Route exact path={`${match.path}/shipping`} component={Shipping} isPrivate/>
+
+         </Switch>
+           
+         
+           
+         
+        
+          
+
+          
+
         </div>
       </div>
-    );
-  }
 
-};
+
+
+    );
+  };
+
+
 
 export default Cart;
