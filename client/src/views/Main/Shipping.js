@@ -2,6 +2,7 @@ import React, { useState, Fragment } from 'react';
 import "../../styles/util.css";
 import FormShipping from './components/FormShipping';
 import FormPayment from './components/FormPayment';
+import ShippingDetails from './components/ShippingDetails';
 
 const Shipping = ({history}) => {
 
@@ -26,7 +27,12 @@ const [showPayment, updateShowPayment] = useState (true);
                     <FormPayment updateShowPayment={updateShowPayment} history={history} />
                 </div>
 
-            ) : <h1> pagina de detalle pedidos </h1>
+            ) : (
+
+                <div className="container">
+                    <ShippingDetails />
+                </div>
+            )
         ) }
 
 
