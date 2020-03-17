@@ -5,7 +5,6 @@ import SessionStorageService from "./Storage";
 export const selectEmployee = async () => {
   const token = SessionStorageService.getToken();
 
-  console.log(token);
   try {
     const response = await axios.get(URL_GET_EMPLOYEES, {
       Headers: { "x-auth-token": token }
