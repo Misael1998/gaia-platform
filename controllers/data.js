@@ -131,39 +131,64 @@ exports.sartype = async(req, res, next) => {
 //@route    GET     /api/data/products
 //@access   Private
 exports.products = async(req, res) => {
-    //console.log(req.url);
-    try {
-        const query = await new mssql.Request().query(
-            "SELECT idProducts, " +
-            "productName, " +
-            "productImage, " +
-            "productDescription, " +
-            "category, " +
-            "sarType, " +
-            "companyType, " +
-            "unit_price " +
-            "FROM [dbo].[FT_GET_ALL_PRODUCTS_DATA]();"
-        );
-        const data = query.recordset;
-        if (data.length == 0) {
+    const { userId, role } = req.user
+
+    if (role === 'individual') {
+        try {
+            const query = await new mssql.Request()
+                //.input("id", mssql.Int, userId)
+                .query(
+                    "SELECT * FROM [dbo].[FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL]();"
+                );
+            const data = query.recordset;
+            if (data.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Not Found"
+                });
+            }
             return res.status(200).json({
                 success: true,
-                msg: "No data",
-                data
+                msg: "Successful",
+                data: data
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                msg: "server error"
             });
         }
-        return res.status(200).json({
-            success: true,
-            msg: "products data",
-            data
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({
-            success: false,
-            msg: "server error"
-        });
     }
+
+    if (role === 'enterprise') {
+        try {
+            const query = await new mssql.Request()
+                .input("id", mssql.Int, userId)
+                .query(
+                    "SELECT * FROM [dbo].[FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE](@id);"
+                );
+            const data = query.recordset;
+            if (data.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Not Found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                msg: "Successful",
+                data: data
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                msg: "server error"
+            });
+        }
+    }
+
 };
 
 //@desc     database single products
