@@ -13,7 +13,7 @@ GO
 CREATE PROCEDURE dbo.SP_ADD_CAIBILL
     @idDiscounts INT,
     @idReductions INT,
-    @emission_date DATE,
+    @emission_date VARCHAR(45),
     @idRequests INT,
     @num_bill  VARCHAR(100),
     @import FLOAT,
@@ -138,7 +138,7 @@ AS
             @idReductions
         )
     END;
-
     set @msj = 'success'
     set @err = 'none'
     RETURN 
+

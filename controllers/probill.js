@@ -44,8 +44,8 @@ exports.PRObill = async (req, res, next) => {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": "http://localhost:5000/api/caibill/successpay",
-                    "cancel_url": "http://localhost:5000/api/caibill/cancelpay"
+                    "return_url": "http://localhost:5000/api/probill/successpay",
+                    "cancel_url": "http://localhost:5000/api/probill/cancelpay"
                 },
                 "transactions": [{
                     "item_list": {
@@ -121,7 +121,7 @@ exports.PRObill = async (req, res, next) => {
                                 query = new mssql.Request()
                                     .input("idRequests", mssql.Int, idRequest)
                                     .input("num_bill", mssql.VARCHAR(100), num_bill)
-                                    .input("emission_date", mssql.Date, emission_date)
+                                    .input("emission_date", mssql. VARCHAR(45), emission_date)
                                     .input("description", mssql.VARCHAR(45), description)
                                     .input("maquila", mssql.Decimal(10,2), maquila)
                                     .input("netPlant", mssql.Decimal(10,2), netPlant)
@@ -167,7 +167,7 @@ exports.PRObill = async (req, res, next) => {
                 query = new mssql.Request()
                 .input("idRequests", mssql.Int, idRequest)
                 .input("num_bill", mssql.VARCHAR(100), num_bill)
-                .input("emission_date", mssql.Date, emission_date)
+                .input("emission_date", mssql. VARCHAR(45), emission_date)
                 .input("description", mssql.VARCHAR(45), description)
                 .input("maquila", mssql.Decimal(10,2), maquila)
                 .input("netPlant", mssql.Decimal(10,2), netPlant)

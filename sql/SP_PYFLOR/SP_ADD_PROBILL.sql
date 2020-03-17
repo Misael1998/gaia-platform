@@ -11,12 +11,12 @@ DROP PROCEDURE dbo.SP_ADD_PROBILL
 GO
 -- Create the stored procedure in the specified schema
 CREATE PROCEDURE dbo.SP_ADD_PROBILL
-    @emission_date DATE,
+    @emission_date VARCHAR(45),
     @idRequests INT,
     @num_bill  VARCHAR(100),
     @description VARCHAR(45),
-    @maquila DECIMAL(10,2),
-    @net_plant DECIMAL(10,2),
+    @maquila decimal(10,2),
+    @net_plant decimal(10,2),
     @msj VARCHAR(100) OUT,
     @err VARCHAR(100) OUT
 AS
@@ -42,13 +42,13 @@ AS
             RETURN;
         END;
 
-        IF @maquila=' ' OR @maquila IS NULL BEGIN
+        IF @maquila IS NULL BEGIN
             SET @msj='FALIED'
             SET @err='null or empty field maquila';
             RETURN;
         END;
 
-        IF @net_plant=' ' OR @net_plant IS NULL BEGIN
+        IF  @net_plant IS NULL BEGIN
             SET @msj='FALIED'
             SET @err='null or empty field net plant';
             RETURN;
@@ -80,7 +80,7 @@ AS
         FROM TBL_BILLS
         WHERE @idRequests=idRequests
     )
-
+    print(@TMP_idBill);
     INSERT INTO TBL_PRO_BILL(
         idBills,
         description,
@@ -99,3 +99,5 @@ AS
     set @msj = 'success'
     set @err = 'none'
     RETURN 
+
+
