@@ -1,15 +1,14 @@
 -- Insert rows into table '' in schema '[dbo]'
-INSERT INTO [pyflor].[dbo].[TBL_DEPARTMENTS]
+INSERT INTO [pyflor].[dbo].[TBL_PAYMENT_METHODS]
 ( -- Columns to insert data into
- [name]
+ [description]
 )
 VALUES
 (
- 'administración'
+ 'efectivo'
 ),
 (
- 'Mercadeo y Ventas'
+ 'credito'
 )
 -- Add more rows here
 GO
-
