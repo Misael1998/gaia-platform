@@ -389,3 +389,5 @@ exports.getDeliveryType = async (req, res, next) => {
     errorResponse(500, "server error", [{ msg: "internal server error" }], res);
   }
 };
+
+

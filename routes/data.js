@@ -15,6 +15,7 @@ const {
   getDeliveryType
 } = require("../controllers/data");
 
+
 router.route("/supplies").get(auth, supplies);
 router.route("/sectors").get(sectors);
 router.route("/providers").get(auth, providers);
@@ -26,5 +27,6 @@ router.route("/employees").get(employees);
 router.route("/products/:id").get(individualProduct);
 router.route("/request").get(auth, getRequestType);
 router.route("/delivery").get(auth, getDeliveryType);
+
 
 module.exports = router;
