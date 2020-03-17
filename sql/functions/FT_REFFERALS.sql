@@ -16,39 +16,39 @@ RETURN
         addresseeUser.name +' '+addresseeUser.lastname as AddresseeEmployee
     FROM
         TBL_REFFERALS as r
-    INNER JOIN 
+    LEFT JOIN 
         TBL_ORDERS AS o
     ON 
         o.idOrders=r.idOrders
-    INNER JOIN 
+    LEFT JOIN 
         TBL_EMPLOYEES as createdEmployee
     ON 
         o.idEmployees=createdEmployee.idEmployees
-    INNER JOIN 
+    LEFT JOIN 
         TBL_EMPLOYEES as senderEmployee
     on 
         o.idSenderEmployee=senderEmployee.idEmployees
-    INNER JOIN 
+    LEFT JOIN 
         TBL_EMPLOYEES as receiverEmployee
     on 
         o.idReceiverEmployee=receiverEmployee.idEmployees
-    INNER JOIN 
+    LEFT JOIN 
         TBL_EMPLOYEES as addresseeEmployee
     on 
         o.idAddresseeEmployee=addresseeEmployee.idEmployees
-    INNER JOIN 
+    LEFT JOIN 
         TBL_USERS AS userCreated
     ON 
         userCreated.idUser = createdEmployee.idUser
-    INNER JOIN 
+    LEFT JOIN 
         TBL_USERS AS senderUser
     on 
         senderUser.idUser = senderEmployee.idUser
-    INNER JOIN 
+    LEFT JOIN 
         TBL_USERS AS receiverUser
     on 
         receiverUser.idUser = receiverEmployee.idUser
-    INNER JOIN 
+    LEFT JOIN 
         TBL_USERS AS addresseeUser
     on 
         addresseeUser.idUser = addresseeEmployee.idEmployees
