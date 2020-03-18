@@ -35,14 +35,7 @@ exports.request = async (req, res, next) => {
     return tmp;
   });
   try {
-    let userType = [];
-    const { userId, role } = req.user;
-    if (role === "individual") {
-      userType = [null, userId];
-    }
-    if (role === "enterprise") {
-      userType = [userId, null];
-    }
+    const { userId } = req.user;
 
     const request = await new mssql.Request()
       .input("deliveryID", mssql.Int, deliveryType)
@@ -50,8 +43,7 @@ exports.request = async (req, res, next) => {
       .input("date", mssql.DateTime, emissionDate)
       .input("shipping", mssql.Float, shipping)
       .input("payment", mssql.Int, payment)
-      .input("eClientID", mssql.Int, userType[0])
-      .input("iClientID", mssql.Int, userType[1])
+      .input("clientID", mssql.Int, userId)
       .output("msj", mssql.VarChar(100))
       .output("err", mssql.VarChar(100))
       .output("id", mssql.Int)

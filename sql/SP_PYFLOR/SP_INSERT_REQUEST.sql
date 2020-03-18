@@ -18,31 +18,25 @@ CREATE PROCEDURE dbo.SP_INSERT_REQUEST
     @date DATETIME,
     @shipping FLOAT,
     @payment INT,
-    @eClientID int,
-    @iClientID int,
+    @clientID int,
     @msj varchar(100) OUTPUT,
     @err VARCHAR(100) OUTPUT,
     @id int OUTPUT
 AS
-declare @enterprise bit = 1
-declare @individual bit = 1
+declare @enterprise int = null
+declare @individual int = null
 declare @tmpId table (id int)
 declare @tmpCount int
-IF @eClientID is null OR @eClientID = ''
-    BEGIN
-    SET @enterprise = 0
-END;
+declare @uRole varchar(10) = [pyflor].[dbo].[getUserRole](@clientID)
 
-IF @iClientID is null OR @iClientID = ''
-    BEGIN
-    SET @individual = 0
-END;
-
-IF @enterprise = @individual
+IF @uRole = 'none'
+    OR @uRole = 'employee'
+    OR @uRole = 'enterprise'
+    OR @uRole = 'admin'
     BEGIN
     set @msj = 'falied'
     set @id = null
-    set @err = 'null or empty fields provided, or enterprise && individual provided'
+    set @err = 'this user cant acces this service'
     RETURN
 END
 
@@ -67,6 +61,24 @@ IF @date is null OR @date = ''
     set @msj = 'falied'
     set @id = null
     set @err = 'null or empty fields provided'
+    RETURN
+END;
+
+IF @uRole = 'individual'
+BEGIN
+    set @individual = [pyflor].[dbo].[getUserRoleID](@clientID)
+END;
+
+IF @uRole = 'enterprise'
+BEGIN
+    set @enterprise = [pyflor].[dbo].[getUserRoleID](@clientID)
+END;
+
+IF @individual = @enterprise
+BEGIN
+    set @msj = 'falied'
+    set @id = null
+    set @err = 'something went wrong'
     RETURN
 END;
 
@@ -98,8 +110,8 @@ values(
         @shipping,
         @requestTypeID,
         @payment,
-        @eClientID,
-        @iClientID
+        @enterprise,
+        @individual
     )
 
 set @msj = 'success'
