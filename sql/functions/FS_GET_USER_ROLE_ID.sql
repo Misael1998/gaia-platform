@@ -11,9 +11,6 @@ BEGIN
     declare @individualId int = null;
     declare @adminId int = null;
 
-    declare @role varchar(10)
-    set @role = 'none'
-
     set @employeeId = (
         select idEmployees
     from TBL_EMPLOYEES
@@ -46,5 +43,5 @@ BEGIN
     if(@adminId is not null )
         return @adminId;
 
-    return @role;
+    return null
 END;
