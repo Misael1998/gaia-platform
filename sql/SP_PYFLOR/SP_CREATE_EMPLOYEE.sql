@@ -147,7 +147,7 @@ VALUES(
 
 INSERT INTO [pyflor].[dbo].[TBL_EMPLOYEES]
     (
-    admission,
+    admission_date,
     idUser,
     idDepartments,
     idJobTitle,
