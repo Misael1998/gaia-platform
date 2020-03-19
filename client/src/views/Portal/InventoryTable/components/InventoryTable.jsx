@@ -1,6 +1,6 @@
 import React from "react";
 
-const InventoryTable = () => {
+const InventoryTable = ({ regInventory }) => {
   return (
     <div className="">
       <table className="table table-bordered table-striped">
@@ -16,25 +16,20 @@ const InventoryTable = () => {
           </tr>
         </thead>
         <tbody className="">
-          <tr className="">
-            <th scope="row">1</th>
-            <td>Vodka</td>
-            <td>900</td>
-            <td>8 botellas</td>
-            <td>Simon</td>
-            <td>12/01/2020</td>
-            <td>Rony</td>
-          </tr>
-
-          <tr className="">
-            <th scope="row">2</th>
-            <td>Miller Draft</td>
-            <td>30</td>
-            <td>8 sixs</td>
-            <td>Nell prro</td>
-            <td>25/21/2020</td>
-            <td>SumaPichas(David)</td>
-          </tr>
+          {regInventory.map(registro => (
+            <tr
+              key={`${registro.No_Orden} ${registro.Supplie_Name}`}
+              className=""
+            >
+              <th scope="row">{registro.No_Orden}</th>
+              <td>{registro.Supplie_Name}</td>
+              <td>{registro.unit_price}</td>
+              <td>{registro.quantity}</td>
+              <td></td>
+              <td>{registro.emission_date}</td>
+              <td>{registro.Receiver_Employee}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

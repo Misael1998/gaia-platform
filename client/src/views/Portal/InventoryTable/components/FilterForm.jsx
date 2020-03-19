@@ -1,23 +1,23 @@
-import React, { useEffect } from "react";
+import React from "react";
 import InptInsumo from "./InptInsumo";
 import InptEmpleado from "./InptEmpleado";
 import InptOrden from "./InptOrden";
 import InptFechas from "./InptFechas";
 import "../../../../styles/FormLog.css";
 
-const FilterForm = ({ option }) => {
+const FilterForm = ({ option, filterData }) => {
   return (
     <div className="limiter">
       <div className="container-loginFilter">
         <div className="wrap-filter">
           {option === "1" ? (
-            <InptInsumo />
+            <InptInsumo filterData={filterData} />
           ) : option === "2" ? (
-            <InptOrden />
+            <InptOrden filterData={filterData} />
           ) : option === "3" ? (
-            <InptEmpleado />
+            <InptEmpleado filterData={filterData} />
           ) : (
-            <InptFechas />
+            <InptFechas filterData={filterData} />
           )}
         </div>
       </div>

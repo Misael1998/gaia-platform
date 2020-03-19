@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
-import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
-import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
+import "../../../styles/fonts/font-awesome-4.7.0/css/font-awesome.min.css";
+import "../../../styles/fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 import { registerNormalUser } from "../../../services/Register";
 import Swal from "sweetalert2";
 
@@ -118,7 +118,7 @@ const FormUser = ({ history }) => {
         Swal.fire({
           icon: "error",
           title: error.title,
-          text: error.text,
+          text: error.text
         });
       });
   };

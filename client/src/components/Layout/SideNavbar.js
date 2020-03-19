@@ -30,6 +30,7 @@ const SideNavbar = ({ items, show }) => {
                             icon={item.icon}
                             label={item.label}
                             link={item.link}
+                            onClick={item.onClick}
                         />
                     }
 
