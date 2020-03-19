@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getPaymentType, getShippingType, cancelOrder } from '../../modules/helper';
 import { deleteCart } from '../../actions/cartActions'
 import { Redirect } from 'react-router-dom';
+import { createRequest } from '../../services/Request';
+import Swal from 'sweetalert2'
 
 
 const ConfirmRequest = ({ history }) => {
@@ -39,6 +41,26 @@ const ConfirmRequest = ({ history }) => {
 
     if (cart.length === 0) {
         return <Redirect to='/app/products' />
+    }
+
+    const sendRequest = () => {
+
+        createRequest(requestInfo)
+            .then(async (res) => {
+                await Swal.fire(
+                    'Pedido creado',
+                    'Tu pedido fue procesado exitosamente',
+                    'success'
+                )
+                history.push('/app/products');
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: "error",
+                    title: error.title,
+                    text: error.text
+                });
+            })
     }
 
     return (
@@ -91,7 +113,7 @@ const ConfirmRequest = ({ history }) => {
                     </button>
                 </div>
                 <div className='ml-2'>
-                    <button className='btn btn-success btn-lg'>
+                    <button className='btn btn-success btn-lg' onClick={sendRequest}>
                         <MdCheckCircle className='text-white mr-1' /> Realizar pedido
                     </button>
                 </div>
