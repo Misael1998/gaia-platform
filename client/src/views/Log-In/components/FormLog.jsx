@@ -71,7 +71,11 @@ const FormLog = ({ history }) => {
           if (user.role === "employee") {
             history.push("/portal");
           } else {
-            history.push("/app");
+            if (user.role === "admin") {
+              history.push("/admin");
+            } else {
+              history.push("/app");
+            }
           }
         });
       })

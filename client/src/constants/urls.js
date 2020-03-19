@@ -11,6 +11,9 @@ export const URL_GET_PRODUCTS = "/api/data/products";
 export const URL_GET_INVENTORY = "/api/data/inventory";
 export const URL_POST_ORDER = "/api/order/provider/order";
 export const URL_GET_EMPLOYEES = "/api/data/employees";
+export const URL_POST_REG_EMPLOYEE = "/api/employees";
+export const URL_GET_JOB_TITLE = "/api/data/jobtitles";
+export const URL_GET_DEPARTMENT = "/api/data/departments";
 export const URL_GET_REFERRALS = "/api/data/refferals";
 
 //URL dinamicas

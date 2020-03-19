@@ -1,21 +1,22 @@
 -- Insert rows into table '' in schema '[dbo]'
-INSERT INTO [pyflor].[dbo].[TBL_JOB_TITLES]
+INSERT INTO [pyflor].[dbo].[TBL_REQUEST_TYPES]
 ( -- Columns to insert data into
  [name]
 )
 VALUES
-(
- 'asistente administrativo 1'
+( 
+ 'Tipo pedido A'
+),
+( 
+ 'Tipo pedido B'
 ),
 (
- 'Gerente de Empaque'
+ 'Tipo pedido C'
 ),
 (
- 'Asistente de empaque'
-),
-(
- 'Despacho'
+ 'Tipo pedido D'
 )
 -- Add more rows here
 GO
+
 
