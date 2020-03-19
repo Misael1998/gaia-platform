@@ -3,10 +3,10 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const authorize = require("../middleware/authorize");
 
-const { pay, sucess, cancel } = require("../controllers/payment");
+const { pay, success, cancel } = require("../controllers/payment");
 
 router.route("/pay").post(auth, authorize("individual", "enterprise"), pay);
-router.route("/sucess").post(sucess);
-router.route("/cancel").post(cancel);
+router.route("/success").get(success);
+router.route("/cancel").get(cancel);
 
 module.exports = router;

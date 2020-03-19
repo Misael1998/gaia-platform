@@ -11,8 +11,6 @@ paypal.configure({
   client_secret: process.env.PAYPAL_CLIENT_SECRET
 });
 
-paypal.configure();
-
 const server = express();
 
 //init middleware
@@ -48,21 +46,21 @@ db();
 //@route    GET     /
 //@access   Public
 if (process.env.NODE_ENV === "development") {
-    server.get("/", (req, res) => {
-        res.send("gaia-pyflor");
-    });
+  server.get("/", (req, res) => {
+    res.send("gaia-pyflor");
+  });
 }
 // Serve static assets in production
 if (
-    process.env.NODE_ENV === "production" ||
-    process.env.NODE_ENV === "sprint"
+  process.env.NODE_ENV === "production" ||
+  process.env.NODE_ENV === "sprint"
 ) {
-    // Set static folder
-    server.use(express.static("client/build"));
+  // Set static folder
+  server.use(express.static("client/build"));
 
-    server.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-    });
+  server.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
 }
 
 //setting port
@@ -70,5 +68,5 @@ const PORT = process.env.PORT || 5000;
 
 //expxose port to server to listend
 server.listen(PORT, () =>
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );

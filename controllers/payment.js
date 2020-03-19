@@ -2,7 +2,7 @@ const paypal = require("paypal-rest-sdk");
 
 exports.pay = (req, res) => {
   const returnUrl = `${req.protocol}://${req.get("host")}/api/payment/success`;
-  const cancelUrl = `${req.protocol}://${req.get("host")}/api/payment/success`;
+  const cancelUrl = `${req.protocol}://${req.get("host")}/api/payment/cancel`;
 
   const createPaymentJson = {
     intent: "sale",
@@ -41,6 +41,7 @@ exports.pay = (req, res) => {
     } else {
       for (let i = 0; i < payment.links.length; i++) {
         if (payment.links[i].rel === "approval_url") {
+          console.log(payment.links[i].href);
           res.redirect(payment.links[i].href);
         }
       }
@@ -48,7 +49,7 @@ exports.pay = (req, res) => {
   });
 };
 
-exports.sucess = (req, res) => {
+exports.success = (req, res) => {
   res.send(req.query);
 };
 exports.cancel = (req, res) => {
