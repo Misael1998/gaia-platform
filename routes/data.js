@@ -18,7 +18,8 @@ const {
     getRequestType,
     getDeliveryType,
     jobTitles,
-    departments
+    departments,
+    paymentMethod
 } = require("../controllers/data");
 
 router.route("/supplies").get(auth, supplies);
@@ -35,6 +36,7 @@ router.route("/request").get(auth, getRequestType);
 router.route("/delivery").get(auth, getDeliveryType);
 router.route('/jobtitles').get(auth, jobTitles);
 router.route('/departments').get(auth, departments);
+router.route("/payment-method").get(paymentMethod);
 router.route("/products").get(auth2, authorize("individual", "enterprise"), products);
 
 

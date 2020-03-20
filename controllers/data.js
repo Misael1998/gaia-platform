@@ -488,3 +488,35 @@ exports.departments = async(req, res) => {
         return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
     }
 };
+
+//@desc     get all payment methods
+//@route    GET     /api/data/payment-method
+//@access   Private
+exports.paymentMethod = async(req, res, next) => {
+    try {
+        const query = await new mssql.Request().query(
+            "select idPaymentMethods ,description from TBL_PAYMENT_METHODS"
+        );
+
+        const data = query.recordset;
+
+        if (data.length === 0) {
+            return res.status(404).json({
+                success: false,
+                msg: "Not Found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            msg: "Successful",
+            data: data
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            msg: "sever error"
+        });
+    }
+};
