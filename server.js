@@ -4,6 +4,7 @@ const cors = require("cors");
 const db = require("./config/db");
 const path = require("path");
 const paypal = require("paypal-rest-sdk");
+const redirection = require("./middleware/redirection");
 
 paypal.configure({
   mode: process.env.PAYPAL_MODE,
@@ -16,6 +17,7 @@ const server = express();
 //init middleware
 server.use(express.json({ extended: false }));
 server.use(cors());
+server.use(redirection);
 
 //route files
 const auth = require("./routes/auth");
