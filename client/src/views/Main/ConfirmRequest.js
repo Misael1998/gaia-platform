@@ -120,8 +120,8 @@ const ConfirmRequest = ({ history }) => {
                     <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loading}>
                         {
                             loading ?
-                                (<div class="spinner-border text-light" role="status">
-                                    <span class="sr-only">Loading...</span>
+                                (<div className="spinner-border text-light" role="status">
+                                    <span className="sr-only">Loading...</span>
                                 </div>) :
                                 (<><MdCheckCircle className='text-white mr-1' /> Realizar pedido</>)
                     }
