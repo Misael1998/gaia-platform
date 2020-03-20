@@ -344,31 +344,31 @@ exports.getProvider = async(req, res, next) => {
 //@route    GET     /api/data/refferals
 //@access   Private
 exports.refferals = async(req, res) => {
-        try {
-            const query = await new mssql.Request().query("select * FROM FT_REFFERALS()");
-            const data = query.recordset;
-            if (data.length == 0) {
-                return res.status(200).json({
-                    success: true,
-                    msg: "No refferals data yet",
-                    data
-                })
-            }
+    try {
+        const query = await new mssql.Request().query(
+            "select * FROM FT_REFFERALS()"
+        );
+        const data = query.recordset;
+        if (data.length == 0) {
             return res.status(200).json({
                 success: true,
-                msg: "Refferals data",
+                msg: "No refferals data yet",
                 data
-            })
-        } catch (error) {
-            console.log(error);
-            return errorResponse(500,
-                "Server error", [{ msg: "Server error" }],
-                res);
+            });
         }
+        return res.status(200).json({
+            success: true,
+            msg: "Refferals data",
+            data
+        });
+    } catch (error) {
+        console.log(error);
+        return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
     }
-    //@desc     get request type
-    //@route    GET     /api/data/request
-    //@access   Private
+};
+//@desc     get request type
+//@route    GET     /api/data/request
+//@access   Private
 exports.getRequestType = async(req, res, next) => {
     try {
         const request = await new mssql.Request().query(
@@ -434,54 +434,56 @@ exports.getDeliveryType = async(req, res, next) => {
     }
 };
 
-//@desc     get all job titles 
+//@desc     get all job titles
 //@route    GET     /api/data/jobtitle
 //@access   Private
 exports.jobTitles = async(req, res) => {
     try {
-        const query = await new mssql.Request()
-            .query("select * from FT_getJobTitles()");
+        const query = await new mssql.Request().query(
+            "select * from FT_getJobTitles()"
+        );
         const data = query.recordset;
         if (data.length == 0) {
             return res.status(200).json({
                 success: true,
                 msg: "no data found",
                 data
-            })
+            });
         }
         res.status(200).json({
             success: true,
             msg: "Job titles data",
             data
-        })
+        });
     } catch (error) {
-        cosnsole.log(error);
+        console.log(error);
         return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
     }
-}
+};
 
 //@desc     get all departments
 //@route    GET     /api/data/departments
 //@access   Private
 exports.departments = async(req, res) => {
     try {
-        const query = await new mssql.Request()
-            .query("SELECT * from FT_GET_DEPARTMENTS()");
+        const query = await new mssql.Request().query(
+            "SELECT * from FT_GET_DEPARTMENTS()"
+        );
         const data = query.recordset;
         if (data.length == 0) {
             return res.status(200).json({
                 success: true,
                 msg: "no data found",
                 data
-            })
+            });
         }
         res.status(200).json({
             success: true,
             msg: "departments data",
             data
-        })
+        });
     } catch (error) {
-        cosnsole.log(error);
+        console.log(error);
         return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
     }
-}
+};
