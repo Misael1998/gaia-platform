@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Title from '../../components/Title';
 import { FaClipboardCheck } from 'react-icons/fa'
 import SummaryItem from './components/SummaryItem';
@@ -13,8 +13,10 @@ import { createRequest } from '../../services/Request';
 import Swal from 'sweetalert2'
 
 
+
 const ConfirmRequest = ({ history }) => {
 
+    const [loading, setLoading] = useState(false);
 
     const requestInfo = useSelector(state => state.cart);
     const dispatch = useDispatch();
@@ -44,9 +46,10 @@ const ConfirmRequest = ({ history }) => {
     }
 
     const sendRequest = () => {
-
+        setLoading(true);
         createRequest(requestInfo)
             .then(async (res) => {
+                setLoading(false);
                 await Swal.fire(
                     'Pedido creado',
                     'Tu pedido fue procesado exitosamente',
@@ -55,6 +58,7 @@ const ConfirmRequest = ({ history }) => {
                 history.push('/app/products');
             })
             .catch(error => {
+                setLoading(false);
                 Swal.fire({
                     icon: "error",
                     title: error.title,
@@ -108,13 +112,19 @@ const ConfirmRequest = ({ history }) => {
             </div>
             <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
                 <div className='mr-2'>
-                    <button className='btn btn-success btn-lg' onClick={() => cancelOrder(dispatch, deleteCart, history)}>
+                    <button className='btn btn-success btn-lg' disabled={loading} onClick={() => cancelOrder(dispatch, deleteCart, history)}>
                         <MdCancel className='text-white mr-1' /> Cancelar orden
                     </button>
                 </div>
                 <div className='ml-2'>
-                    <button className='btn btn-success btn-lg' onClick={sendRequest}>
-                        <MdCheckCircle className='text-white mr-1' /> Realizar pedido
+                    <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loading}>
+                        {
+                            loading ?
+                                (<div class="spinner-border text-light" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>) :
+                                (<><MdCheckCircle className='text-white mr-1' /> Realizar pedido</>)
+                    }
                     </button>
                 </div>
             </div>
