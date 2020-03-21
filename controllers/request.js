@@ -37,7 +37,6 @@ exports.request = async (req, res, next) => {
   try {
     const { userId } = req.user;
 
-    
     const request = await new mssql.Request()
       .input("deliveryID", mssql.Int, deliveryType)
       .input("requestTypeID", mssql.Int, requestType)
@@ -50,7 +49,7 @@ exports.request = async (req, res, next) => {
       .output("id", mssql.Int)
       .execute("SP_INSERT_REQUEST");
 
-
+    const requestId = request.output.id;
     const { msj } = request.output;
     if (msj !== "success") {
       return errorResponse(400, "Bad request", [{ msj: msj }], res);
@@ -74,7 +73,10 @@ exports.request = async (req, res, next) => {
     return res.status(201).json({
       success: true,
       msg: "request placed",
-      data: products
+      data: {
+        requestId,
+        products
+      }
     });
   } catch (err) {
     console.log(err.message);
