@@ -53,7 +53,6 @@ exports.pay = async (req, res) => {
     }
 
     products = query.recordset;
-    return res.send(products);
   } catch (err) {
     console.log(err.message);
     return errorResponse(
@@ -64,8 +63,8 @@ exports.pay = async (req, res) => {
     );
   }
 
-  const returnUrl = `${req.protocol}://${req.get("host")}/api/payment/success`;
-  const cancelUrl = `${req.protocol}://${req.get("host")}/api/payment/cancel`;
+  let returnUrl = `${req.protocol}://${req.get("host")}/api/payment/success`;
+  let cancelUrl = `${req.protocol}://${req.get("host")}/api/payment/cancel`;
 
   let env;
   if (process.env.NODE_ENV === "production") {
@@ -75,12 +74,32 @@ exports.pay = async (req, res) => {
       process.env.PAYPAL_CLIENT_SECRET
     );
   } else {
+    if (process.env.NODE_ENV === "development") {
+      returnUrl = `${returnUrl}?origin=${req.get("origin")}`;
+      cancelUrl = `${cancelUrl}?origin=${req.get("origin")}`;
+    }
     env = new paypal.core.SandboxEnvironment(
-      "AfJLqLD1KZKe3i291BuZgOddEGIb7tqOSR5D5CIm969vDdZUWXlvaMW_G40-Jx5KTJA0EW5j9IVGzTN6",
-      "EGj0NHveyXMiUq0J2skKOQ9B75hF0swFm7vVWSs8G7RXvYG6eT3Cn4j5jyAKn73L60VoVPl-NN1KgKv7"
+      process.env.PAYPAL_CLIENT,
+      process.env.PAYPAL_CLIENT_SECRET
     );
   }
 
+  const items = products.map(product => {
+    return {
+      name: product.name,
+      price: product.price,
+      currency: "USD",
+      quantity: product.quantity
+    };
+  });
+
+  const amount = {
+    currency: "USD",
+    total: items.reduce(
+      (total, item) => (total += item.price * item.quantity),
+      0
+    )
+  };
   const createPaymentJson = {
     intent: "sale",
     payer: {
@@ -93,24 +112,15 @@ exports.pay = async (req, res) => {
     transactions: [
       {
         item_list: {
-          items: [
-            {
-              name: "Red Sox Hat",
-              sku: "001",
-              price: "25.00",
-              currency: "USD",
-              quantity: 1
-            }
-          ]
+          items
         },
-        amount: {
-          currency: "USD",
-          total: "25.00"
-        },
+        amount,
         description: "Hat for the best team ever"
       }
     ]
   };
+
+  return res.send(createPaymentJson);
 
   let client = new paypal.core.PayPalHttpClient(env);
 
