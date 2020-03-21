@@ -10,6 +10,60 @@ exports.pay = async (req, res) => {
     return errorResponse(400, "Validation errors", errors.array(), res);
   }
 
+  let products = [];
+  const { role, userId } = req.user;
+
+  let ft;
+
+  if (role === "individual") {
+    ft = "FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL(@requestId, @user)";
+  }
+
+  if (role === "enterprise") {
+    ft = "FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE(@requestId, @user)";
+  }
+
+  if (!ft) {
+    errorResponse(
+      500,
+      "server error",
+      [{ msg: "role has been modified, cant proceed with payment" }],
+      res
+    );
+  }
+
+  try {
+    let query = await new mssql.Request()
+      .input("requestId", mssql.Int, req.body.request)
+      .input("user", mssql.Int, userId)
+      .query(`select * from ${ft}`);
+
+    if (query.recordset.length === 0) {
+      return errorResponse(
+        404,
+        "not found",
+        [
+          {
+            msg:
+              "cant find this request, or any products in it, cant proceed with payment"
+          }
+        ],
+        res
+      );
+    }
+
+    products = query.recordset;
+    return res.send(products);
+  } catch (err) {
+    console.log(err.message);
+    return errorResponse(
+      500,
+      "server error",
+      [{ msg: "internal server error" }],
+      res
+    );
+  }
+
   const returnUrl = `${req.protocol}://${req.get("host")}/api/payment/success`;
   const cancelUrl = `${req.protocol}://${req.get("host")}/api/payment/cancel`;
 
@@ -22,8 +76,8 @@ exports.pay = async (req, res) => {
     );
   } else {
     env = new paypal.core.SandboxEnvironment(
-      process.env.PAYPAL_CLIENT,
-      process.env.PAYPAL_CLIENT_SECRET
+      "AfJLqLD1KZKe3i291BuZgOddEGIb7tqOSR5D5CIm969vDdZUWXlvaMW_G40-Jx5KTJA0EW5j9IVGzTN6",
+      "EGj0NHveyXMiUq0J2skKOQ9B75hF0swFm7vVWSs8G7RXvYG6eT3Cn4j5jyAKn73L60VoVPl-NN1KgKv7"
     );
   }
 
@@ -62,29 +116,19 @@ exports.pay = async (req, res) => {
 
   let request = new payments.PaymentCreateRequest();
   request.requestBody(createPaymentJson);
-  // paypal.payment.create(createPaymentJson, (err, payment) => {
-  //   if (err) {
-  //     throw err;
-  //   } else {
-  //     for (let i = 0; i < payment.links.length; i++) {
-  //       if (payment.links[i].rel === "approval_url") {
-  //         console.log(payment.links[i].href);
-  //         console.log(res);
-  //         console.log(req.query);
-  //         console.log(payment);
-  //         res.setHeader("X-Requested-With", "XMLHttpRequest");
-  //         res.redirect(payment.links[i].href);
-  //       }
-  //     }
-  //   }
-  // });
 
   const payment = await client.execute(request);
 
   console.log(payment);
-  // for (let i = 0; i < payment.result.links.length; i++) {
-  //   if (payment.links[i].rel === "approval_url") {
-  //     res.redirect(payment.result.links[i].href);
+  // const { links } = payment.result;
+  // for (let i = 0; i < links.length; i++) {
+  //   if (links[i].rel === "approval_url") {
+  //     res.set("Access-Control-Request-Headers", [
+  //       "content-type",
+  //       "x-xsrf-token"
+  //     ]);
+  //     res.set("Access-Control-Request-Method", "GET");
+  //     return res.redirect(links[i].href);
   //   }
   // }
 
