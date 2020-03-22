@@ -4,6 +4,9 @@ const paypal = require("paypal-rest-sdk");
 const payments = paypal.v1.payments;
 const mssql = require("mssql");
 
+//@desc     make payment, generate bill
+//@route    POST    /api/payment/pay
+//@access   Private
 exports.pay = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -23,6 +26,7 @@ exports.pay = async (req, res) => {
     ft = "FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE(@requestId, @user)";
   }
 
+  //checking if ft is assigned
   if (!ft) {
     errorResponse(
       500,
@@ -35,6 +39,7 @@ exports.pay = async (req, res) => {
   const userRequest = req.body.request;
   let query;
 
+  //getting products in request
   try {
     query = await new mssql.Request()
       .input("requestId", mssql.Int, userRequest)
@@ -66,6 +71,7 @@ exports.pay = async (req, res) => {
     );
   }
 
+  //setting url's for paypal rest api to redirect
   let returnUrl = `${req.protocol}://${req.get("host")}/api/payment/success`;
   let cancelUrl = `${req.protocol}://${req.get("host")}/api/payment/cancel`;
 
@@ -105,6 +111,8 @@ exports.pay = async (req, res) => {
       0
     )
   };
+
+  //formating request to paypal standar
   const createPaymentJson = {
     intent: "sale",
     payer: {
@@ -130,6 +138,7 @@ exports.pay = async (req, res) => {
   request.requestBody(createPaymentJson);
 
   try {
+    //executing payment request to paypal rest api
     const payment = await client.execute(request);
     let tokenUrl;
 
@@ -158,6 +167,16 @@ exports.pay = async (req, res) => {
       sp = "SP_CREATE_BILL_ENTERPRISE";
     }
 
+    if (!sp) {
+      errorResponse(
+        500,
+        "server error",
+        [{ msg: "role has been modified, cant proceed with payment" }],
+        res
+      );
+    }
+
+    //creating a new bill in db with paypal payment parameters
     query = await new mssql.Request()
       .input("requestId", mssql.Int, userRequest)
       .input("userId", mssql.Int, userId)
@@ -176,6 +195,7 @@ exports.pay = async (req, res) => {
       );
     }
 
+    //responding with paypal generated url to proceed with payment
     res.status(201).json({ url: tokenUrl });
   } catch (err) {
     console.log(err);
@@ -189,9 +209,16 @@ exports.pay = async (req, res) => {
   }
 };
 
+//@desc     redirect from paypal api on success payment
+//@route    POST    /api/payment/success
+//@access   Public
 exports.success = (req, res) => {
   res.send(req.query);
 };
+
+//@desc     redirect from paypal api on canceled payment
+//@route    POST    /api/payment/cancel
+//@access   Public
 exports.cancel = (req, res) => {
   res.send("cancel route");
 };
