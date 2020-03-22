@@ -3,35 +3,12 @@ require("dotenv").config({ path: "./config/config.env" });
 const cors = require("cors");
 const db = require("./config/db");
 const path = require("path");
-const paypal = require("paypal-rest-sdk");
-const redirection = require("./middleware/redirection");
-
-// paypal.configure({
-//   mode: process.env.PAYPAL_MODE,
-//   client_id: process.env.PAYPAL_CLIENT,
-//   client_secret: process.env.PAYPAL_CLIENT_SECRET
-// });
-
-// let env;
-// if (process.env.NODE_ENV === "production") {
-//   // Live Account details
-//   env = new paypal.core.LiveEnvironment(
-//     process.env.PAYPAL_CLIENT,
-//     process.env.PAYPAL_CLIENT_SECRET
-//   );
-// } else {
-//   env = new paypal.core.SandboxEnvironment(
-//     process.env.PAYPAL_CLIENT,
-//     process.env.PAYPAL_CLIENT_SECRET
-//   );
-// }
 
 const server = express();
 
 //init middleware
 server.use(express.json({ extended: false }));
 server.use(cors());
-server.use(redirection);
 
 //route files
 const auth = require("./routes/auth");

@@ -32,9 +32,12 @@ exports.pay = async (req, res) => {
     );
   }
 
+  const userRequest = req.body.request;
+  let query;
+
   try {
-    let query = await new mssql.Request()
-      .input("requestId", mssql.Int, req.body.request)
+    query = await new mssql.Request()
+      .input("requestId", mssql.Int, userRequest)
       .input("user", mssql.Int, userId)
       .query(`select * from ${ft}`);
 
@@ -75,8 +78,10 @@ exports.pay = async (req, res) => {
     );
   } else {
     if (process.env.NODE_ENV === "development") {
-      returnUrl = `${returnUrl}?origin=${req.get("origin")}`;
-      cancelUrl = `${cancelUrl}?origin=${req.get("origin")}`;
+      // returnUrl = `${returnUrl}?origin=${req.get("origin")}`;
+      // cancelUrl = `${cancelUrl}?origin=${req.get("origin")}`;
+      returnUrl = `${returnUrl}?origin=localhost:3000`;
+      cancelUrl = `${cancelUrl}?origin=localhost:3000`;
     }
     env = new paypal.core.SandboxEnvironment(
       process.env.PAYPAL_CLIENT,
@@ -114,35 +119,74 @@ exports.pay = async (req, res) => {
         item_list: {
           items
         },
-        amount,
-        description: "Hat for the best team ever"
+        amount
       }
     ]
   };
-
-  return res.send(createPaymentJson);
 
   let client = new paypal.core.PayPalHttpClient(env);
 
   let request = new payments.PaymentCreateRequest();
   request.requestBody(createPaymentJson);
 
-  const payment = await client.execute(request);
+  try {
+    const payment = await client.execute(request);
+    let tokenUrl;
 
-  console.log(payment);
-  // const { links } = payment.result;
-  // for (let i = 0; i < links.length; i++) {
-  //   if (links[i].rel === "approval_url") {
-  //     res.set("Access-Control-Request-Headers", [
-  //       "content-type",
-  //       "x-xsrf-token"
-  //     ]);
-  //     res.set("Access-Control-Request-Method", "GET");
-  //     return res.redirect(links[i].href);
-  //   }
-  // }
+    const { links } = payment.result;
+    for (let i = 0; i < links.length; i++) {
+      if (links[i].rel === "approval_url") {
+        tokenUrl = links[i].href;
+      }
+    }
 
-  res.send(payment);
+    if (!tokenUrl) {
+      return errorResponse(
+        500,
+        "server error",
+        [{ msg: "something went wrong when trying to get paymet links" }],
+        res
+      );
+    }
+
+    let sp;
+    if (role === "individual") {
+      sp = "SP_CREATE_BILL_INDIVIDUAL";
+    }
+
+    if (role === "enterprise") {
+      sp = "SP_CREATE_BILL_ENTERPRISE";
+    }
+
+    query = await new mssql.Request()
+      .input("requestId", mssql.Int, userRequest)
+      .input("userId", mssql.Int, userId)
+      .input("urlWithToken", mssql.VarChar(150), tokenUrl)
+      .input("idPayment", mssql.VarChar(150), payment.result.id)
+      .output("msg", mssql.VarChar(20))
+      .output("err", mssql.VarChar(20))
+      .execute(`${sp}`);
+
+    if (query.output.msg !== "success") {
+      return errorResponse(
+        500,
+        "server error",
+        [{ msg: query.output.err }],
+        res
+      );
+    }
+
+    res.status(201).json({ url: tokenUrl });
+  } catch (err) {
+    console.log(err);
+
+    return errorResponse(
+      500,
+      "server error",
+      [{ msg: "internal server error" }],
+      res
+    );
+  }
 };
 
 exports.success = (req, res) => {
