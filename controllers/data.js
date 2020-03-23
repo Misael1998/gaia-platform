@@ -4,7 +4,7 @@ const errorResponse = require("../utils/errorResponse");
 //@desc     database public data
 //@route    GET     /api/data/sectors
 //@access   Public
-exports.sectors = async(req, res, next) => {
+exports.sectors = async (req, res, next) => {
     try {
         const request = await new mssql.Request().query(
             "select idSector id, description sector from tbl_sectors"
@@ -36,7 +36,7 @@ exports.sectors = async(req, res, next) => {
 //@desc     get all supplies
 //@route    GET     /api/data/products
 //@access   Private
-exports.supplies = async(req, res) => {
+exports.supplies = async (req, res) => {
     try {
         const query = await new mssql.Request().query("SELECT * FROM F_SUPPLIES()");
         const data = query.recordset;
@@ -66,7 +66,7 @@ exports.supplies = async(req, res) => {
 //@desc     get the inventory of supplies
 //@route    GET     /api/data/inventory
 //@access   Private
-exports.inventory = async(req, res, next) => {
+exports.inventory = async (req, res, next) => {
     try {
         const query = await new mssql.Request().query(
             "select No_Orden,Supplie_Name,unit_price,quantity,emission_date,Receiver_Employee from f_get_supplies_inventory()"
@@ -98,7 +98,7 @@ exports.inventory = async(req, res, next) => {
 //@desc     get all types of SAR
 //@route    GET     /api/data/sartype
 //@access   Private
-exports.sartype = async(req, res, next) => {
+exports.sartype = async (req, res, next) => {
     try {
         const query = await new mssql.Request().query(
             "select idSarTypes ,description from tbl_sar_types"
@@ -130,7 +130,7 @@ exports.sartype = async(req, res, next) => {
 //@desc     database all products
 //@route    GET     /api/data/products
 //@access   Private
-exports.products = async(req, res) => {
+exports.products = async (req, res) => {
     const { userId, role } = req.user
 
     if (role === 'individual') {
@@ -194,7 +194,7 @@ exports.products = async(req, res) => {
 //@desc     database single products
 //@route    GET     /api/data/products
 //@access   Private
-exports.individualProduct = async(req, res) => {
+exports.individualProduct = async (req, res) => {
     /*res.send(`id: ${req.params.id}`)*/
     const idProduct = req.params.id;
     try {
@@ -236,7 +236,7 @@ exports.individualProduct = async(req, res) => {
 //@desc     database all employees
 //@route    GET     /api/data/employees
 //@access   Private
-exports.employees = async(req, res) => {
+exports.employees = async (req, res) => {
     try {
         const query = await new mssql.Request().query(
             "SELECT idEmployees, " +
@@ -275,7 +275,7 @@ exports.employees = async(req, res) => {
 //@desc     get all providers
 //@route    GET     /api/data/providers
 //@access   Private
-exports.providers = async(req, res, next) => {
+exports.providers = async (req, res, next) => {
     try {
         const request = await new mssql.Request().query(
             "select * from FT_PROVIDERS()"
@@ -308,7 +308,7 @@ exports.providers = async(req, res, next) => {
 //@desc     get provider by id
 //@route    GET     /api/data/providers/:id
 //@access   Private
-exports.getProvider = async(req, res, next) => {
+exports.getProvider = async (req, res, next) => {
     const id = req.params.id;
     try {
         const request = await new mssql.Request()
@@ -343,7 +343,7 @@ exports.getProvider = async(req, res, next) => {
 //@desc     get all refferal data
 //@route    GET     /api/data/refferals
 //@access   Private
-exports.refferals = async(req, res) => {
+exports.refferals = async (req, res) => {
     try {
         const query = await new mssql.Request().query(
             "select * FROM FT_REFFERALS()"
@@ -369,7 +369,7 @@ exports.refferals = async(req, res) => {
 //@desc     get request type
 //@route    GET     /api/data/request
 //@access   Private
-exports.getRequestType = async(req, res, next) => {
+exports.getRequestType = async (req, res, next) => {
     try {
         const request = await new mssql.Request().query(
             "select * from [pyflor].[dbo].FT_GET_REQUEST_TYPE()"
@@ -403,7 +403,7 @@ exports.getRequestType = async(req, res, next) => {
 //@desc     get delivery type
 //@route    GET     /api/data/delivery
 //@access   Private
-exports.getDeliveryType = async(req, res, next) => {
+exports.getDeliveryType = async (req, res, next) => {
     try {
         const request = await new mssql.Request().query(
             "select * from [pyflor].[dbo].FT_GET_DELIVERY_TYPE()"
@@ -437,7 +437,7 @@ exports.getDeliveryType = async(req, res, next) => {
 //@desc     get all job titles
 //@route    GET     /api/data/jobtitle
 //@access   Private
-exports.jobTitles = async(req, res) => {
+exports.jobTitles = async (req, res) => {
     try {
         const query = await new mssql.Request().query(
             "select * from FT_getJobTitles()"
@@ -464,7 +464,7 @@ exports.jobTitles = async(req, res) => {
 //@desc     get all departments
 //@route    GET     /api/data/departments
 //@access   Private
-exports.departments = async(req, res) => {
+exports.departments = async (req, res) => {
     try {
         const query = await new mssql.Request().query(
             "SELECT * from FT_GET_DEPARTMENTS()"
@@ -485,5 +485,72 @@ exports.departments = async(req, res) => {
     } catch (error) {
         console.log(error);
         return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
+    }
+};
+
+//@Desc     request history every client
+//@Route    GET /api/data/requesthistory
+//@access   PRIVATE
+exports.requestHistory = async (req, res) => {
+
+    const { userId, role } = req.user;
+    if (role === 'enterprise') {
+        try {
+            const query = await new mssql.Request()
+                .query(
+                    "SELECT * FROM  [dbo].[FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT](" + userId + ");"
+                );
+
+            const data = query.recordset;
+            if (data === 0) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Not Found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                msg: "Success",
+                data: data
+            });
+
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                msg: "Server error"
+            });
+        }
+    };
+
+    if (role === 'individual') {
+        try {
+            const query = await new mssql.Request()
+                .query(
+                    "SELECT * FROM  [dbo].[FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT](" + userId + ");"
+                );
+
+            const data = query.recordset;
+            if (data === 0) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Not Found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                msg: "Success",
+                data: data
+            });
+        }
+
+        catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                msg: "Server error"
+            });
+        }
     }
 };
