@@ -86,7 +86,7 @@ exports.pay = async (req, res) => {
     if (process.env.NODE_ENV === "development") {
       // returnUrl = `${returnUrl}?origin=${req.get("origin")}`;
       // cancelUrl = `${cancelUrl}?origin=${req.get("origin")}`;
-      returnUrl = `${returnUrl}?origin=localhost:3000`;
+      returnUrl = `${returnUrl}?origin=localhost:3000/app/products`;
       cancelUrl = `${cancelUrl}?origin=localhost:3000`;
     }
     env = new paypal.core.SandboxEnvironment(
@@ -196,7 +196,10 @@ exports.pay = async (req, res) => {
     }
 
     //responding with paypal generated url to proceed with payment
-    res.status(201).json({ url: tokenUrl });
+    res.status(201).json({
+      success: true,
+      url: tokenUrl
+    });
   } catch (err) {
     console.log(err);
 
