@@ -3,7 +3,7 @@ import Title from '../../components/Title';
 import { FaClipboardCheck } from 'react-icons/fa'
 import SummaryItem from './components/SummaryItem';
 import BuySummary from './components/BuySummary';
-import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment } from 'react-icons/md'
+import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment, MdChevronRight } from 'react-icons/md'
 import BubbleIcon from '../../components/BubbleIcon';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPaymentType, getShippingType, cancelOrder } from '../../modules/helper';
@@ -17,6 +17,8 @@ import Swal from 'sweetalert2'
 const ConfirmRequest = ({ history }) => {
 
     const [loading, setLoading] = useState(false);
+    const [paypalButton, setPaypalButton] = useState(false);
+    const [paypalURL, setPaypalURL] = useState('');
 
     const requestInfo = useSelector(state => state.cart);
     const dispatch = useDispatch();
@@ -49,13 +51,21 @@ const ConfirmRequest = ({ history }) => {
         setLoading(true);
         createRequest(requestInfo)
             .then(async (res) => {
+                console.log(res);
                 setLoading(false);
-                await Swal.fire(
-                    'Pedido creado',
-                    'Tu pedido fue procesado exitosamente',
-                    'success'
-                )
-                history.push('/app/products');
+                if (res.code === 1) {
+                    await Swal.fire(
+                        'Pedido creado',
+                        'Tu pedido fue procesado exitosamente',
+                        'success'
+                    )
+                    history.push('/app/products')
+                } else if (res.code === 2) {
+                    setPaypalURL(res.paypal.url)
+                    await Swal.fire('Pedido creado', 'Tu pedido se ha creado procede con el pago', 'success');
+                    setPaypalButton(true);
+                }
+
             })
             .catch(error => {
                 setLoading(false);
@@ -117,15 +127,21 @@ const ConfirmRequest = ({ history }) => {
                     </button>
                 </div>
                 <div className='ml-2'>
-                    <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loading}>
-                        {
-                            loading ?
-                                (<div className="spinner-border text-light" role="status">
-                                    <span className="sr-only">Loading...</span>
-                                </div>) :
-                                (<><MdCheckCircle className='text-white mr-1' /> Realizar pedido</>)
+                    {
+                        paypalButton && paypalURL !== '' ? (
+                            <a href={paypalURL} target='_blank' className='btn btn-success btn-lg' >
+                        Pagar pedido <MdChevronRight className='text-white ml-1'/>
+                        </a>) :
+                            <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loading}>
+                                {
+                                    loading ?
+                                        (<div className="spinner-border text-light" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>) :
+                                        (<><MdCheckCircle className='text-white mr-1' /> Realizar pedido</>)
+                                }
+                            </button>
                     }
-                    </button>
                 </div>
             </div>
         </div>

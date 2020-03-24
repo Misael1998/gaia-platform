@@ -25,10 +25,20 @@ export const createRequest = async (requestData) => {
         const request = await axios.post(URL_POST_CREATE_REQUEST, payload);
         if (request.status === 201) {
             if (paymentType.payment === "3" && paymentType.paypal !== '') {
-                const paypal = await axios.post(URL_POST_PAYPAL_PAYMENT);
-                if (paypal.status === 200) {
-                    window.location.href = paypal
+                const payload = {
+                    "request": request.data.data.requestId
                 }
+                const paypal = await axios.post(URL_POST_PAYPAL_PAYMENT,payload);
+                if (paypal.status === 201) {
+                    return {
+                        code: 2,
+                        paypal: paypal.data
+                    }
+                }
+            }
+            return {
+                code : 1, 
+                request
             }
         } else {
             throw new Error(request);
