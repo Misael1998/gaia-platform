@@ -497,8 +497,9 @@ exports.requestHistory = async (req, res) => {
     if (role === 'enterprise') {
         try {
             const query = await new mssql.Request()
+                .input("idUser", mssql.Int, userId)
                 .query(
-                    "SELECT * FROM  [dbo].[FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT](" + userId + ");"
+                    "SELECT * FROM  [dbo].[FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT](@idUser);"
                 );
 
             const data = query.recordset;
@@ -527,8 +528,9 @@ exports.requestHistory = async (req, res) => {
     if (role === 'individual') {
         try {
             const query = await new mssql.Request()
+                .input("idUser", mssql.Int, userId)
                 .query(
-                    "SELECT * FROM  [dbo].[FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT](" + userId + ");"
+                    "SELECT * FROM  [dbo].[FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT](@idUser);"
                 );
 
             const data = query.recordset;

@@ -3,7 +3,7 @@ RETURNS TABLE
 AS
 RETURN
 (
-    SELECT r.idRequests,r.emission_date,dt.name as DeliveryType,pm.description as PaymentMethods
+    SELECT r.idRequests as requests,r.emission_date  as emissionDate,dt.name as deliveryType,pm.description as paymentMethods
     FROM TBL_REQUESTS r 
     INNER JOIN TBL_DELIVERY_TYPES dt 
     ON dt.idDeliveryType=r.idDeliveryType
