@@ -1,7 +1,7 @@
 import { URL_POST_CREATE_REQUEST, URL_POST_PAYPAL_PAYMENT } from '../constants/urls'
 import axios from '../modules/axios'
 import moment from 'moment'
-import { Redirect } from 'react-router-dom';
+
 
 export const createRequest = async (requestData) => {
     let emissionDate = moment().format('YYYY-MM-DD');
