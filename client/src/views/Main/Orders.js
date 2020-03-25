@@ -12,11 +12,12 @@ const Orders = ({ history }) => {
 
     const [filter, setFilter] = useState('');
     const [requestHistory, setRequestHistory] = useState([]);
+    const [filterHistory, setFilterHistory] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getRequestHistory()
-            .then(res => { setRequestHistory(res); setLoading(false); })
+            .then(res => { setRequestHistory(res); setFilterHistory(res); setLoading(false); })
             .catch(async (error) => {
                 await Swal.fire('Error de conexión', 'Ocurrió un error al conectarse al servidor', 'error');
                 history.goBack();
@@ -47,13 +48,10 @@ const Orders = ({ history }) => {
     if (loading) {
         return <Spinner/>
     } else {
-
-        
-
         return (
             <div className='row p-5'>
                 <Title title='Mis pedidos' icon={<GoPackage size={40} />} />
-                <div className='offset-1 col-6 text-center'>
+                <div className='offset-2 col-8 text-center'>
                     {
                         requestHistory.length !== 0 ? 
                         requestHistory.map(item => (
@@ -62,7 +60,7 @@ const Orders = ({ history }) => {
                         <h3>No tiene historial de pedidos</h3>
                     }
                 </div>
-                <div className='col-4'>
+                {/* <div className='col-4'>
                     <div className='row'>
                         <div className='col-12 text-center d-flex flex-row justify-content-around m-2 '>
                             <h5>Filtrar por</h5>
@@ -105,7 +103,7 @@ const Orders = ({ history }) => {
                             {filterComponent}
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         );
     };

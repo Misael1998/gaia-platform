@@ -5,16 +5,13 @@ INSERT INTO [pyflor].[dbo].[TBL_DELIVERY_TYPES]
 )
 VALUES
 ( 
- 'Tipo envio A'
+ 'Local'
 ),
 ( 
- 'Tipo envio B'
+ 'Centro de distribucion'
 ),
 (
- 'Tipo envio C'
-),
-(
- 'Tipo envio D'
+ 'Personalizado'
 )
 -- Add more rows here
 GO

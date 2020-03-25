@@ -5,16 +5,10 @@ INSERT INTO [pyflor].[dbo].[TBL_REQUEST_TYPES]
 )
 VALUES
 ( 
- 'Tipo pedido A'
+ 'Maquila'
 ),
 ( 
- 'Tipo pedido B'
-),
-(
- 'Tipo pedido C'
-),
-(
- 'Tipo pedido D'
+ 'Planta Neta'
 )
 -- Add more rows here
 GO

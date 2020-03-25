@@ -47,5 +47,8 @@ AS
         @requestId,
         @quantity
     )
+
+    set @msj = 'success'
+    set @err = 'none'
     return 1
 GO

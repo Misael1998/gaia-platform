@@ -6,6 +6,7 @@ import ItemsShippingDetails from '../components/ItemsShippingDetails';
 import "../../../styles/util.css"
 import { showRequestDetails } from "../../../services/RequestDetails";
 import Swal from 'sweetalert2'
+import Spinner from '../../../components/Spinner';
 
 const ShippingDetails = ({ match, history }) => {
 
@@ -16,7 +17,7 @@ const ShippingDetails = ({ match, history }) => {
         const { id } = match.params;
         showRequestDetails(id)
             .then(res => {
-                setRequestDetail(res[0]);
+                setRequestDetail(res);
                 setLoading(false);
             })
             .catch(error => {
@@ -28,75 +29,87 @@ const ShippingDetails = ({ match, history }) => {
     }, [])
 
 
-    return (
-        <div className='row p-5'>
+    if (loading) {
+        return <Spinner />
+    } else {
 
-            <Title title='Detalle de pedido' icon={<FaClipboardCheck size={40} />} />
+        return (
+            <div className='row p-5'>
+
+                <Title title='Detalle de pedido' icon={<FaClipboardCheck size={40} />} />
 
 
-            <div className='col-7 mt-3'>
-                <div className='row'>
-                    <div className='col-12'>
-                        <ul className='list-group'>
-                            <ItemsShippingDetails data={requestDetail} />
-                        </ul>
+                <div className='col-7 mt-3'>
+                    <div className='row'>
+                        <div className='col-12'>
+                            <ul className='list-group'>
+                                <ItemsShippingDetails data={requestDetail} />
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            <div className='col-4 offset-1 mt-3'>
+                <div className='col-4 offset-1 mt-3'>
 
 
-                <div className='d-flex flex-row align-items-center justify-content-center Left mb-4'>
+                    <div className='d-flex flex-row align-items-center justify-content-center Left mb-4'>
 
-                    <span className='bubble-style primary-color text-white mr-2 '>
+                        <span className='bubble-style primary-color text-white mr-2 '>
 
-                        <MdLocalShipping />
-                    </span>
-                    <span className='font-weight-bold mr-1'>
-                        Envio:
-                    </span>
-                    {requestDetail.deliveryType}
-                </div>
-
-
-                <div className='d-flex flex-row align-items-center justify-content-center Left'>
-
-                    <span className='bubble-style primary-color text-white mr-2 '>
-
-                        <MdPayment />
-
-                    </span>
-
-                    <span className='font-weight-bold mr-1'>
-                        Metodo de pago: {'  '}
-                   </span>  {requestDetail.paymentMethod}
+                            <MdLocalShipping />
+                        </span>
+                        <span className='font-weight-bold mr-1'>
+                            Envio:
+                        </span>
+                        {requestDetail[0].deliveryType}
+                    </div>
 
 
-                </div>
+                    <div className='d-flex flex-row align-items-center justify-content-center Left'>
+
+                        <span className='bubble-style primary-color text-white mr-2 '>
+
+                            <MdPayment />
+
+                        </span>
+
+                        <span className='font-weight-bold mr-1'>
+                            Metodo de pago: {'  '}
+                        </span>  {requestDetail[0].paymentMethod}
 
 
-            </div>
+                    </div>
+                    <div className='mt-4'>
+                        <p className='font-small alert alert-success m-2'>
+                            Al procesar de nuevo este pedido, algunos precios pueden presentar una variacion segun los cargos que esten vigentes al momento de procesarse
+                        </p>
+                    </div>
 
-            <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
-
-
-
-                <div className='ml-2'>
-
-                    <button className='btn btn-success btn-lg'>
-
-                        <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
-
-                </button>
 
                 </div>
 
-            </div>
+                <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
 
-        </div>
-    );
+
+
+                    <div className='ml-2'>
+
+                        <button className='btn btn-success btn-lg'>
+
+                            <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
+
+                    </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        );
+    }
 }
+
+
 
 export default ShippingDetails;
