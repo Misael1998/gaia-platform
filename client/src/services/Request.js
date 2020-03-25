@@ -16,15 +16,15 @@ export const createRequest = async (requestData) => {
         emissionDate,
         shipping: 0.00,
         requestType: '1',
-        deliveryType: shippingType,
+        deliveryType: shippingType.id,
         products,
-        payment: paymentType.payment
+        payment: paymentType.payment.idPaymentMethods
     }
 
     try {
         const request = await axios.post(URL_POST_CREATE_REQUEST, payload);
         if (request.status === 201) {
-            if (paymentType.payment === "3") {
+            if (paymentType.payment.description === "Paypal") {
                 const payload = {
                     "request": request.data.data.requestId
                 }

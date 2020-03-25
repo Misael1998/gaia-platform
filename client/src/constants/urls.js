@@ -18,6 +18,7 @@ export const URL_GET_REFERRALS = "/api/data/refferals";
 export const URL_POST_CREATE_REQUEST = "/api/request"
 export const URL_POST_PAYPAL_PAYMENT = '/api/payment/pay'
 export const URL_GET_DELIVERY_TYPES = '/api/data/delivery'
+export const URL_GET_PAYMENT_TYPES = '/api/data/payment-method'
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = token =>

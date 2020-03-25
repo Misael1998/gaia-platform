@@ -23,8 +23,14 @@ const ConfirmRequest = ({ history }) => {
     const requestInfo = useSelector(state => state.cart);
     const dispatch = useDispatch();
     const { shippingType, paymentType, cart } = requestInfo;
-    let paymentString = getPaymentType(paymentType.payment);
-    let shippingString = getShippingType(shippingType);
+
+
+    if (cart.length === 0) {
+        return <Redirect to='/app/products' />
+    }
+
+    let paymentString = paymentType.payment.description
+    let shippingString = shippingType.name
 
     let sum = 0, isv = 0, sumExcent = 0, sumGrav = 0;
 
@@ -43,10 +49,6 @@ const ConfirmRequest = ({ history }) => {
     isv = (sum * 0.15).toFixed(2);
     let total = (Number(sum) + Number(isv)).toFixed(2);
 
-    if (cart.length === 0) {
-        return <Redirect to='/app/products' />
-    }
-
     const sendRequest = () => {
         setLoading(true);
         createRequest(requestInfo)
@@ -63,7 +65,7 @@ const ConfirmRequest = ({ history }) => {
                     setPaypalURL(res.paypal.url)
                     await Swal.fire('Pedido creado', 'Tu pedido se ha creado procede con el pago', 'success');
                     setPaypalButton(true);
-                    
+
                 }
 
                 dispatch(deleteCart());
@@ -131,8 +133,8 @@ const ConfirmRequest = ({ history }) => {
                     {
                         paypalButton && paypalURL !== '' ? (
                             <a href={paypalURL} className='btn btn-success btn-lg' >
-                        Pagar pedido <MdChevronRight className='text-white ml-1'/>
-                        </a>) :
+                                Pagar pedido <MdChevronRight className='text-white ml-1' />
+                            </a>) :
                             <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loading}>
                                 {
                                     loading ?

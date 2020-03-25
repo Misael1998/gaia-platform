@@ -1,6 +1,5 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { FaMoneyCheckAlt } from "react-icons/fa";
-import { FaCcPaypal } from "react-icons/fa";
 import Title from '../../../components/Title';
 import { useDispatch } from 'react-redux'
 import { addPaymentType } from '../../../../src/actions/shippingActions';
@@ -9,6 +8,9 @@ import "../../../styles/util.css"
 import { MdCancel, MdCheckCircle } from 'react-icons/md'
 import { deleteCart } from '../../../actions/cartActions'
 import { cancelOrder } from '../../../modules/helper';
+import { getPaymentTypes } from '../../../services/Data';
+import Swal from 'sweetalert2'
+import Spinner from '../../../components/Spinner';
 
 const FormPayment = ({ updateShowPayment, history }) => {
 
@@ -16,6 +18,18 @@ const FormPayment = ({ updateShowPayment, history }) => {
   const [infoPayment, handleinfoPayment] = useState({
     paymentType: ""
   });
+
+  const [paymentTypes, setPaymentTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getPaymentTypes()
+      .then(res => { setPaymentTypes(res); setLoading(false) })
+      .catch(async (error) => {
+        await Swal.fire('Error de conexion', 'Ocurrio un error en el servidor', 'error')
+        history.goBack();
+      })
+  }, [])
 
   //state para el error
   const [error, handleError] = useState(false);
@@ -92,12 +106,13 @@ const FormPayment = ({ updateShowPayment, history }) => {
         }
       }
     }
-
+    
+    let paymentObject = paymentTypes.filter(type => type.idPaymentMethods == infoPayment.paymentType)[0]
     //Objeto a enviar al store
     let savePaymentType = {
-      'payment': infoPayment.paymentType,
+      'payment': paymentObject,
       'paypal': infoPaypal.account !== '' ? infoPaypal.account : '',
-      'creditCard': infoCreditCard.numberCard !== '' ? infoCreditCard : '', 
+      'creditCard': infoCreditCard.numberCard !== '' ? infoCreditCard : '',
     }
     //Se despacha la accion
     dispatch(addPaymentType(savePaymentType))
@@ -170,201 +185,208 @@ const FormPayment = ({ updateShowPayment, history }) => {
 
 
 
+  if (loading) {
+    return <Spinner />
+  } else {
+
+    return (
 
 
+      <Fragment>
+        <div className='row p-5'>
+          <Title icon={<FaMoneyCheckAlt size={40} />} title="Tipo de Pago" />
+        </div>
 
+        <div className="container ">
 
-  return (
+          <div className="col-lg-6 containerShipping">
 
+            <div className="espaciado">
 
-    <Fragment>
-      <div className='row p-5'>
-        <Title icon={<FaMoneyCheckAlt size={40} />} title="Tipo de Pago" />
-      </div>
+              <h3 className="mb-4">Selecciona el Tipo de pago:</h3>
 
-      <div className="container ">
-
-        <div className="col-lg-6 containerShipping">
-
-          <div className="espaciado">
-
-            <h3 className="mb-4">Selecciona el Tipo de pago:</h3>
-
-            <div
-              className="wrap-input100 validate-input m-b-16"
-              data-validate="Valid email is required: ex@abc.xyz"
-            >
-              <select
-                className="input100"
-                type="text"
-                onChange={handleSavePayment}
-                name="paymentType"
-                value={paymentType}
-
+              <div
+                className="wrap-input100 validate-input m-b-16"
+                data-validate="Valid email is required: ex@abc.xyz"
               >
-                <option value="0">Seleccione el tipo de pago</option>
-                <option value="1">Efectivo</option>
-                <option value="2">Tarjeta de crédito</option>
-                <option value="3">Paypal</option>
-              </select>
+                <select
+                  className="input100"
+                  type="text"
+                  onChange={handleSavePayment}
+                  name="paymentType"
+                  value={paymentType}
 
-              <span className="focus-input100"></span>
-              <span className="symbol-input100">
-                <span className="lnr lnr-cart"></span>
-              </span>
-            </div>
+                >
+                  <option value="0">Seleccione el tipo de pago</option>
+                  {/* { <option value="1">Efectivo</option>
+                  <option value="2">Tarjeta de crédito</option>
+                  <option value="3">Paypal</option>} */}
+                  {
+                    paymentTypes.map(type => (
+                      <option key={type.idPaymentMethods} value={type.idPaymentMethods}>{type.description}</option>
+                    ))
+                  }
+                </select>
 
-            {error ? (
-              <p className="alert alert-danger error-p text-white">
-                Debe Seleccionar el tipo de pago
-              </p>
-            ) : null}
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <span className="lnr lnr-cart"></span>
+                </span>
+              </div>
+
+              {error ? (
+                <p className="alert alert-danger error-p text-white">
+                  Debe Seleccionar el tipo de pago
+                </p>
+              ) : null}
 
 
-            {showPaypal ? (<Fragment>
-              {/*Parte de la paypal */}
+              {showPaypal ? (<Fragment>
+                {/*Parte de la paypal */}
 
 
-              {/* <div
+                {/* <div
+                  className="wrap-input100 validate-input m-b-16"
+                  data-validate="Password is required"
+                >
+  
+                  <input
+                    className="input100"
+                    type="text"
+                    name="account"
+                    onChange={handleSavePaypal}
+                    placeholder="Cuenta de Paypal"
+                    value={account}
+  
+                  />
+  
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                    <span className="lnr lnr-book"></span>
+                  </span>
+  
+                </div> */}
+
+                {errorPaypal ? (
+                  <p className="alert alert-danger error-p text-white">
+                    Debe ingresar la cuenta de Paypal!!
+                  </p>
+                ) : null}
+
+                {/*Parte FIN de la tarjeta */}
+              </Fragment>
+              ) : null}
+
+              {showCreditCar ? (<Fragment>
+                {/*Parte de la tarjeta  de credito*/}
+
+                <p className="alert alert-danger error-p text-white">
+                  El soporte para tarjeta de créditos aún está en proceso!
+                  </p>
+
+                {/* 
+                  <div
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Password is required"
-              >
-
+                >
+                  
                 <input
                   className="input100"
                   type="text"
-                  name="account"
-                  onChange={handleSavePaypal}
-                  placeholder="Cuenta de Paypal"
-                  value={account}
-
+                  name="numberCard"
+                  onChange={handleSaveCreditCard}
+                  placeholder="Número de Tarjeta"
+                  value={numberCard}
+                  
                 />
-
+                
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <span className="lnr lnr-book"></span>
                 </span>
-
-              </div> */}
-
-              {errorPaypal ? (
-                <p className="alert alert-danger error-p text-white">
-                  Debe ingresar la cuenta de Paypal!!
-                </p>
-              ) : null}
-
-              {/*Parte FIN de la tarjeta */}
-            </Fragment>
-            ) : null}
-
-            {showCreditCar ? (<Fragment>
-              {/*Parte de la tarjeta  de credito*/}
-
-              <p className="alert alert-danger error-p text-white">
-                El soporte para tarjeta de créditos aún está en proceso!
-                </p>
-
-              {/* 
-                <div
-              className="wrap-input100 validate-input m-b-16"
-              data-validate="Password is required"
-              >
                 
-              <input
-                className="input100"
-                type="text"
-                name="numberCard"
-                onChange={handleSaveCreditCard}
-                placeholder="Número de Tarjeta"
-                value={numberCard}
+              </div>
+  
+              <div
+                className="wrap-input100 validate-input m-b-16"
+                data-validate="Password is required"
+                >
+                  
+                <input
+                  className="input100"
+                  type="date"
+                  name="expirationDate"
+                  onChange={handleSaveCreditCard}
+                  value={expirationDate}
+                  
+                />
                 
-              />
-              
-              <span className="focus-input100"></span>
-              <span className="symbol-input100">
-                <span className="lnr lnr-book"></span>
-              </span>
-              
-            </div>
-
-            <div
-              className="wrap-input100 validate-input m-b-16"
-              data-validate="Password is required"
-              >
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <span className="lnr lnr-book"></span>
+                </span>
                 
-              <input
-                className="input100"
-                type="date"
-                name="expirationDate"
-                onChange={handleSaveCreditCard}
-                value={expirationDate}
+              </div>
+  
+              <div
+                className="wrap-input100 validate-input m-b-16"
+                data-validate="Password is required"
+                >
+                  
+                <input
+                  className="input100"
+                  type="number"
+                  name="ccv"
+                  onChange={handleSaveCreditCard}
+                  placeholder="CCV"
+                  value={ccv}
+                  
+                />
                 
-              />
-              
-              <span className="focus-input100"></span>
-              <span className="symbol-input100">
-                <span className="lnr lnr-book"></span>
-              </span>
-              
-            </div>
-
-            <div
-              className="wrap-input100 validate-input m-b-16"
-              data-validate="Password is required"
-              >
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <span className="lnr lnr-book"></span>
+                </span>
                 
-              <input
-                className="input100"
-                type="number"
-                name="ccv"
-                onChange={handleSaveCreditCard}
-                placeholder="CCV"
-                value={ccv}
-                
-              />
-              
-              <span className="focus-input100"></span>
-              <span className="symbol-input100">
-                <span className="lnr lnr-book"></span>
-              </span>
-              
-            </div>
-
-            {errorCreditCard ? (
-                <p className="alert alert-danger error-p text-white">
-                  Todos los campos deben ser llenados!!
-                </p>
-                ) : null}
-              */}
+              </div>
+  
+              {errorCreditCard ? (
+                  <p className="alert alert-danger error-p text-white">
+                    Todos los campos deben ser llenados!!
+                  </p>
+                  ) : null}
+                */}
 
 
 
-            </Fragment>
-            ) : null
-              //fin de la tarjeta de credito
-            }
+              </Fragment>
+              ) : null
+                //fin de la tarjeta de credito
+              }
 
-            <div className="container-login100-form-btn p-t-1 botones">
+              <div className="container-login100-form-btn p-t-1 botones">
 
-              <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
+                <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
 
-                <div className='mr-2'>
+                  <div className='mr-2'>
 
-                  <button className='btn btn-success btn-lg' onClick={() => cancelOrder(dispatch, deleteCart, history)}>
+                    <button className='btn btn-success btn-lg' onClick={() => cancelOrder(dispatch, deleteCart, history)}>
 
-                    <MdCancel className='text-white mr-1' /> Cancelar
+                      <MdCancel className='text-white mr-1' /> Cancelar
 
-                    </button>
+                      </button>
 
-                </div>
+                  </div>
 
-                <div className='ml-2'>
+                  <div className='ml-2'>
 
-                  <button className='btn btn-success btn-lg' onClick={submitPayment}>
+                    <button className='btn btn-success btn-lg' onClick={submitPayment}>
 
-                    <MdCheckCircle className='text-white mr-1' /> Siguiente
+                      <MdCheckCircle className='text-white mr-1' /> Siguiente
 
-                    </button>
+                      </button>
+
+                  </div>
 
                 </div>
 
@@ -376,13 +398,15 @@ const FormPayment = ({ updateShowPayment, history }) => {
 
         </div>
 
-      </div>
+
+      </Fragment>
 
 
-    </Fragment>
-
-
-  );
+    );
+  }
 }
+
+
+
 
 export default FormPayment;

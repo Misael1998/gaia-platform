@@ -44,9 +44,9 @@ const FormShipping = ({ updateShowShipping, history }) => {
       return;
     }
     //Objeto a enviar al store
-
+    let shippingObject = shippingTypes.filter(type => type.id == infoShipping.ShippingType)[0]
     //Se despacha la accion
-    dispatch(addShippingType(infoShipping.ShippingType))
+    dispatch(addShippingType(shippingObject))
 
     updateShowShipping(false);
     handleError(false);
