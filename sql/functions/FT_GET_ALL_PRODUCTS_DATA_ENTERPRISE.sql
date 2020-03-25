@@ -36,5 +36,3 @@ BEGIN
 RETURN
 END
 GO
-
-
