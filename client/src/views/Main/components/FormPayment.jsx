@@ -263,9 +263,9 @@ const FormPayment = ({ updateShowPayment, history }) => {
               {showCreditCar ? (<Fragment>
                 {/*Parte de la tarjeta  de credito*/}
 
-                <p className="alert alert-danger error-p text-white">
+                {/* <p className="alert alert-danger error-p text-white">
                   El soporte para tarjeta de créditos aún está en proceso!
-                  </p>
+                  </p> */}
 
                 {/* 
                   <div
