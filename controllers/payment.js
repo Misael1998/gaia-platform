@@ -241,13 +241,17 @@ exports.success = async (req, res) => {
   try {
     const request = await new mssql.Request()
       .input("paymentId", mssql.VarChar(150), req.query.paymentId)
-      .execute(SP_UPDATE_PAYMENT);
+      .execute("SP_UPDATE_PAYMENT");
 
     if (process.env.NODE_ENV === "development") {
-      return res.redirect(`${req.query.origin}/app/products`);
+      return res.redirect(
+        `${req.protocol}://${req.query.origin}/app/success-request`
+      );
     }
 
-    return res.redirect(`${req.protocol}://${req.get("host")}/app/products`);
+    return res.redirect(
+      `${req.protocol}://${req.get("host")}/app/success-request`
+    );
   } catch (err) {
     console.log(err);
     return errorResponse(
@@ -263,5 +267,13 @@ exports.success = async (req, res) => {
 //@route    POST    /api/payment/cancel
 //@access   Public
 exports.cancel = (req, res) => {
-  res.send("cancel route");
+  if (process.env.NODE_ENV === "development") {
+    return res.redirect(
+      `${req.protocol}://${req.query.origin}/app/cancel-request`
+    );
+  }
+
+  return res.redirect(
+    `${req.protocol}://${req.get("host")}/app/cancel-request`
+  );
 };
