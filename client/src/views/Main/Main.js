@@ -7,6 +7,8 @@ import ProductDetail from "./ProductDetail";
 import Products from "./Products";
 import Orders from "./Orders";
 import { Redirect } from "react-router-dom";
+import SuccessRequest from "./SuccessRequest";
+import CancelRequest from "./CancelRequest";
 
 const Main = ({ match }) => {
   return (
@@ -21,7 +23,8 @@ const Main = ({ match }) => {
         <Route path={`${match.path}/products`} component={Products} isPrivate />
         <Route path={`${match.path}/requests`} component={Orders} isPrivate/>
         <Route path={`${match.path}/product/:id`} component={ProductDetail} isPrivate />
-        
+        <Route path={`${match.path}/success-request`} component={SuccessRequest} isPrivate/>
+        <Route path={`${match.path}/cancel-request`} component={CancelRequest} isPrivate/>
         {/* <Redirect to={`${match.path}/products`} /> */}
       </div>
     </div>

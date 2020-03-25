@@ -1,7 +1,7 @@
 import { URL_POST_CREATE_REQUEST, URL_POST_PAYPAL_PAYMENT } from '../constants/urls'
 import axios from '../modules/axios'
 import moment from 'moment'
-import { Redirect } from 'react-router-dom';
+
 
 export const createRequest = async (requestData) => {
     let emissionDate = moment().format('YYYY-MM-DD');
@@ -16,20 +16,21 @@ export const createRequest = async (requestData) => {
         emissionDate,
         shipping: 0.00,
         requestType: '1',
-        deliveryType: shippingType,
+        deliveryType: shippingType.id,
         products,
-        payment: paymentType.payment
+        payment: paymentType.payment.idPaymentMethods
     }
 
     try {
         const request = await axios.post(URL_POST_CREATE_REQUEST, payload);
         if (request.status === 201) {
-            if (paymentType.payment === "3" && paymentType.paypal !== '') {
+            if (paymentType.payment.description === "Paypal") {
                 const payload = {
                     "request": request.data.data.requestId
                 }
                 const paypal = await axios.post(URL_POST_PAYPAL_PAYMENT,payload);
                 if (paypal.status === 201) {
+                    
                     return {
                         code: 2,
                         paypal: paypal.data
