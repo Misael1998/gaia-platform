@@ -31,7 +31,6 @@ declare @uRole varchar(10) = [pyflor].[dbo].[getUserRole](@clientID)
 
 IF @uRole = 'none'
     OR @uRole = 'employee'
-    OR @uRole = 'enterprise'
     OR @uRole = 'admin'
     BEGIN
     set @msj = 'falied'

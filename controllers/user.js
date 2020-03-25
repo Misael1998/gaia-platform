@@ -60,7 +60,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
       case 1:
         payload = {
           id: id_user,
-          role: "enterpise"
+          role: "enterprise"
         };
 
         const user = {

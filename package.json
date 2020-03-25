@@ -9,7 +9,7 @@
     "sprint": "NODE_ENV=sprint node server",
     "server": "nodemon server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"nodemon run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,6 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/is-802-ing-software/gaia-platform#readme",
   "dependencies": {
-    "@david.kucsai/react-pdf-table": "^0.3.0",
-    "@react-pdf/renderer": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -35,7 +33,7 @@
     "moment": "^2.24.0",
     "mssql": "^6.0.1",
     "nodemailer": "^6.4.2",
-    "sweetalert2": "^9.7.2"
+    "paypal-rest-sdk": "^2.0.0-rc.2"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
