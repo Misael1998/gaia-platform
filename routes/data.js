@@ -19,7 +19,8 @@ const {
     getDeliveryType,
     jobTitles,
     departments,
-    paymentMethod
+    paymentMethod,
+    requestHistory
 } = require("../controllers/data");
 
 router.route("/supplies").get(auth, supplies);
@@ -38,6 +39,6 @@ router.route('/jobtitles').get(auth, jobTitles);
 router.route('/departments').get(auth, departments);
 router.route("/payment-method").get(paymentMethod);
 router.route("/products").get(auth2, authorize("individual", "enterprise"), products);
-
+router.route("/requesthistory").get(auth2, authorize("individual", "enterprise"), requestHistory);
 
 module.exports = router;

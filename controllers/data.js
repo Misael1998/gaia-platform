@@ -489,6 +489,73 @@ exports.departments = async(req, res) => {
     }
 };
 
+//@Desc     request history every client
+//@Route    GET /api/data/requesthistory
+//@access   PRIVATE
+exports.requestHistory = async(req, res) => {
+
+    const { userId, role } = req.user;
+    if (role === 'enterprise') {
+        try {
+            const query = await new mssql.Request()
+                .input("idUser", mssql.Int, userId)
+                .query(
+                    "SELECT * FROM  [dbo].[FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT](@idUser);"
+                );
+
+            const data = query.recordset;
+            if (data === 0) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Not Found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                msg: "Success",
+                data: data
+            });
+
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                msg: "Server error"
+            });
+        }
+    };
+
+    if (role === 'individual') {
+        try {
+            const query = await new mssql.Request()
+                .input("idUser", mssql.Int, userId)
+                .query(
+                    "SELECT * FROM  [dbo].[FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT](@idUser);"
+                );
+
+            const data = query.recordset;
+            if (data === 0) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Not Found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                msg: "Success",
+                data: data
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                msg: "Server error"
+            });
+        }
+    }
+};
+
 //@desc     get all payment methods
 //@route    GET     /api/data/payment-method
 //@access   Private
