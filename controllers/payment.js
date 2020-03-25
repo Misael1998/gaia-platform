@@ -241,10 +241,10 @@ exports.success = async (req, res) => {
   try {
     const request = await new mssql.Request()
       .input("paymentId", mssql.VarChar(150), req.query.paymentId)
-      .execute(SP_UPDATE_PAYMENT);
+      .execute("SP_UPDATE_PAYMENT");
 
     if (process.env.NODE_ENV === "development") {
-      return res.redirect(`${req.query.origin}/app/products`);
+      return res.redirect(`${req.protocol}://${req.query.origin}/app/products`);
     }
 
     return res.redirect(`${req.protocol}://${req.get("host")}/app/products`);
