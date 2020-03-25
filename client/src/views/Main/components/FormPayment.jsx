@@ -23,6 +23,9 @@ const FormPayment = ( {updateShowPayment} ) => {
     let paymentType = {
       infoPayment
     }
+
+    
+
     //Se despacha la accion
     dispatch(addPaymentType(paymentType))
   }

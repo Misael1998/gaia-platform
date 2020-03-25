@@ -15,8 +15,14 @@ export const URL_POST_REG_EMPLOYEE = "/api/employees";
 export const URL_GET_JOB_TITLE = "/api/data/jobtitles";
 export const URL_GET_DEPARTMENT = "/api/data/departments";
 export const URL_GET_REFERRALS = "/api/data/refferals";
+export const URL_GET_REQUEST_HISTORY = "/api/data/requesthistory";
+
+
+
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = token =>
   `/api/auth/resetpassword/${token}`;
 export const URL_GET_PRODUCT_BY_ID = id => `/api/data/products/${id}`;
+export const URL_GET_REQUEST_DETAILS = id => `/api/request/${id}/details`;
+
