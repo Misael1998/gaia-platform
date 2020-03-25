@@ -108,7 +108,7 @@ exports.pay = async (req, res) => {
     if (process.env.NODE_ENV === "development") {
       // returnUrl = `${returnUrl}?origin=${req.get("origin")}`;
       // cancelUrl = `${cancelUrl}?origin=${req.get("origin")}`;
-      returnUrl = `${returnUrl}?origin=localhost:3000/app/products`;
+      returnUrl = `${returnUrl}?origin=localhost:3000`;
       cancelUrl = `${cancelUrl}?origin=localhost:3000`;
     }
     env = new paypal.core.SandboxEnvironment(
@@ -120,7 +120,7 @@ exports.pay = async (req, res) => {
   const items = products.map(product => {
     return {
       name: product.name,
-      price: product.price,
+      price: product.unit_price,
       currency: "USD",
       quantity: product.quantity
     };
