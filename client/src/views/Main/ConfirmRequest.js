@@ -51,7 +51,6 @@ const ConfirmRequest = ({ history }) => {
         setLoading(true);
         createRequest(requestInfo)
             .then(async (res) => {
-                console.log(res);
                 setLoading(false);
                 if (res.code === 1) {
                     await Swal.fire(
@@ -64,8 +63,10 @@ const ConfirmRequest = ({ history }) => {
                     setPaypalURL(res.paypal.url)
                     await Swal.fire('Pedido creado', 'Tu pedido se ha creado procede con el pago', 'success');
                     setPaypalButton(true);
+                    
                 }
 
+                dispatch(deleteCart());
             })
             .catch(error => {
                 setLoading(false);
@@ -129,7 +130,7 @@ const ConfirmRequest = ({ history }) => {
                 <div className='ml-2'>
                     {
                         paypalButton && paypalURL !== '' ? (
-                            <a href={paypalURL} target='_blank' className='btn btn-success btn-lg' >
+                            <a href={paypalURL} className='btn btn-success btn-lg' >
                         Pagar pedido <MdChevronRight className='text-white ml-1'/>
                         </a>) :
                             <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loading}>

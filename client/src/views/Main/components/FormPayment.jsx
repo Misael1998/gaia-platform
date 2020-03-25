@@ -74,10 +74,10 @@ const FormPayment = ({ updateShowPayment, history }) => {
       return;
     } else {
       if (paymentType === "3") {
-        if (account.trim() === "") {
-          handleErrorPaypal(true);
-          return;
-        }
+        // if (account.trim() === "") {
+        //   handleErrorPaypal(true);
+        //   return;
+        // }
 
       } else {
         if (paymentType === "2") {
@@ -225,7 +225,7 @@ const FormPayment = ({ updateShowPayment, history }) => {
               {/*Parte de la paypal */}
 
 
-              <div
+              {/* <div
                 className="wrap-input100 validate-input m-b-16"
                 data-validate="Password is required"
               >
@@ -245,7 +245,7 @@ const FormPayment = ({ updateShowPayment, history }) => {
                   <span className="lnr lnr-book"></span>
                 </span>
 
-              </div>
+              </div> */}
 
               {errorPaypal ? (
                 <p className="alert alert-danger error-p text-white">
