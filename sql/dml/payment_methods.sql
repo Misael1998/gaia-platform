@@ -9,6 +9,15 @@ VALUES
 ),
 (
  'credito'
+),
+(
+ 'Transferencia'
+),
+(
+ 'Tarjeta'
+),
+(
+ 'Cheques'
 )
 -- Add more rows here
 GO
