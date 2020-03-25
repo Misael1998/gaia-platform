@@ -207,7 +207,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS]
   CONSTRAINT fk_TBL_REQUESTS_TBL_PAYMENT_METHODS
     FOREIGN KEY (idPaymentMethods)
     REFERENCES TBL_PAYMENT_METHODS (idPaymentMethods)
-   )
+)
 ;
 
 
@@ -553,11 +553,9 @@ CREATE TABLE [pyflor].[dbo].[REQUESTS_has_PRODUCTS]
   idProducts INT NOT NULL,
   idRequest INT NOT NULL,
   quantity INT NOT NULL,
-  PRIMARY KEY (idProducts, idRequest),
   CONSTRAINT fk_TBL_PRODUCTS_has_TBL_REQUESTS_TBL_PRODUCTS1
     FOREIGN KEY (idProducts)
     REFERENCES TBL_PRODUCTS (idProducts)
-
    ,
   CONSTRAINT fk_TBL_PRODUCTS_has_TBL_REQUESTS_TBL_REQUESTS1
     FOREIGN KEY (idRequest)
@@ -603,6 +601,8 @@ CREATE TABLE [pyflor].[dbo].[TBL_PRO_BILL]
   description VARCHAR(45) NOT NULL,
   maquila DECIMAL(10,2) NULL,
   net_plant DECIMAL(10,2) NULL,
+  sub_total FLOAT NULL,
+  total FLOAT NULL,
   PRIMARY KEY (idProBills),
   CONSTRAINT fk_TBL_PRO_BILL_TBL_BILLS1
     FOREIGN KEY (idBills)
@@ -737,4 +737,36 @@ CREATE TABLE [pyflor].[dbo].[TBL_FORGOT_PASSWORD_TOKENS]
     REFERENCES [pyflor].[dbo].[TBL_USERS] ([idUser])
 )
 ;
+
+-- -----------------------------------------------------
+-- Table [pyflor].[dbo].[TBL_BILL_STATE]
+-- -----------------------------------------------------
+
+CREATE TABLE [pyflor].[dbo].[TBL_BILL_STATE]
+(
+  [idState] INT NOT NULL PRIMARY KEY,
+  [description] VARCHAR(45)
+)
+
+-- -----------------------------------------------------
+-- Table [pyflor].[dbo].[BILL_HAS_STATE]
+-- -----------------------------------------------------
+
+
+CREATE TABLE [pyflor].[dbo].[BILL_HAS_STATE]
+(
+  idState INT NOT NULL,
+  idBill INT NOT NULL,
+  date DATETIME NOT NULL,
+  urlWithToken VARCHAR(150) NULL,
+  paymentId VARCHAR(150)
+    CONSTRAINT fk_state
+    FOREIGN KEY (idState)
+    REFERENCES TBL_BILL_STATE (idState)
+   ,
+  CONSTRAINT fk_bill
+    FOREIGN KEY (idBill)
+    REFERENCES TBL_BILLS(idBills)
+
+)
 

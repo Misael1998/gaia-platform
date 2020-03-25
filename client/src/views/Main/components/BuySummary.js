@@ -11,6 +11,12 @@ const BuySummary = ({subtotal, isv15, isv18, excent, grav, total}) => {
                 <h4 className="text-center">Resumen de compra</h4>
             </div>
             <div className="mb-2">
+                <span className="font-weight-bold m-r-135">Total Excento:</span>L {excent || 0.00}
+            </div>
+            <div className="mb-2">
+                <span className="font-weight-bold m-r-130">Total Gravado:</span>L {grav || 0.00}
+            </div>
+            <div className="mb-2">
                 <span className="font-weight-bold m-r-170">Subtotal:</span>L {subtotal || 0.00}
 
             </div>
@@ -19,12 +25,6 @@ const BuySummary = ({subtotal, isv15, isv18, excent, grav, total}) => {
             </div>
             <div className="mb-2">
                 <span className="font-weight-bold m-r-173">ISV 18%:</span>L {isv18 || 0.00}
-            </div>
-            <div className="mb-2">
-                <span className="font-weight-bold m-r-135">Total Excento:</span>L {excent || 0.00}
-            </div>
-            <div className="mb-2">
-                <span className="font-weight-bold m-r-130">Total Gravado:</span>L {grav || 0.00}
             </div>
             <div>
                 <hr />

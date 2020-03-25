@@ -10,7 +10,7 @@ exports.providerOrder = async (req, res) => {
   if (!errors.isEmpty()) {
     return errorResponse(400, "Validaton errors", errors.array(), res);
   }
-
+  
   const {
     emissionDate,
     expireDate,

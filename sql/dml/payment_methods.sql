@@ -5,9 +5,15 @@ INSERT INTO [pyflor].[dbo].[TBL_PAYMENT_METHODS]
 )
 VALUES
 (
- 'efectivo'
+ 'Efectivo'
 ),
 (
+<<<<<<< HEAD
+ 'Transferencia Bancaria'
+),
+(
+    'Paypal'
+=======
  'credito'
 ),
 (
@@ -18,6 +24,7 @@ VALUES
 ),
 (
  'Cheques'
+>>>>>>> de41c960de5877e7119bbddfb249d3c334b08827
 )
 -- Add more rows here
 GO

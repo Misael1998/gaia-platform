@@ -5,16 +5,16 @@ INSERT INTO [pyflor].[dbo].[TBL_SECTORS]
 )
 VALUES
 ( 
- 'A'
+ 'Agroindustria'
 ),
 ( 
- 'B'
+ 'Comidas rapidas'
 ),
 (
- 'C'
+ 'Comidas gourmet'
 ),
 (
- 'D'
+ 'Tienda de abarroteria'
 )
 -- Add more rows here
 GO
