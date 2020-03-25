@@ -7,11 +7,15 @@ VALUES
 (
  'Efectivo'
 ),
+
 (
- 'Transferencia Bancaria'
+ 'Transferencia'
 ),
 (
-    'Paypal'
+ 'Tarjeta'
+),
+(
+ 'Cheques'
 )
 -- Add more rows here
 GO
