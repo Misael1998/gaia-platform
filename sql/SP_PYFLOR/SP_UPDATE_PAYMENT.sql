@@ -18,6 +18,6 @@ AS
     SET
         [idState] = 2
     WHERE paymentId = @paymentId
-
-    return 
+    
+    return 1
 GO

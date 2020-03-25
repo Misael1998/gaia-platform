@@ -56,7 +56,7 @@ AS
     if @hasGrass > 0
     BEGIN
         select @total = 
-            sum(tbl.price)
+            sum(tbl.unit_price)
             FROM FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL(@requestId, @userId) tbl
 
         IF @total = 0 OR @total is NULL
@@ -114,7 +114,7 @@ AS
     END;
 
     select @total = 
-        sum(tbl.price)
+        sum(tbl.unit_price)
         FROM FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL(@requestId, @userId) tbl
     
     IF @total = 0 OR @total is NULL
