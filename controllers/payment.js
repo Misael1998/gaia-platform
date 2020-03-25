@@ -240,18 +240,22 @@ exports.pay = async (req, res) => {
 exports.success = async (req, res) => {
   try {
     const request = await new mssql.Request()
-  .input('paymentId', mssql.VarChar(150), req.query.paymentId)
-  .execute(SP_UPDATE_PAYMENT)
+      .input("paymentId", mssql.VarChar(150), req.query.paymentId)
+      .execute(SP_UPDATE_PAYMENT);
 
-    if (process.env.NODE_ENV === 'development') {
-      return res.redirect(`${req.query.origin}/app/products`)
+    if (process.env.NODE_ENV === "development") {
+      return res.redirect(`${req.query.origin}/app/products`);
     }
 
-    return res.redirect(`${req.protocol}://${req.get("host")}/app/products`)
+    return res.redirect(`${req.protocol}://${req.get("host")}/app/products`);
   } catch (err) {
     console.log(err);
-    return errorResponse(500, 'server error'. [{msg: 'internal server error'}], res)
-    
+    return errorResponse(
+      500,
+      "server error",
+      [{ msg: "internal server error" }],
+      res
+    );
   }
 };
 
