@@ -60,7 +60,29 @@ exports.pay = async (req, res) => {
       );
     }
 
+    const control = query.recordset.reduce(
+      (total, data) => (total += data.control),
+      0
+    );
     products = query.recordset;
+
+    if (control === 1) {
+      return errorResponse(
+        400,
+        "playment alredy placed",
+        [{ msg: "go to payment link", url: products[0].description }],
+        res
+      );
+    }
+
+    if (control === 2) {
+      return errorResponse(
+        400,
+        "cant proceed with payment",
+        [{ msg: "request alredy payed" }],
+        res
+      );
+    }
   } catch (err) {
     console.log(err.message);
     return errorResponse(
