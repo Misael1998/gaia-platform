@@ -5,7 +5,6 @@ export const getInventory = async () => {
   try {
     const response = await axios.get(URL_GET_INVENTORY);
     if (response.status === 200) {
-      console.log("Respuesta de getInventory: ", response.data.data);
       return response.data.data;
     } else {
       throw new Error(response);
