@@ -60,7 +60,29 @@ exports.pay = async (req, res) => {
       );
     }
 
+    const control = query.recordset.reduce(
+      (total, data) => (total += data.control),
+      0
+    );
     products = query.recordset;
+
+    if (control === 1) {
+      return errorResponse(
+        400,
+        "playment alredy placed",
+        [{ msg: "go to payment link", url: products[0].description }],
+        res
+      );
+    }
+
+    if (control === 2) {
+      return errorResponse(
+        400,
+        "cant proceed with payment",
+        [{ msg: "request alredy payed" }],
+        res
+      );
+    }
   } catch (err) {
     console.log(err.message);
     return errorResponse(
@@ -215,8 +237,26 @@ exports.pay = async (req, res) => {
 //@desc     redirect from paypal api on success payment
 //@route    POST    /api/payment/success
 //@access   Public
-exports.success = (req, res) => {
-  res.send(req.query);
+exports.success = async (req, res) => {
+  try {
+    const request = await new mssql.Request()
+      .input("paymentId", mssql.VarChar(150), req.query.paymentId)
+      .execute(SP_UPDATE_PAYMENT);
+
+    if (process.env.NODE_ENV === "development") {
+      return res.redirect(`${req.query.origin}/app/products`);
+    }
+
+    return res.redirect(`${req.protocol}://${req.get("host")}/app/products`);
+  } catch (err) {
+    console.log(err);
+    return errorResponse(
+      500,
+      "server error",
+      [{ msg: "internal server error" }],
+      res
+    );
+  }
 };
 
 //@desc     redirect from paypal api on canceled payment
