@@ -13,9 +13,6 @@ const SumItemDetail = () => {
             <div>
                 <span className='text-black font-weight-bold '>Cantidad: </span>{' '} Cantidad
             </div>
-            <div>
-                <span className='text-black font-weight-bold '>Precio: </span>{' '} Precio
-            </div>
         </li>
     );
 };

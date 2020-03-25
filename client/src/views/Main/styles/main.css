@@ -26,3 +26,8 @@
 .history-item:hover {
     background-color: #edf1f142;
 }
+
+.font-small{
+    font-size: 12px;
+    text-align: center;
+}

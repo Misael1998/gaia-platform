@@ -9,6 +9,7 @@ import Shipping from "./Shipping";
 import ConfirmRequest from "./ConfirmRequest";
 import Orders from "./Orders";
 import { Redirect } from "react-router-dom";
+import ShippingDetails from "./components/ShippingDetails";
 
 const Main = ({ match }) => {
   return (
@@ -24,6 +25,7 @@ const Main = ({ match }) => {
         <Route path={`${match.path}/requests`} component={Orders} isPrivate/>
         <Route path={`${match.path}/confirm`} component={ConfirmRequest} isPrivate/>
         <Route path={`${match.path}/product/:id`} component={ProductDetail} isPrivate />
+        <Route exact path={`${match.path}/request/:id`} component={ShippingDetails} isPrivate/> 
         
         {/* <Redirect to={`${match.path}/products`} /> */}
       </div>
