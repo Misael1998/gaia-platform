@@ -62,6 +62,7 @@ BEGIN
             select @state = state from @control
             IF @state = 1
             BEGIN
+                delete from @products
                 insert into @products
                 select  null name,
                         (select url from @control) description,
@@ -73,6 +74,7 @@ BEGIN
 
             IF @state = 2
             BEGIN
+                delete from @products
                 insert into @products
                 select  null name,
                         'request alredy payed' description,
