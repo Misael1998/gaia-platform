@@ -1,5 +1,5 @@
 import React from "react";
-
+import moment from 'moment'
 const InventoryTable = ({ regInventory }) => {
   return (
     <div className="">
@@ -26,7 +26,7 @@ const InventoryTable = ({ regInventory }) => {
               <td>{registro.unit_price}</td>
               <td>{registro.quantity}</td>
               <td></td>
-              <td>{registro.emission_date}</td>
+              <td>{moment(registro.emission_date).format('DD/MM/YYYY')}</td>
               <td>{registro.Receiver_Employee}</td>
             </tr>
           ))}

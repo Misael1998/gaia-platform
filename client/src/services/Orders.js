@@ -31,7 +31,6 @@ export const makeOrder = async (
       unit: supplies[i].supUnit
     };
 
-    console.log("Payload: ", payload);
 
     try {
       const response = await axios.post(URL_POST_ORDER, payload);
@@ -41,12 +40,11 @@ export const makeOrder = async (
         //   status: response.status,
         //   ...response.data
         // };
-        console.log("Aqui estaba el return antes");
+      
       } else {
         throw new Error(response);
       }
     } catch (error) {
-      console.log("Error: ", error.response);
       let errorObj;
       const { response } = error;
       if (response.status === 400) {
