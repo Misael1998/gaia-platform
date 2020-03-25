@@ -16,7 +16,7 @@ const PDFCreator = ({ data, title }) => {
                     </View>
 
                     <View>
-                        <Text style={styles.title}>Remisiones</Text>
+                        <Text style={styles.title}>{title}</Text>
                     </View>
                     <View>
                         <Text style={styles.date}>Fecha: {moment().format('DD/MM/YYYY')}</Text>
