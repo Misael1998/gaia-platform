@@ -95,7 +95,7 @@ const ShippingDetails = ({ match, history }) => {
 
                     <div className='ml-2'>
 
-                        <button className='btn btn-success btn-lg'>
+                        <button className='btn btn-success btn-lg' disabled>
 
                             <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
 

@@ -87,24 +87,7 @@ const FormPayment = ({ updateShowPayment, history }) => {
       handleError(true);
       return;
     } else {
-      if (paymentType === "3") {
-        // if (account.trim() === "") {
-        //   handleErrorPaypal(true);
-        //   return;
-        // }
-
-      } else {
-        if (paymentType === "2") {
-          if (numberCard.trim() === "" ||
-            expirationDate.trim() === "" ||
-            ccv.trim() === ""
-          ) {
-            handleErrorCreditCard(true);
-            return;
-          }
-
-        }
-      }
+     
     }
     
     let paymentObject = paymentTypes.filter(type => type.idPaymentMethods == infoPayment.paymentType)[0]
