@@ -10,7 +10,6 @@ export const selectEmployee = async () => {
       Headers: { "x-auth-token": token }
     });
     if (response.status === 200) {
-      console.log("Respuesta de Services/Employees", response);
       return response.data.data;
     } else {
       throw new Error(response);

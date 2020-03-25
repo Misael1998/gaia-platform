@@ -24,7 +24,7 @@ export const registerEmployee = async (
     password
   };
 
-  // console.log("El payload para insertar un empleado es: ", payload);
+
 
   try {
     const response = await axios.post(URL_POST_REG_EMPLOYEE, payload);
@@ -35,7 +35,7 @@ export const registerEmployee = async (
       throw new Error(response);
     }
   } catch (error) {
-    console.log(error.response);
+  
     let errorObj;
     const { response } = error;
     if (response.status === 400) {
