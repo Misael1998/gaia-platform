@@ -1,11 +1,34 @@
-import React,{Fragment} from 'react'
+import React,{Fragment, useState, useEffect} from 'react'
 import Title from '../../../components/Title';
 import { FaClipboardCheck } from 'react-icons/fa';
 import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment } from 'react-icons/md'
 import ItemsShippingDetails from '../components/ItemsShippingDetails';
 import "../../../styles/util.css"
+import {getRequestHistory} from "../../../services/RequestHistory"
+import {showRequestDetails} from "../../../services/RequestDetails";
 
 const ShippingDetails = () => {
+
+    //state para guardar el arreglo de los requests:
+    const [requestDetails, handleRequestDetails]=useState([]);
+
+    var reqId = 0;
+
+    //Funcion para traer la info del inventario:
+    useEffect(() => {
+        getRequestHistory()
+        .then(res => {
+
+            let dim = res.length;
+
+            reqId = res[dim-1].requests;
+            showRequestDetails(reqId).then(res2 => { 
+                handleRequestDetails(res2);
+            })        
+        })
+        .catch(err => console.log("El error es:", err));
+    }, []);
+
     return ( 
         <div className='row p-5'>
 
@@ -29,7 +52,7 @@ const ShippingDetails = () => {
 
                     <ul className='list-group'>
 
-                        <ItemsShippingDetails />
+                        <ItemsShippingDetails requestDetails={requestDetails}/>
 
                         
 
@@ -54,7 +77,10 @@ const ShippingDetails = () => {
 
             </span>
 
-                <span className='font-weight-bold mr-2'>Tipo de envio: {' '} </span> Tipo de envio
+                {requestDetails.map(registro => (
+                    <span key={registro.idRequest} className='font-weight-bold mr-2'>Tipo de envio: {registro.deliveryType} </span> 
+                ))}
+                
 
         </div>
 
@@ -66,8 +92,10 @@ const ShippingDetails = () => {
                                 <MdPayment />
 
                             </span>
-
-                            <span className='font-weight-bold mr-2'>Tipo de Pago:{' '} </span> Tipo de pago
+                            {requestDetails.map(registro => (
+                    <span key={registro.idRequest} className='font-weight-bold mr-2'>Tipo de Pago: {registro.paymentMethod} </span> 
+                    ))}
+                            
 
          </div>
 
