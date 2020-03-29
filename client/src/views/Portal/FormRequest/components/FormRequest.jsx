@@ -433,8 +433,8 @@ const FormRequest = () => {
                     value={idPaymentMethod}
                   >
                     <option value="0">Forma de Pago</option>
-                    <option value="1">Efectivo</option>
-                    <option value="2">Crédito</option>
+                    <option value="3">Efectivo</option>
+                    <option value="5">Crédito</option>
                   </select>
 
                   <span className="focus-input100"></span>

@@ -6,7 +6,7 @@ import {
   MdAddShoppingCart
 } from "react-icons/md";
 import { GoPackage } from "react-icons/go";
-import { FaExchangeAlt } from 'react-icons/fa'
+import { FaExchangeAlt, FaShoppingBag } from 'react-icons/fa'
 import { logout } from '../modules/helper'
 
 const items = [
@@ -15,6 +15,12 @@ const items = [
     label: "Inicio",
     icon: <MdHome size={30} />,
     link: "/portal"
+  },
+  {
+    name: 'requests',
+    label: 'Pedidos',
+    icon: <FaShoppingBag size={30} />,
+    link: '/portal/requests-summary'
   },
   {
     name: "purchases",
