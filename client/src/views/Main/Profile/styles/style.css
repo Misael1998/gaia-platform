@@ -37,10 +37,15 @@
 
 .spn-icon {
   margin-left: 15px;
-  font-weight: bold;
+  font-weight: 300;
   font-size: 22px;
+  font-family: Roboto, sans-serif;
 }
 
 .container-nonEdit {
   margin-left: 10%;
+}
+
+body {
+  font-family: Roboto, sans-serif;
 }
