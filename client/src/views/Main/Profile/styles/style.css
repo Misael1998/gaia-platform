@@ -1,0 +1,46 @@
+.inpt-edit {
+  width: 350px !important;
+}
+
+.n-m {
+  margin-right: 0px !important;
+}
+
+.m-padding {
+  padding-left: 25% !important;
+}
+
+.txt-info {
+  font-size: 22px;
+}
+
+.icon-info {
+  color: #27ae60 !important;
+  font-weight: 500;
+}
+
+.btn-changes {
+  margin-left: 40%;
+  margin-bottom: 8px;
+  margin-top: 28px;
+}
+
+.btn-edit {
+  background-color: #2ecc71 !important;
+  color: white;
+}
+
+.btn-perfil {
+  background-color: #27ae60 !important;
+  color: white;
+}
+
+.spn-icon {
+  margin-left: 15px;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.container-nonEdit {
+  margin-left: 10%;
+}
