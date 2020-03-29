@@ -7,6 +7,7 @@ import { selectProviders } from "../../../../services/Providers";
 import { selectSar } from "../../../../services/Sar";
 import { selectEmployee } from "../../../../services/Employees";
 import { makeOrder } from "../../../../services/Orders";
+import { getPaymentMethods } from "../../../../services/PaymentMethods";
 import moment from "moment";
 import Spinner from "../../../../components/Spinner";
 
@@ -44,6 +45,9 @@ const FormRequest = () => {
 
   //State para los empleados:
   const [employees, handleEmployees] = useState([]);
+
+  //State para los tipos de pagos:
+  const [payment, setPayment] = useState([]);
 
   //Funcion que se ejecuta cuando se escribe en un input:
   const handleChangeInfo = e => {
@@ -96,6 +100,9 @@ const FormRequest = () => {
     });
     selectSar().then(res => {
       handleSar(res);
+    });
+    getPaymentMethods().then(res => {
+      setPayment(res);
     });
     selectProviders()
       .then(res => {
@@ -433,8 +440,16 @@ const FormRequest = () => {
                     value={idPaymentMethod}
                   >
                     <option value="0">Forma de Pago</option>
-                    <option value="1">Efectivo</option>
-                    <option value="2">Crédito</option>
+                    {payment.map(pm => {
+                      return (
+                        <option
+                          key={pm.idPaymentMethods}
+                          value={pm.idPaymentMethods}
+                        >
+                          {pm.description}
+                        </option>
+                      );
+                    })}
                   </select>
 
                   <span className="focus-input100"></span>
