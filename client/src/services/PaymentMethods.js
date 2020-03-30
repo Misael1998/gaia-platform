@@ -1,9 +1,9 @@
 import axios from "../modules/axios";
-import { URL_GET_SECTORS_SELECT } from "../constants/urls";
+import { URL_GET_PAYMENT_TYPES } from "../constants/urls";
 
-export const selectSectors = async () => {
+export const getPaymentMethods = async () => {
   try {
-    const response = await axios.get(URL_GET_SECTORS_SELECT);
+    const response = await axios.get(URL_GET_PAYMENT_TYPES);
     if (response.status === 200) {
       return response.data.data;
     } else {
