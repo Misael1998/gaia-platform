@@ -587,3 +587,37 @@ exports.paymentMethod = async(req, res, next) => {
         });
     }
 };
+
+//@desc     data of enterprise clients
+//@route    GET /api/data/dataenterprise
+//@access   private
+exports.dataEnterprise = async (req,res) =>{
+    try {
+            const {role,userId} = req.user;
+            const query= await new mssql.Request()
+            .input("idUser", mssql.Int, userId)
+            .query("SELECT * FROM FT_GET_DATA_ENTERPRISE(@idUser)");  
+            
+        const data =query.recordset
+
+        if (data === 0) {
+            return res.status(404),json({
+                success:false,
+                msg: "Data not found"
+            })
+        }
+
+        return res.status(200).json({
+            success:true,
+            msg: "Successful",
+            data: data
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            msg: "Server error"
+        })
+            
+        }
+};
