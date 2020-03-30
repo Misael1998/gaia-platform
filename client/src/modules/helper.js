@@ -32,31 +32,3 @@ export const cancelOrder = (dispatch, action, history) => {
   })
 
 }
-
-/**
- * Funcion que devuelve el tipo de pago en string
- * @param {string} id 
- */
-export const getPaymentType = (id) => {
-  switch (id) {
-    case "1":
-      return 'Efectivo'
-    case "2":
-      return 'Tarjeta de credito'
-    case "3":
-      return 'Paypal'
-  }
-}
-
-export const getShippingType = (id) => {
-    switch(id){
-      case "1":
-        return 'Tipo 1'
-      case "2":
-        return 'Tipo 2'
-      case "3":
-        return 'Tipo 3'
-      
-    }
-
-}
