@@ -42,4 +42,11 @@ router
     registerIndividualClient
   );
 
+  router.route("/updateenterpriseclient").put([
+    check("id").exists(),
+    check("email").isEmail(),
+    check("address").exists(),
+    check("phone").exists()
+  ],updateEnterpriseClient);
+  
 module.exports = router;
