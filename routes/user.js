@@ -4,7 +4,8 @@ const { check } = require("express-validator");
 
 const {
   registerEnterpriseUser,
-  registerIndividualClient
+  registerIndividualClient,
+  updateEnterpriseClient
 } = require("../controllers/user");
 
 router
