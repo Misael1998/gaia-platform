@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { check } = require("express-validator");
+const auth = require("../middleware/auth");
+const authorize = require("../middleware/authorize");
 
 const {
   registerEnterpriseUser,
@@ -44,10 +46,9 @@ router
   );
 
   router.route("/updateenterpriseclient").put([
-    check("id").exists(),
     check("email").isEmail(),
     check("address").exists(),
-    check("phone").exists()
-  ],updateEnterpriseClient);
+    check("phone").exists(),
+  ] ,auth,authorize("enterprise") ,updateEnterpriseClient);
   
 module.exports = router;

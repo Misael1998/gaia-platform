@@ -173,19 +173,51 @@ exports.updateEnterpriseClient = async (req, res) => {
   if (!errors.isEmpty()) {
     return errorResponse(400, "Validaton errors", errors.array(), res);
   }
-
-  const { email, address, phone, id } = req.body;
+  const token = req.header("x-auth-token");
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  const { id, role } = decoded;
+  const { email, address, phone } = req.body;
+  if (role != "enterprise")
+    return errorResponse(
+      403,
+      "Access denied",
+      [{ msg: "Must be enterprise user to access" }],
+      res
+    );
   try {
     const query = await new mssql.Request()
       .input("id", mssql.Int, id)
       .input("email", mssql.NVarChar(100), email)
       .input("phone", mssql.NVarChar(100), phone)
       .input("address", mssql.NVarChar(100), address)
+      .output("msg", mssql.NVarChar(100))
+      .output("code", mssql.Int)
       .execute("SP_UPDATE_ENTERPRISE_USER");
-    return res.status(200).json({
-      success: true,
-      msg: "update successful"
-    });
+    const { /* msg, */ code } = query.output;
+    switch (code) {
+      case 0:
+        return errorResponse(
+          400,
+          "Nothing to update",
+          [{ msg: "No changes were made due to empty fields" }],
+          res
+        );
+        break;
+      case 1:
+        return res.status(200).json({
+          success: true,
+          msg: "update successful"
+        });
+        break;
+      case 2:
+        return errorResponse(
+          404,
+          "No user found",
+          [{ msg: "There is no user registered with this id" }],
+          res
+        );
+        break;
+    }
   } catch (error) {
     console.log(error);
     return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
