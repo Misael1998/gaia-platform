@@ -168,29 +168,6 @@ exports.registerIndividualClient = async (req, res, next) => {
   });
 };
 
-exports.updateEnterpriseClient = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return errorResponse(400, "Validaton errors", errors.array(), res);
-  }
-
-  const { email, address, phone, id } = req.body;
-  try {
-    const query = await new mssql.Request()
-      .input("id", mssql.Int, id)
-      .input("email", mssql.NVarChar(100), email)
-      .input("phone", mssql.NVarChar(100), phone)
-      .input("address", mssql.NVarChar(100), address)
-      .execute("SP_UPDATE_ENTERPRISE_USER");
-    return res.status(200).json({
-      success: true,
-      msg: "update successful"
-    });
-  } catch (error) {
-    console.log(error);
-    return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
-  }
-};
 
 //send response
 const sendTokenResponse = (user, payload, statusCode, res) => {
