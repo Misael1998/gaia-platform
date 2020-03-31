@@ -4,7 +4,8 @@ const { check } = require("express-validator");
 
 const {
   registerEnterpriseUser,
-  registerIndividualClient
+  registerIndividualClient,
+  updateEnterpriseClient
 } = require("../controllers/user");
 
 router
@@ -41,5 +42,7 @@ router
     ],
     registerIndividualClient
   );
+
+router.route("/updateenterpriseclient").put(updateEnterpriseClient);
 
 module.exports = router;
