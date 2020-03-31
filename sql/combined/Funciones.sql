@@ -1,5 +1,5 @@
 
-/* Inicio Funcion F_Get_Supplies_Inventory */
+/* Inicion Funcion F_Get_Supplies_Inventory */
 
 IF OBJECT_ID (N'F_Get_Supplies_Inventory', N'IF') IS NOT NULL  
     DROP FUNCTION F_Get_Supplies_Inventory;  
@@ -20,7 +20,7 @@ RETURN
 /* Fin Funcion F_Get_Supplies_Inventory */
 
 
-/* Inicio Funcion F_GetUserRole */
+/* Inicio Funcion getUserRole */
 
 IF OBJECT_ID (N'dbo.getUserRole', N'FN') IS NOT NULL  
     DROP FUNCTION getUserRole;  
@@ -73,10 +73,10 @@ BEGIN
     return @role;
 END; 
 
-/* Fin Funcion F_GetUserRole */
+/* Fin Funcion getUserRole */
 
 
-/* Inicio Funcion F_Supplies */
+/* Inicio Funcion F_SUPPLIES */
 
 IF OBJECT_ID (N'F_SUPPLIES', N'IF') IS NOT NULL  
     DROP FUNCTION F_SUPPLIES;  
@@ -96,10 +96,10 @@ RETURN
     INNER JOIN TBL_SAR_TYPES as st
     ON st.idSarTypes = s.TBL_SAR_TYPES_idSarTypes
 
-/* Fin Funcion F_Supplies */
+/* Fin Funcion F_SUPPLIES */
 
 
-/* Inicio Funcion FS_GET_USER_ROLE_ID  */
+/* Inicio Funcion getUserRoleID */
 
 IF OBJECT_ID (N'dbo.getUserRole', N'FN') IS NOT NULL  
     DROP FUNCTION getUserRole;  
@@ -149,10 +149,10 @@ BEGIN
     return null
 END;
 
-/* Fin Funcion FS_GET_USER_ROLE_ID  */
+/* Fin Funcion getUserRoleID */
 
 
-/* Inicio Funcion FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE  */
+/* Inicio Funcion FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE */
 
 CREATE FUNCTION [dbo].[FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE](@id INT)
 RETURNS @allProductsData TABLE(
@@ -190,14 +190,12 @@ BEGIN
         WHERE ct.name = @company;
     END
 RETURN
-END
-GO
+END;
+
+/* Fin Funcion FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE */
 
 
-/* Fin Funcion FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE  */
-
-
-/* Inicio Funcion FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL  */
+/* Inicio Funcion FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL */
 
 CREATE FUNCTION [dbo].[FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL]()
 RETURNS TABLE
@@ -214,13 +212,31 @@ RETURN
     INNER JOIN PRODUCTS_has_CATEGORIES phc ON p.idProducts = phc.idProducts
     INNER JOIN TBL_CATEGORIES c ON phc.idCategories = c.idCategories
     WHERE ct.name = 'restaurante'
-)
-GO
+);
 
-/* Fin Funcion FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL  */
+/* Fin Funcion FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL */
 
 
-/* Inicio Funcion FT_GET_DELIVERY_TYPE  */
+/* Inicio Funcion FT_GET_DATA_ENTERPRISE */
+
+IF OBJECT_ID (N'FT_GET_DATA_ENTERPRISE') IS NOT NULL  
+    DROP FUNCTION FT_GET_DATA_ENTERPRISE;  
+GO 
+CREATE FUNCTION FT_GET_DATA_ENTERPRISE (@id int)
+ RETURNS TABLE
+ AS 
+ RETURN(
+     SELECT ec.company_name,u.email,u.phone,u.address,ec.contact_name,ec.contact_number 
+     FROM TBL_ENTERPRISE_CLIENTS ec
+     INNER JOIN TBL_USERS u
+     ON ec.idUser=u.idUser
+     WHERE u.idUser=@id
+     );
+
+/* Fin Funcion FT_GET_DATA_ENTERPRISE */
+
+
+/* Inicio Funcion FT_GET_REQUEST_TYPE */
 
 IF OBJECT_ID (N'FT_GET_REQUEST_TYPE', N'IF') IS NOT NULL
     DROP FUNCTION [FT_GET_REQUEST_TYPE];
@@ -232,12 +248,12 @@ RETURN(
     SELECT  idDeliveryType as id,
             name as name
     FROM [pyflor].[dbo].[TBL_DELIVERY_TYPES]
-)
+);
 
-/* Fin Funcion FT_GET_DELIVERY_TYPE  */
+/* Fin Funcion FT_GET_REQUEST_TYPE */
 
 
-/* Inicio Funcion FT_GET_DEPARTMENTS  */
+/* Inicio Funcion FT_GET_DEPARTMENTS */
 
 IF OBJECT_ID (N'FT_GET_DEPARTMENTS', N'IF') IS NOT NULL  
     DROP FUNCTION FT_GET_DEPARTMENTS;  
@@ -250,12 +266,12 @@ SELECT
     idDepartments as id,
     [name]
 FROM
-    TBL_DEPARTMENTS
+    TBL_DEPARTMENTS;
 
-/* Fin Funcion FT_GET_DEPARTMENTS  */
+/* Fin Funcion FT_GET_DEPARTMENTS */
 
 
-/* Inicio Funcion FT_GET_EMPLOYEES_DATA  */
+/* Inicio Funcion FT_GET_EMPLOYEES_DATA */
 
 CREATE FUNCTION [dbo].[FT_GET_EMPLOYEES_DATA]()
 RETURNS TABLE
@@ -275,14 +291,12 @@ RETURN
     INNER JOIN TBL_USERS u ON e.idUser = u.idUser
     INNER JOIN TBL_JOB_TITLES j ON e.idJobTitle = j.idJobTitle
     INNER JOIN TBL_DEPARTMENTS d ON e.idDepartments = d.idDepartments
-)
+);
 
-GO
-
-/* Fin Funcion FT_GET_EMPLOYEES_DATA  */
+/* Fin Funcion FT_GET_EMPLOYEES_DATA */
 
 
-/* Inicio Funcion FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL  */
+/* Inicio Funcion FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL */
 
 IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL', N'IF') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL;  
@@ -372,9 +386,8 @@ BEGIN
 
     RETURN
 END;
-GO
 
-/* Fin Funcion FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL  */
+/* Fin Funcion FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL */
 
 
 /* Inicio Funcion FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE  */
@@ -468,13 +481,12 @@ BEGIN
     END;
 
     RETURN
-END
-GO
+END;
 
 /* Fin Funcion FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE  */
 
 
-/* Inicio Funcion FT_GET_PROVIDER  */
+/* Inicio Funcion FT_GET_PROVIDER */
 
 IF OBJECT_ID (N'FT_GET_PROVIDER', N'IF') IS NOT NULL  
     DROP FUNCTION [FT_GET_PROVIDER];  
@@ -491,12 +503,12 @@ RETURN(
             email as email 
     FROM [pyflor].[dbo].[TBL_PROVIDERS]
     WHERE idProviders = @id
-)
+);
 
-/* Fin Funcion FT_GET_PROVIDER  */
+/* Fin Funcion FT_GET_PROVIDER */
 
 
-/* Inicio Funcion FT_GET_REQUEST_DETAIL_ENTERPRISE  */
+/* Inicio Funcion FT_GET_REQUEST_DETAIL_ENTERPRISE */
 
 IF OBJECT_ID (N'FT_GET_REQUEST_DETAIL_ENTERPRISE') IS NOT NULL  
     DROP FUNCTION FT_GET_REQUEST_DETAIL_ENTERPRISE;  
@@ -504,93 +516,92 @@ GO
 
 CREATE FUNCTION [dbo].[FT_GET_REQUEST_DETAIL_ENTERPRISE](@id INT, @idReq INT)
 RETURNS @requestDetail TABLE (
-	idRequest INT NULL,
-	emissionDate DATETIME NULL,
-	deliveryType VARCHAR(45) NULL,
-	paymentMethod VARCHAR(45) NULL,
-	products VARCHAR(45) NULL,
-	quantity INT NULL,
-	subtotal DECIMAL(10,2) NULL,
-	success BIT NULL
+    idRequest INT NULL,
+    emissionDate DATETIME NULL,
+    deliveryType VARCHAR(45) NULL,
+    paymentMethod VARCHAR(45) NULL,
+    products VARCHAR(45) NULL,
+    quantity INT NULL,
+    subtotal DECIMAL(10,2) NULL,
+    success BIT NULL
 )
 AS
-BEGIN	
-	DECLARE @billIdP INT = 0;
-	DECLARE @billIdC INT = 0;
-	declare @tmp int = 0;
+BEGIN   
+    DECLARE @billIdP INT = 0;
+    DECLARE @billIdC INT = 0;
+    declare @tmp int = 0;
 
-	SELECT @billIdP = COUNT(b.idBills)
-	FROM TBL_BILLS b
-	INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills;
+    SELECT @billIdP = COUNT(b.idBills)
+    FROM TBL_BILLS b
+    INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills;
 
-	SELECT @billIdC = COUNT(b.idBills)   
-	FROM TBL_BILLS b
-	INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills;
+    SELECT @billIdC = COUNT(b.idBills)   
+    FROM TBL_BILLS b
+    INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills;
 
 
-	IF @billIdP > 0
-		BEGIN
-			INSERT INTO @requestDetail
-			SELECT r.idRequests,
-				r.emission_date emission_date,
-				dt.name deliveryType,
-				pm.description paymentMethod,
-				p.name product,
-				rhp.quantity,
-				(pb.maquila + pb.net_plant) subtotal,
-				1
-			FROM TBL_REQUESTS r
-			INNER JOIN TBL_ENTERPRISE_CLIENTS ec ON r.idEnterpriseClient = ec.idEnterpriseClients
-			INNER JOIN TBL_USERS u ON u.idUser = ec.idUser
-			INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
-			INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
-			INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
-			INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
-			INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
-			INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills
-			WHERE u.idUser = @id AND r.idRequests = @idReq
-			select @tmp = count(*) from @requestDetail
-			if @tmp > 0
-			begin
-			RETURN
-			end;
-		END;
-	
-	IF @billIdC > 0
-		BEGIN
-			INSERT INTO @requestDetail
-			SELECT r.idRequests,
-				r.emission_date,
-				dt.name deliveryType,
-				pm.description paymentMethod,
-				p.name product,
-				rhp.quantity,
-				cb.sub_total,
-				1
-			FROM TBL_REQUESTS r
-			INNER JOIN TBL_ENTERPRISE_CLIENTS ec ON r.idEnterpriseClient = ec.idEnterpriseClients
-			INNER JOIN TBL_USERS u ON u.idUser = ec.idUser
-			INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
-			INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
-			INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
-			INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
-			INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
-			INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills 
-			WHERE u.idUser = @id AND r.idRequests = @idReq
-			select @tmp = count(*) from @requestDetail
-			if @tmp > 0
-			begin
-			RETURN
-			end; 
-		END;
+    IF @billIdP > 0
+        BEGIN
+            INSERT INTO @requestDetail
+            SELECT r.idRequests,
+                r.emission_date emission_date,
+                dt.name deliveryType,
+                pm.description paymentMethod,
+                p.name product,
+                rhp.quantity,
+                (pb.maquila + pb.net_plant) subtotal,
+                1
+            FROM TBL_REQUESTS r
+            INNER JOIN TBL_ENTERPRISE_CLIENTS ec ON r.idEnterpriseClient = ec.idEnterpriseClients
+            INNER JOIN TBL_USERS u ON u.idUser = ec.idUser
+            INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
+            INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
+            INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
+            INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
+            INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
+            INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills
+            WHERE u.idUser = @id AND r.idRequests = @idReq
+            select @tmp = count(*) from @requestDetail
+            if @tmp > 0
+            begin
+            RETURN
+            end;
+        END;
+    
+    IF @billIdC > 0
+        BEGIN
+            INSERT INTO @requestDetail
+            SELECT r.idRequests,
+                r.emission_date,
+                dt.name deliveryType,
+                pm.description paymentMethod,
+                p.name product,
+                rhp.quantity,
+                cb.sub_total,
+                1
+            FROM TBL_REQUESTS r
+            INNER JOIN TBL_ENTERPRISE_CLIENTS ec ON r.idEnterpriseClient = ec.idEnterpriseClients
+            INNER JOIN TBL_USERS u ON u.idUser = ec.idUser
+            INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
+            INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
+            INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
+            INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
+            INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
+            INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills 
+            WHERE u.idUser = @id AND r.idRequests = @idReq
+            select @tmp = count(*) from @requestDetail
+            if @tmp > 0
+            begin
+            RETURN
+            end; 
+        END;
 RETURN 
-END
-GO
+END;
 
-/* Fin Funcion FT_GET_REQUEST_DETAIL_ENTERPRISE  */
+/* Fin Funcion FT_GET_REQUEST_DETAIL_ENTERPRISE */
 
 
-/* Inicio Funcion FT_GET_REQUEST_DETAIL_INDIVIDUAL  */
+/* Inicio Funcion FT_GET_REQUEST_DETAIL_INDIVIDUAL */
 
 IF OBJECT_ID (N'FT_GET_REQUEST_DETAIL_INDIVIDUAL') IS NOT NULL  
     DROP FUNCTION FT_GET_REQUEST_DETAIL_INDIVIDUAL;  
@@ -598,93 +609,92 @@ GO
 
 CREATE FUNCTION [dbo].[FT_GET_REQUEST_DETAIL_INDIVIDUAL](@id INT, @idReq INT)
 RETURNS @requestDetail TABLE (
-	idRequest INT NULL,
-	emissionDate DATETIME NULL,
-	deliveryType VARCHAR(45) NULL,
-	paymentMethod VARCHAR(45) NULL,
-	products VARCHAR(45) NULL,
-	quantity INT NULL,
-	subtotal DECIMAL(10,2) NULL,
-	success BIT NULL
+    idRequest INT NULL,
+    emissionDate DATETIME NULL,
+    deliveryType VARCHAR(45) NULL,
+    paymentMethod VARCHAR(45) NULL,
+    products VARCHAR(45) NULL,
+    quantity INT NULL,
+    subtotal DECIMAL(10,2) NULL,
+    success BIT NULL
 )
 AS
-BEGIN	
-	DECLARE @billIdP INT = null;
-	DECLARE @billIdC INT = null;
-	declare @tmp int = 0;
+BEGIN   
+    DECLARE @billIdP INT = null;
+    DECLARE @billIdC INT = null;
+    declare @tmp int = 0;
 
-	SELECT @billIdP = COUNT(b.idBills)   
-	FROM TBL_BILLS b
-	INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills;
+    SELECT @billIdP = COUNT(b.idBills)   
+    FROM TBL_BILLS b
+    INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills;
 
-	SELECT @billIdC = COUNT(b.idBills)   
-	FROM TBL_BILLS b
-	INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills;
+    SELECT @billIdC = COUNT(b.idBills)   
+    FROM TBL_BILLS b
+    INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills;
 
-	IF (@billIdP > 0) 
-	BEGIN
-		INSERT INTO @requestDetail
-		SELECT r.idRequests,
-			r.emission_date,
-			dt.name deliveryType,
-			pm.description paymentMethod,
-			p.name product,
-			rhp.quantity,
-			(pb.maquila + pb.net_plant) subtotal,
-			1
-		FROM TBL_REQUESTS r
-		INNER JOIN TBL_INDIVIDUAL_CLIENTS ic ON r.idIndividualClient = ic.idIndividualClients
-		INNER JOIN TBL_USERS u ON u.idUser = ic.idUser
-		INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
-		INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
-		INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
-		INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
-		INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
-		INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills
-		WHERE u.idUser = @id AND r.idRequests = @idReq
-		select @tmp = count(*) from @requestDetail
-		if @tmp > 0
-		begin
-		RETURN
-		end;
-	END;
+    IF (@billIdP > 0) 
+    BEGIN
+        INSERT INTO @requestDetail
+        SELECT r.idRequests,
+            r.emission_date,
+            dt.name deliveryType,
+            pm.description paymentMethod,
+            p.name product,
+            rhp.quantity,
+            (pb.maquila + pb.net_plant) subtotal,
+            1
+        FROM TBL_REQUESTS r
+        INNER JOIN TBL_INDIVIDUAL_CLIENTS ic ON r.idIndividualClient = ic.idIndividualClients
+        INNER JOIN TBL_USERS u ON u.idUser = ic.idUser
+        INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
+        INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
+        INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
+        INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
+        INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
+        INNER JOIN TBL_PRO_BILL pb ON b.idBills = pb.idBills
+        WHERE u.idUser = @id AND r.idRequests = @idReq
+        select @tmp = count(*) from @requestDetail
+        if @tmp > 0
+        begin
+        RETURN
+        end;
+    END;
 
-	IF (@billIdC > 0)
-	BEGIN
-		INSERT INTO @requestDetail
-		SELECT r.idRequests,
-			r.emission_date,
-			dt.name deliveryType,
-			pm.description paymentMethod,
-			p.name product,
-			rhp.quantity,
-			cb.sub_total,
-			1
-		FROM TBL_REQUESTS r
-		INNER JOIN TBL_INDIVIDUAL_CLIENTS ic ON r.idIndividualClient = ic.idIndividualClients
-		INNER JOIN TBL_USERS u ON u.idUser = ic.idUser
-		INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
-		INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
-		INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
-		INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
-		INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
-		INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills 
-		WHERE u.idUser = @id AND r.idRequests = @idReq
-		select @tmp = count(*) from @requestDetail
-		if @tmp > 0
-		begin
-		RETURN
-		end;
-	END;
+    IF (@billIdC > 0)
+    BEGIN
+        INSERT INTO @requestDetail
+        SELECT r.idRequests,
+            r.emission_date,
+            dt.name deliveryType,
+            pm.description paymentMethod,
+            p.name product,
+            rhp.quantity,
+            cb.sub_total,
+            1
+        FROM TBL_REQUESTS r
+        INNER JOIN TBL_INDIVIDUAL_CLIENTS ic ON r.idIndividualClient = ic.idIndividualClients
+        INNER JOIN TBL_USERS u ON u.idUser = ic.idUser
+        INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
+        INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
+        INNER JOIN REQUESTS_has_PRODUCTS rhp ON r.idRequests = rhp.idRequest
+        INNER JOIN TBL_PRODUCTS p ON p.idProducts = rhp.idProducts
+        INNER JOIN TBL_BILLS b ON b.idRequests = r.idRequests
+        INNER JOIN TBL_CAI_BILL cb ON b.idBills = cb.idBills 
+        WHERE u.idUser = @id AND r.idRequests = @idReq
+        select @tmp = count(*) from @requestDetail
+        if @tmp > 0
+        begin
+        RETURN
+        end;
+    END;
 
 RETURN
-END
-GO
+END;
 
-/* Fin Funcion FT_GET_REQUEST_DETAIL_INDIVIDUAL  */
+/* Fin Funcion FT_GET_REQUEST_DETAIL_INDIVIDUAL */
 
 
-/* Inicio Funcion FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT  */
+/* Inicio Funcion FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT */
 
 CREATE FUNCTION [dbo].[FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT](@id int)
 RETURNS TABLE
@@ -702,12 +712,12 @@ RETURN
     INNER JOIN TBL_USERS us 
     ON us.idUser=ec.idUser
     WHERE us.idUser=@id
-)
+);
 
-/* Fin Funcion FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT  */
+/* Fin Funcion FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT */
 
 
-/* Inicio Funcion FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT  */
+/* Inicio Funcion FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT */
 
 CREATE FUNCTION [dbo].[FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT](@id int)
 RETURNS TABLE
@@ -725,12 +735,12 @@ RETURN
     INNER JOIN TBL_USERS us 
     ON us.idUser=ic.idUser
     WHERE us.idUser=@id
-)
+);
 
-/* Fin Funcion FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT  */
+/* Fin Funcion FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT */
 
 
-/* Inicio Funcion FT_GET_REQUEST_TYPE  */
+/* Inicio Funcion FT_GET_REQUEST_TYPE */
 
 IF OBJECT_ID (N'FT_GET_REQUEST_TYPE', N'IF') IS NOT NULL  
     DROP FUNCTION [FT_GET_REQUEST_TYPE];  
@@ -742,12 +752,12 @@ RETURN(
     SELECT  idRequestType as id,
             name as name
     FROM [pyflor].[dbo].[TBL_REQUEST_TYPES]
-)
+);
 
-/* Fin Funcion FT_GET_REQUEST_TYPE  */
+/* Fin Funcion FT_GET_REQUEST_TYPE */
 
 
-/* Inicio Funcion FT_GET_SINGLE_PRODUCT_DATA  */
+/* Inicio Funcion FT_GET_SINGLE_PRODUCT_DATA */
 
 CREATE FUNCTION [dbo].[FT_GET_SINGLE_PRODUCT_DATA](@id int)
 RETURNS TABLE
@@ -764,13 +774,12 @@ RETURN
     INNER JOIN PRODUCTS_has_CATEGORIES phc ON p.idProducts = phc.idProducts
     INNER JOIN TBL_CATEGORIES c ON phc.idCategories = c.idCategories
     WHERE @id = p.idProducts
-)
-GO
+);
 
-/* Fin Funcion FT_GET_SINGLE_PRODUCT_DATA  */
+/* Fin Funcion FT_GET_SINGLE_PRODUCT_DATA */
 
 
-/* Inicio Funcion FT_getJobtitles  */
+/* Inicio Funcion FT_getJobtitles */
 
 IF OBJECT_ID (N'FT_getJobtitles', N'IF') IS NOT NULL  
     DROP FUNCTION FT_getJobtitles;  
@@ -783,12 +792,12 @@ SELECT
     idJobTitle as id,
     [name]
 FROM
-    TBL_JOB_TITLES
+    TBL_JOB_TITLES;
 
-/* Fin Funcion FT_getJobtitles  */
+/* Fin Funcion FT_getJobtitles */
 
 
-/* Inicio Funcion FT_PROVIDERS  */
+/* Inicio Funcion FT_PROVIDERS */
 
 IF OBJECT_ID (N'FT_PROVIDERS', N'IF') IS NOT NULL  
     DROP FUNCTION [FT_PROVIDERS];  
@@ -802,12 +811,12 @@ RETURN(
             phone_contact as phone,
             email as email 
     FROM [pyflor].[dbo].[TBL_PROVIDERS]
-)
+);
 
-/* Fin Funcion FT_PROVIDERS  */
+/* Fin Funcion FT_PROVIDERS */
 
 
-/* Inicio Funcion FT_REFFERALS  */
+/* Inicio Funcion FT_REFFERALS */
 
 IF OBJECT_ID (N'FT_REFFERALS', N'IF') IS NOT NULL  
     DROP FUNCTION FT_REFFERALS;  
@@ -815,7 +824,7 @@ GO
 CREATE FUNCTION FT_REFFERALS()
 RETURNS TABLE
 AS
-RETURN
+RETURN(
     SELECT 
         r.idRefferals idRefferal,
         r.idOrders as idOrder,
@@ -862,10 +871,10 @@ RETURN
     LEFT JOIN 
         TBL_USERS AS addresseeUser
     on 
-        addresseeUser.idUser = addresseeEmployee.idEmployees
+        addresseeUser.idUser = addresseeEmployee.idEmployees);
 
-/* Fin Funcion FT_REFFERALS  */
+/* Fin Funcion FT_REFFERALS */
 
 
-/* Inicio Funcion  */
-/* Fin Funcion  */
+/* Inicio Funcion*/
+/* Fin Funcion*/
