@@ -2,6 +2,7 @@ import React from "react";
 import { MdHome, MdExitToApp } from "react-icons/md";
 import { logout } from "../modules/helper";
 import { IoIosPerson } from "react-icons/io";
+import { FiPackage } from "react-icons/fi";
 
 const items = [
   {
@@ -15,6 +16,12 @@ const items = [
     label: "Empleados",
     icon: <IoIosPerson size={30} />,
     link: "/admin/formEmp"
+  },
+  {
+    name: "products",
+    label: "Productos",
+    icon: <FiPackage size={30} />,
+    link: "/admin/formProduct"
   },
   {
     name: "logout",
