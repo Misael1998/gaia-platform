@@ -177,18 +177,19 @@ exports.updateUser = async (req, res) => {
     return errorResponse(400, "Validaton errors", errors.array(), res);
   }
 
+  const { email, address, phone, cNumber, cName } = req.body;
+  const empty = !email && !phone && !address && !cName && !cNumber;
+  if (empty) {
+    return errorResponse(
+      400,
+      "No parameters",
+      [{ msg: "The request has no paramters" }],
+      res
+    );
+  }
+
   const { userId, role } = req.user;
   if (role == "individual") {
-    const { email, address, phone } = req.body;
-    const empty = !email && !phone && !address;
-    if (empty) {
-      return errorResponse(
-        400,
-        "No parameters",
-        [{ msg: "The request has no paramters" }],
-        res
-      );
-    }
     try {
       const query = await new mssql.Request()
         .input("id", mssql.Int, userId)
@@ -242,16 +243,6 @@ exports.updateUser = async (req, res) => {
       console.log(error);
       return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
     }
-  }
-  const { email, address, phone, cNumber, cName } = req.body;
-  const empty = !email && !phone && !address && !cName && !cNumber;
-  if (empty) {
-    return errorResponse(
-      400,
-      "No parameters",
-      [{ msg: "The request has no paramters" }],
-      res
-    );
   }
   try {
     const query = await new mssql.Request()
