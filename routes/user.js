@@ -7,7 +7,7 @@ const authorize = require("../middleware/authorize");
 const {
   registerEnterpriseUser,
   registerIndividualClient,
-  updateEnterpriseClient
+  updateUser
 } = require("../controllers/user");
 
 router
@@ -45,10 +45,6 @@ router
     registerIndividualClient
   );
 
-  router.route("/updateenterpriseclient").put([
-    check("email").isEmail(),
-    check("address").exists(),
-    check("phone").exists(),
-  ] ,auth,authorize("enterprise") ,updateEnterpriseClient);
+  router.route("/updateuser").put(auth ,updateUser);
   
 module.exports = router;

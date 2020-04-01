@@ -168,26 +168,120 @@ exports.registerIndividualClient = async (req, res, next) => {
   });
 };
 
-exports.updateEnterpriseClient = async (req, res) => {
+//@desc     update basic info of users
+//@route    POST     /api/user/updateuser
+//@access   Private
+exports.updateUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorResponse(400, "Validaton errors", errors.array(), res);
   }
-  
-  const id = req.user.userId;
-  const { email, address, phone } = req.body;
+
+  const { userId, role } = req.user;
+  if (role == "individual") {
+    const { email, address, phone } = req.body;
+    const empty = !email && !phone && !address;
+    if (empty) {
+      return errorResponse(
+        400,
+        "No parameters",
+        [{ msg: "The request has no paramters" }],
+        res
+      );
+    }
+    try {
+      const query = await new mssql.Request()
+        .input("id", mssql.Int, userId)
+        .input("email", mssql.NVarChar(100), email)
+        .input("phone", mssql.NVarChar(100), phone)
+        .input("address", mssql.NVarChar(100), address)
+        .output("code", mssql.Int)
+        .execute("SP_UPDATE_INDIVIDUAL_USER");
+      const { code } = query.output;
+      switch (code) {
+        case 0:
+          return errorResponse(
+            404,
+            "No user found.",
+            [{ msg: "There is no user registered with this id." }],
+            res
+          );
+          break;
+        case 1:
+          return errorResponse(
+            403,
+            "Access denied.",
+            [{ msg: "This user is not individual." }],
+            res
+          );
+          break;
+        case 2:
+          return errorResponse(
+            400,
+            "Nothing to update.",
+            [{ msg: "No changes were made due to empty fields." }],
+            res
+          );
+          break;
+        case 3:
+          return res.status(200).json({
+            success: true,
+            msg: "Fields have been updated."
+          });
+          break;
+        case 4:
+          return errorResponse(
+            400,
+            "Email occupied",
+            [{ msg: "There is an existing user with this email." }],
+            res
+          );
+          break;
+      }
+    } catch (error) {
+      console.log(error);
+      return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
+    }
+  }
+  const { email, address, phone, cNumber, cName } = req.body;
+  const empty = !email && !phone && !address && !cName && !cNumber;
+  if (empty) {
+    return errorResponse(
+      400,
+      "No parameters",
+      [{ msg: "The request has no paramters" }],
+      res
+    );
+  }
   try {
     const query = await new mssql.Request()
-      .input("id", mssql.Int, id)
+      .input("id", mssql.Int, userId)
       .input("email", mssql.NVarChar(100), email)
       .input("phone", mssql.NVarChar(100), phone)
       .input("address", mssql.NVarChar(100), address)
-      .output("msg", mssql.NVarChar(100))
+      .input("contact_number", mssql.NVarChar(12), cNumber)
+      .input("contact_name", mssql.NVarChar(45), cName)
       .output("code", mssql.Int)
       .execute("SP_UPDATE_ENTERPRISE_USER");
-    const { /* msg, */ code } = query.output;
+    const { code } = query.output;
     switch (code) {
       case 0:
+        return errorResponse(
+          404,
+          "No user found",
+          [{ msg: "There is no user registered with this id" }],
+          res
+        );
+        break;
+      case 1:
+        return errorResponse(
+          403,
+          "Access denied",
+          [{ msg: "This user is not enterprise." }],
+          res
+        );
+        break;
+      case 2:
         return errorResponse(
           400,
           "Nothing to update",
@@ -195,17 +289,17 @@ exports.updateEnterpriseClient = async (req, res) => {
           res
         );
         break;
-      case 1:
+      case 3:
         return res.status(200).json({
           success: true,
-          msg: "update successful"
+          msg: "Fields have been updated"
         });
         break;
-      case 2:
+      case 4:
         return errorResponse(
-          404,
-          "No user found",
-          [{ msg: "There is no user registered with this id" }],
+          400,
+          "Email occupied",
+          [{ msg: "There is an existing user with this email." }],
           res
         );
         break;

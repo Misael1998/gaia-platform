@@ -2,20 +2,18 @@ IF EXISTS (
 SELECT *
 FROM INFORMATION_SCHEMA.ROUTINES
 WHERE SPECIFIC_SCHEMA = N'dbo'
-    AND SPECIFIC_NAME = N'SP_UPDATE_ENTERPRISE_USER'
+    AND SPECIFIC_NAME = N'SP_UPDATE_INDIVIDUAL_USER'
     AND ROUTINE_TYPE = N'PROCEDURE'
 )
-DROP PROCEDURE dbo.SP_UPDATE_ENTERPRISE_USER
+DROP PROCEDURE dbo.SP_UPDATE_INDIVIDUAL_USER
 GO
 
-CREATE PROCEDURE dbo.SP_UPDATE_ENTERPRISE_USER
+CREATE PROCEDURE dbo.SP_UPDATE_INDIVIDUAL_USER
     @id INT,
     @address NVARCHAR(100),
     @phone NVARCHAR(12),
     @email NVARCHAR(100),
-    @contact_name NVARCHAR(45),
-    @contact_number NVARCHAR(12),
-    @code INT OUTPUT /* 0:No user with this id,1:User found but not enterprise, 2:No fields updated,3:Successfull */ 
+    @code INT OUTPUT /* 0:No user with this id,1:User found but not individual, 2:No fields updated,3:Successfull,4 email occupied */ 
 
 AS
 BEGIN
@@ -26,7 +24,7 @@ BEGIN
     DECLARE
     @updateC INT = 0;
     DECLARE
-    @emailC INT;
+    @emailC INT = 0;
     
     -- Getting count of users with input id
     set @userC = (
@@ -51,7 +49,7 @@ BEGIN
     select
         COUNT(*)
     from
-        TBL_ENTERPRISE_CLIENTS
+        TBL_INDIVIDUAL_CLIENTS
     where 
         idUser = @id
     )
@@ -61,6 +59,7 @@ BEGIN
         SET @code = 0;
         RETURN 0;
     END;
+
      -- If there is a user registered with input email
     IF @emailC>0
     BEGIN
@@ -68,7 +67,7 @@ BEGIN
         RETURN 0;
     END;
 
-    -- If client is not enterprise
+    -- If client is not individual
     IF @clientC = 0
     BEGIN
         SET @code = 1;
@@ -96,22 +95,6 @@ BEGIN
         BEGIN
         UPDATE TBL_USERS
         SET email = @email
-        WHERE idUser = @id
-        SET @updateC = @updateC + 1;
-    END;
-    -- Updating contact name
-    IF @contact_name IS NOT NULL OR @contact_name != ' '
-        BEGIN
-        UPDATE TBL_ENTERPRISE_CLIENTS
-        SET contact_name = @contact_name
-        WHERE idUser = @id
-        SET @updateC = @updateC + 1;
-    END;
-    -- Updating contact number
-    IF @contact_number IS NOT NULL OR @contact_number != ' '
-        BEGIN
-        UPDATE TBL_ENTERPRISE_CLIENTS
-        SET contact_number = @contact_number
         WHERE idUser = @id
         SET @updateC = @updateC + 1;
     END;
