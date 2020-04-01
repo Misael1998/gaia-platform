@@ -173,17 +173,9 @@ exports.updateEnterpriseClient = async (req, res) => {
   if (!errors.isEmpty()) {
     return errorResponse(400, "Validaton errors", errors.array(), res);
   }
-  const token = req.header("x-auth-token");
-  const decoded = jwt.verify(token, process.env.JWT_KEY);
-  const { id, role } = decoded;
+  
+  const id = req.user.userId;
   const { email, address, phone } = req.body;
-  if (role != "enterprise")
-    return errorResponse(
-      403,
-      "Access denied",
-      [{ msg: "Must be enterprise user to access" }],
-      res
-    );
   try {
     const query = await new mssql.Request()
       .input("id", mssql.Int, id)
