@@ -29,6 +29,12 @@ export default [
     link: "/app/profile"
   },
   {
+    name: "user",
+    label: "PerfilIndividual",
+    icon: <MdPerson size={30} />,
+    link: "/app/Individualprofile"
+  },
+  {
     name: "logout",
     label: "Cerrar sesion",
     icon: <MdExitToApp size={30} />,
