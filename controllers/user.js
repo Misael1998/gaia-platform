@@ -42,7 +42,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
       .input("contact_number", mssql.VarChar(12), contact_number)
       .input("idCompanyType", mssql.Int, company_type)
       .input("idSector", mssql.Int, sector)
-      .input("business_name", mssql.NVarChar(45), business_name)
+      .input("business_name", mssql.VarChar(45), business_name)
       .output("pcMsj", mssql.VarChar(45))
       .output("id_user", mssql.Int)
       .output("CodeState", mssql.Int)
@@ -118,15 +118,15 @@ exports.registerIndividualClient = async (req, res, next) => {
     const hashPassword = await bcrypt.hash(password, salt);
 
     const query = await new mssql.Request()
-      .input("email", mssql.NVarChar(100), email)
-      .input("password", mssql.NVarChar(100), hashPassword)
-      .input("phone", mssql.NVarChar(12), phone)
-      .input("address", mssql.NVarChar(150), address)
-      .input("name", mssql.NVarChar(45), name)
-      .input("lastName", mssql.NVarChar(45), lastName)
+      .input("email", mssql.VarChar(100), email)
+      .input("password", mssql.VarChar(100), hashPassword)
+      .input("phone", mssql.VarChar(12), phone)
+      .input("address", mssql.VarChar(150), address)
+      .input("name", mssql.VarChar(45), name)
+      .input("lastName", mssql.VarChar(45), lastName)
       .input("birth_date", mssql.VarChar(45), birth_date)
-      .input("register_id", mssql.NVarChar(14), register_id)
-      .output("pcMsj", mssql.NVarChar(100))
+      .input("register_id", mssql.VarChar(14), register_id)
+      .output("pcMsj", mssql.VarChar(100))
       .output("id_user", mssql.Int)
       .output("CodeState", mssql.Int)
       .execute("SP_ADD_USER_INDIVIDUAL");
@@ -193,9 +193,9 @@ exports.updateUser = async (req, res) => {
     try {
       const query = await new mssql.Request()
         .input("id", mssql.Int, userId)
-        .input("email", mssql.NVarChar(100), email)
-        .input("phone", mssql.NVarChar(100), phone)
-        .input("address", mssql.NVarChar(100), address)
+        .input("email", mssql.VarChar(100), email)
+        .input("phone", mssql.VarChar(100), phone)
+        .input("address", mssql.VarChar(100), address)
         .output("code", mssql.Int)
         .execute("SP_UPDATE_INDIVIDUAL_USER");
       const { code } = query.output;
@@ -247,11 +247,11 @@ exports.updateUser = async (req, res) => {
   try {
     const query = await new mssql.Request()
       .input("id", mssql.Int, userId)
-      .input("email", mssql.NVarChar(100), email)
-      .input("phone", mssql.NVarChar(100), phone)
-      .input("address", mssql.NVarChar(100), address)
-      .input("contact_number", mssql.NVarChar(12), cNumber)
-      .input("contact_name", mssql.NVarChar(45), cName)
+      .input("email", mssql.VarChar(100), email)
+      .input("phone", mssql.VarChar(100), phone)
+      .input("address", mssql.VarChar(100), address)
+      .input("contact_number", mssql.VarChar(12), cNumber)
+      .input("contact_name", mssql.VarChar(45), cName)
       .output("code", mssql.Int)
       .execute("SP_UPDATE_ENTERPRISE_USER");
     const { code } = query.output;
