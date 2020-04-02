@@ -10,11 +10,11 @@ GO
 
 CREATE PROCEDURE dbo.SP_UPDATE_ENTERPRISE_USER
     @id INT,
-    @address NVARCHAR(100),
-    @phone NVARCHAR(12),
-    @email NVARCHAR(100),
-    @contact_name NVARCHAR(45),
-    @contact_number NVARCHAR(12),
+    @address VARCHAR(100),
+    @phone VARCHAR(12),
+    @email VARCHAR(100),
+    @contact_name VARCHAR(45),
+    @contact_number VARCHAR(12),
     @code INT OUTPUT /* 0:No user with this id,1:User found but not enterprise, 2:No fields updated,3:Successfull */ 
 
 AS

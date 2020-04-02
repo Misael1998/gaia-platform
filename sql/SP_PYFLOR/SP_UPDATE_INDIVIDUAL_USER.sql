@@ -10,9 +10,9 @@ GO
 
 CREATE PROCEDURE dbo.SP_UPDATE_INDIVIDUAL_USER
     @id INT,
-    @address NVARCHAR(100),
-    @phone NVARCHAR(12),
-    @email NVARCHAR(100),
+    @address VARCHAR(100),
+    @phone VARCHAR(12),
+    @email VARCHAR(100),
     @code INT OUTPUT /* 0:No user with this id,1:User found but not individual, 2:No fields updated,3:Successfull,4 email occupied */ 
 
 AS
