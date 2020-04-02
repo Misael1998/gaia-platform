@@ -5,7 +5,7 @@ INSERT INTO [pyflor].[dbo].[TBL_JOB_TITLES]
 )
 VALUES
 (
- 'asistente administrativo 1'
+ 'Asistente administrativo 1'
 ),
 (
  'Gerente de Empaque'
@@ -18,3 +18,4 @@ VALUES
 )
 -- Add more rows here
 GO
+

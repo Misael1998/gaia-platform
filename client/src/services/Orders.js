@@ -12,7 +12,6 @@ export const makeOrder = async (
   idReceiverEmployee,
   idAddressEmployee,
   numBill,
-  unit,
   supplies
 ) => {
   for (var i = 0; i < supplies.length; i++) {
@@ -29,10 +28,9 @@ export const makeOrder = async (
       numBill,
       idSupply: supplies[i].idSupply,
       quantity: supplies[i].quantity,
-      unit
+      unit: supplies[i].supUnit
     };
 
-    console.log("Payload: ", payload);
 
     try {
       const response = await axios.post(URL_POST_ORDER, payload);
@@ -42,12 +40,11 @@ export const makeOrder = async (
         //   status: response.status,
         //   ...response.data
         // };
-        console.log("Aqui estaba el return antes");
+      
       } else {
         throw new Error(response);
       }
     } catch (error) {
-      console.log("Error: ", error.response);
       let errorObj;
       const { response } = error;
       if (response.status === 400) {

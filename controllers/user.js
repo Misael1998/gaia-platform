@@ -60,7 +60,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
       case 1:
         payload = {
           id: id_user,
-          role: "enterpise"
+          role: "enterprise"
         };
 
         const user = {
@@ -131,7 +131,6 @@ exports.registerIndividualClient = async (req, res, next) => {
       .output("CodeState", mssql.Int)
       .execute("SP_ADD_USER_INDIVIDUAL");
 
-    console.log(query);
     const { id_user, pcMsj } = query.output;
     if (!id_user) {
       return res.status(400).json({

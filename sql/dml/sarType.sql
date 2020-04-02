@@ -5,10 +5,11 @@ INSERT INTO [pyflor].[dbo].[TBL_SAR_TYPES]
 )
 VALUES
 ( 
- 'G'
+ 'Gravado'
 ),
 ( 
- 'E'
+ 'Exento'
 )
 -- Add more rows here
 GO
+

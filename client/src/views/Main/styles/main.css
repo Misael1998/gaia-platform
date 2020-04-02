@@ -16,3 +16,18 @@
     box-shadow: 1px ;
 
 }
+
+.history-item {
+    border: 1px #ecf0f1 solid;
+    border-radius: 1rem;
+    width: 90%;
+}
+
+.history-item:hover {
+    background-color: #edf1f142;
+}
+
+.font-small{
+    font-size: 12px;
+    text-align: center;
+}

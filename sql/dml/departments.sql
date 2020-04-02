@@ -5,10 +5,11 @@ INSERT INTO [pyflor].[dbo].[TBL_DEPARTMENTS]
 )
 VALUES
 (
- 'administración'
+ 'Administración'
 ),
 (
  'Mercadeo y Ventas'
 )
 -- Add more rows here
 GO
+

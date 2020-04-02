@@ -1,4 +1,4 @@
-import { ADD_PRODUCT_TO_CART, REMOVE_PRODUCT_FROM_CART, ADD_QUANTITY_PRODUCT, SUBSTRACT_QUANTITY_PRODUCT } from "../constants/actionTypes";
+import { ADD_PRODUCT_TO_CART, REMOVE_PRODUCT_FROM_CART, ADD_QUANTITY_PRODUCT, SUBSTRACT_QUANTITY_PRODUCT, DELETE_CART } from "../constants/actionTypes";
 
 /**
  * Accion de añadir producto al carrito
@@ -36,4 +36,10 @@ export const substractQuantityToProduct = (id) => ({
     type: SUBSTRACT_QUANTITY_PRODUCT,
     payload: id
 })
-    
+
+/**
+ * Accion que borra el carrito de compras y toda su data
+ */
+export const deleteCart = () => ({
+    type: DELETE_CART
+});
