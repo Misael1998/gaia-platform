@@ -7,8 +7,8 @@ const Edit = ({ data }) => {
     email: "",
     phone: "",
     address: "",
-    contactName: "",
-    contactNumber: ""
+    contact_name: "",
+    contact_number: ""
   });
 
   //State para el error:
@@ -23,7 +23,7 @@ const Edit = ({ data }) => {
   };
 
   //Destructuting:
-  const { email, phone, address, contactName, contactNumber } = saveEdit;
+  const { email, phone, address, contact_name, contact_number } = saveEdit;
 
   useEffect(() => {
     setSaveEdit(data);
@@ -38,8 +38,8 @@ const Edit = ({ data }) => {
       email.trim() === "" ||
       phone.trim() === "" ||
       address.trim() === "" ||
-      contactName.trim() === "" ||
-      contactNumber.trim() === ""
+      contact_name.trim() === "" ||
+      contact_number.trim() === ""
     ) {
       handleError(true);
       return;
@@ -54,8 +54,8 @@ const Edit = ({ data }) => {
       email,
       phone,
       address,
-      contactName,
-      contactNumber
+      contact_name,
+      contact_number
     );
   };
 
@@ -101,21 +101,21 @@ const Edit = ({ data }) => {
           <label className="font-weight-bold mt-3">Nombre de Contacto</label>
           <input
             type="text"
-            name="contactName"
+            name="contact_name"
             className="form-control inpt-edit"
             placeholder="Nombre de Contacto"
             onChange={handleData}
-            value={contactName}
+            value={contact_name}
           />
 
           <label className="font-weight-bold mt-3">Número de Contacto</label>
           <input
             type="text"
-            name="contactNumber"
+            name="contact_number"
             className="form-control inpt-edit"
             placeholder="Número de Contacto"
             onChange={handleData}
-            value={contactNumber}
+            value={contact_number}
           />
         </div>
       </div>
