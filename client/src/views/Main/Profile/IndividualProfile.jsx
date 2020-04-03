@@ -2,13 +2,14 @@ import React, { useState } from "react";
 
 import Title from "../../../components/Title";
 
-import Edit from "./components/Edit";
+import EditIndividual from "./components/EditIndividual";
 
-import NoneEdit from "./components/NoneEdit";
+import NoneEditIndividual from "./components/NoneEditIndividual";
 
 import { IoIosPerson } from "react-icons/io";
 
 import "../../../styles/util.css";
+
 
 
 const IndividualProfile = () => {
@@ -22,17 +23,14 @@ const IndividualProfile = () => {
 
   const [data, setData] = useState({
 
-    name: "Pizza Hut",
+    name: "Dave",
 
-    email: "pizza@gmail.com",
+    email: "flores23@gmail.com",
 
-    phone: "98351410",
+    address: "Residencial Santa Cruz",
 
-    address: "Col. Residencial C.A",
+    phone: "96882367",
 
-    contactName: "Maria",
-
-    contactNumber: "99887766"
 
   });
 
@@ -74,7 +72,7 @@ const IndividualProfile = () => {
 
       <div className="col-md-8 mt-3 containerShipping">
 
-        {goEdit ? <Edit data={data} /> : <NoneEdit data={data} />}
+        {goEdit ? <EditIndividual data={data} /> : <NoneEditIndividual data={data} />}
 
 
         <div className="row justify-content-center mt-4">
