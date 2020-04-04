@@ -20,6 +20,7 @@ const employees = require("./routes/employees");
 // const caibill = require("./routes/caibill");
 // const probill = require("./routes/probill");
 const payment = require("./routes/payment");
+const newProduct = require("./routes/newproduct");
 
 //mount routes
 server.use("/api/auth", auth);
@@ -31,6 +32,7 @@ server.use("/api/employees", employees);
 // server.use("/api/caibill", caibill);
 // server.use("/api/probill", probill);
 server.use("/api/payment", payment);
+server.use("/api/newproduct", newProduct)
 
 //init database
 db();
