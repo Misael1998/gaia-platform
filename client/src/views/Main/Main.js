@@ -10,7 +10,7 @@ import { Redirect } from "react-router-dom";
 import ShippingDetails from "./components/ShippingDetails";
 import SuccessRequest from "./SuccessRequest";
 import CancelRequest from "./CancelRequest";
-import CompanyProfile from "./Profile/companyProfile";
+import Profile from "./Profile/Profile";
 
 const Main = ({ match }) => {
   return (
@@ -46,11 +46,8 @@ const Main = ({ match }) => {
           component={CancelRequest}
           isPrivate
         />
-        <Route
-          path={`${match.path}/profile`}
-          component={CompanyProfile}
-          isPrivate
-        />
+        <Route path={`${match.path}/profile`} component={Profile} isPrivate />
+
         {/* <Redirect to={`${match.path}/products`} /> */}
       </div>
     </div>
