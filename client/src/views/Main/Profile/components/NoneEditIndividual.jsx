@@ -7,7 +7,7 @@ const NoneEditIndividual = ({ data }) => {
       <div className="row mt-4">
         <div className="col-md-5 p-r-0 p-l-0">
           <span className="lnr lnr-user txt-info icon-info">
-            <span className="spn-icon">Usuairo</span>
+            <span className="spn-icon">Usuario</span>
           </span>
         </div>
 
