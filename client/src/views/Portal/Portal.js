@@ -4,6 +4,8 @@ import Route from "../../modules/Route";
 import Inventory from "../Portal/InventoryTable/Inventory";
 import Request from "./FormRequest/Request";
 import items from "../../constants/portalNavigation";
+import Referrals from "./Referrals/Referrals";
+import RequestTable from "./RequestTable/RequestTable";
 
 const Portal = ({ match }) => {
   return (
@@ -11,7 +13,7 @@ const Portal = ({ match }) => {
       <div className="col-2 bg-gray clg-container">
         <SideNavbar items={items} />
       </div>
-      <div className="col-10">
+      <div className="col-10 p-0">
         <Route
           path={`${match.path}/inventory`}
           component={Inventory}
@@ -20,6 +22,16 @@ const Portal = ({ match }) => {
         <Route
           path={`${match.path}/purchases-request`}
           component={Request}
+          isPrivate
+        />
+        <Route
+          path={`${match.path}/referrals`}
+          component={Referrals}
+          isPrivate
+        />
+        <Route
+          path={`${match.path}/requests-summary`}
+          component={RequestTable}
           isPrivate
         />
       </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
-import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
-import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
+import "../../../styles/fonts/font-awesome-4.7.0/css/font-awesome.min.css";
+import "../../../styles/fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 import Swal from "sweetalert2";
 import { registerCompanyUser } from "../../../services/Register";
 import { selectSectors } from "../../../services/Sectors";
@@ -71,7 +71,7 @@ const FormCompany = ({ history }) => {
         address.trim() !== "" &&
         companyName.trim() !== "" &&
         contactName.trim() !== "" &&
-        rtn!== "") ||
+        rtn !== "") ||
       (rtn.length < 14 &&
         contactNumber.trim() !== "" &&
         businessName.trim() !== "")
@@ -128,15 +128,15 @@ const FormCompany = ({ history }) => {
       companyType.trim() === "" ||
       sector.trim() === "" ||
       rtn.trim() === "" ||
-      rtn.trim() ==="" ||
+      rtn.trim() === "" ||
       contactNumber.trim() === "" ||
       businessName.trim() === ""
     ) {
       handleError(true);
       return;
-    }else{
-      if(rtn.length<14){
-        hanldeErrorRTN(true)
+    } else {
+      if (rtn.length < 14) {
+        hanldeErrorRTN(true);
         return;
       }
     }
@@ -319,8 +319,12 @@ const FormCompany = ({ history }) => {
                   onChange={handleChangeInfo}
                   value={sector}
                 >
+                  <option value="0">Tipo de Sector</option>
+
                   {sectors.map(sector => (
-                    <option key={sector.id} value={sector.id}>{sector.sector}</option>
+                    <option key={sector.id} value={sector.id}>
+                      {sector.sector}
+                    </option>
                   ))}
                 </select>
 
@@ -343,9 +347,9 @@ const FormCompany = ({ history }) => {
                 >
                   <option value="0">Tipo de Compañía</option>
                   <option type="number" value={parseInt("1")}>
-                    Restarante
+                    Restuarante
                   </option>
-                  <option value={parseInt("2", 10)}>Hoteles</option>
+                  <option value={parseInt("2", 10)}>Hotel</option>
                 </select>
 
                 <span className="focus-input100"></span>
@@ -416,7 +420,6 @@ const FormCompany = ({ history }) => {
               </div>
 
               {error ? (
-                 
                 <p className="alert alert-danger error-p text-white">
                   Todos los campos son obligatorios!!!
                 </p>

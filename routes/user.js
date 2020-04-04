@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const { check } = require("express-validator");
+const auth = require("../middleware/auth");
+const authorize = require("../middleware/authorize");
 
 const {
   registerEnterpriseUser,
-  registerIndividualClient
+  registerIndividualClient,
+  updateUser
 } = require("../controllers/user");
 
 router
@@ -42,4 +45,6 @@ router
     registerIndividualClient
   );
 
+  router.route("/updateuser").put(auth,authorize("enterprise","individual") ,updateUser);
+  
 module.exports = router;

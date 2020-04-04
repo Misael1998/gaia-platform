@@ -31,7 +31,6 @@ export const registerNormalUser = async (
       throw new Error(response);
     }
   } catch (error) {
-    console.log(error.response);
     let errorObj;
     const { response } = error;
     if (response.status === 400) {
@@ -88,7 +87,6 @@ export const registerCompanyUser = async (
   } catch (error) {
     let errorObj;
     const { response } = error;
-    console.log(response);
     if (response.status === 400) {
       errorObj = {
         title: 'Usuario no registrado',

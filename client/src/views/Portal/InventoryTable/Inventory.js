@@ -51,8 +51,6 @@ const Inventory = () => {
         case "2":
           let numConvert = parseInt(filtro);
           filterArray = regInventory.filter(item => {
-            console.log(typeof item.No_Orden);
-            console.log(typeof numConvert);
             if (item.No_Orden === numConvert) return item;
           });
           break;

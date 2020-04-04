@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config({ path: "./config/config.env" });
 const cors = require("cors");
 const db = require("./config/db");
+const path = require("path");
 
 const server = express();
 
@@ -14,12 +15,22 @@ const auth = require("./routes/auth");
 const user = require("./routes/user");
 const order = require("./routes/order");
 const data = require("./routes/data");
+const request = require("./routes/request");
+const employees = require("./routes/employees");
+// const caibill = require("./routes/caibill");
+// const probill = require("./routes/probill");
+const payment = require("./routes/payment");
 
 //mount routes
 server.use("/api/auth", auth);
 server.use("/api/user", user);
 server.use("/api/order", order);
 server.use("/api/data", data);
+server.use("/api/request", request);
+server.use("/api/employees", employees);
+// server.use("/api/caibill", caibill);
+// server.use("/api/probill", probill);
+server.use("/api/payment", payment);
 
 //init database
 db();

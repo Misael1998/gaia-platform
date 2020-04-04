@@ -12,7 +12,6 @@ export const loginUser = async (email, password) => {
   };
   try {
     const response = await axios.post(URL_POST_LOGIN, payload);
-    console.log(response);
     if (response.status === 200) {
       return response.data;
     } else {
@@ -20,7 +19,6 @@ export const loginUser = async (email, password) => {
     }
   } catch (error) {
     let errorObj;
-    console.log(error.response);
     const { response } = error;
     if (response.status === 404) {
       errorObj = {

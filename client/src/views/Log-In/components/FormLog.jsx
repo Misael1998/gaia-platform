@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../../../styles/FormLog.css";
 import "../../../styles/util.css";
-import "../fonts/font-awesome-4.7.0/css/font-awesome.min.css";
-import "../fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
+import "../../../styles/fonts/font-awesome-4.7.0/css/font-awesome.min.css";
+import "../../../styles/fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 import { loginUser } from "../../../services/Login";
 import Swal from "sweetalert2";
 import SessionStorageService from "../../../services/Storage";
@@ -71,7 +71,11 @@ const FormLog = ({ history }) => {
           if (user.role === "employee") {
             history.push("/portal");
           } else {
-            history.push("/app");
+            if (user.role === "admin") {
+              history.push("/admin");
+            } else {
+              history.push("/app");
+            }
           }
         });
       })
