@@ -24,7 +24,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
     contact_name,
     contact_number,
     sector,
-    business_name
+    business_name,
   } = req.body;
 
   try {
@@ -54,33 +54,33 @@ exports.registerEnterpriseUser = async (req, res, next) => {
       case 0:
         return res.status(500).json({
           success: false,
-          msg: pcMsj
+          msg: pcMsj,
         });
         break;
       case 1:
         payload = {
           id: id_user,
-          role: "enterprise"
+          role: "enterprise",
         };
 
         const user = {
           email,
           company_name,
           company_type,
-          business_name
+          business_name,
         };
         return sendTokenResponse(user, payload, 201, res);
         break;
       case 2:
         return res.status(400).json({
           success: false,
-          msg: pcMsj
+          msg: pcMsj,
         });
         break;
       case 3:
         return res.status(400).json({
           success: false,
-          msg: pcMsj
+          msg: pcMsj,
         });
         break;
     }
@@ -88,7 +88,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
     console.log(err);
     return res.status(500).json({
       success: false,
-      msg: "server error"
+      msg: "server error",
     });
   }
 };
@@ -105,7 +105,7 @@ exports.registerIndividualClient = async (req, res, next) => {
     name,
     lastName,
     register_id,
-    birth_date
+    birth_date,
   } = req.body;
 
   const errors = validationResult(req);
@@ -135,7 +135,7 @@ exports.registerIndividualClient = async (req, res, next) => {
     if (!id_user) {
       return res.status(400).json({
         success: false,
-        msg: pcMsj
+        msg: pcMsj,
       });
     }
 
@@ -145,12 +145,12 @@ exports.registerIndividualClient = async (req, res, next) => {
       role: "individual",
       email,
       phone,
-      address
+      address,
     };
 
     payload = {
       id: id_user,
-      role: "individual"
+      role: "individual",
     };
 
     return sendTokenResponse(user, payload, 201, res);
@@ -158,13 +158,13 @@ exports.registerIndividualClient = async (req, res, next) => {
     console.log(err);
     return res.status(500).json({
       success: false,
-      msg: "server error"
+      msg: "server error",
     });
   }
 
   res.status(200).json({
     success: true,
-    msg: "register client route"
+    msg: "register client route",
   });
 };
 
@@ -219,15 +219,20 @@ exports.updateUser = async (req, res) => {
         case 2:
           return errorResponse(
             400,
-            "Nothing to update.",
-            [{ msg: "No changes were made due to empty fields." }],
+            "Nothing to update",
+            [
+              {
+                msg:
+                  "No changes were made due to empty fields or all data sent was repeated",
+              },
+            ],
             res
           );
           break;
         case 3:
           return res.status(200).json({
             success: true,
-            msg: "Fields have been updated."
+            msg: "Fields have been updated.",
           });
           break;
         case 4:
@@ -276,14 +281,19 @@ exports.updateUser = async (req, res) => {
         return errorResponse(
           400,
           "Nothing to update",
-          [{ msg: "No changes were made due to empty fields" }],
+          [
+            {
+              msg:
+                "No changes were made due to empty fields or all data sent was repeated",
+            },
+          ],
           res
         );
         break;
       case 3:
         return res.status(200).json({
           success: true,
-          msg: "Fields have been updated"
+          msg: "Fields have been updated",
         });
         break;
       case 4:
@@ -313,7 +323,7 @@ const sendTokenResponse = (user, payload, statusCode, res) => {
       return res.status(200).json({
         success: true,
         token: token,
-        user
+        user,
       });
     }
   );
