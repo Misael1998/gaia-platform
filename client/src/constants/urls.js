@@ -21,9 +21,10 @@ export const URL_POST_PAYPAL_PAYMENT = "/api/payment/pay";
 export const URL_GET_DELIVERY_TYPES = "/api/data/delivery";
 export const URL_GET_PAYMENT_TYPES = "/api/data/payment-method";
 export const URL_GET_ENTERPRISE_DATA = "/api/data/dataenterprise";
+export const URL_UPDATE_ENTERPRISE_PROFILE = "/api/user/updateuser";
 
 //URL dinamicas
-export const URL_POST_RESET_PASSWORD = token =>
+export const URL_POST_RESET_PASSWORD = (token) =>
   `/api/auth/resetpassword/${token}`;
-export const URL_GET_PRODUCT_BY_ID = id => `/api/data/products/${id}`;
-export const URL_GET_REQUEST_DETAILS = id => `/api/request/${id}/details`;
+export const URL_GET_PRODUCT_BY_ID = (id) => `/api/data/products/${id}`;
+export const URL_GET_REQUEST_DETAILS = (id) => `/api/request/${id}/details`;

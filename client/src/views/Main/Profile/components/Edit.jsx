@@ -1,36 +1,39 @@
 import React, { useState, useEffect } from "react";
 import "../styles/style.css";
+import { updateEnterpriseData } from "../../../../services/UpdateEnterpriseProfile";
+import Swal from "sweetalert2";
 
 const Edit = ({ data }) => {
   //State para almacenar los cambios:
   const [saveEdit, setSaveEdit] = useState({
+    name: "",
     email: "",
     phone: "",
     address: "",
     contact_name: "",
-    contact_number: ""
+    contact_number: "",
   });
 
   //State para el error:
   const [error, handleError] = useState(false);
 
   //Funcion que captura los datos:
-  const handleData = e => {
+  const handleData = (e) => {
     setSaveEdit({
       ...saveEdit,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
-
-  //Destructuting:
-  const { email, phone, address, contact_name, contact_number } = saveEdit;
 
   useEffect(() => {
     setSaveEdit(data);
   }, []);
 
+  //Destructuting:
+  const { email, phone, address, contact_name, contact_number } = saveEdit;
+
   //Funcion que manda los datos:
-  const submitRequest = e => {
+  const submitRequest = (e) => {
     e.preventDefault();
 
     //Validacion:
@@ -48,15 +51,30 @@ const Edit = ({ data }) => {
     handleError(false);
 
     //Funcion que establecera los valores a editar traidos de la BD:
-
-    console.log(
-      "Los datos a editar son: ",
-      email,
-      phone,
-      address,
-      contact_name,
-      contact_number
-    );
+    updateEnterpriseData(email, phone, address, contact_name, contact_number)
+      .then((res) => {
+        Swal.fire(
+          "Datos Actualizados",
+          "Se han actualizados los datos exitosamente",
+          "success"
+        );
+        if (res === 1) {
+          window.location.reload();
+        } else {
+          Swal.fire(
+            "Datos sin Modificar",
+            "No se hicieron cambios en los datos",
+            "success"
+          );
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: error.title,
+          text: error.text,
+        });
+      });
   };
 
   return (

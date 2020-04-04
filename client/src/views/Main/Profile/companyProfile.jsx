@@ -19,16 +19,16 @@ const CompanyProfile = () => {
     phone: "",
     address: "",
     contact_name: "",
-    contact_number: ""
+    contact_number: "",
   });
 
   useEffect(() => {
     getEnterpriseData()
-      .then(res => {
+      .then((res) => {
         setData(res[0]);
         setLoading(false);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   //Funcion para editar:
@@ -53,10 +53,10 @@ const CompanyProfile = () => {
           />
         </div>
 
-        <div className="col-md-8 mt-3">
+        <div className="col-md-8 mt-3 containerShipping">
           {goEdit ? <Edit data={data} /> : <NoneEdit data={data} />}
 
-          <div className="row justify-content-center mt-4">
+          <div className="row justify-content-center mt-4 mb-4">
             <button
               onClick={goToInfo}
               type="button"

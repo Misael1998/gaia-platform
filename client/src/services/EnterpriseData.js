@@ -7,10 +7,9 @@ export const getEnterpriseData = async () => {
 
   try {
     const response = await axios.get(URL_GET_ENTERPRISE_DATA, {
-      Headers: { "x-auth-token": token }
+      Headers: { "x-auth-token": token },
     });
     if (response.status === 200) {
-      console.log("Datos de enterprise data: ", response.data.data);
       return response.data.data;
     } else {
       throw new Error(response);
