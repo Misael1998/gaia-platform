@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/style.css";
+import "../../../../styles/util.css"
 
 const EditIndividual = ({ data }) => {
   //State para almacenar los cambios:
@@ -49,8 +50,8 @@ const EditIndividual = ({ data }) => {
       className="form-group justify-content-center"
       onSubmit={submitRequest}
     >
-      <div className="row">
-        <div className="col-md-6 cl-sm-4">
+      <div className="row ">
+        <div className=" centrado">
           <label className="font-weight-bold mt-3">Correo</label>
           <input
             type="text"
