@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/style.css";
 
-const NoneEdit = ({ data }) => {
+const NoneEditIndividual = ({ data }) => {
   return (
     <div className="container-nonEdit">
       <div className="row mt-4">
@@ -51,32 +51,8 @@ const NoneEdit = ({ data }) => {
           <p className="txt-info">{data.address}</p>
         </div>
       </div>
-
-      <div className="row mt-4">
-        <div className="col-md-5 p-r-0 p-l-0">
-          <span className="lnr lnr-user txt-info icon-info">
-            <span className="spn-icon">Nombre de Contacto</span>
-          </span>
-        </div>
-
-        <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.contactName}</p>
-        </div>
-      </div>
-
-      <div className="row mt-4">
-        <div className="col-md-5 p-r-0 p-l-0">
-          <span className="lnr lnr-phone-handset txt-info icon-info">
-            <span className="spn-icon">Número de Contacto</span>
-          </span>
-        </div>
-
-        <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.contactNumber}</p>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default NoneEdit;
+export default NoneEditIndividual;

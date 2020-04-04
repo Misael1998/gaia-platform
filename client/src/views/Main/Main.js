@@ -11,6 +11,7 @@ import ShippingDetails from "./components/ShippingDetails";
 import SuccessRequest from "./SuccessRequest";
 import CancelRequest from "./CancelRequest";
 import CompanyProfile from "./Profile/companyProfile";
+import IndividualProfile from "./Profile/IndividualProfile";
 
 const Main = ({ match }) => {
   return (
@@ -51,6 +52,13 @@ const Main = ({ match }) => {
           component={CompanyProfile}
           isPrivate
         />
+         <Route
+
+          path={`${match.path}/Individualprofile`}
+          component={IndividualProfile}
+          isPrivate
+
+          />
         {/* <Redirect to={`${match.path}/products`} /> */}
       </div>
     </div>

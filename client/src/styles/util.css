@@ -7540,7 +7540,6 @@
   border-radius: 10px;
   border-color: darkgrey;
   margin: auto;
-
 }
 .containerPayment{
   border-style: solid;
@@ -7581,4 +7580,13 @@
 
 .centrado{
   margin: auto;
+}
+
+.BorderProfile{
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: darkgrey;
+  margin: auto;
+  margin-bottom: 2%;
 }
