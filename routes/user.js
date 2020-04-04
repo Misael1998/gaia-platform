@@ -45,10 +45,6 @@ router
     registerIndividualClient
   );
 
-<<<<<<< HEAD
-
-=======
   router.route("/updateuser").put(auth,authorize("enterprise","individual") ,updateUser);
   
->>>>>>> 979cd59f8b31fa70a4d89056ea5102f78d3044c5
 module.exports = router;

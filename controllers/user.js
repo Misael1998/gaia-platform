@@ -168,8 +168,6 @@ exports.registerIndividualClient = async (req, res, next) => {
   });
 };
 
-<<<<<<< HEAD
-=======
 //@desc     update basic info of users
 //@route    POST     /api/user/updateuser
 //@access   Private
@@ -312,7 +310,6 @@ exports.updateUser = async (req, res) => {
     return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
   }
 };
->>>>>>> 979cd59f8b31fa70a4d89056ea5102f78d3044c5
 
 //send response
 const sendTokenResponse = (user, payload, statusCode, res) => {
