@@ -6,9 +6,7 @@ export const getEnterpriseData = async () => {
   const token = SessionStorageService.getToken();
 
   try {
-    const response = await axios.get(URL_GET_ENTERPRISE_DATA, {
-      Headers: { "x-auth-token": token },
-    });
+    const response = await axios.get(URL_GET_ENTERPRISE_DATA);
     if (response.status === 200) {
       return response.data.data;
     } else {
