@@ -12,7 +12,7 @@ const NoneEdit = ({ data }) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.name}</p>
+          <p className="txt-info">{data.company_name}</p>
         </div>
       </div>
 
@@ -60,7 +60,7 @@ const NoneEdit = ({ data }) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.contactName}</p>
+          <p className="txt-info">{data.contact_name}</p>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ const NoneEdit = ({ data }) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.contactNumber}</p>
+          <p className="txt-info">{data.contact_number}</p>
         </div>
       </div>
     </div>
