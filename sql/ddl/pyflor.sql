@@ -179,6 +179,7 @@ CREATE TABLE [pyflor].[dbo].[TBL_REQUESTS]
   idDeliveryType INT NOT NULL,
   emission_date DATETIME NOT NULL,
   shipping FLOAT NULL,
+  deliveryDescription VARCHAR(150),
   idRequestType INT NOT NULL,
   idPaymentMethods INT NOT NULL,
   idEnterpriseClient INT NULL,
