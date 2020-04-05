@@ -24,7 +24,7 @@ const IndividualProfile = () => {
 
     address: "Residencial Santa Cruz",
 
-    phone: "96882367"
+    phone: "96882367",
   });
 
   //Funcion para editar:
@@ -44,7 +44,7 @@ const IndividualProfile = () => {
       <div className="container mt-5">
         <Title
           icon={<IoIosPerson size={40} />}
-          title="Perfil de Usuario Normal"
+          title="Perfil de Usuario Individual"
         />
       </div>
 
