@@ -14,6 +14,7 @@ GO
 -- Create the stored procedure in the specified schema
 CREATE PROCEDURE dbo.SP_INSERT_REQUEST
     @deliveryID int,
+    @deliveryDescription VARCHAR(150),
     @requestTypeID int,
     @date DATETIME,
     @shipping FLOAT,
@@ -28,6 +29,8 @@ declare @individual int = null
 declare @tmpId table (id int)
 declare @tmpCount int
 declare @uRole varchar(10) = [pyflor].[dbo].[getUserRole](@clientID)
+declare @deliveryType int
+declare @deliveryName VARCHAR(45)
 
 IF @uRole = 'none'
     OR @uRole = 'employee'
@@ -92,11 +95,34 @@ BEGIN
     set @err = 'invalid payment value'
 END;
 
+set @deliveryType = @deliveryID
+
+IF @deliveryDescription IS NOT NULL
+BEGIN
+    select @deliveryType = idDeliveryType 
+        from TBL_DELIVERY_TYPES
+        where name = 'Personalizado'
+END;
+
+IF @deliveryDescription IS NULL
+BEGIN
+    select @deliveryName = name 
+        from TBL_DELIVERY_TYPES
+        where idDeliveryType = @deliveryID
+    IF @deliveryName = 'Personalizado'
+    BEGIN
+        select @deliveryType = idDeliveryType 
+        from TBL_DELIVERY_TYPES
+        where name = 'Centro de distribucion'
+    END;
+END;
+
 INSERT INTO [pyflor].[dbo].[TBL_REQUESTS]
     (
     idDeliveryType,
     emission_date,
     shipping,
+    deliveryDescription,
     idRequestType,
     idPaymentMethods,
     idEnterpriseClient,
@@ -104,9 +130,10 @@ INSERT INTO [pyflor].[dbo].[TBL_REQUESTS]
     )
 OUTPUT inserted.idRequests into @tmpId
 values(
-        @deliveryID,
+        @deliveryType,
         @date,
         @shipping,
+        @deliveryDescription,
         @requestTypeID,
         @payment,
         @enterprise,

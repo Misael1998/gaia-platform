@@ -1,6 +1,5 @@
 const { validationResult } = require("express-validator");
 const errorResponse = require("../utils/errorResponse");
-const moment = require("moment");
 const mssql = require("mssql");
 
 //@desc     insert request with products into DB
@@ -18,6 +17,16 @@ exports.request = async (req, res, next) => {
     deliveryType,
     payment
   } = req.body;
+
+  let deliveryDescription = req.body.deliveryDescription;
+  if (
+    !deliveryDescription ||
+    typeof deliveryDescription !== "string" ||
+    deliveryDescription.length === 0
+  ) {
+    deliveryDescription = null;
+  }
+
   let products = req.body.products.map(product => {
     if (product.quantity < 1 || product.quantity === null) {
       return errorResponse(
@@ -39,6 +48,7 @@ exports.request = async (req, res, next) => {
 
     const request = await new mssql.Request()
       .input("deliveryID", mssql.Int, deliveryType)
+      .input("deliveryDescription", mssql.VarChar(150), deliveryDescription)
       .input("requestTypeID", mssql.Int, requestType)
       .input("date", mssql.DateTime, emissionDate)
       .input("shipping", mssql.Float, shipping)
