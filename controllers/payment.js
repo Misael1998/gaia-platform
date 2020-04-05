@@ -53,8 +53,8 @@ exports.pay = async (req, res) => {
         [
           {
             msg:
-              "cant find this request, or any products in it, cant proceed with payment",
-          },
+              "cant find this request, or any products in it, cant proceed with payment"
+          }
         ],
         res
       );
@@ -117,12 +117,12 @@ exports.pay = async (req, res) => {
     );
   }
 
-  const items = products.map((product) => {
+  const items = products.map(product => {
     return {
       name: product.name,
       price: (product.unit_price * process.env.CHNAGE_HNL_TO_USD).toFixed(2),
       currency: "USD",
-      quantity: product.quantity,
+      quantity: product.quantity
     };
   });
 
@@ -131,27 +131,27 @@ exports.pay = async (req, res) => {
     total: items.reduce(
       (total, item) => (total += item.price * item.quantity),
       0
-    ),
+    )
   };
 
   //formating request to paypal standar
   const createPaymentJson = {
     intent: "sale",
     payer: {
-      payment_method: "paypal",
+      payment_method: "paypal"
     },
     redirect_urls: {
       return_url: returnUrl,
-      cancel_url: cancelUrl,
+      cancel_url: cancelUrl
     },
     transactions: [
       {
         item_list: {
-          items,
+          items
         },
-        amount,
-      },
-    ],
+        amount
+      }
+    ]
   };
 
   let client = new paypal.core.PayPalHttpClient(env);
@@ -220,7 +220,7 @@ exports.pay = async (req, res) => {
     //responding with paypal generated url to proceed with payment
     res.status(201).json({
       success: true,
-      url: tokenUrl,
+      url: tokenUrl
     });
   } catch (err) {
     console.log(err);
