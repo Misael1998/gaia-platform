@@ -3,34 +3,40 @@ import axios from '../modules/axios'
 import moment from 'moment'
 
 
-export const createRequest = async (requestData) => {
-    let emissionDate = moment().format('YYYY-MM-DD');
-    const { shippingType, cart, paymentType } = requestData
+export const createRequest = async (requestData, reorder = 0) => {
 
-    let products = cart.map(item => ({
-        product: item.idProducts,
-        quantity: item.quantity
-    }))
-
-    const payload = {
-        emissionDate,
-        shipping: 0.00,
-        requestType: '1',
-        deliveryType: shippingType.id,
-        products,
-        payment: paymentType.payment.idPaymentMethods
+    let payload, payment;
+    if (reorder == 0) {
+        let emissionDate = moment().format('YYYY-MM-DD');
+        const { shippingType, cart, paymentType } = requestData
+        payment = paymentType;
+        let products = cart.map(item => ({
+            product: item.idProducts,
+            quantity: item.quantity
+        }))
+        payload = {
+            emissionDate,
+            shipping: 0.00,
+            requestType: '1',
+            deliveryType: shippingType.id,
+            products,
+            payment: paymentType.payment.idPaymentMethods
+        }
+    } else {
+        payment = requestData.payment
+        payload = {...requestData, payment: requestData.payment.idPaymentMethods}
     }
 
     try {
         const request = await axios.post(URL_POST_CREATE_REQUEST, payload);
         if (request.status === 201) {
-            if (paymentType.payment.description === "Paypal") {
+            if (payment.description === "Paypal") {
                 const payload = {
                     "request": request.data.data.requestId
                 }
-                const paypal = await axios.post(URL_POST_PAYPAL_PAYMENT,payload);
+                const paypal = await axios.post(URL_POST_PAYPAL_PAYMENT, payload);
                 if (paypal.status === 201) {
-                    
+
                     return {
                         code: 2,
                         paypal: paypal.data
@@ -38,7 +44,7 @@ export const createRequest = async (requestData) => {
                 }
             }
             return {
-                code : 1, 
+                code: 1,
                 request
             }
         } else {
@@ -46,6 +52,7 @@ export const createRequest = async (requestData) => {
         }
 
     } catch (error) {
+        console.log(error.response);
         let errorObj;
         const { response } = error;
         const { response: { data } } = error;

@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { FaClipboardCheck,FaRoute } from 'react-icons/fa'
-import { MdPayment, MdLocalShipping, MdCheckCircle } from 'react-icons/md'
+import { FaClipboardCheck, FaRoute } from 'react-icons/fa'
+import { MdPayment, MdLocalShipping, MdCheckCircle, MdChevronRight } from 'react-icons/md'
 import Swal from 'sweetalert2'
+import moment from 'moment'
 import ItemsShippingDetails from './components/ItemsShippingDetails'
 import Spinner from '../../components/Spinner'
 import Title from '../../components/Title'
 import { showRequestDetails } from '../../services/RequestDetails'
+import { createRequest } from '../../services/Request.js'
 import { getDeliveryTypes, getPaymentTypes } from '../../services/Data'
 
 
 
-const ReOrder = ({ match, history }) => {
+let shippingAddress;
 
+const ReOrder = ({ match, history }) => {
+    
     const [requestDetail, setRequestDetail] = useState('');
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [shippingTypes, setShippingTypes] = useState([]);
     const [selectedPayment, setSelectedPayment] = useState('');
     const [selectedShipping, setSelectedShipping] = useState('');
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
+    const [address, setAddress] = useState('');
+    const [disableAddress, setDisableAddress] = useState(true);
+    const [paypalButton, setPaypalButton] = useState(false);
+    const [paypalURL, setPaypalURL] = ('');
+
 
     useEffect(() => {
 
@@ -29,14 +38,16 @@ const ReOrder = ({ match, history }) => {
                 setRequestDetail(details);
                 const shipping = await getDeliveryTypes();
                 const value = shipping.find(type => type.name === deliveryType);
+                shippingAddress = shipping.find(type => type.name == 'Personalizado').id
                 setSelectedShipping(value.id);
                 setShippingTypes(shipping);
                 const payment = await getPaymentTypes();
                 const payValue = payment.find(type => type.description === paymentMethod);
+
                 setSelectedPayment(payValue.idPaymentMethods)
                 setPaymentMethods(payment);
                 setLoading(false);
-    
+
             } catch (error) {
                 Swal.fire(
                     'Error de conexion',
@@ -47,6 +58,62 @@ const ReOrder = ({ match, history }) => {
 
         getData();
     }, [])
+
+    const changeShipping = (e) => {
+    
+        if(e.target.value == shippingAddress){
+            setDisableAddress(false);
+        }else {
+            setDisableAddress(true);
+        }
+        setSelectedShipping(e.target.value)
+    }
+
+    const sendRequest = () => {
+        setLoading(true);
+        const products = requestDetail.map(info => ({
+            product: info.products,
+            quantity: info.quantity
+        }))
+
+        const payment = paymentMethods.find(type => type.idPaymentMethods == selectedPayment);
+        const requestInfo = {
+            emissionDate: moment().format('YYYY-MM-DD'),
+            products,
+            shipping: 0.00,
+            requestType: '1',
+            deliveryType: selectedShipping,
+            payment,
+            deliveryDescription: address,
+        }
+
+        createRequest(requestInfo, 1)
+            .then(async (res) => {
+                setLoading(false);
+                if (res.code === 1) {
+                    await Swal.fire(
+                        'Pedido creado',
+                        'Tu pedido fue procesado exitosamente',
+                        'success'
+                    )
+                    history.push('/app/products')
+                } else if (res.code === 2) {
+                    setPaypalURL(res.paypal.url)
+                    await Swal.fire('Pedido creado', 'Tu pedido se ha creado procede con el pago', 'success');
+                    setPaypalButton(true);
+
+                }
+            })
+            .catch(error => {
+                setLoading(false);
+                Swal.fire({
+                    icon: "error",
+                    title: error.title,
+                    text: error.text
+                });
+            })
+    }
+
 
     if (loading) {
         return <Spinner />
@@ -73,7 +140,7 @@ const ReOrder = ({ match, history }) => {
                         <span className='bubble-style primary-color text-white mr-2 '>
                             <MdLocalShipping />
                         </span>
-                        <select className='form-control' defaultValue={selectedShipping}>
+                        <select className='form-control' defaultValue={selectedShipping} onChange={changeShipping}>
                             {
                                 shippingTypes.map(type => (
                                     <option key={type.id} value={type.id}>{type.name}</option>
@@ -89,7 +156,7 @@ const ReOrder = ({ match, history }) => {
                         <span className='bubble-style primary-color text-white mr-2 '>
                             <MdPayment />
                         </span>
-                        <select className='form-control' defaultValue={selectedPayment}>
+                        <select className='form-control' defaultValue={selectedPayment} onChange={(e) => setSelectedPayment(e.target.value)}>
                             {
                                 paymentMethods.map(type => (
                                     <option key={type.idPaymentMethods} value={type.idPaymentMethods}>{type.description}</option>
@@ -104,9 +171,11 @@ const ReOrder = ({ match, history }) => {
                             <FaRoute />
                         </span>
                         <textarea
+                            disabled={disableAddress}
                             className='form-control'
                             placeholder='Direccion'
-
+                            onChange={(e) => setAddress(e.target.value)}
+                            value={address}
                         ></textarea>
                     </div>
 
@@ -114,12 +183,20 @@ const ReOrder = ({ match, history }) => {
 
                 <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
                     <div className='ml-2'>
-
-                        <button className='btn btn-success btn-lg' >
-
-                            <MdCheckCircle className='text-white mr-1' /> Realizar pedido
-
-                    </button>
+                        {paypalButton && paypalURL !== '' ? (
+                            <a href={paypalURL} className='btn btn-success btn-lg' >
+                                Pagar pedido <MdChevronRight className='text-white ml-1' />
+                            </a>) :
+                            <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loading}>
+                                {
+                                    loading ?
+                                        (<div className="spinner-border text-light" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>) :
+                                        (<><MdCheckCircle className='text-white mr-1' /> Realizar pedido</>)
+                                }
+                            </button>
+                        }
 
                     </div>
 
