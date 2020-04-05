@@ -1,4 +1,4 @@
-import { URL_POST_CREATE_REQUEST, URL_POST_PAYPAL_PAYMENT } from '../constants/urls'
+import { URL_POST_CREATE_REQUEST, URL_POST_PAYPAL_PAYMENT, URL_GET_REQUEST_DATA } from '../constants/urls'
 import axios from '../modules/axios'
 import moment from 'moment'
 
@@ -82,5 +82,20 @@ export const createRequest = async (requestData) => {
         }
 
         throw errorObj
+    }
+}
+
+
+export const getRequestData = async () => {
+
+    try{
+        const requests = await axios.get(URL_GET_REQUEST_DATA)
+        if (requests.status === 200){
+            return requests.data.data;
+        }else {
+            return []
+        }
+    }catch(error){
+       return []
     }
 }

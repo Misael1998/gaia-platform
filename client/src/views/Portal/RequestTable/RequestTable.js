@@ -4,8 +4,11 @@ import { FaShoppingBag } from 'react-icons/fa'
 import { getPaymentTypes, getDeliveryTypes } from '../../../services/Data';
 import Swal from 'sweetalert2';
 import Spinner from '../../../components/Spinner';
+import moment from 'moment'
+import { getRequestData } from '../../../services/Request';
+import { Link } from 'react-router-dom';
 
-const RequestTable = () => {
+const RequestTable = ({match}) => {
 
     const [filter, setFilter] = useState('');
     const [initialDate, setInitialDate] = useState('');
@@ -13,9 +16,21 @@ const RequestTable = () => {
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [shippingTypes, setShippingTypes] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [filterData, setFilterData] = useState([]);
+    const [requestData, setRequestData] = useState([]);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
+
+        getRequestData()
+            .then(res => {
+                setRequestData(res);
+                setFilterData(res);
+            })
+            .catch(async (err) => {
+                await Swal.fire('Error de conexion', 'Ocurrio un error al conectar al servidor', 'error')
+                window.location.href = 'portal/'
+            })
         getPaymentTypes()
             .then(res => setPaymentMethods(res))
             .catch(async (err) => {
@@ -31,6 +46,62 @@ const RequestTable = () => {
             })
 
     }, [])
+
+    const filterByDate = () => {
+        if (initialDate.trim() === '' && finalDate.trim() === '') {
+            setError(true);
+            return;
+        }
+
+        setError(false);
+        const requestByDate = requestData.filter(data => {
+            const momentI = moment(initialDate);
+            const momentF = moment(finalDate);
+            if (moment(data.emission_date).isBetween(momentI, momentF)) {
+                return data
+            }
+        })
+        setFilterData(requestByDate);
+    }
+
+    const cleanData = () => {
+        setFilter('0');
+        setInitialDate('');
+        setFinalDate('');
+        setFilterData(requestData);
+    }
+
+    const filterValue = (e) => {
+        let filterByValue = requestData;
+        switch (e.target.name) {
+            case 'client':
+                let regex = new RegExp(e.target.value, 'i');
+                filterByValue = requestData.filter(data => {
+                    if (regex.test(data.client)) {
+                        return data
+                    }
+                })
+                break;
+            case 'payment':
+                if (e.target.value !== '0')
+                    filterByValue = requestData.filter(data => {
+                        if (data.paymentMethod === e.target.value) {
+                            return data
+                        }
+                    })
+                break;
+            case 'shipping':
+                if (e.target.value !== '0')
+                    filterByValue = requestData.filter(data => {
+                        if (data.deliveryType === e.target.value) {
+                            return data;
+                        }
+                    })
+                break;
+
+        }
+        setFilterData(filterByValue);
+    }
 
     if (loading) {
         return <Spinner />
@@ -60,7 +131,7 @@ const RequestTable = () => {
                             />
                         </div>
                         <button
-                            // onClick={filtradoFecha}
+                            onClick={filterByDate}
                             type="button"
                             className="btn btn-success mt-3 m-l-250"
                         >
@@ -71,23 +142,25 @@ const RequestTable = () => {
                 break;
             case '2':
                 filterComponent = (
-                    <input placeholder='Nombre de cliente' className='form-control' />
+                    <input name='client' placeholder='Nombre de cliente' className='form-control' onChange={filterValue} />
                 )
                 break;
             case '3':
                 filterComponent = (
-                    <select className='form-control'>
+                    <select className='form-control' name='payment' onChange={filterValue}>
+                        <option value='0'>Seleccione una opcion</option>
                         {paymentMethods.map(type => (
-                            <option key={type.idPaymentMethods} value={type.idPaymentMethods}>{type.description}</option>
+                            <option key={type.idPaymentMethods} value={type.description}>{type.description}</option>
                         ))}
                     </select>
                 )
                 break;
             case '4':
                 filterComponent = (
-                    <select className='form-control'>
+                    <select className='form-control' name='shipping' onChange={filterValue}>
+                        <option value='0'>Seleccione una opcion</option>
                         {shippingTypes.map(type => (
-                            <option key={type.id} value={type.id}>{type.name}</option>
+                            <option key={type.id} value={type.name}>{type.name}</option>
                         ))}
                     </select>
                 )
@@ -104,7 +177,7 @@ const RequestTable = () => {
             <div className='col-6'>
                 <div className='row'>
                     <div className='col-9'>
-                        <select className='form-control' onChange={(e) => setFilter(e.target.value)}>
+                        <select className='form-control' value={filter} onChange={(e) => setFilter(e.target.value)}>
                             <option value='0'>Seleccione un filtro</option>
                             <option value='1'>Fecha</option>
                             <option value='2'>Cliente</option>
@@ -113,7 +186,7 @@ const RequestTable = () => {
                         </select>
                     </div>
                     <div className='col-3'>
-                        <button className='btn btn-success'>Limpiar</button>
+                        <button className='btn btn-success' onClick={cleanData}>Limpiar</button>
                     </div>
                 </div>
             </div>
@@ -133,30 +206,20 @@ const RequestTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Mauricio Romero</td>
-                            <td>Local</td>
-                            <td>Paypal</td>
-                            <td>25/03/2020</td>
-                            <td className='text-center'><button className='btn btn-success'>Ver mas</button></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Mauricio Romero</td>
-                            <td>Local</td>
-                            <td>Paypal</td>
-                            <td>25/03/2020</td>
-                            <td className='text-center'><button className='btn btn-success'>Ver mas</button></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Mauricio Romero</td>
-                            <td>Local</td>
-                            <td>Paypal</td>
-                            <td>25/03/2020</td>
-                            <td className='text-center'><button className='btn btn-success'>Ver mas</button></td>
-                        </tr>
+                        {
+                            filterData.map(request => (
+                                <tr>
+                                    <td>{request.idRequest}</td>
+                                    <td>{request.client}</td>
+                                    <td>{request.deliveryType}</td>
+                                    <td>{request.paymentMethod}</td>
+                                    <td>{moment(request.emission_date).format('DD/MM/YYYY')}</td>
+                                    <td className='text-center'>
+                                        <Link className='btn btn-success' to={`${match.path}/details/${request.idRequest}`}>Ver mas</Link>
+                                    </td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
             </div>
