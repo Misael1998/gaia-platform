@@ -51,6 +51,6 @@ router
 router.route("/categories").get(auth, categories);
 router
   .route("/individualuser")
-  .get(auth,authorize("individual","employee"),getIndividualData);
+  .get(auth,authorize("individual"),getIndividualData);
 
 module.exports = router;
