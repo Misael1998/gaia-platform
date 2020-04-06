@@ -15,10 +15,29 @@ CREATE PROCEDURE dbo.SP_INSERT_PRICE_PRODUCT
     @idCompanyType INT,
     @idProduct     INT,
     @err           VARCHAR(100) OUTPUT,
-    @msj           VARCHAR(100) OUTPUT 
+    @msj           VARCHAR(100) OUTPUT
 AS
 DECLARE @tmpIdPrices TABLE (idPrice INT)
-DECLARE @idP INT
+DECLARE @idP INT,
+        @count INT
+
+    IF  @idCompanyType = ' ' OR @idCompanyType IS NULL BEGIN
+        SET @msj = 'Falied'
+        SET @err = 'Null or empty fields company type'
+    RETURN
+    END;
+
+    SET  @count =(
+     SELECT COUNT(*) 
+    FROM TBL_COMPANY_TYPE
+    WHERE idCompanyType=@idCompanyType
+    )
+    IF  @count=0 BEGIN
+        SET @msj ='Failed'
+        SET @err= 'Company type not found' 
+        SET @idProduct=null
+    RETURN
+    END;
 
     
     IF  @price = ' ' OR @price IS NULL BEGIN
@@ -28,31 +47,35 @@ DECLARE @idP INT
     RETURN
     END;
 
-    IF  @idCompanyType = ' ' OR @idCompanyType IS NULL BEGIN
-        SET @msj = 'Falied'
-        SET @err = 'Null or empty fields company type'
-    RETURN
-    END;
-
     IF  @idProduct = ' ' OR @idProduct IS NULL BEGIN
         SET @msj = 'Falied'
         SET @err = 'Null or empty fields product'
     RETURN
     END;
  
-    INSERT INTO TBL_PRICES 
+    INSERT INTO TBL_PRICES (
+        unit_price
+    )
     OUTPUT inserted.idPrices INTO @tmpIdPrices 
-    VALUES(@price)
+    VALUES(
+        @price
+    )
 
     SET @idP=(SELECT idPrice FROM @tmpIdPrices) 
+   
 
-    INSERT INTO TBL_PRODUCT_HAS_PRICES
-    VALUES (@idProduct,@idP,@idCompanyType)
+    INSERT INTO TBL_PRODUCT_HAS_PRICES(
+        idProduct,
+        idPrice,
+        idCompanyType
+    )
+    VALUES (
+        @idProduct,
+        @idP,
+        @idCompanyType
+        )
+
 
     SET @msj = 'success'
     SET @err = 'None'
     RETURN
-
-
-
-

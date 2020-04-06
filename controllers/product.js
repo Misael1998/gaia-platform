@@ -1,5 +1,6 @@
 const errorResponse = require("../utils/errorResponse");
 const { validationResult } = require("express-validator");
+const arraySort = require("array-sort");
 const mssql = require("mssql");
 
 //@desc     Save a new product
@@ -20,7 +21,27 @@ exports.newProduct = async (req, res) => {
         description
     } = req.body;
 
+    const queryContador = await new mssql.Request().query(
+        "SELECT * from getCompaniesNumber();"
+    );
+    if (queryContador.recordset.length != req.body.prices.length) {
+        return errorResponse(416, "Validations Erros", [{ 
+            msg: "Requested Range Not Satisfiable" 
+        }],
+             res);
+    }
+    arraySort(req.body.prices, 'idCompanyType');
+    for (let i = 0; i < queryContador.recordset.length; i++) {
+        if (queryContador.recordset[i].idCompanyType != JSON.parse(req.body.prices[i].idCompanyType)) {
+            return errorResponse(404, "Validations Erros", [{ 
+                msg: "Not Found" 
+            }], 
+            res);
+        }
+    }
+
     let prices = req.body.prices.map(price => {
+        //console.log(price);
         if (price.price === 0) {
             return errorResponse(400, "Validations errors",
                 [{
@@ -52,21 +73,22 @@ exports.newProduct = async (req, res) => {
 
 
         if (query.output.msj != "success") {
-            return errorResponse(400, "Product not inserted", [{ msj: query.output.msj }], res)
+            return errorResponse(400, "Product not inserted", [{ msj: query.output.err }], res)
         }
 
         for (let price of prices) {
             if (!price.inserted) {
                 const queryPrices = await new mssql.Request()
-                    .input("idCompanyType", mssql.Int, price.idCompanyType)
                     .input("price", mssql.Float, price.price)
+                    .input("idCompanyType", mssql.Int, price.idCompanyType)
                     .input("idProduct", mssql.Int, query.output.idProduct)
-                    .output("msj", mssql.VarChar(100))
                     .output("err", mssql.VarChar(100))
+                    .output("msj", mssql.VarChar(100))
                     .execute("SP_INSERT_PRICE_PRODUCT")
                 if (queryPrices.output.msj != "success") {
                     return errorResponse(400, "Validations Erros", [{ msg: queryPrices.output.err }], res)
                 }
+
                 price.inserted = true;
             }
         }

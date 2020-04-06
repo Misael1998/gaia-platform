@@ -21,10 +21,9 @@ CREATE PROCEDURE dbo.SP_INSERT_NEW_PRODUCT
     @err            VARCHAR(100) OUTPUT
 AS
 
-DECLARE  @count INT
+DECLARE @count INT
 DECLARE @tmpIdProduct TABLE (idProduct INT)
 
-    
     IF  @userEmployeeId = ' ' OR @userEmployeeId IS NULL BEGIN
         SET @msj = 'Falied'
         SET @err = 'Null or empty fields user'
@@ -37,11 +36,49 @@ DECLARE @tmpIdProduct TABLE (idProduct INT)
         FROM TBL_EMPLOYEES
         WHERE idUser= @userEmployeeId
         ) 
-
     IF  @count=0 BEGIN
         SET @msj = 'Falied'
         SET @err = 'User without access this service'
         SET @idProduct = null
+    RETURN
+    END;
+
+ 
+    IF  @idCategory = ' ' OR @idCategory IS NULL BEGIN
+        SET @msj = 'Falied'
+        SET @err = 'Null or empty fields product category'
+        SET @idProduct = null
+    RETURN
+    END;
+
+   SET @count =(
+        SELECT COUNT(*) 
+        FROM TBL_CATEGORIES
+        WHERE idCategories=@idCategory
+     )
+    IF  @count=0 BEGIN
+        SET @msj ='Failed'
+        SET @err= 'Category not found' 
+        SET @idProduct=null
+    RETURN
+    END;
+
+    IF  @idSarType = ' ' OR @idSarType IS NULL BEGIN
+        SET @msj = 'Falied'
+        SET @err = 'Null or empty fields product SARtype'
+        SET @idProduct = null
+    RETURN
+    END; 
+
+    SET  @count =(
+     SELECT COUNT(*) 
+    FROM TBL_SAR_TYPES 
+    WHERE idSarTypes=@idSarType
+    )
+    IF  @count=0 BEGIN
+        SET @msj ='Failed'
+        SET @err= 'SAR type not found' 
+        SET @idProduct=null
     RETURN
     END;
 
@@ -52,20 +89,6 @@ DECLARE @tmpIdProduct TABLE (idProduct INT)
     RETURN
     END;
 
-    
-     IF  @idCategory = ' ' OR @idCategory IS NULL BEGIN
-        SET @msj = 'Falied'
-        SET @err = 'Null or empty fields product category'
-        SET @idProduct = null
-    RETURN
-    END;
-    
-    IF  @idSarType = ' ' OR @idSarType IS NULL BEGIN
-        SET @msj = 'Falied'
-        SET @err = 'Null or empty fields product SARtype'
-        SET @idProduct = null
-    RETURN
-    END; 
 
     INSERT INTO TBL_PRODUCTS(
         name,

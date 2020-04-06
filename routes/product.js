@@ -3,7 +3,7 @@ const router = express.Router();
 const { check } = require("express-validator");
 const auth = require("../middleware/auth");
 const authorize = require("../middleware/authorize");
-const  {newProduct} = require("../controllers/newproduct");
+const  {newProduct} = require("../controllers/product");
 
 router.route("/").post(
     [
