@@ -23,10 +23,7 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/is-802-ing-software/gaia-platform#readme",
   "dependencies": {
-    "array-compare": "^2.0.0",
-    "array-sort": "^1.0.0",
     "bcryptjs": "^2.4.3",
-    "convert-string-to-number": "^1.0.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
