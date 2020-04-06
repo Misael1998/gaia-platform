@@ -19,26 +19,36 @@ exports.newProduct = async (req, res) => {
         idSarType,
         description
     } = req.body;
-
-    const queryContador = await new mssql.Request().query(
-        "SELECT * from getCompaniesNumber();"
-    );
-    if (queryContador.recordset.length != req.body.prices.length) {
-        return errorResponse(416, "Validations Erros", [{ 
-            msg: "Requested Range Not Satisfiable" 
-        }],
-             res);
-    }
-    let prices1 = req.body.prices;
-    prices1.sort((a,b) => a.idCompanyType-b.idCompanyType);
-    for (let i = 0; i < queryContador.recordset.length; i++) {
-        if (queryContador.recordset[i].idCompanyType != JSON.parse(req.body.prices[i].idCompanyType)) {
-            return errorResponse(404, "Validations Erros", [{ 
-                msg: "Not Found" 
-            }], 
-            res);
+    try {
+        const queryContador = await new mssql.Request().query(
+            "SELECT * from getCompaniesNumber();"
+        );
+        if (queryContador.recordset.length != req.body.prices.length) {
+            return errorResponse(416, "Validations Erros", [{ 
+                msg: "Requested Range Not Satisfiable" 
+            }],
+                 res);
         }
+        let prices1 = req.body.prices;
+        prices1.sort((a,b) => a.idCompanyType-b.idCompanyType);
+        for (let i = 0; i < queryContador.recordset.length; i++) {
+            if (queryContador.recordset[i].idCompanyType != JSON.parse(req.body.prices[i].idCompanyType)) {
+                return errorResponse(404, "Validations Erros", [{ 
+                    msg: "Not Found" 
+                }], 
+                res);
+            }
+        }
+        
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+            success: false,
+            msg: "Server Error"
+        })
     }
+
+
 
     let prices = req.body.prices.map(price => {
         //console.log(price);
