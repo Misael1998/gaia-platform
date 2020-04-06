@@ -9,7 +9,7 @@ const mssql = require("mssql");
 exports.newProduct = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorResponse(400, "Validation erros", errors.array(), res);
+    return errorResponse(400, "Validations errors", errors.array(), res);
   }
 
   const { name, idCategory, idSarType, description } = req.body;
@@ -63,7 +63,7 @@ exports.newProduct = async (req, res) => {
         "Validations errors",
         [
           {
-            msg: "Price value of product don't can be 0"
+            msg: "Product price can't be 0"
           }
         ],
         res
