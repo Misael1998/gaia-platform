@@ -57,13 +57,13 @@ exports.newProduct = async (req, res) => {
   }
 
   let prices = req.body.prices.map(price => {
-    if (price.price === 0) {
+    if (price.price === 0 || price.price < 0) {
       return errorResponse(
         400,
         "Validations errors",
         [
           {
-            msg: "Product price can't be 0"
+            msg: "Product price can't be 0 or negative"
           }
         ],
         res
