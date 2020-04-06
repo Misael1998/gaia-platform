@@ -1,6 +1,5 @@
 const errorResponse = require("../utils/errorResponse");
 const { validationResult } = require("express-validator");
-const arraySort = require("array-sort");
 const mssql = require("mssql");
 
 //@desc     Save a new product
@@ -30,7 +29,8 @@ exports.newProduct = async (req, res) => {
         }],
              res);
     }
-    arraySort(req.body.prices, 'idCompanyType');
+    let prices1 = req.body.prices;
+    prices1.sort((a,b) => a.idCompanyType-b.idCompanyType);
     for (let i = 0; i < queryContador.recordset.length; i++) {
         if (queryContador.recordset[i].idCompanyType != JSON.parse(req.body.prices[i].idCompanyType)) {
             return errorResponse(404, "Validations Erros", [{ 
