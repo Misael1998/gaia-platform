@@ -21,7 +21,7 @@ const {
   paymentMethod,
   requestHistory,
   dataEnterprise,
-  categories,
+  categories
 } = require("../controllers/data");
 
 router.route("/supplies").get(auth, supplies);

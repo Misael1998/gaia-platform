@@ -15,20 +15,20 @@ exports.sectors = async (req, res, next) => {
     if (data.length === 0) {
       return res.status(500).json({
         success: false,
-        msg: "server error",
+        msg: "server error"
       });
     }
 
     return res.status(200).json({
       success: true,
       msg: "sectors data",
-      data: data,
+      data: data
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
-      msg: "server error",
+      msg: "server error"
     });
   }
 };
@@ -45,20 +45,20 @@ exports.supplies = async (req, res) => {
       return res.status(200).json({
         success: true,
         msg: "There are no supplies",
-        data,
+        data
       });
     } else {
       return res.status(200).json({
         success: true,
         msg: "supplies data",
-        data,
+        data
       });
     }
   } catch (e) {
     console.log(e);
     res.status(500).json({
       success: false,
-      msg: "Server error",
+      msg: "Server error"
     });
   }
 };
@@ -77,20 +77,20 @@ exports.inventory = async (req, res, next) => {
     if (data.length === 0) {
       return res.status(404).json({
         success: false,
-        msg: "Not Found",
+        msg: "Not Found"
       });
     }
 
     return res.status(200).json({
       success: true,
       msg: "Successful",
-      data: data,
+      data: data
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
-      msg: "sever error",
+      msg: "sever error"
     });
   }
 };
@@ -109,20 +109,20 @@ exports.sartype = async (req, res, next) => {
     if (data.length === 0) {
       return res.status(404).json({
         success: false,
-        msg: "Not Found",
+        msg: "Not Found"
       });
     }
 
     return res.status(200).json({
       success: true,
       msg: "Successful",
-      data: data,
+      data: data
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
-      msg: "sever error",
+      msg: "sever error"
     });
   }
 };
@@ -142,19 +142,19 @@ exports.products = async (req, res) => {
       if (data.length === 0) {
         return res.status(404).json({
           success: false,
-          msg: "Not Found",
+          msg: "Not Found"
         });
       }
       return res.status(200).json({
         success: true,
         msg: "Successful",
-        data: data,
+        data: data
       });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
         success: false,
-        msg: "server error",
+        msg: "server error"
       });
     }
   }
@@ -170,19 +170,19 @@ exports.products = async (req, res) => {
       if (data.length === 0) {
         return res.status(404).json({
           success: false,
-          msg: "Not Found",
+          msg: "Not Found"
         });
       }
       return res.status(200).json({
         success: true,
         msg: "Successful",
-        data: data,
+        data: data
       });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
         success: false,
-        msg: "server error",
+        msg: "server error"
       });
     }
   }
@@ -213,19 +213,19 @@ exports.individualProduct = async (req, res) => {
       return res.status(200).json({
         success: true,
         msg: "No data ",
-        data,
+        data
       });
     }
     return res.status(200).json({
       success: true,
       msg: "product data",
-      data,
+      data
     });
   } catch (error) {
     console.log(error);
     res.status(400).json({
       success: false,
-      msg: "server error",
+      msg: "server error"
     });
   }
 };
@@ -252,19 +252,19 @@ exports.employees = async (req, res) => {
       return res.status(200).json({
         success: true,
         msg: "No data",
-        data,
+        data
       });
     }
     return res.status(200).json({
       success: true,
       msg: "employees data",
-      data,
+      data
     });
   } catch (error) {
     console.log(error);
     res.status(400).json({
       success: false,
-      msg: "server error",
+      msg: "server error"
     });
   }
 };
@@ -292,13 +292,13 @@ exports.providers = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       msg: "sectors data",
-      data: data,
+      data: data
     });
   } catch (err) {
     console.log(err.message);
     return res.status(500).json({
       success: false,
-      msg: "sever error",
+      msg: "sever error"
     });
   }
 };
@@ -327,7 +327,7 @@ exports.getProvider = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       msg: "sectors data",
-      data: data,
+      data: data
     });
   } catch (err) {
     console.log(err.message);
@@ -353,13 +353,13 @@ exports.refferals = async (req, res) => {
       return res.status(200).json({
         success: true,
         msg: "No refferals data yet",
-        data,
+        data
       });
     }
     return res.status(200).json({
       success: true,
       msg: "Refferals data",
-      data,
+      data
     });
   } catch (error) {
     console.log(error);
@@ -386,7 +386,7 @@ exports.getRequestType = async (req, res, next) => {
     res.status(200).json({
       success: true,
       msg: "request type data",
-      data,
+      data
     });
   } catch (err) {
     console.log(err.message);
@@ -422,7 +422,7 @@ exports.getDeliveryType = async (req, res, next) => {
     res.status(200).json({
       success: true,
       msg: "request type data",
-      data,
+      data
     });
   } catch (err) {
     console.log(err.message);
@@ -451,13 +451,13 @@ exports.jobTitles = async (req, res) => {
       return res.status(200).json({
         success: true,
         msg: "no data found",
-        data,
+        data
       });
     }
     res.status(200).json({
       success: true,
       msg: "Job titles data",
-      data,
+      data
     });
   } catch (error) {
     console.log(error);
@@ -478,13 +478,13 @@ exports.departments = async (req, res) => {
       return res.status(200).json({
         success: true,
         msg: "no data found",
-        data,
+        data
       });
     }
     res.status(200).json({
       success: true,
       msg: "departments data",
-      data,
+      data
     });
   } catch (error) {
     console.log(error);
@@ -509,19 +509,19 @@ exports.requestHistory = async (req, res) => {
       if (data === 0) {
         return res.status(404).json({
           success: false,
-          msg: "Not Found",
+          msg: "Not Found"
         });
       }
       return res.status(200).json({
         success: true,
         msg: "Success",
-        data: data,
+        data: data
       });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
         success: false,
-        msg: "Server error",
+        msg: "Server error"
       });
     }
   }
@@ -538,19 +538,19 @@ exports.requestHistory = async (req, res) => {
       if (data === 0) {
         return res.status(404).json({
           success: false,
-          msg: "Not Found",
+          msg: "Not Found"
         });
       }
       return res.status(200).json({
         success: true,
         msg: "Success",
-        data: data,
+        data: data
       });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
         success: false,
-        msg: "Server error",
+        msg: "Server error"
       });
     }
   }
@@ -570,20 +570,20 @@ exports.paymentMethod = async (req, res, next) => {
     if (data.length === 0) {
       return res.status(404).json({
         success: false,
-        msg: "Not Found",
+        msg: "Not Found"
       });
     }
 
     return res.status(200).json({
       success: true,
       msg: "Successful",
-      data: data,
+      data: data
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
-      msg: "sever error",
+      msg: "sever error"
     });
   }
 };
@@ -605,7 +605,7 @@ exports.dataEnterprise = async (req, res) => {
         res.status(404),
         json({
           success: false,
-          msg: "Data not found",
+          msg: "Data not found"
         })
       );
     }
@@ -613,13 +613,13 @@ exports.dataEnterprise = async (req, res) => {
     return res.status(200).json({
       success: true,
       msg: "Successful",
-      data: data,
+      data: data
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
-      msg: "Server error",
+      msg: "Server error"
     });
   }
 };
@@ -632,9 +632,21 @@ exports.categories = async (req, res) => {
     const request = await new mssql.Request().query(
       "select * from FT_GET_CATEGORIES()"
     );
+
+    data = request.recordset;
+
+    if (data.length === 0) {
+      return errorResponse(
+        404,
+        "Not found",
+        [{ msg: "No data found for categories" }],
+        res
+      );
+    }
+
     return res.status(200).json({
       success: true,
-      data: request.recordset,
+      data: request.recordset
     });
   } catch (err) {
     console.log(err);
@@ -645,5 +657,4 @@ exports.categories = async (req, res) => {
       res
     );
   }
-  return res.send("categories route");
 };
