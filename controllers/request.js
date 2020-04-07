@@ -134,10 +134,23 @@ exports.requestDetails = async(req, res, next) => {
                     msg: "Not Found "
                 });
             }
-            data = data.map(tmp => {
-                delete tmp["success"];
-                return tmp;
-            });
+            let products = getProductsFromRequest(data);
+            let tmpRequest = [
+                ...new Set(
+                    data.map(x => {
+                        return JSON.stringify({
+                            idRequest: x.idRequest,
+                            emissionDate: x.emissionDate,
+                            deliveryType: x.deliveryType,
+                            paymentMethod: x.paymentMethod,
+                            subtotal: x.subtotal
+                        });
+                    })
+                )
+            ];
+            tmpRequest = JSON.parse(tmpRequest);
+            tmpRequest.products = products;
+            data = tmpRequest;
             return res.status(200).json({
                 success: true,
                 msg: "Successful",
@@ -167,10 +180,23 @@ exports.requestDetails = async(req, res, next) => {
                     msg: "Not Found "
                 });
             }
-            data = data.map(tmp => {
-                delete tmp["success"];
-                return tmp;
-            });
+            let products = getProductsFromRequest(data);
+            let tmpRequest = [
+                ...new Set(
+                    data.map(x => {
+                        return JSON.stringify({
+                            idRequest: x.idRequest,
+                            emissionDate: x.emissionDate,
+                            deliveryType: x.deliveryType,
+                            paymentMethod: x.paymentMethod,
+                            subtotal: x.subtotal
+                        });
+                    })
+                )
+            ];
+            tmpRequest = JSON.parse(tmpRequest);
+            tmpRequest.products = products;
+            data = tmpRequest;
             return res.status(200).json({
                 success: true,
                 msg: "Successful",
@@ -184,6 +210,18 @@ exports.requestDetails = async(req, res, next) => {
             });
         }
     }
+
+
+};
+
+const getProductsFromRequest = data => {
+    return data.map(product => {
+        return {
+            idProduct: product.idProduct,
+            product: product.products,
+            quantity: product.quantity
+        };
+    });
 };
 
 //@desc     request data
