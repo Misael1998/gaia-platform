@@ -15,7 +15,7 @@ router.route("/").post(
                 .isArray()
                 .not()
                 .isEmpty()
-        ], auth, authorize("employee")
+        ], auth, authorize("admin")
     ],
     newProduct
 );
