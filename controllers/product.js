@@ -20,7 +20,7 @@ exports.newProduct = async (req, res) => {
     if (queryContador.recordset.length != req.body.prices.length) {
       return errorResponse(
         416,
-        "Validations Erros",
+        "Validations Errors",
         [
           {
             msg: "Requested Range Not Satisfiable"
@@ -38,7 +38,7 @@ exports.newProduct = async (req, res) => {
       ) {
         return errorResponse(
           404,
-          "Validations Erros",
+          "Validations Errors",
           [
             {
               msg: "Not Found"
@@ -115,7 +115,7 @@ exports.newProduct = async (req, res) => {
           await transaction.rollback();
           return errorResponse(
             400,
-            "Validations Erros",
+            "Validations Errors",
             [{ msg: queryPrices.output.err }],
             res
           );
