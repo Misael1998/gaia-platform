@@ -4,7 +4,7 @@ const mssql = require("mssql");
 
 //@desc     Save a new product
 //@route    POST    /api/newproduct
-//@access   Private (Employee)
+//@access   Private (Admin)
 
 exports.newProduct = async (req, res) => {
   const errors = validationResult(req);
@@ -82,7 +82,7 @@ exports.newProduct = async (req, res) => {
     const { userId } = req.user;
     await transaction.begin();
     const query = await new mssql.Request(transaction)
-      .input("userEmployeeId", mssql.Int, userId)
+      .input("userAdminId", mssql.Int, userId)
       .input("name", mssql.VarChar(45), name)
       .input("idCategory", mssql.Int, idCategory)
       .input("idSarType", mssql.Int, idSarType)
