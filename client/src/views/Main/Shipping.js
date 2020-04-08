@@ -4,7 +4,7 @@ import FormShipping from './components/FormShipping';
 import FormPayment from './components/FormPayment';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import ShippingDetails from './components/ShippingDetails';
+
 
 const Shipping = ({ history }) => {
 

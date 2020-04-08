@@ -8,7 +8,7 @@ const SumItemDetail = ({ data }) => {
                 <MdRedeem className='text-center text-white' size={20} />
             </div>
             <div>
-                <span className='text-black font-weight-bold mr-1 '>Producto: </span>{' '} {data.products}
+                <span className='text-black font-weight-bold mr-1 '>Producto: </span>{' '} {data.product}
             </div>
             <div className='d-flex justify-content-end'>
                 <span className=' ml-1 text-black font-weight-bold mr-1  '>Cantidad: </span>{' '} {data.quantity}
