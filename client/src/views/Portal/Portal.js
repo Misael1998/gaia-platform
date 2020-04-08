@@ -37,7 +37,7 @@ const Portal = ({ match }) => {
         />
         <Route
           exact
-          path={`${match.path}/requests-summary/details/:id`}
+          path={`${match.path}/request-summary/details/:id`}
           component={ShippingDetail}
           isPrivate
         />

@@ -6,8 +6,11 @@ import ItemsShippingDetails from '../components/ItemsShippingDetails';
 import "../../../styles/util.css"
 import { showRequestDetails } from "../../../services/RequestDetails";
 import Swal from 'sweetalert2'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Spinner from '../../../components/Spinner';
+import SessionStorage from '../../../services/Storage'
+
+const role = sessionStorage.getItem('role');
 
 const ShippingDetails = ({ match, history }) => {
 
@@ -44,7 +47,7 @@ const ShippingDetails = ({ match, history }) => {
                     <div className='row'>
                         <div className='col-12'>
                             <ul className='list-group'>
-                                <ItemsShippingDetails data={requestDetail} />
+                                <ItemsShippingDetails data={requestDetail} role={role} />
                             </ul>
                         </div>
                     </div>
@@ -81,28 +84,33 @@ const ShippingDetails = ({ match, history }) => {
 
 
                     </div>
-                    <div className='mt-4'>
-                        <p className='font-small alert alert-success m-2'>
-                            Al procesar de nuevo este pedido, algunos precios pueden presentar una variacion segun los cargos que esten vigentes al momento de procesarse
-                        </p>
-                    </div>
+                    {
+                        role !== 'employee' ?
+                            <div className='mt-4'>
+                                <p className='font-small alert alert-success m-2'>
+                                    Al procesar de nuevo este pedido, algunos precios pueden presentar una variacion segun los cargos que esten vigentes al momento de procesarse
+                                </p>
+                            </div> : null
+                    }
 
 
                 </div>
 
                 <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
 
+                    {
+                        role !== 'employee' ?
 
+                            <div className='ml-2'>
 
-                    <div className='ml-2'>
+                                <Link className='btn btn-success btn-lg' to={`reorder/${requestDetail.idRequest}`}>
 
-                        <Link className='btn btn-success btn-lg' to={`reorder/${requestDetail.idRequest}`}>
+                                    <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
 
-                            <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
+                                </Link>
 
-                    </Link>
-
-                    </div>
+                            </div> : null
+                    }
 
                 </div>
 

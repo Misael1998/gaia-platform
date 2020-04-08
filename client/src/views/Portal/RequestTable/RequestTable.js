@@ -215,7 +215,7 @@ const RequestTable = ({match}) => {
                                     <td>{request.paymentMethod}</td>
                                     <td>{moment(request.emission_date).format('DD/MM/YYYY')}</td>
                                     <td className='text-center'>
-                                        <Link className='btn btn-success' to={`${match.path}/details/${request.idRequest}`}>Ver mas</Link>
+                                        <Link className='btn btn-success' to={`request-summary/details/${request.idRequest}`}>Ver mas</Link>
                                     </td>
                                 </tr>
                             ))
