@@ -658,3 +658,33 @@ exports.categories = async (req, res) => {
     );
   }
 };
+
+//@desc     Get data of an individual client
+//@route    GET /api/data/individualUser
+//@access   private
+exports.getIndividualData = async (req,res) => {
+  const {userId} = req.user;
+    try {
+        const query = await new mssql.Request()
+          .input("id",mssql.Int,userId)
+          .query("select * from FT_GET_INDIVIDUAL_USER_DATA(@id)");
+
+          if(query.recordset.length==0){
+              errorResponse(
+                  404,
+                  "No user found",
+                  [{msg:"Theres is no user registered with this id"}],
+                  id
+              );
+          }
+
+        const data = query.recordset[0];
+        return res.status(200).json({
+            success:true,
+            data
+        })
+    } catch (error) {
+        console.error(error.message);
+        return errorResponse(500,"Server error",[{msg:"Server error"}],res);
+    }
+}
