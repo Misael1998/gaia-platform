@@ -208,7 +208,7 @@ const RequestTable = ({match}) => {
                     <tbody>
                         {
                             filterData.map(request => (
-                                <tr>
+                                <tr key={request.idRequest}>
                                     <td>{request.idRequest}</td>
                                     <td>{request.client}</td>
                                     <td>{request.deliveryType}</td>
