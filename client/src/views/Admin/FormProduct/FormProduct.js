@@ -99,7 +99,13 @@ const FormProduct = () => {
           "Se ha añadido un nuevo producto",
           "success"
         );
-        console.log("La respuesta de new product es: ", res);
+        setProductName("");
+        setProductCategory("");
+        setSarType("");
+        setDescription("");
+        setProductPrices([]);
+        setPrice("");
+        setCompanyType("");
       })
       .catch((error) => {
         Swal.fire({
