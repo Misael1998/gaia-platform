@@ -11,7 +11,7 @@ DROP PROCEDURE dbo.SP_INSERT_NEW_PRODUCT
 GO
 -- Create the stored procedure in the specified schema
 CREATE PROCEDURE dbo.SP_INSERT_NEW_PRODUCT
-    @userEmployeeId INT,
+    @userAdminId INT,
     @name           VARCHAR(45),
     @idCategory     INT,
     @idSarType      INT,
@@ -24,7 +24,7 @@ AS
 DECLARE @count INT
 DECLARE @tmpIdProduct TABLE (idProduct INT)
 
-    IF  @userEmployeeId = ' ' OR @userEmployeeId IS NULL BEGIN
+    IF  @userAdminId = ' ' OR @userAdminId IS NULL BEGIN
         SET @msj = 'Falied'
         SET @err = 'Null or empty fields user'
         SET @idProduct = null
@@ -33,8 +33,8 @@ DECLARE @tmpIdProduct TABLE (idProduct INT)
 
     SET @count = (
         SELECT COUNT(*) 
-        FROM TBL_EMPLOYEES
-        WHERE idUser= @userEmployeeId
+        FROM TBL_ADMINS
+        WHERE idUser= @userAdminId
         ) 
     IF  @count=0 BEGIN
         SET @msj = 'Falied'

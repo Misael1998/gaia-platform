@@ -4,7 +4,7 @@ const mssql = require("mssql");
 
 //@desc     Save a new product
 //@route    POST    /api/newproduct
-//@access   Private (Employee)
+//@access   Private (Admin)
 
 exports.newProduct = async (req, res) => {
   const errors = validationResult(req);
@@ -20,7 +20,7 @@ exports.newProduct = async (req, res) => {
     if (queryContador.recordset.length != req.body.prices.length) {
       return errorResponse(
         416,
-        "Validations Erros",
+        "Validations Errors",
         [
           {
             msg: "Requested Range Not Satisfiable"
@@ -38,7 +38,7 @@ exports.newProduct = async (req, res) => {
       ) {
         return errorResponse(
           404,
-          "Validations Erros",
+          "Validations Errors",
           [
             {
               msg: "Not Found"
@@ -82,7 +82,7 @@ exports.newProduct = async (req, res) => {
     const { userId } = req.user;
     await transaction.begin();
     const query = await new mssql.Request(transaction)
-      .input("userEmployeeId", mssql.Int, userId)
+      .input("userAdminId", mssql.Int, userId)
       .input("name", mssql.VarChar(45), name)
       .input("idCategory", mssql.Int, idCategory)
       .input("idSarType", mssql.Int, idSarType)
@@ -115,7 +115,7 @@ exports.newProduct = async (req, res) => {
           await transaction.rollback();
           return errorResponse(
             400,
-            "Validations Erros",
+            "Validations Errors",
             [{ msg: queryPrices.output.err }],
             res
           );
