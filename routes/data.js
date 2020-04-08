@@ -21,7 +21,8 @@ const {
   paymentMethod,
   requestHistory,
   dataEnterprise,
-  categories
+  categories,
+  getIndividualData
 } = require("../controllers/data");
 
 router.route("/supplies").get(auth, supplies);
@@ -48,5 +49,8 @@ router
   .route("/dataenterprise")
   .get(auth, authorize("enterprise"), dataEnterprise);
 router.route("/categories").get(auth, categories);
+router
+  .route("/individualuser")
+  .get(auth,authorize("individual"),getIndividualData);
 
 module.exports = router;
