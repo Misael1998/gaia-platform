@@ -6,7 +6,7 @@ import BuySummary from './components/BuySummary';
 import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment, MdChevronRight } from 'react-icons/md'
 import BubbleIcon from '../../components/BubbleIcon';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPaymentType, getShippingType, cancelOrder } from '../../modules/helper';
+import { cancelOrder } from '../../modules/helper';
 import { deleteCart } from '../../actions/cartActions'
 import { Redirect } from 'react-router-dom';
 import { createRequest } from '../../services/Request';
@@ -60,15 +60,17 @@ const ConfirmRequest = ({ history }) => {
                         'Tu pedido fue procesado exitosamente',
                         'success'
                     )
+                    dispatch(deleteCart());
                     history.push('/app/products')
                 } else if (res.code === 2) {
+                    dispatch(deleteCart());
                     setPaypalURL(res.paypal.url)
                     await Swal.fire('Pedido creado', 'Tu pedido se ha creado procede con el pago', 'success');
                     setPaypalButton(true);
 
                 }
 
-                dispatch(deleteCart());
+                
             })
             .catch(error => {
                 setLoading(false);
