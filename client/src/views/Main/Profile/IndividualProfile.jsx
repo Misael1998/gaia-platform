@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Title from "../../../components/Title";
 
@@ -8,12 +8,18 @@ import NoneEditIndividual from "./components/NoneEditIndividual";
 
 import { IoIosPerson } from "react-icons/io";
 
+import { getIndividualData } from "../../../services/IndividualData";
+
+import Spinner from "../../../components/Spinner";
+
 import "../../../styles/util.css";
 
 const IndividualProfile = () => {
   //State para alternar entre modo editar y ver info:
 
   const [goEdit, setGoEdit] = useState(false);
+
+  const [loading, setLoading] = useState(true);
 
   //State para guardar los datos que vienen de la BD:
 
@@ -27,6 +33,17 @@ const IndividualProfile = () => {
     phone: "96882367",
   });
 
+  useEffect(() => {
+    getIndividualData()
+      .then((res) => {
+        setData(res[0]);
+
+        setLoading(false);
+      })
+
+      .catch((err) => console.log(err));
+  }, []);
+
   //Funcion para editar:
 
   const goToEdit = () => {
@@ -39,6 +56,9 @@ const IndividualProfile = () => {
     setGoEdit(false);
   };
 
+  if (loading) {
+    return <Spinner />;
+  } else {
   return (
     <div className="row justify-content-center mt-2">
       <div className="container mt-5">
@@ -47,6 +67,8 @@ const IndividualProfile = () => {
           title="Perfil de Usuario Individual"
         />
       </div>
+
+      
 
       <div className="col-md-8 mt-3 containerShipping">
         {goEdit ? (
@@ -75,6 +97,7 @@ const IndividualProfile = () => {
       </div>
     </div>
   );
+ }
 };
 
 export default IndividualProfile;
