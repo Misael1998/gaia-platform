@@ -126,13 +126,18 @@ exports.pay = async (req, res) => {
     };
   });
 
+  
   const amount = {
     currency: "USD",
     total: items.reduce(
-      (total, item) => (total += item.price * item.quantity),
+      (total, item) => (total += (item.price * item.quantity)),
       0
     )
   };
+
+  amount.total = amount.total.toFixed(2);
+  
+ 
 
   //formating request to paypal standar
   const createPaymentJson = {

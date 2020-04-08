@@ -6,7 +6,6 @@ import Cart from "./Cart";
 import ProductDetail from "./ProductDetail";
 import Products from "./Products";
 import Orders from "./Orders";
-import { Redirect } from "react-router-dom";
 import ShippingDetails from "./components/ShippingDetails";
 import SuccessRequest from "./SuccessRequest";
 import CancelRequest from "./CancelRequest";

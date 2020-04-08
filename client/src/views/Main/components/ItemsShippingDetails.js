@@ -11,19 +11,19 @@ const ItemsShippingDetails = ({ data, reorder }) => {
                     <div className='p-3'>
 
                         <div className="Left mt-3">
-                            <span className='text-black font-weight-bold mb-4 '>Número de orden: {data[0].idRequest} </span>
+                            <span className='text-black font-weight-bold mb-4 '>Número de orden: {data.idRequest} </span>
                         </div>
 
 
                         <div className="Left">
                             <span className='text-black Left font-weight-bold mb-4 '>Fecha del pedido:
-                     {moment(data[0].emissionDate).format('DD/MM/YYYY')}
+                     {moment(data.emissionDate).format('DD/MM/YYYY')}
                             </span>
                         </div>
 
 
                         <div className="Left">
-                            <span className='text-black Left font-weight-bold mb-4'>Subtotal: LPS. {data[0].subtotal}</span>
+                            <span className='text-black Left font-weight-bold mb-4'>Subtotal: LPS. {data.subtotal}</span>
                         </div>
 
                     </div>
@@ -37,8 +37,8 @@ const ItemsShippingDetails = ({ data, reorder }) => {
                     <div className='col-12 mb-3'>
                         <ul className='list-group'>
                             {
-                                data.map(info => (
-                                    <SumItemDetail key={`${info.idRequest}-${info.products}`} data={info} />
+                                data.products.map(info => (
+                                    <SumItemDetail key={`${info.idRequest}-${info.product}`} data={info} />
 
                                 ))
                             }

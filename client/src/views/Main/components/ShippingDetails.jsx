@@ -63,7 +63,7 @@ const ShippingDetails = ({ match, history }) => {
                         <span className='font-weight-bold mr-1'>
                             Envio:
                         </span>
-                        {requestDetail[0].deliveryType}
+                        {requestDetail.deliveryType}
                     </div>
 
 
@@ -77,7 +77,7 @@ const ShippingDetails = ({ match, history }) => {
 
                         <span className='font-weight-bold mr-1'>
                             Metodo de pago: {'  '}
-                        </span>  {requestDetail[0].paymentMethod}
+                        </span>  {requestDetail.paymentMethod}
 
 
                     </div>
@@ -96,7 +96,7 @@ const ShippingDetails = ({ match, history }) => {
 
                     <div className='ml-2'>
 
-                        <Link className='btn btn-success btn-lg' to={`reorder/${requestDetail[0].idRequest}`}>
+                        <Link className='btn btn-success btn-lg' to={`reorder/${requestDetail.idRequest}`}>
 
                             <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
 

@@ -12,7 +12,7 @@ import { getPaymentTypes } from '../../../services/Data';
 import Swal from 'sweetalert2'
 import Spinner from '../../../components/Spinner';
 
-const FormPayment = ({ updateShowPayment, history }) => {
+const FormPayment = ({ history }) => {
 
   //Creando el state para leer el input:
   const [infoPayment, handleinfoPayment] = useState({
@@ -34,49 +34,13 @@ const FormPayment = ({ updateShowPayment, history }) => {
   //state para el error
   const [error, handleError] = useState(false);
 
-  //state para el error en paypal
-  const [errorPaypal, handleErrorPaypal] = useState(false);
-
-  //state para el error en Credit Card
-  const [errorCreditCard, handleErrorCreditCard] = useState(false);
-
-  //states para cada caso
-  //state par leer inputs de paypal
-  const [infoPaypal, handleinfoPaypal] = useState({
-    paymentType: "3",
-    account: ""
-  });
-
-  //state para leer inputs de Credit Card
-  const [infoCreditCard, handleinfoCreditCard] = useState({
-    paymentType: "2",
-    numberCard: "",
-    expirationDate: "",
-    ccv: ""
-  });
-
-
-  //state para mostrar info de la cuenta PAYPAL
-  const [showPaypal, updateShowPaypal] = useState(false);
-  //state para mostrar la info de la tarjeta
-  const [showCreditCar, updateShowCreditCar] = useState(false);
-
   //extrayendo los valores con el desctructuring
   const {
     paymentType
   } = infoPayment;
 
-  //extrayendo los valores con destructuring PAYPAL
-  const {
-    account
-  } = infoPaypal;
+  
 
-  //extrayendo los valores con destructuring CREDIT CARD
-  const {
-    numberCard,
-    expirationDate,
-    ccv
-  } = infoCreditCard;
 
   //Configuracion de dispatch 
   const dispatch = useDispatch();
@@ -90,18 +54,14 @@ const FormPayment = ({ updateShowPayment, history }) => {
      
     }
     
-    let paymentObject = paymentTypes.filter(type => type.idPaymentMethods == infoPayment.paymentType)[0]
+    let paymentObject = paymentTypes.find(type => type.idPaymentMethods === Number(infoPayment.paymentType))
     //Objeto a enviar al store
     let savePaymentType = {
       'payment': paymentObject,
-      'paypal': infoPaypal.account !== '' ? infoPaypal.account : '',
-      'creditCard': infoCreditCard.numberCard !== '' ? infoCreditCard : '',
     }
     //Se despacha la accion
     dispatch(addPaymentType(savePaymentType))
     handleError(false);
-    handleErrorPaypal(false);
-    handleErrorCreditCard(false);
 
     history.push('/app/cart/confirm')
 
@@ -113,21 +73,13 @@ const FormPayment = ({ updateShowPayment, history }) => {
   //funcion que se ejecuta cuando se escriba en el input
   const handleSavePayment = e => {
 
-    updateShowPaypal(false);
-    updateShowCreditCar(false);
+    
 
     if (e.target.value === "0") {
       handleError(true);
       return;
     }
 
-    if (e.target.value === "3") {
-      updateShowPaypal(true);
-    }
-
-    if (e.target.value === "2") {
-      updateShowCreditCar(true);
-    }
 
     handleinfoPayment({
       ...infoPayment,
@@ -138,32 +90,6 @@ const FormPayment = ({ updateShowPayment, history }) => {
 
   };
 
-
-  //funcion que se ejecuta cuando se escribe en PAYPAL
-
-  const handleSavePaypal = e => {
-
-    handleErrorPaypal(false);
-    handleinfoPaypal({
-      ...infoPaypal,
-      [e.target.name]: e.target.value
-    });
-
-
-  };
-
-  //funcion que se ejecuta cuando se escribe en Credit Card
-
-  const handleSaveCreditCard = e => {
-
-
-    handleinfoCreditCard({
-      ...infoCreditCard,
-      [e.target.name]: e.target.value
-    });
-
-
-  };
 
 
 
@@ -201,9 +127,7 @@ const FormPayment = ({ updateShowPayment, history }) => {
 
                 >
                   <option value="0">Seleccione el tipo de pago</option>
-                  {/* { <option value="1">Efectivo</option>
-                  <option value="2">Tarjeta de crédito</option>
-                  <option value="3">Paypal</option>} */}
+                  
                   {
                     paymentTypes.map(type => (
                       <option key={type.idPaymentMethods} value={type.idPaymentMethods}>{type.description}</option>
@@ -224,128 +148,7 @@ const FormPayment = ({ updateShowPayment, history }) => {
               ) : null}
 
 
-              {showPaypal ? (<Fragment>
-                {/*Parte de la paypal */}
-
-
-                {/* <div
-                  className="wrap-input100 validate-input m-b-16"
-                  data-validate="Password is required"
-                >
-  
-                  <input
-                    className="input100"
-                    type="text"
-                    name="account"
-                    onChange={handleSavePaypal}
-                    placeholder="Cuenta de Paypal"
-                    value={account}
-  
-                  />
-  
-                  <span className="focus-input100"></span>
-                  <span className="symbol-input100">
-                    <span className="lnr lnr-book"></span>
-                  </span>
-  
-                </div> */}
-
-                {errorPaypal ? (
-                  <p className="alert alert-danger error-p text-white">
-                    Debe ingresar la cuenta de Paypal!!
-                  </p>
-                ) : null}
-
-                {/*Parte FIN de la tarjeta */}
-              </Fragment>
-              ) : null}
-
-              {showCreditCar ? (<Fragment>
-                {/*Parte de la tarjeta  de credito*/}
-
-                {/* <p className="alert alert-danger error-p text-white">
-                  El soporte para tarjeta de créditos aún está en proceso!
-                  </p> */}
-
-                {/* 
-                  <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-                >
-                  
-                <input
-                  className="input100"
-                  type="text"
-                  name="numberCard"
-                  onChange={handleSaveCreditCard}
-                  placeholder="Número de Tarjeta"
-                  value={numberCard}
-                  
-                />
-                
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-book"></span>
-                </span>
-                
-              </div>
-  
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-                >
-                  
-                <input
-                  className="input100"
-                  type="date"
-                  name="expirationDate"
-                  onChange={handleSaveCreditCard}
-                  value={expirationDate}
-                  
-                />
-                
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-book"></span>
-                </span>
-                
-              </div>
-  
-              <div
-                className="wrap-input100 validate-input m-b-16"
-                data-validate="Password is required"
-                >
-                  
-                <input
-                  className="input100"
-                  type="number"
-                  name="ccv"
-                  onChange={handleSaveCreditCard}
-                  placeholder="CCV"
-                  value={ccv}
-                  
-                />
-                
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                  <span className="lnr lnr-book"></span>
-                </span>
-                
-              </div>
-  
-              {errorCreditCard ? (
-                  <p className="alert alert-danger error-p text-white">
-                    Todos los campos deben ser llenados!!
-                  </p>
-                  ) : null}
-                */}
-
-
-
-              </Fragment>
-              ) : null
-                //fin de la tarjeta de credito
-              }
+             
 
               <div className="container-login100-form-btn p-t-1 botones">
 

@@ -22,10 +22,11 @@ const ReOrder = ({ match, history }) => {
     const [selectedPayment, setSelectedPayment] = useState('');
     const [selectedShipping, setSelectedShipping] = useState('');
     const [loading, setLoading] = useState(true);
+    const [loadingButton, setLoadingButton] = useState(false);
     const [address, setAddress] = useState('');
     const [disableAddress, setDisableAddress] = useState(true);
     const [paypalButton, setPaypalButton] = useState(false);
-    const [paypalURL, setPaypalURL] = ('');
+    const [paypalURL, setPaypalURL] = useState('');
 
 
     useEffect(() => {
@@ -34,11 +35,11 @@ const ReOrder = ({ match, history }) => {
             const { id } = match.params;
             try {
                 const details = await showRequestDetails(id);
-                const { deliveryType, paymentMethod } = details[0]
+                const { deliveryType, paymentMethod } = details
                 setRequestDetail(details);
                 const shipping = await getDeliveryTypes();
                 const value = shipping.find(type => type.name === deliveryType);
-                shippingAddress = shipping.find(type => type.name == 'Personalizado').id
+                shippingAddress = shipping.find(type => type.name === 'Personalizado').id
                 setSelectedShipping(value.id);
                 setShippingTypes(shipping);
                 const payment = await getPaymentTypes();
@@ -49,6 +50,7 @@ const ReOrder = ({ match, history }) => {
                 setLoading(false);
 
             } catch (error) {
+                console.log(error);
                 Swal.fire(
                     'Error de conexion',
                     'Ocurrió un error al intentar conectar con el servidor',
@@ -61,7 +63,7 @@ const ReOrder = ({ match, history }) => {
 
     const changeShipping = (e) => {
     
-        if(e.target.value == shippingAddress){
+        if(Number(e.target.value) === shippingAddress){
             setDisableAddress(false);
         }else {
             setDisableAddress(true);
@@ -70,13 +72,14 @@ const ReOrder = ({ match, history }) => {
     }
 
     const sendRequest = () => {
-        setLoading(true);
-        const products = requestDetail.map(info => ({
-            product: info.products,
+        setLoadingButton(true);
+        const products = requestDetail.products.map(info => ({
+            product: info.idProduct,
             quantity: info.quantity
         }))
 
-        const payment = paymentMethods.find(type => type.idPaymentMethods == selectedPayment);
+        const payment = paymentMethods.find(type => type.idPaymentMethods === Number(selectedPayment));
+       
         const requestInfo = {
             emissionDate: moment().format('YYYY-MM-DD'),
             products,
@@ -89,7 +92,7 @@ const ReOrder = ({ match, history }) => {
 
         createRequest(requestInfo, 1)
             .then(async (res) => {
-                setLoading(false);
+                setLoadingButton(false);
                 if (res.code === 1) {
                     await Swal.fire(
                         'Pedido creado',
@@ -105,7 +108,7 @@ const ReOrder = ({ match, history }) => {
                 }
             })
             .catch(error => {
-                setLoading(false);
+                setLoadingButton(false);
                 Swal.fire({
                     icon: "error",
                     title: error.title,
@@ -187,9 +190,9 @@ const ReOrder = ({ match, history }) => {
                             <a href={paypalURL} className='btn btn-success btn-lg' >
                                 Pagar pedido <MdChevronRight className='text-white ml-1' />
                             </a>) :
-                            <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loading}>
+                            <button className='btn btn-success btn-lg' onClick={sendRequest} disabled={loadingButton}>
                                 {
-                                    loading ?
+                                    loadingButton ?
                                         (<div className="spinner-border text-light" role="status">
                                             <span className="sr-only">Loading...</span>
                                         </div>) :

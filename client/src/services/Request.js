@@ -6,10 +6,10 @@ import moment from 'moment'
 export const createRequest = async (requestData, reorder = 0) => {
 
     let payload, payment;
-    if (reorder == 0) {
+    if (reorder === 0) {
         let emissionDate = moment().format('YYYY-MM-DD');
         const { shippingType, cart, paymentType } = requestData
-        payment = paymentType;
+        payment = paymentType.payment;
         let products = cart.map(item => ({
             product: item.idProducts,
             quantity: item.quantity
@@ -20,15 +20,17 @@ export const createRequest = async (requestData, reorder = 0) => {
             requestType: '1',
             deliveryType: shippingType.id,
             products,
-            payment: paymentType.payment.idPaymentMethods
+            payment: paymentType.payment.idPaymentMethods,
+            deliveryDescription: shippingType.address ? shippingType.address : ''
         }
     } else {
         payment = requestData.payment
         payload = {...requestData, payment: requestData.payment.idPaymentMethods}
     }
-
+   
     try {
         const request = await axios.post(URL_POST_CREATE_REQUEST, payload);
+        
         if (request.status === 201) {
             if (payment.description === "Paypal") {
                 const payload = {
@@ -36,7 +38,6 @@ export const createRequest = async (requestData, reorder = 0) => {
                 }
                 const paypal = await axios.post(URL_POST_PAYPAL_PAYMENT, payload);
                 if (paypal.status === 201) {
-
                     return {
                         code: 2,
                         paypal: paypal.data
@@ -52,7 +53,6 @@ export const createRequest = async (requestData, reorder = 0) => {
         }
 
     } catch (error) {
-        console.log(error.response);
         let errorObj;
         const { response } = error;
         const { response: { data } } = error;

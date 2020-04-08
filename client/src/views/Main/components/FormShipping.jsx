@@ -11,6 +11,8 @@ import { getDeliveryTypes } from '../../../services/Data';
 import Spinner from '../../../components/Spinner'
 import Swal from 'sweetalert2';
 
+let customShipping;
+
 const FormShipping = ({ updateShowShipping, history }) => {
 
   //Creando el state para leer el input:
@@ -20,10 +22,16 @@ const FormShipping = ({ updateShowShipping, history }) => {
 
   const [loading, setLoading] = useState(true);
   const [shippingTypes, setShippingTypes] = useState([]);
+  const [showInput, setShowInput] = useState(false);
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     getDeliveryTypes()
-      .then(res => { setShippingTypes(res); setLoading(false) })
+      .then(res => {
+        setShippingTypes(res);
+        customShipping = res.find(type => type.name === 'Personalizado').id
+        setLoading(false)
+      })
       .catch(async (err) => {
         await Swal.fire('Error de conexion', 'Ocurrio un error en el servidor', 'error')
         history.goBack();
@@ -44,7 +52,9 @@ const FormShipping = ({ updateShowShipping, history }) => {
       return;
     }
     //Objeto a enviar al store
-    let shippingObject = shippingTypes.filter(type => type.id == infoShipping.ShippingType)[0]
+    let shippingObject = shippingTypes.find(type => type.id === Number(infoShipping.ShippingType))
+    shippingObject = {...shippingObject, address}
+
     //Se despacha la accion
     dispatch(addShippingType(shippingObject))
 
@@ -55,16 +65,19 @@ const FormShipping = ({ updateShowShipping, history }) => {
 
 
 
-
-
-
-  //funcion que se ejecuta cuando se escriba en el input
   const handleSaveShipping = e => {
     handleinfoShipping({
       ...infoShipping,
       [e.target.name]: e.target.value
 
     });
+
+    
+    if(Number(e.target.value) === customShipping){
+      setShowInput(true);
+    }else {
+      setShowInput(false);
+    }
 
     if (e.target.value === "0") {
       handleError(true);
@@ -120,6 +133,31 @@ const FormShipping = ({ updateShowShipping, history }) => {
                   <span className="lnr lnr-home"></span>
                 </span>
               </div>
+
+              {
+                showInput ? (
+                  <div
+                    className="wrap-input100 validate-input m-b-16"
+                    data-validate="Password is required"
+                  >
+
+                    <input
+                      className="input100"
+                      type="text"
+                      onChange={(e) => setAddress(e.target.value)}
+                      placeholder="Direccion de envio"
+                      value={address}
+
+                    />
+
+                    <span className="focus-input100"></span>
+                    <span className="symbol-input100">
+                      <span className="lnr lnr-location"></span>
+                    </span>
+
+                  </div>
+                ) : null
+              }
 
               {error ? (
                 <p className="alert alert-danger error-p text-white">
