@@ -1,11 +1,12 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Title from '../../../components/Title';
 import { FaClipboardCheck } from 'react-icons/fa';
-import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment } from 'react-icons/md'
+import { MdCheckCircle, MdLocalShipping, MdPayment } from 'react-icons/md'
 import ItemsShippingDetails from '../components/ItemsShippingDetails';
 import "../../../styles/util.css"
 import { showRequestDetails } from "../../../services/RequestDetails";
 import Swal from 'sweetalert2'
+import {Link} from 'react-router-dom'
 import Spinner from '../../../components/Spinner';
 
 const ShippingDetails = ({ match, history }) => {
@@ -62,7 +63,7 @@ const ShippingDetails = ({ match, history }) => {
                         <span className='font-weight-bold mr-1'>
                             Envio:
                         </span>
-                        {requestDetail[0].deliveryType}
+                        {requestDetail.deliveryType}
                     </div>
 
 
@@ -76,7 +77,7 @@ const ShippingDetails = ({ match, history }) => {
 
                         <span className='font-weight-bold mr-1'>
                             Metodo de pago: {'  '}
-                        </span>  {requestDetail[0].paymentMethod}
+                        </span>  {requestDetail.paymentMethod}
 
 
                     </div>
@@ -95,11 +96,11 @@ const ShippingDetails = ({ match, history }) => {
 
                     <div className='ml-2'>
 
-                        <button className='btn btn-success btn-lg' disabled>
+                        <Link className='btn btn-success btn-lg' to={`reorder/${requestDetail.idRequest}`}>
 
                             <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
 
-                    </button>
+                    </Link>
 
                     </div>
 

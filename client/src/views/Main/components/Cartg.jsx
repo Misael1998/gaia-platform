@@ -1,10 +1,8 @@
 import React from 'react'
-import Route from "../../../modules/Route";
 import { MdShoppingCart } from "react-icons/md";
 import { useSelector } from 'react-redux'
 import CartItem from "../components/CartItem";
 import Title from "../../../components/Title";
-import Shipping from "../Shipping";
 import { Link } from "react-router-dom";
 
 
