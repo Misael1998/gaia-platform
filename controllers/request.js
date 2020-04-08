@@ -142,6 +142,7 @@ exports.requestDetails = async(req, res, next) => {
                             idRequest: x.idRequest,
                             emissionDate: x.emissionDate,
                             deliveryType: x.deliveryType,
+                            deliveryDescription: x.deliveryDescription,
                             paymentMethod: x.paymentMethod,
                             subtotal: x.subtotal
                         });
@@ -188,6 +189,55 @@ exports.requestDetails = async(req, res, next) => {
                             idRequest: x.idRequest,
                             emissionDate: x.emissionDate,
                             deliveryType: x.deliveryType,
+                            deliveryDescription: x.deliveryDescription,
+                            paymentMethod: x.paymentMethod,
+                            subtotal: x.subtotal
+                        });
+                    })
+                )
+            ];
+            tmpRequest = JSON.parse(tmpRequest);
+            tmpRequest.products = products;
+            data = tmpRequest;
+            return res.status(200).json({
+                success: true,
+                msg: "Successful",
+                data: data
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                msg: "server error"
+            });
+        }
+    }
+
+    if (role === "employee") {
+        try {
+            const query = await new mssql.Request()
+                .input("idReq", mssql.Int, req.params.id)
+                .query(
+                    "SELECT * FROM [dbo].[FT_GET_REQUEST_DETAIL_EMPLOYEE](@idReq)"
+                );
+            let data = query.recordset;
+            if (data.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Not Found "
+                });
+            }
+            let products = getProductsFromRequest(data);
+            let tmpRequest = [
+                ...new Set(
+                    data.map(x => {
+                        return JSON.stringify({
+                            idRequest: x.idRequest,
+                            idClient: x.idClient,
+                            client: x.client,
+                            emissionDate: x.emissionDate,
+                            deliveryType: x.deliveryType,
+                            deliveryDescription: x.deliveryDescription,
                             paymentMethod: x.paymentMethod,
                             subtotal: x.subtotal
                         });
