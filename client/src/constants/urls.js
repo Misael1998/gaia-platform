@@ -22,6 +22,7 @@ export const URL_GET_DELIVERY_TYPES = "/api/data/delivery";
 export const URL_GET_PAYMENT_TYPES = "/api/data/payment-method";
 export const URL_GET_ENTERPRISE_DATA = "/api/data/dataenterprise";
 export const URL_UPDATE_ENTERPRISE_PROFILE = "/api/user/updateuser";
+export const URL_POST_NEW_PRODUCT = "/api/product";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = (token) =>
