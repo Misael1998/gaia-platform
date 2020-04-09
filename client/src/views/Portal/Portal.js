@@ -6,6 +6,7 @@ import Request from "./FormRequest/Request";
 import items from "../../constants/portalNavigation";
 import Referrals from "./Referrals/Referrals";
 import RequestTable from "./RequestTable/RequestTable";
+import ShippingDetail from '../Main/components/ShippingDetails'
 
 const Portal = ({ match }) => {
   return (
@@ -32,6 +33,12 @@ const Portal = ({ match }) => {
         <Route
           path={`${match.path}/requests-summary`}
           component={RequestTable}
+          isPrivate
+        />
+        <Route
+          exact
+          path={`${match.path}/request-summary/details/:id`}
+          component={ShippingDetail}
           isPrivate
         />
       </div>

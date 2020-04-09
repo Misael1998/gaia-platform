@@ -3,7 +3,7 @@ import "../../../../src/styles/util.css";
 import SumItemDetail from "../components/SumItemDetail";
 import moment from 'moment'
 
-const ItemsShippingDetails = ({ data, reorder }) => {
+const ItemsShippingDetails = ({ data, reorder, role }) => {
     return (
         <div className="container containerShipping">
             {
@@ -20,8 +20,14 @@ const ItemsShippingDetails = ({ data, reorder }) => {
                      {moment(data.emissionDate).format('DD/MM/YYYY')}
                             </span>
                         </div>
-
-
+                        {
+                            role === 'employee' ?
+                                <div className="Left">
+                                    <span className='text-black Left font-weight-bold mb-4 '>Cliente:
+                                {data.client}
+                                    </span>
+                                </div> : null
+                        }
                         <div className="Left">
                             <span className='text-black Left font-weight-bold mb-4'>Subtotal: LPS. {data.subtotal}</span>
                         </div>
@@ -33,7 +39,7 @@ const ItemsShippingDetails = ({ data, reorder }) => {
                 <span className='text-black Left font-weight-bold mb-4'>Detalle del pedido: </span>
             </div>
             <div className='col-12'>
-                <div className={!reorder? "ContainerDetail": 'mt-1'}>
+                <div className={!reorder ? "ContainerDetail" : 'mt-1'}>
                     <div className='col-12 mb-3'>
                         <ul className='list-group'>
                             {
