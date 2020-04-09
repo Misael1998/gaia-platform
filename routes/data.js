@@ -22,7 +22,8 @@ const {
   requestHistory,
   dataEnterprise,
   categories,
-  getIndividualData
+  getIndividualData,
+  companyTypes
 } = require("../controllers/data");
 
 router.route("/supplies").get(auth, supplies);
@@ -52,5 +53,7 @@ router.route("/categories").get(auth, categories);
 router
   .route("/individualuser")
   .get(auth,authorize("individual"),getIndividualData);
+
+router.route('/companytypes').get(auth,authorize("employee","admin"),companyTypes);
 
 module.exports = router;
