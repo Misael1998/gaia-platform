@@ -21,7 +21,7 @@ const FormCompany = ({ history }) => {
     contactNumber: "",
     businessName: "",
     companyType: "",
-    sector: ""
+    sector: "",
   });
 
   //State de los sectores
@@ -49,16 +49,16 @@ const FormCompany = ({ history }) => {
     contactNumber,
     businessName,
     companyType,
-    sector
+    sector,
   } = infoCompany;
 
   useEffect(() => {
     selectSectors()
-      .then(res => {
+      .then((res) => {
         handleSector(res);
         setLoading(false);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -90,14 +90,14 @@ const FormCompany = ({ history }) => {
     contactName,
     rtn,
     contactNumber,
-    businessName
+    businessName,
   ]);
 
   //Funcion que se ejecuta cuando se escribe en un input:
-  const handleChangeInfo = e => {
+  const handleChangeInfo = (e) => {
     handleCompanyInfo({
       ...infoCompany,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -112,7 +112,7 @@ const FormCompany = ({ history }) => {
   };
 
   //Funcion para el boton de login:
-  const submitUser = e => {
+  const submitUser = (e) => {
     e.preventDefault();
 
     validarEmail();
@@ -158,21 +158,21 @@ const FormCompany = ({ history }) => {
       contactNumber,
       businessName
     )
-      .then(res => {
+      .then((res) => {
         Swal.fire(
           "Registro Exitoso",
           "Se ha creado el usuario exitosamente",
           "success"
-        ).then(e => {
+        ).then((e) => {
           history.push("/login");
         });
       })
 
-      .catch(error => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: error.title,
-          text: error.text
+          text: error.text,
         });
       });
 
@@ -321,7 +321,7 @@ const FormCompany = ({ history }) => {
                 >
                   <option value="0">Tipo de Sector</option>
 
-                  {sectors.map(sector => (
+                  {sectors.map((sector) => (
                     <option key={sector.id} value={sector.id}>
                       {sector.sector}
                     </option>
