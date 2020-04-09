@@ -687,4 +687,27 @@ exports.getIndividualData = async (req,res) => {
         console.error(error.message);
         return errorResponse(500,"Server error",[{msg:"Server error"}],res);
     }
+};
+
+//@desc     Get all company types
+//@route    GET     /api/data/companytypes
+//@access   Private
+exports.companyTypes = async (req,res)=>{
+  try{
+    const query = await new mssql.Request()
+      .query("select * from FT_COMPANY_TYPES()");
+    data = query.recordset;
+    return res.status(200).json({
+      success:true,
+      msg:"Company data",
+      data
+    })
+  }catch(e){
+    console.error(e.message);
+    return errorResponse(
+      500,
+      "Server error",
+      [{msg:"Internal server error"}],
+      res);
+  }
 }

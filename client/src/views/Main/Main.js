@@ -6,11 +6,11 @@ import Cart from "./Cart";
 import ProductDetail from "./ProductDetail";
 import Products from "./Products";
 import Orders from "./Orders";
-import { Redirect } from "react-router-dom";
 import ShippingDetails from "./components/ShippingDetails";
 import SuccessRequest from "./SuccessRequest";
 import CancelRequest from "./CancelRequest";
 import Profile from "./Profile/Profile";
+import ReOrder from "./ReOrder";
 
 const Main = ({ match }) => {
   return (
@@ -33,6 +33,13 @@ const Main = ({ match }) => {
           exact
           path={`${match.path}/request/:id`}
           component={ShippingDetails}
+          isPrivate
+        />
+
+        <Route
+          exact
+          path={`${match.path}/request/reorder/:id`}
+          component={ReOrder}
           isPrivate
         />
 

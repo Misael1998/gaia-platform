@@ -24,6 +24,8 @@ export const URL_GET_ENTERPRISE_DATA = "/api/data/dataenterprise";
 export const URL_UPDATE_ENTERPRISE_PROFILE = "/api/user/updateuser";
 export const URL_GET_INDIVIDUAL_DATA = "/api/data/individualuser";
 export const URL_UPDATE_INDIVIDUAL_PROFILE = "/api/user/updateuser";
+export const URL_GET_REQUEST_DATA = '/api/request/requests-data'
+export const URL_POST_NEW_PRODUCT = "/api/product";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = (token) =>

@@ -6,7 +6,7 @@ RETURNS TABLE
 AS  
 RETURN(
        SELECT 
-        u.name ,u.lastname, u.email, u.address 
+        u.name ,u.lastname, u.email, u.address,u.phone
     from 
         TBL_USERS as u
     WHERE 

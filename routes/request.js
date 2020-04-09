@@ -29,7 +29,7 @@ router.route("/").post(
 
 router
     .route("/:id/details")
-    .get(auth, authorize("individual", "enterprise"), requestDetails);
+    .get(auth, authorize("individual", "enterprise", "employee"), requestDetails);
 
 router
     .route("/requests-data")

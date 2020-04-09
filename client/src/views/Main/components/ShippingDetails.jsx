@@ -1,14 +1,18 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Title from '../../../components/Title';
 import { FaClipboardCheck } from 'react-icons/fa';
-import { MdCancel, MdCheckCircle, MdLocalShipping, MdPayment } from 'react-icons/md'
+import { MdCheckCircle, MdLocalShipping, MdPayment, MdLocationOn } from 'react-icons/md'
 import ItemsShippingDetails from '../components/ItemsShippingDetails';
 import "../../../styles/util.css"
 import { showRequestDetails } from "../../../services/RequestDetails";
 import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
 import Spinner from '../../../components/Spinner';
 
-const ShippingDetails = ({ match, history }) => {
+
+const role = sessionStorage.getItem('role');
+
+const ShippingDetails = ({ match }) => {
 
     const [requestDetail, setRequestDetail] = useState({});
     const [loading, setLoading] = useState(true);
@@ -43,65 +47,97 @@ const ShippingDetails = ({ match, history }) => {
                     <div className='row'>
                         <div className='col-12'>
                             <ul className='list-group'>
-                                <ItemsShippingDetails data={requestDetail} />
+                                <ItemsShippingDetails data={requestDetail} role={role} />
                             </ul>
                         </div>
                     </div>
                 </div>
 
 
-                <div className='col-4 offset-1 mt-3'>
+                <div className='col-5 mt-3 '>
+
+                    <table className='table table-borderless table-striped  '>
+                        <tbody className='text-center'>
+                            <tr>
+                                <td>
+                                    <span className='bubble-style primary-color text-white'>
+                                        <MdLocalShipping />
+                                    </span>
+                                </td>
+                                <td>
+                                    <span className='font-weight-bold'>
+                                        Envio
+                                    </span>
+                                </td>
+                                <td>
+                                    {requestDetail.deliveryType}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span className='bubble-style primary-color text-white'>
+                                        <MdPayment />
+                                    </span>
+                                </td>
+                                <td>
+                                    <span className='font-weight-bold'>
+                                        Metodo de pago
+                                    </span>
+                                </td>
+                                <td>
+                                    {requestDetail.paymentMethod}
+                                </td>
+                            </tr>
+                            {
+                                requestDetail.deliveryDescription ? (
+                                    <tr>
+                                        <td>
+                                            <span className='bubble-style primary-color text-white'>
+                                                <MdLocationOn />
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className='font-weight-bold'>
+                                                Ubicacion
+                                    </span>
+                                        </td>
+                                        <td>
+                                            {requestDetail.deliveryDescription}
+                                        </td>
+                                    </tr>
+                                ) : null
+                            }
+                        </tbody>
+                    </table>
 
 
-                    <div className='d-flex flex-row align-items-center justify-content-center Left mb-4'>
-
-                        <span className='bubble-style primary-color text-white mr-2 '>
-
-                            <MdLocalShipping />
-                        </span>
-                        <span className='font-weight-bold mr-1'>
-                            Envio:
-                        </span>
-                        {requestDetail[0].deliveryType}
-                    </div>
-
-
-                    <div className='d-flex flex-row align-items-center justify-content-center Left'>
-
-                        <span className='bubble-style primary-color text-white mr-2 '>
-
-                            <MdPayment />
-
-                        </span>
-
-                        <span className='font-weight-bold mr-1'>
-                            Metodo de pago: {'  '}
-                        </span>  {requestDetail[0].paymentMethod}
-
-
-                    </div>
-                    <div className='mt-4'>
-                        <p className='font-small alert alert-success m-2'>
-                            Al procesar de nuevo este pedido, algunos precios pueden presentar una variacion segun los cargos que esten vigentes al momento de procesarse
-                        </p>
-                    </div>
+                    {
+                        role !== 'employee' ?
+                            <div className='mt-4'>
+                                <p className='font-small alert alert-success m-2'>
+                                    Al procesar de nuevo este pedido, algunos precios pueden presentar una variacion segun los cargos que esten vigentes al momento de procesarse
+                                </p>
+                            </div> : null
+                    }
 
 
                 </div>
 
                 <div className='col-12 text-center d-flex flex-row justify-content-center mt-5'>
 
+                    {
+                        role !== 'employee' ?
 
+                            <div className='ml-2'>
 
-                    <div className='ml-2'>
+                                <Link className='btn btn-success btn-lg' to={`reorder/${requestDetail.idRequest}`}>
 
-                        <button className='btn btn-success btn-lg' disabled>
+                                    <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
 
-                            <MdCheckCircle className='text-white mr-1' /> Volver a realizar el pedido
+                                </Link>
 
-                    </button>
-
-                    </div>
+                            </div> : null
+                    }
 
                 </div>
 
