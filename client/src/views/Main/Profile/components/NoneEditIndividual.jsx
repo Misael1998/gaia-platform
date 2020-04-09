@@ -12,7 +12,7 @@ const NoneEditIndividual = ({ data }) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.name}</p>
+          <p className="txt-info">{data.name + ' ' + data.lastname}</p>
         </div>
       </div>
 

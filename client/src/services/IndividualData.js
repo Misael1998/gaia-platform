@@ -7,8 +7,6 @@ import SessionStorageService from "./Storage";
 
 export const getIndividualData = async () => {
 
-  const token = SessionStorageService.getToken();
-
 
   try {
 
@@ -16,6 +14,7 @@ export const getIndividualData = async () => {
 
     if (response.status === 200) {
 
+     
       return response.data.data;
 
     } else {

@@ -7,6 +7,8 @@ import Swal from "sweetalert2";
 const EditIndividual = ({ data }) => {
   //State para almacenar los cambios:
   const [saveEdit, setSaveEdit] = useState({
+    name: "",
+    lastname: "",
     email: "",
     phone: "",
     address: "",

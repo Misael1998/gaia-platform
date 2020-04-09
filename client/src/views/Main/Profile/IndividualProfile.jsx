@@ -24,19 +24,21 @@ const IndividualProfile = () => {
   //State para guardar los datos que vienen de la BD:
 
   const [data, setData] = useState({
-    name: "Dave",
+    name: "",
 
-    email: "flores23@gmail.com",
+    lastname: "",
 
-    address: "Residencial Santa Cruz",
+    email: "",
 
-    phone: "96882367",
+    address: "",
+
+    phone: "9734747"
   });
 
   useEffect(() => {
     getIndividualData()
       .then((res) => {
-        setData(res[0]);
+        setData(res);
 
         setLoading(false);
       })
