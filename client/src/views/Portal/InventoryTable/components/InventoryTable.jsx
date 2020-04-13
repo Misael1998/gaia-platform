@@ -34,7 +34,7 @@ const InventoryTable = ({ regInventory, full }) => {
           ) : (
             <tr>
               <td colspan="7" className="text-center">
-                No tienes registro del inventario en la Base de Datos
+                No tienes registros en el inventario
               </td>
             </tr>
           )}
