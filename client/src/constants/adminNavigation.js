@@ -9,26 +9,26 @@ const items = [
     name: "home",
     label: "Inicio",
     icon: <MdHome size={30} />,
-    link: "/portal"
+    link: "/admin",
   },
   {
     name: "employees",
     label: "Empleados",
     icon: <IoIosPerson size={30} />,
-    link: "/admin/formEmp"
+    link: "/admin/formEmp",
   },
   {
     name: "products",
     label: "Productos",
     icon: <FiPackage size={30} />,
-    link: "/admin/formProduct"
+    link: "/admin/formProduct",
   },
   {
     name: "logout",
     label: "Cerrar sesion",
     icon: <MdExitToApp size={30} />,
-    onClick: logout
-  }
+    onClick: logout,
+  },
 ];
 
 export default items;

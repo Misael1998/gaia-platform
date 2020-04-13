@@ -165,10 +165,10 @@ iframe {
   background-size: 100% auto;
   background-repeat: no-repeat;
   /*background: #27ae60;*/
-  background: -webkit-linear-gradient(bottom, #27ae60, #2ecc71);
+  /* background: -webkit-linear-gradient(bottom, #27ae60, #2ecc71);
   background: -o-linear-gradient(bottom, #27ae60, #2ecc71);
   background: -moz-linear-gradient(bottom, #27ae60, #2ecc71);
-  background: linear-gradient(bottom, #27ae60, #2ecc71);
+  background: linear-gradient(bottom, #27ae60, #2ecc71); */
   position: relative;
   z-index: 1;
 }

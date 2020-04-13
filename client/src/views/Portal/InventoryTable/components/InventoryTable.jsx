@@ -1,6 +1,6 @@
 import React from "react";
-import moment from 'moment'
-const InventoryTable = ({ regInventory }) => {
+import moment from "moment";
+const InventoryTable = ({ regInventory, full }) => {
   return (
     <div className="">
       <table className="table table-bordered table-striped">
@@ -16,20 +16,28 @@ const InventoryTable = ({ regInventory }) => {
           </tr>
         </thead>
         <tbody className="">
-          {regInventory.map(registro => (
-            <tr
-              key={`${registro.No_Orden} ${registro.Supplie_Name}`}
-              className=""
-            >
-              <th scope="row">{registro.No_Orden}</th>
-              <td>{registro.Supplie_Name}</td>
-              <td>{registro.unit_price}</td>
-              <td>{registro.quantity}</td>
-              <td></td>
-              <td>{moment(registro.emission_date).format('DD/MM/YYYY')}</td>
-              <td>{registro.Receiver_Employee}</td>
+          {full ? (
+            regInventory.map((registro) => (
+              <tr
+                key={`${registro.No_Orden} ${registro.Supplie_Name}`}
+                className=""
+              >
+                <th scope="row">{registro.No_Orden}</th>
+                <td>{registro.Supplie_Name}</td>
+                <td>{registro.unit_price}</td>
+                <td>{registro.quantity}</td>
+                <td></td>
+                <td>{moment(registro.emission_date).format("DD/MM/YYYY")}</td>
+                <td>{registro.Receiver_Employee}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colspan="7" className="text-center">
+                No tienes registros en el inventario
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
