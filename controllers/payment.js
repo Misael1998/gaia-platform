@@ -120,19 +120,24 @@ exports.pay = async (req, res) => {
   const items = products.map(product => {
     return {
       name: product.name,
-      price: product.unit_price,
+      price: (product.unit_price * process.env.CHNAGE_HNL_TO_USD).toFixed(2),
       currency: "USD",
       quantity: product.quantity
     };
   });
 
+  
   const amount = {
     currency: "USD",
     total: items.reduce(
-      (total, item) => (total += item.price * item.quantity),
+      (total, item) => (total += (item.price * item.quantity)),
       0
     )
   };
+
+  amount.total = amount.total.toFixed(2);
+  
+ 
 
   //formating request to paypal standar
   const createPaymentJson = {

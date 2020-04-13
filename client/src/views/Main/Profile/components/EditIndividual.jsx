@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from "react";
 import "../styles/style.css";
-import "../../../../styles/util.css"
+import "../../../../styles/util.css";
+import { updateIndividualData } from "../../../../services/UpdateIndividualProfile";
+import Swal from "sweetalert2";
 
 const EditIndividual = ({ data }) => {
   //State para almacenar los cambios:
   const [saveEdit, setSaveEdit] = useState({
+    name: "",
+    lastname: "",
     email: "",
     phone: "",
-    address: ""
+    address: "",
   });
 
   //State para el error:
   const [error, handleError] = useState(false);
 
   //Funcion que captura los datos:
-  const handleData = e => {
+  const handleData = (e) => {
     setSaveEdit({
       ...saveEdit,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -29,7 +33,7 @@ const EditIndividual = ({ data }) => {
   }, []);
 
   //Funcion que manda los datos:
-  const submitRequest = e => {
+  const submitRequest = (e) => {
     e.preventDefault();
 
     //Validacion:
@@ -41,8 +45,30 @@ const EditIndividual = ({ data }) => {
     handleError(false);
 
     //Funcion que establecera los valores a editar traidos de la BD:
-
-    console.log("Los datos a editar son: ", email, phone, address);
+    updateIndividualData(email, phone, address)
+      .then((res) => {
+        Swal.fire(
+          "Datos Actualizados",
+          "Se han actualizados los datos exitosamente",
+          "success"
+        );
+        if (res === 1) {
+          window.location.reload();
+        } else {
+          Swal.fire(
+            "Datos sin Modificar",
+            "No se hicieron cambios en los datos",
+            "success"
+          );
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: error.title,
+          text: error.text,
+        });
+      });
   };
 
   return (

@@ -173,6 +173,10 @@ iframe {
   z-index: 1;
 }
 
+.container-prod {
+  min-height: 75vh !important;
+}
+
 .container-login200 {
   width: 1300px;
   height: 100%;
