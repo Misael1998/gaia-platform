@@ -3,9 +3,8 @@ IF OBJECT_ID (N'getCompaniesNumber', N'FN') IS NOT NULL
 GO
 CREATE FUNCTION getCompaniesNumber()  
 RETURNS TABLE
-AS   
+AS
 RETURN 
- SELECT idCompanyType 
- FROM TBL_COMPANY_TYPE
-
-
+ SELECT idCompanyType
+FROM TBL_COMPANY_TYPE
+GO

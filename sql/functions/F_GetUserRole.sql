@@ -48,3 +48,4 @@ BEGIN
 
     return @role;
 END; 
+GO

@@ -5,7 +5,8 @@ CREATE FUNCTION [FT_GET_CATEGORIES] ()
 RETURNS TABLE
 AS  
 RETURN(
-    SELECT  idCategories as id,
-            name as name
-    FROM [pyflor].[dbo].[TBL_CATEGORIES]
+    SELECT idCategories as id,
+    name as name
+FROM [pyflor].[dbo].[TBL_CATEGORIES]
 )
+GO
