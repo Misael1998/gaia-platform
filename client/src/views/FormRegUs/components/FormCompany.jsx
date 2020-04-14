@@ -103,7 +103,7 @@ const FormCompany = ({ history }) => {
 
   //Funcion para validar el correo:
   const validarEmail = () => {
-    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^  <>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (patron.test(document.getElementById("emailInput").value)) {
       handleErrorEmail(false);
     } else {

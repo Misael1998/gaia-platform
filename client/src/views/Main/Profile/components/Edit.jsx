@@ -16,13 +16,26 @@ const Edit = ({ data }) => {
 
   //State para el error:
   const [error, handleError] = useState(false);
+  //State para el error de correo
+  const [errorEmail, handleErrorEmail] = useState(false);
 
   //Funcion que captura los datos:
   const handleData = (e) => {
+    handleError(false);
     setSaveEdit({
       ...saveEdit,
       [e.target.name]: e.target.value,
     });
+  };
+
+  //Funcion para validar el correo:
+  const validarEmail = () => {
+    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (patron.test(document.getElementById("emailInput").value)) {
+      handleErrorEmail(false);
+    } else {
+      handleErrorEmail(true);
+    }
   };
 
   useEffect(() => {
@@ -35,6 +48,7 @@ const Edit = ({ data }) => {
   //Funcion que manda los datos:
   const submitRequest = (e) => {
     e.preventDefault();
+    validarEmail();
 
     //Validacion:
     if (
@@ -45,6 +59,12 @@ const Edit = ({ data }) => {
       contact_number.trim() === ""
     ) {
       handleError(true);
+      return;
+    }
+
+    //validacion de correo
+    if (errorEmail === false) {
+      handleErrorEmail(true);
       return;
     }
 
@@ -87,12 +107,19 @@ const Edit = ({ data }) => {
           <label className="font-weight-bold mt-3">Correo</label>
           <input
             type="text"
+            id="emailInput"
             name="email"
             className="form-control inpt-edit"
             placeholder="Correo"
             onChange={handleData}
             value={email}
           />
+
+          {errorEmail ? (
+            <p className="alert alert-danger error-p text-white">
+              El correo ingresado no es valido!!!
+            </p>
+          ) : null}
 
           <label className="font-weight-bold mt-3">Teléfono</label>
           <input
