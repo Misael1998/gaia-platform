@@ -1,9 +1,11 @@
 IF OBJECT_ID (N'FT_COMPANY_TYPES', N'IF') IS NOT NULL  
     DROP FUNCTION FT_COMPANY_TYPES;  
-GO  
+GO
 create function FT_COMPANY_TYPES()
 returns TABLE
 as
 RETURN(
-    SELECT idCompanyType as id,[name] FROM TBL_COMPANY_TYPE
+    SELECT idCompanyType as id, [name]
+FROM TBL_COMPANY_TYPE
 )
+go

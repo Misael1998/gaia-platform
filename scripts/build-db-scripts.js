@@ -9,7 +9,10 @@ fs.readdir(spPath, (err, files) => {
     console.log("something went wrong");
     process.exit(1);
   }
-  let unified = "";
+  let unified = `
+  USE pyflor
+  GO
+  `;
   for (file of files) {
     const tmp = fs.readFileSync(`${spPath}/${file}`);
     unified += `${tmp}\n`;
@@ -27,7 +30,10 @@ fs.readdir(fnPath, (err, files) => {
     console.log("something went wrong");
     process.exit(1);
   }
-  let unified = "";
+  let unified = `
+  USE pyflor
+  GO
+  `;
   for (file of files) {
     const tmp = fs.readFileSync(`${fnPath}/${file}`);
     unified += `${tmp}\n`;

@@ -1,4 +1,7 @@
-IF OBJECT_ID (N'dbo.getUserRoleID', N'FN') IS NOT NULL  
+
+  USE pyflor
+  GO
+  IF OBJECT_ID (N'dbo.getUserRoleID', N'FN') IS NOT NULL  
     DROP FUNCTION getUserRoleID;  
 GO
 CREATE FUNCTION [dbo].[getUserRoleID](@userId int)  
@@ -45,15 +48,21 @@ BEGIN
 
     return null
 END;
+GO
 IF OBJECT_ID (N'FT_COMPANY_TYPES', N'IF') IS NOT NULL  
     DROP FUNCTION FT_COMPANY_TYPES;  
-GO  
+GO
 create function FT_COMPANY_TYPES()
 returns TABLE
 as
 RETURN(
-    SELECT idCompanyType as id,[name] FROM TBL_COMPANY_TYPE
+    SELECT idCompanyType as id, [name]
+FROM TBL_COMPANY_TYPE
 )
+go
+IF OBJECT_ID (N'FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE', N'IF') IS NOT NULL  
+    DROP FUNCTION FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE;  
+GO
 CREATE FUNCTION [dbo].[FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE](@id INT)
 RETURNS @allProductsData TABLE(
     idProduct INT NULL,
@@ -72,42 +81,45 @@ BEGIN
 
     SELECT @company = ct.name
     FROM TBL_ENTERPRISE_CLIENTS ec
-    INNER JOIN TBL_USERS u ON u.idUser = ec.idUser
-    INNER JOIN TBL_COMPANY_TYPE ct ON ec.idCompanyType = ct.idCompanyType
+        INNER JOIN TBL_USERS u ON u.idUser = ec.idUser
+        INNER JOIN TBL_COMPANY_TYPE ct ON ec.idCompanyType = ct.idCompanyType
     WHERE u.idUser = @id;
 
     BEGIN
-    INSERT INTO @allProductsData
-        SELECT p.idProducts, p.name productName, p.productImage, p.description productDescription, 
-                c.name category, st.description sarType, ct.name companyType, price.unit_price 
-        FROM TBL_PRODUCTS p 
-        INNER JOIN TBL_SAR_TYPES st ON p.idSarTypes = st.idSarTypes 
-        INNER JOIN TBL_PRODUCT_HAS_PRICES php ON p.idProducts = php.idProduct 
-        INNER JOIN TBL_COMPANY_TYPE ct ON php.idCompanyType = ct.idCompanyType 
-        INNER JOIN TBL_PRICES price ON php.idPrice = price.idPrices 
-        INNER JOIN PRODUCTS_has_CATEGORIES phc ON p.idProducts = phc.idProducts
-        INNER JOIN TBL_CATEGORIES c ON phc.idCategories = c.idCategories
+        INSERT INTO @allProductsData
+        SELECT p.idProducts, p.name productName, p.productImage, p.description productDescription,
+            c.name category, st.description sarType, ct.name companyType, price.unit_price
+        FROM TBL_PRODUCTS p
+            INNER JOIN TBL_SAR_TYPES st ON p.idSarTypes = st.idSarTypes
+            INNER JOIN TBL_PRODUCT_HAS_PRICES php ON p.idProducts = php.idProduct
+            INNER JOIN TBL_COMPANY_TYPE ct ON php.idCompanyType = ct.idCompanyType
+            INNER JOIN TBL_PRICES price ON php.idPrice = price.idPrices
+            INNER JOIN PRODUCTS_has_CATEGORIES phc ON p.idProducts = phc.idProducts
+            INNER JOIN TBL_CATEGORIES c ON phc.idCategories = c.idCategories
         WHERE ct.name = @company;
     END
-RETURN
+    RETURN
 END
 GO
 
+IF OBJECT_ID (N'FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL', N'IF') IS NOT NULL  
+    DROP FUNCTION FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL;  
+GO
 CREATE FUNCTION [dbo].[FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL]()
 RETURNS TABLE
 AS
 RETURN
 (
-    SELECT p.idProducts, p.name productName, p.productImage, p.description productDescription, 
-            c.name category, st.description sarType, price.unit_price 
-    FROM TBL_PRODUCTS p 
-    INNER JOIN TBL_SAR_TYPES st ON p.idSarTypes = st.idSarTypes 
-    INNER JOIN TBL_PRODUCT_HAS_PRICES php ON p.idProducts = php.idProduct 
-    INNER JOIN TBL_COMPANY_TYPE ct ON php.idCompanyType = ct.idCompanyType 
-    INNER JOIN TBL_PRICES price ON php.idPrice = price.idPrices 
+    SELECT p.idProducts, p.name productName, p.productImage, p.description productDescription,
+    c.name category, st.description sarType, price.unit_price
+FROM TBL_PRODUCTS p
+    INNER JOIN TBL_SAR_TYPES st ON p.idSarTypes = st.idSarTypes
+    INNER JOIN TBL_PRODUCT_HAS_PRICES php ON p.idProducts = php.idProduct
+    INNER JOIN TBL_COMPANY_TYPE ct ON php.idCompanyType = ct.idCompanyType
+    INNER JOIN TBL_PRICES price ON php.idPrice = price.idPrices
     INNER JOIN PRODUCTS_has_CATEGORIES phc ON p.idProducts = phc.idProducts
     INNER JOIN TBL_CATEGORIES c ON phc.idCategories = c.idCategories
-    WHERE ct.name = 'restaurante'
+WHERE ct.name = 'restaurante'
 )
 
 GO
@@ -118,26 +130,26 @@ CREATE FUNCTION [FT_GET_CATEGORIES] ()
 RETURNS TABLE
 AS  
 RETURN(
-    SELECT  idCategories as id,
-            name as name
-    FROM [pyflor].[dbo].[TBL_CATEGORIES]
+    SELECT idCategories as id,
+    name as name
+FROM [pyflor].[dbo].[TBL_CATEGORIES]
 )
-
-IF OBJECT_ID (N'FT_GET_DATA_ENTERPRISE') IS NOT NULL  
+GO
+IF OBJECT_ID (N'FT_GET_DATA_ENTERPRISE', N'IF') IS NOT NULL  
     DROP FUNCTION FT_GET_DATA_ENTERPRISE;  
-GO 
+GO
 
 CREATE FUNCTION FT_GET_DATA_ENTERPRISE (@id int)
  RETURNS TABLE
  AS 
  RETURN(
-     SELECT ec.company_name,u.email,u.phone,u.address,ec.contact_name,ec.contact_number 
-     FROM TBL_ENTERPRISE_CLIENTS ec
-     INNER JOIN TBL_USERS u
-     ON ec.idUser=u.idUser
-     WHERE u.idUser=@id
+     SELECT ec.company_name, u.email, u.phone, u.address, ec.contact_name, ec.contact_number
+FROM TBL_ENTERPRISE_CLIENTS ec
+    INNER JOIN TBL_USERS u
+    ON ec.idUser=u.idUser
+WHERE u.idUser=@id
      )
-
+GO
   
 
 
@@ -148,38 +160,42 @@ CREATE FUNCTION [FT_GET_DELIVERY_TYPE] ()
 RETURNS TABLE
 AS  
 RETURN(
-    SELECT  idDeliveryType as id,
-            name as name
-    FROM [pyflor].[dbo].[TBL_DELIVERY_TYPES]
+    SELECT idDeliveryType as id,
+    name as name
+FROM [pyflor].[dbo].[TBL_DELIVERY_TYPES]
 )
-
+GO
 IF OBJECT_ID (N'FT_GET_DEPARTMENTS', N'IF') IS NOT NULL  
     DROP FUNCTION FT_GET_DEPARTMENTS;  
-GO  
+GO
 create FUNCTION FT_GET_DEPARTMENTS()
 RETURNS TABLE
 AS
 RETURN
-SELECT 
+SELECT
     idDepartments as id,
     [name]
 FROM
     TBL_DEPARTMENTS
+GO
+IF OBJECT_ID (N'FT_GET_EMPLOYEES_DATA', N'IF') IS NOT NULL  
+    DROP FUNCTION FT_GET_EMPLOYEES_DATA;  
+GO
 CREATE FUNCTION [dbo].[FT_GET_EMPLOYEES_DATA]()
 RETURNS TABLE
 AS
 RETURN
 (
-    SELECT e.idEmployees, 
-        u.name userName,  
-        u.lastname, 
-        j.name jobTitle,
-        d.name departmentName, 
-        e.admission_date, 
-        u.email, 
-        u.phone, 
-        u.address
-    FROM TBL_EMPLOYEES e
+    SELECT e.idEmployees,
+    u.name userName,
+    u.lastname,
+    j.name jobTitle,
+    d.name departmentName,
+    e.admission_date,
+    u.email,
+    u.phone,
+    u.address
+FROM TBL_EMPLOYEES e
     INNER JOIN TBL_USERS u ON e.idUser = u.idUser
     INNER JOIN TBL_JOB_TITLES j ON e.idJobTitle = j.idJobTitle
     INNER JOIN TBL_DEPARTMENTS d ON e.idDepartments = d.idDepartments
@@ -188,18 +204,19 @@ RETURN
 GO
 IF OBJECT_ID (N'FT_GET_INDIVIDUAL_USER_DATA', N'IF') IS NOT NULL  
     DROP FUNCTION [FT_GET_INDIVIDUAL_USER_DATA];  
-GO  
+GO
 CREATE FUNCTION [FT_GET_INDIVIDUAL_USER_DATA] (@id INT)  
 RETURNS TABLE  
 AS  
 RETURN(
-       SELECT 
-        u.name ,u.lastname, u.email, u.address,u.phone
-    from 
-        TBL_USERS as u
-    WHERE 
+       SELECT
+    u.name , u.lastname, u.email, u.address, u.phone
+from
+    TBL_USERS as u
+WHERE 
         idUser = @id
 )
+GO
 IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL', N'IF') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL;  
 GO  
@@ -384,40 +401,45 @@ GO
 
 IF OBJECT_ID (N'FT_GET_PROVIDER', N'IF') IS NOT NULL  
     DROP FUNCTION [FT_GET_PROVIDER];  
-GO  
+GO
 CREATE FUNCTION [FT_GET_PROVIDER] (
     @id INT
 )  
 RETURNS TABLE  
 AS  
 RETURN(
-    SELECT  idProviders as id, 
-            name as name, 
-            phone_contact as phone,
-            email as email 
-    FROM [pyflor].[dbo].[TBL_PROVIDERS]
-    WHERE idProviders = @id
+    SELECT idProviders as id,
+    name as name,
+    phone_contact as phone,
+    email as email
+FROM [pyflor].[dbo].[TBL_PROVIDERS]
+WHERE idProviders = @id
 )
+GO
+IF OBJECT_ID (N'FT_GET_REQUEST_DATA', N'IF') IS NOT NULL  
+    DROP FUNCTION [FT_GET_REQUEST_DATA];  
+GO
 CREATE FUNCTION FT_GET_REQUEST_DATA()
  RETURNS TABLE
  AS 
  RETURN(
-    SELECT r.idRequests idRequest, u.name client, dt.name deliveryType,
-        pm.description paymentMethod,  r.emission_date
+        SELECT r.idRequests idRequest, u.name client, dt.name deliveryType,
+        pm.description paymentMethod, r.emission_date
     FROM TBL_REQUESTS r
-    INNER JOIN TBL_INDIVIDUAL_CLIENTS ic ON r.idIndividualClient = ic.idIndividualClients
-    INNER JOIN TBL_USERS u ON ic.idUser = u.idUser
-    INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
-    INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
-    UNION 
+        INNER JOIN TBL_INDIVIDUAL_CLIENTS ic ON r.idIndividualClient = ic.idIndividualClients
+        INNER JOIN TBL_USERS u ON ic.idUser = u.idUser
+        INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
+        INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
+UNION
     SELECT r.idRequests idRequest, ec.company_name client, dt.name deliveryType,
-            pm.description paymentMethod,  r.emission_date
+        pm.description paymentMethod, r.emission_date
     FROM TBL_REQUESTS r
-    INNER JOIN TBL_ENTERPRISE_CLIENTS ec ON r.idEnterpriseClient = ec.idEnterpriseClients
-    INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
-    INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
+        INNER JOIN TBL_ENTERPRISE_CLIENTS ec ON r.idEnterpriseClient = ec.idEnterpriseClients
+        INNER JOIN TBL_PAYMENT_METHODS pm ON r.idPaymentMethods = pm.idPaymentMethods
+        INNER JOIN TBL_DELIVERY_TYPES dt ON r.idDeliveryType = dt.idDeliveryType
 
 )
+GO
 
 
 IF OBJECT_ID (N'FT_GET_REQUEST_DETAIL_EMPLOYEE') IS NOT NULL  
@@ -758,153 +780,166 @@ BEGIN
 RETURN
 END
 GO
+IF OBJECT_ID (N'FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT') IS NOT NULL  
+    DROP FUNCTION FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT;  
+GO
 CREATE FUNCTION [dbo].[FT_GET_REQUEST_HISTORY_ENTERPRISE_CLIENT](@id int)
 RETURNS TABLE
 AS
 RETURN
 (
-    SELECT r.idRequests as requests,r.emission_date  as emissionDate,dt.name as deliveryType,pm.description as paymentMethods
-    FROM TBL_REQUESTS r 
-    INNER JOIN TBL_DELIVERY_TYPES dt 
+    SELECT r.idRequests as requests, r.emission_date  as emissionDate, dt.name as deliveryType, pm.description as paymentMethods
+FROM TBL_REQUESTS r
+    INNER JOIN TBL_DELIVERY_TYPES dt
     ON dt.idDeliveryType=r.idDeliveryType
-    INNER JOIN TBL_PAYMENT_METHODS pm 
+    INNER JOIN TBL_PAYMENT_METHODS pm
     ON pm.idPaymentMethods=r.idPaymentMethods
-    INNER JOIN TBL_ENTERPRISE_CLIENTS ec 
+    INNER JOIN TBL_ENTERPRISE_CLIENTS ec
     ON ec.idEnterpriseClients=r.idEnterpriseClient
-    INNER JOIN TBL_USERS us 
+    INNER JOIN TBL_USERS us
     ON us.idUser=ec.idUser
-    WHERE us.idUser=@id
+WHERE us.idUser=@id
 )
+GO
 
 
 
+IF OBJECT_ID (N'FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT') IS NOT NULL  
+    DROP FUNCTION FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT;  
+GO
 CREATE FUNCTION [dbo].[FT_GET_REQUEST_HISTORY_INDIVIDUAL_CLIENT](@id int)
 RETURNS TABLE
 AS
 RETURN
 (
-    SELECT r.idRequests as requests,r.emission_date  as emissionDate,dt.name as deliveryType,pm.description as paymentMethods
-    FROM TBL_REQUESTS r 
-    INNER JOIN TBL_DELIVERY_TYPES dt 
+    SELECT r.idRequests as requests, r.emission_date  as emissionDate, dt.name as deliveryType, pm.description as paymentMethods
+FROM TBL_REQUESTS r
+    INNER JOIN TBL_DELIVERY_TYPES dt
     ON dt.idDeliveryType=r.idDeliveryType
-    INNER JOIN TBL_PAYMENT_METHODS pm 
+    INNER JOIN TBL_PAYMENT_METHODS pm
     ON pm.idPaymentMethods=r.idPaymentMethods
     INNER JOIN TBL_INDIVIDUAL_CLIENTS ic
     ON ic.idIndividualClients=r.idIndividualClient
-    INNER JOIN TBL_USERS us 
+    INNER JOIN TBL_USERS us
     ON us.idUser=ic.idUser
-    WHERE us.idUser=@id
+WHERE us.idUser=@id
 )
-
+GO
 IF OBJECT_ID (N'FT_GET_REQUEST_TYPE', N'IF') IS NOT NULL  
     DROP FUNCTION [FT_GET_REQUEST_TYPE];  
-GO  
+GO
 CREATE FUNCTION [FT_GET_REQUEST_TYPE] ()  
 RETURNS TABLE  
 AS  
 RETURN(
-    SELECT  idRequestType as id,
-            name as name
-    FROM [pyflor].[dbo].[TBL_REQUEST_TYPES]
+    SELECT idRequestType as id,
+    name as name
+FROM [pyflor].[dbo].[TBL_REQUEST_TYPES]
 )
+GO
+IF OBJECT_ID (N'FT_GET_SINGLE_PRODUCT_DATA', N'IF') IS NOT NULL  
+    DROP FUNCTION [FT_GET_SINGLE_PRODUCT_DATA];  
+GO
 CREATE FUNCTION [dbo].[FT_GET_SINGLE_PRODUCT_DATA](@id int)
 RETURNS TABLE
 AS
 RETURN
 (
     SELECT p.idProducts, p.name productName, p.productImage, p.description productDescription,
-            c.name category, st.description sarType, ct.name companyType, price.unit_price
-    FROM TBL_PRODUCTS p
+    c.name category, st.description sarType, ct.name companyType, price.unit_price
+FROM TBL_PRODUCTS p
     INNER JOIN TBL_SAR_TYPES st ON p.idSarTypes = st.idSarTypes
     INNER JOIN TBL_PRODUCT_HAS_PRICES php ON p.idProducts = php.idProduct
     INNER JOIN TBL_COMPANY_TYPE ct ON php.idCompanyType = ct.idCompanyType
     INNER JOIN TBL_PRICES price ON php.idPrice = price.idPrices
     INNER JOIN PRODUCTS_has_CATEGORIES phc ON p.idProducts = phc.idProducts
     INNER JOIN TBL_CATEGORIES c ON phc.idCategories = c.idCategories
-    WHERE @id = p.idProducts
+WHERE @id = p.idProducts
 )
 
 GO
 IF OBJECT_ID (N'FT_PROVIDERS', N'IF') IS NOT NULL  
     DROP FUNCTION [FT_PROVIDERS];  
-GO  
+GO
 CREATE FUNCTION [FT_PROVIDERS] ()  
 RETURNS TABLE  
 AS  
 RETURN(
-    SELECT  idProviders as id, 
-            name as name, 
-            phone_contact as phone,
-            email as email 
-    FROM [pyflor].[dbo].[TBL_PROVIDERS]
+    SELECT idProviders as id,
+    name as name,
+    phone_contact as phone,
+    email as email
+FROM [pyflor].[dbo].[TBL_PROVIDERS]
 )
+GO
 IF OBJECT_ID (N'FT_REFFERALS', N'IF') IS NOT NULL  
     DROP FUNCTION FT_REFFERALS;  
-GO  
+GO
 CREATE FUNCTION FT_REFFERALS()
 RETURNS TABLE
 AS
 RETURN
-    SELECT 
-        r.idRefferals idRefferal,
-        r.idOrders as idOrder,
-        o.emission_date,
-        o.expired_date,
-        userCreated.name + ' '+ userCreated.lastname as CreatedEmployee,
-        senderUser.name + ' '+senderUser.lastname as SenderEmployee,
-        receiverUser.name + ' '+receiverUser.lastname as ReceiverEmployee,
-        addresseeUser.name +' '+addresseeUser.lastname as AddresseeEmployee
-    FROM
-        TBL_REFFERALS as r
-    LEFT JOIN 
-        TBL_ORDERS AS o
+    SELECT
+    r.idRefferals idRefferal,
+    r.idOrders as idOrder,
+    o.emission_date,
+    o.expired_date,
+    userCreated.name + ' '+ userCreated.lastname as CreatedEmployee,
+    senderUser.name + ' '+senderUser.lastname as SenderEmployee,
+    receiverUser.name + ' '+receiverUser.lastname as ReceiverEmployee,
+    addresseeUser.name +' '+addresseeUser.lastname as AddresseeEmployee
+FROM
+    TBL_REFFERALS as r
+    LEFT JOIN
+    TBL_ORDERS AS o
     ON 
         o.idOrders=r.idOrders
-    LEFT JOIN 
-        TBL_EMPLOYEES as createdEmployee
+    LEFT JOIN
+    TBL_EMPLOYEES as createdEmployee
     ON 
         o.idEmployees=createdEmployee.idEmployees
-    LEFT JOIN 
-        TBL_EMPLOYEES as senderEmployee
+    LEFT JOIN
+    TBL_EMPLOYEES as senderEmployee
     on 
         o.idSenderEmployee=senderEmployee.idEmployees
-    LEFT JOIN 
-        TBL_EMPLOYEES as receiverEmployee
+    LEFT JOIN
+    TBL_EMPLOYEES as receiverEmployee
     on 
         o.idReceiverEmployee=receiverEmployee.idEmployees
-    LEFT JOIN 
-        TBL_EMPLOYEES as addresseeEmployee
+    LEFT JOIN
+    TBL_EMPLOYEES as addresseeEmployee
     on 
         o.idAddresseeEmployee=addresseeEmployee.idEmployees
-    LEFT JOIN 
-        TBL_USERS AS userCreated
+    LEFT JOIN
+    TBL_USERS AS userCreated
     ON 
         userCreated.idUser = createdEmployee.idUser
-    LEFT JOIN 
-        TBL_USERS AS senderUser
+    LEFT JOIN
+    TBL_USERS AS senderUser
     on 
         senderUser.idUser = senderEmployee.idUser
-    LEFT JOIN 
-        TBL_USERS AS receiverUser
+    LEFT JOIN
+    TBL_USERS AS receiverUser
     on 
         receiverUser.idUser = receiverEmployee.idUser
-    LEFT JOIN 
-        TBL_USERS AS addresseeUser
+    LEFT JOIN
+    TBL_USERS AS addresseeUser
     on 
         addresseeUser.idUser = addresseeEmployee.idEmployees
+GO
 IF OBJECT_ID (N'FT_getJobtitles', N'IF') IS NOT NULL  
     DROP FUNCTION FT_getJobtitles;  
-GO  
+GO
 create FUNCTION FT_getJobtitles()
 RETURNS TABLE
 AS
 RETURN
-SELECT 
+SELECT
     idJobTitle as id,
     [name]
 FROM
     TBL_JOB_TITLES
-
+GO
 IF OBJECT_ID (N'dbo.getUserRole', N'FN') IS NOT NULL  
     DROP FUNCTION getUserRole;  
 GO
@@ -955,50 +990,50 @@ BEGIN
 
     return @role;
 END; 
+GO
 IF OBJECT_ID (N'getCompaniesNumber', N'FN') IS NOT NULL  
     DROP FUNCTION getCompaniesNumber;  
 GO
 CREATE FUNCTION getCompaniesNumber()  
 RETURNS TABLE
-AS   
+AS
 RETURN 
- SELECT idCompanyType 
- FROM TBL_COMPANY_TYPE
-
-
+ SELECT idCompanyType
+FROM TBL_COMPANY_TYPE
+GO
 
 IF OBJECT_ID (N'F_Get_Supplies_Inventory', N'IF') IS NOT NULL  
     DROP FUNCTION F_Get_Supplies_Inventory;  
-GO  
+GO
 CREATE FUNCTION F_Get_Supplies_Inventory ()  
 RETURNS TABLE  
 AS  
 RETURN   
 (  
-    SELECT ord.idOrders as No_Orden, sup.name as Supplie_Name, unit_price,quantity,emission_date, us.name+' '+lastname as Receiver_Employee
-        FROM TBL_ORDERS ord
-        INNER JOIN TBL_ORDER_DETAILS ordd ON ordd.idOrders=ord.idOrders
-        INNER JOIN TBL_SUPPLIES sup ON sup.idSupplies=ordd.idSupplies
-        INNER JOIN TBL_EMPLOYEES em ON em.idEmployees=ord.idReceiverEmployee
-        INNER JOIN TBL_USERS us ON us.idUser=em.idUser
+    SELECT ord.idOrders as No_Orden, sup.name as Supplie_Name, unit_price, quantity, emission_date, us.name+' '+lastname as Receiver_Employee
+FROM TBL_ORDERS ord
+    INNER JOIN TBL_ORDER_DETAILS ordd ON ordd.idOrders=ord.idOrders
+    INNER JOIN TBL_SUPPLIES sup ON sup.idSupplies=ordd.idSupplies
+    INNER JOIN TBL_EMPLOYEES em ON em.idEmployees=ord.idReceiverEmployee
+    INNER JOIN TBL_USERS us ON us.idUser=em.idUser
 );  
-
-
+GO
 IF OBJECT_ID (N'F_SUPPLIES', N'IF') IS NOT NULL  
     DROP FUNCTION F_SUPPLIES;  
-GO  
+GO
 create function F_SUPPLIES()
 returns TABLE
 as
 RETURN
     SELECT
-        s.idSupplies as id,
-        s.[name],
-        s.[type],
-        s.unit_price as unitPrice,
-        st.[description] as sarType
-    FROM
-        dbo.TBL_SUPPLIES as s
+    s.idSupplies as id,
+    s.[name],
+    s.[type],
+    s.unit_price as unitPrice,
+    st.[description] as sarType
+FROM
+    dbo.TBL_SUPPLIES as s
     INNER JOIN TBL_SAR_TYPES as st
     ON st.idSarTypes = s.TBL_SAR_TYPES_idSarTypes
+GO
 

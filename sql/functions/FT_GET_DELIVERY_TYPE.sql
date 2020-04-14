@@ -5,7 +5,8 @@ CREATE FUNCTION [FT_GET_DELIVERY_TYPE] ()
 RETURNS TABLE
 AS  
 RETURN(
-    SELECT  idDeliveryType as id,
-            name as name
-    FROM [pyflor].[dbo].[TBL_DELIVERY_TYPES]
+    SELECT idDeliveryType as id,
+    name as name
+FROM [pyflor].[dbo].[TBL_DELIVERY_TYPES]
 )
+GO
