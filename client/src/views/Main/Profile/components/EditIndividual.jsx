@@ -19,6 +19,7 @@ const EditIndividual = ({ data }) => {
 
   //Funcion que captura los datos:
   const handleData = (e) => {
+    handleError(false);
     setSaveEdit({
       ...saveEdit,
       [e.target.name]: e.target.value,
