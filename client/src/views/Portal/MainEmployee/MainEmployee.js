@@ -4,7 +4,7 @@ import CardHello from "./components/CardHello";
 import Carousel from "react-bootstrap/Carousel";
 import { IoIosPerson } from "react-icons/io";
 import SessionStorageService from "../../../services/Storage";
-import "react-multi-carousel/lib/styles.css";
+//import "react-multi-carousel/lib/styles.css";
 import "./style/styleME.css";
 
 const MainEmployee = () => {
@@ -44,10 +44,7 @@ const MainEmployee = () => {
   return (
     <Fragment>
       <div className="row p-5">
-        <Title
-          title="Pagina de Inicio de Empleado"
-          icon={<IoIosPerson size={40} />}
-        />
+        <Title title="Bienvenido a PyFlor" icon={<IoIosPerson size={40} />} />
         <div className="col-lg-12">
           <div className="container-card">
             <CardHello msg={msg} user={user} numPed={numPed} />
@@ -64,7 +61,7 @@ const MainEmployee = () => {
               alt="First slide"
             />
             <Carousel.Caption>
-              <h3>Respeto</h3>
+              <h3 className="h-card">Respeto</h3>
               <p className="text-white slide-text">
                 "Todo es posible en la medida que tú lo creas posible."
               </p>
@@ -78,7 +75,7 @@ const MainEmployee = () => {
             />
 
             <Carousel.Caption>
-              <h3>Trabajo Duro</h3>
+              <h3 className="h-card">Trabajo Duro</h3>
               <p className="text-white slide-text">
                 "El hombre que no comete errores usualmente no hace nada."
               </p>
@@ -92,7 +89,7 @@ const MainEmployee = () => {
             />
 
             <Carousel.Caption>
-              <h3>Honestidad</h3>
+              <h3 className="h-card">Honestidad</h3>
               <p className="text-white slide-text">
                 "No intentes ser tú el mejor de tu equipo, intenta que tu equipo
                 sea el mejor."
@@ -106,7 +103,7 @@ const MainEmployee = () => {
               alt="Third slide"
             />
             <Carousel.Caption>
-              <h3>Integridad</h3>
+              <h3 className="h-card">Integridad</h3>
               <p className="text-white slide-text">
                 "El éxito no se da de la noche a la mañana. Es cuando cada día
                 eres un poco mejor que el anterior."

@@ -6,11 +6,11 @@
 .slide-text {
   font-weight: bold;
   font-family: monospace;
-  font-size: large;
+  font-size: 28px;
 }
-h3 {
+.h-card {
   font-family: monospace;
-  font-size: 35px;
+  font-size: 45px;
   font-weight: bold;
 }
 
@@ -20,6 +20,7 @@ h3 {
 }
 
 .card-hi {
-  background-color: #98f599 !important;
-  border-width: 0.6rem;
+  background-color: #58cc5f !important;
+  border-width: 0.4rem;
+  border-color: #008a09;
 }
