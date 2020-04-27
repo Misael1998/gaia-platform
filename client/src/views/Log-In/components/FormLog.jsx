@@ -12,14 +12,14 @@ const FormLog = ({ history }) => {
   //Creando el state para leer los inputs:
   const [information, handleInformation] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   //Funcion que se ejecuta cuando se escribe en un input:
-  const handleChangeInfo = e => {
+  const handleChangeInfo = (e) => {
     handleInformation({
       ...information,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -43,7 +43,7 @@ const FormLog = ({ history }) => {
   const { email, password } = information;
 
   //Funcion para el boton de login:
-  const submitUser = e => {
+  const submitUser = (e) => {
     e.preventDefault();
 
     validarEmail();
@@ -58,18 +58,19 @@ const FormLog = ({ history }) => {
 
     //Peticion a endpoint de user
     loginUser(email, password)
-      .then(res => {
+      .then((res) => {
         const { user } = res;
 
         SessionStorageService.setToken(res.token);
         SessionStorageService.setItem("role", user.role);
+        SessionStorageService.setItem("uName", user.firstName);
         Swal.fire(
           "Login exitoso",
           `Bienvenido ${user.firstName}`,
           "success"
-        ).then(res => {
+        ).then((res) => {
           if (user.role === "employee") {
-            history.push("/portal");
+            history.push("/portal/main");
           } else {
             if (user.role === "admin") {
               history.push("/admin");
@@ -79,11 +80,11 @@ const FormLog = ({ history }) => {
           }
         });
       })
-      .catch(error => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: error.title,
-          text: error.text
+          text: error.text,
         });
       });
   };

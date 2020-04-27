@@ -1,0 +1,25 @@
+.img-dim {
+  width: 100% !important;
+  height: 400px !important;
+}
+
+.slide-text {
+  font-weight: bold;
+  font-family: monospace;
+  font-size: large;
+}
+h3 {
+  font-family: monospace;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.container-card {
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+.card-hi {
+  background-color: #98f599 !important;
+  border-width: 0.6rem;
+}

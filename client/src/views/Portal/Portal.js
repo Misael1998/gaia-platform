@@ -6,7 +6,8 @@ import Request from "./FormRequest/Request";
 import items from "../../constants/portalNavigation";
 import Referrals from "./Referrals/Referrals";
 import RequestTable from "./RequestTable/RequestTable";
-import ShippingDetail from '../Main/components/ShippingDetails'
+import ShippingDetail from "../Main/components/ShippingDetails";
+import MainEmployee from "./MainEmployee/MainEmployee";
 
 const Portal = ({ match }) => {
   return (
@@ -15,6 +16,7 @@ const Portal = ({ match }) => {
         <SideNavbar items={items} />
       </div>
       <div className="col-10 p-0">
+        <Route path={`${match.path}/main`} component={MainEmployee} isPrivate />
         <Route
           path={`${match.path}/inventory`}
           component={Inventory}
