@@ -4,6 +4,7 @@ import Route from "../../modules/Route";
 import items from "../../constants/adminNavigation";
 import FormRegEmp from "./FormEmployee/components/FormRegEmp";
 import FormProduct from "./FormProduct/FormProduct";
+import FormProvider from './FormProvider/FormProvider';
 
 const Portal = ({ match }) => {
   return (
@@ -13,13 +14,18 @@ const Portal = ({ match }) => {
       </div>
       <div className="col-10 p-0">
         <Route
-          path={`${match.path}/formEmp`}
+          path={`${match.path}/formulario-empleado`}
           component={FormRegEmp}
           isPrivate
         />
         <Route
-          path={`${match.path}/formProduct`}
+          path={`${match.path}/formulario-productos`}
           component={FormProduct}
+          isPrivate
+        />
+        <Route
+          path={`${match.path}/formulario-proveedores`}
+          component={FormProvider}
           isPrivate
         />
       </div>
