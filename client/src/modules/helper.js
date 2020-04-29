@@ -1,5 +1,6 @@
 import SessionStorageService from '../services/Storage'
 import Swal from 'sweetalert2'
+
 export const logout = () => {
   SessionStorageService.removeToken();
   SessionStorageService.removeItem('role');
@@ -25,10 +26,24 @@ export const cancelOrder = (dispatch, action, history) => {
         'Se ha cancelado tu pedido.',
         'success'
       )
-      
+
       window.location.reload();
-       history.push('/app/products')
+      history.push('/app/products')
     }
   })
 
+}
+
+/**
+ * Funcion que da un mensaje al usuario basado en las horas del dia. 
+ */
+export function welcomeMessage() {
+  let hours = new Date().getHours();
+  if (hours >= 0 && hours < 12) {
+    return 'Buenos días'
+  } else if (hours >= 12 && hours < 18) {
+    return 'Buenas tardes'
+  } else {
+    return 'Buenas noches'
+  }
 }
