@@ -21,6 +21,10 @@ body {
   font-size: 1rem;
 }
 
+.font-xl {
+  font-size: 1.5rem;
+}
+
 .side-icon:hover {
   color: #2ecc71;
 }
@@ -68,4 +72,8 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
+}
+
+.div-radius {
+  border-radius: 5%;
 }
