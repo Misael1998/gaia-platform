@@ -6,7 +6,8 @@ import Request from "./FormRequest/Request";
 import items from "../../constants/portalNavigation";
 import Referrals from "./Referrals/Referrals";
 import RequestTable from "./RequestTable/RequestTable";
-import ShippingDetail from '../Main/components/ShippingDetails'
+import ShippingDetail from "../Main/components/ShippingDetails";
+import Bill from "./Bill/Bill";
 
 const Portal = ({ match }) => {
   return (
@@ -39,6 +40,12 @@ const Portal = ({ match }) => {
           exact
           path={`${match.path}/request-summary/details/:id`}
           component={ShippingDetail}
+          isPrivate
+        />
+        <Route
+          exact
+          path={`${match.path}/request-summary/details/facturacion/:id`}
+          component={Bill}
           isPrivate
         />
       </div>
