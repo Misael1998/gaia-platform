@@ -14,7 +14,7 @@ const items = [
     name: "home",
     label: "Inicio",
     icon: <MdHome size={30} />,
-    link: "/portal/main",
+    link: "/portal/",
   },
   {
     name: "requests",

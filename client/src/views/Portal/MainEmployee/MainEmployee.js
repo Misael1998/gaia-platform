@@ -44,7 +44,7 @@ const MainEmployee = () => {
   return (
     <Fragment>
       <div className="row p-5">
-        <Title title="Bienvenido a PyFlor" icon={<IoIosPerson size={40} />} />
+        <Title title="Bienvenido a PYFLOR" icon={<IoIosPerson size={40} />} />
         <div className="col-lg-12">
           <div className="container-card">
             <CardHello msg={msg} user={user} numPed={numPed} />

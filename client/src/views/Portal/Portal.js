@@ -16,7 +16,7 @@ const Portal = ({ match }) => {
         <SideNavbar items={items} />
       </div>
       <div className="col-10 p-0">
-        <Route path={`${match.path}/main`} component={MainEmployee} isPrivate />
+        <Route path={`${match.path}//`} component={MainEmployee} isPrivate />
         <Route
           path={`${match.path}/inventory`}
           component={Inventory}

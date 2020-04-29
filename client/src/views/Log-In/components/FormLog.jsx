@@ -70,7 +70,7 @@ const FormLog = ({ history }) => {
           "success"
         ).then((res) => {
           if (user.role === "employee") {
-            history.push("/portal/main");
+            history.push("/portal/");
           } else {
             if (user.role === "admin") {
               history.push("/admin");
