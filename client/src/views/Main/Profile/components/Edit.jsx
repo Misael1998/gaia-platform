@@ -57,6 +57,7 @@ const Edit = ({ data }) => {
       return;
     }
 
+
     handleError(false);
 
     //Funcion que establecera los valores a editar traidos de la BD:
