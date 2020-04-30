@@ -7591,3 +7591,6 @@
   margin-bottom: 2%;
 }
 
+.min-height {
+  min-height: 60vh!important;
+}
