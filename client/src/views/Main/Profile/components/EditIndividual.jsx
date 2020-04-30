@@ -29,15 +29,6 @@ const EditIndividual = ({ data }) => {
     });
   };
 
-  //Funcion para validar el correo:
-  const validarEmail = () => {
-    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (patron.test(document.getElementById("emailInput").value)) {
-      handleErrorEmail(false);
-    } else {
-      handleErrorEmail(true);
-    }
-  };
 
   //Destructuting:
   const { email, phone, address } = saveEdit;
@@ -49,7 +40,7 @@ const EditIndividual = ({ data }) => {
   //Funcion que manda los datos:
   const submitRequest = (e) => {
     e.preventDefault();
-    validarEmail();
+    
 
     //Validacion:
     if (email.trim() === "" || phone.trim() === "" || address.trim() === "") {
@@ -58,7 +49,7 @@ const EditIndividual = ({ data }) => {
     }
 
     //validacion de correo
-    if (errorEmail === false) {
+    if (email.includes('@') ===false || email.includes('.com') === false) {
       handleErrorEmail(true);
       return;
     }
@@ -102,7 +93,6 @@ const EditIndividual = ({ data }) => {
         <div className=" centrado">
           <label className="font-weight-bold mt-3">Correo</label>
           <input
-            id="emailInput"
             type="text"
             name="email"
             className="form-control inpt-edit"

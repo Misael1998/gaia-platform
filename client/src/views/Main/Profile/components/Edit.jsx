@@ -28,16 +28,6 @@ const Edit = ({ data }) => {
     });
   };
 
-  //Funcion para validar el correo:
-  const validarEmail = () => {
-    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (patron.test(document.getElementById("emailInput").value)) {
-      handleErrorEmail(false);
-    } else {
-      handleErrorEmail(true);
-    }
-  };
-
   useEffect(() => {
     setSaveEdit(data);
   }, []);
@@ -48,7 +38,6 @@ const Edit = ({ data }) => {
   //Funcion que manda los datos:
   const submitRequest = (e) => {
     e.preventDefault();
-    validarEmail();
 
     //Validacion:
     if (
@@ -63,7 +52,7 @@ const Edit = ({ data }) => {
     }
 
     //validacion de correo
-    if (errorEmail === false) {
+    if (email.includes("@") === false || email.includes(".com") === false) {
       handleErrorEmail(true);
       return;
     }
