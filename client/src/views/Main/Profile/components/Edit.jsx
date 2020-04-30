@@ -52,7 +52,7 @@ const Edit = ({ data }) => {
     }
 
     //validacion de correo
-    if (email.includes("@") === false || email.includes(".com") === false) {
+    if (email.includes("@") === false) {
       handleErrorEmail(true);
       return;
     }
