@@ -5,13 +5,15 @@ import { Table } from "@david.kucsai/react-pdf-table";
 
 const BillContent = () => {
   return (
-    <div className="billHeader row">
-      <div className="col-lg-6 p-r-0 m-t-5">
-        <img className="billLogo" src={logo} />
-      </div>
-      <div className="col-lg-6 p-r-0 m-t-5">
-        <p className="txt-h-b text-center">PILONES Y FLORES DE HONDURAS</p>
-        <p className="txt-h-b txt-sa">S.A DE C.V</p>
+    <div className="billHeader">
+      <div className="row">
+        <div className="col-lg-6 p-r-0 m-t-5">
+          <img className="billLogo" src={logo} />
+        </div>
+        <div className="col-lg-6 p-r-0 m-t-5">
+          <p className="txt-h-b text-center">PILONES Y FLORES DE HONDURAS</p>
+          <p className="txt-h-b txt-sa">S.A DE C.V</p>
+        </div>
       </div>
       <div className="row r-a">
         <div className="col-lg-6 p-r-0">
@@ -38,7 +40,7 @@ const BillContent = () => {
         </div>
       </div>
       <div className="row r-i">
-        <div className="col-lg-6 p-r-0 cl-i1">
+        <div className="col-lg-6 p-r-0">
           <span className="row">
             <label className="txt-info-c txt-b">CLIENTE:</label>
             <p className="txt-info-c col-lg-6 p-l-3 p-r-0">Juan Perez</p>
@@ -54,7 +56,7 @@ const BillContent = () => {
             </p>
           </span>
         </div>
-        <div className="col-lg-6 p-r-0 cl-i1">
+        <div className="col-lg-6 p-r-0">
           <span className="row">
             <label className="txt-info-c txt-b">FECHA DEL DÍA:</label>
             <p className="txt-info-c col-lg-6 p-l-3 p-r-0">29/4/2020</p>

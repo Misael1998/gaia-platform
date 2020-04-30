@@ -21,20 +21,19 @@ import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
 const PDFBillCreator = ({ data, title }) => {
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
-      <Page size="A3" wrap={false} style={styles.page}>
-        <View style={styles.titleContainer}>
-          <View>
+      <Page size="RA3" wrap={false} style={styles.page}>
+        <View style={styles.vRow}>
+          <View style={styles.vCol}>
             <Image source={logo} style={styles.image} />
           </View>
-
-          <View>
+          <View style={styles.vCol}>
             <Text style={styles.subTitle}>PILONES Y FLORES DE HONDURAS</Text>
-            <Text style={styles.subTitle}>S.A DE C.V</Text>
+            <Text style={styles.subTitle2}>S.A DE C.V</Text>
           </View>
         </View>
 
-        <View style={styles.titleContainer}>
-          <View>
+        <View style={styles.vRow}>
+          <View style={styles.vCol}>
             <Text style={styles.nText}>
               Puede hacer su depósito a nombre de PYFLOR en
             </Text>
@@ -46,7 +45,7 @@ const PDFBillCreator = ({ data, title }) => {
               CAI: XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX
             </Text>
           </View>
-          <View>
+          <View style={styles.vCol}>
             <Text style={styles.nText}>
               Aldea El Molino, Contiguo a Campo Scout, Valle de Angeles, F.M
             </Text>
@@ -60,20 +59,20 @@ const PDFBillCreator = ({ data, title }) => {
           </View>
         </View>
 
-        <View style={styles.titleContainer}>
-          <View>
+        <View style={styles.vRow}>
+          <View style={styles.vCol2}>
             <Text style={styles.nText}>CLIENTE: Juan Perez</Text>
             <Text style={styles.nText}>R.T.N: 0801-1900-112233</Text>
             <Text style={styles.nText}>DIRECCIÓN: Col. Las Uvas</Text>
           </View>
-          <View>
+          <View style={styles.vCol2}>
             <Text style={styles.nText}>FECHA DEL DÍA: 29/4/2020</Text>
             <Text style={styles.nText}>FECHA DE VENCIMIENTO: 3/5/2020</Text>
             <Text style={styles.nText}>VENDEDOR: PYFLOR</Text>
           </View>
         </View>
 
-        <Table>
+        <Table style={styles.table}>
           <TableHeader>
             <TableCell style={styles.headerText}>CANT.</TableCell>
             <TableCell style={styles.headerText}>DESCRIPCIÓN</TableCell>
@@ -86,43 +85,40 @@ const PDFBillCreator = ({ data, title }) => {
           <TableBody></TableBody>
         </Table>
 
-        <View>
-          <View style={styles.headerText2}>
-            <Text>DESCUENTOS OTORGADOS L.</Text>
+        <View style={styles.vRow}>
+          <View style={styles.vCol}>
+            <View style={styles.containerShipping}>
+              <Text style={styles.nText}>N° ORDEN DE COMPRA EXENTA</Text>
+              <Text style={styles.nText}>
+                N° CONSTANCIA DE REGISTRO DE EXONERADO
+              </Text>
+              <Text style={styles.nText}>N° REGISTRO DE LA SAG</Text>
+            </View>
+
+            <View style={styles.vSign}>
+              <Text style={styles.nText}>FIRMA AUTORIZADA</Text>
+            </View>
           </View>
-          <View style={styles.headerText2}>
-            <Text>REBAJAS OROTGADAS L.</Text>
+          <View style={styles.vCol3}>
+            <View style={styles.containerShipping}>
+              <Text style={styles.nText}>DESCUENTOS OTORGADOS L.</Text>
+              <Text style={styles.nText}>REBAJAS OTORGADAS L.</Text>
+              <Text style={styles.nText}>FLETE L.</Text>
+              <Text style={styles.nText}>SUB-TOTAL L.</Text>
+              <Text style={styles.nText}>IMPORTE EXENTO L.</Text>
+              <Text style={styles.nText}>IMPORTE GRAVADO 18% L.</Text>
+              <Text style={styles.nText}>IMPORTE GRAVADO 15% L.</Text>
+              <Text style={styles.nText}>TASA ALÍCUOTA L.</Text>
+              <Text style={styles.nText}>I.S.V 15% L.</Text>
+              <Text style={styles.nText}>I.S.V 18% L.</Text>
+              <Text style={styles.nText}>IMOPRTE EXONERADO L.</Text>
+              <Text style={styles.nText}>TOTAL A PAGAR L.</Text>
+            </View>
           </View>
-          <View style={styles.headerText2}>
-            <Text>FLETE L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>SUB-TOTAL L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>IMPORTE EXENTO L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>IMPORTE GRAVADO 18% L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>IMPORTE GRAVADO 15% L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>TASA ALÍCUOTA 0% L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>I.S.V 15% L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>I.S.V 18% L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>IMPORTE EXONERADO L.</Text>
-          </View>
-          <View style={styles.headerText2}>
-            <Text>TOTAL A PAGAR L.</Text>
-          </View>
+        </View>
+
+        <View style={styles.vRow}>
+          <Text>FACTURA N° 000-111-22-33 444444</Text>
         </View>
       </Page>
     </Document>
@@ -141,17 +137,19 @@ const styles = StyleSheet.create({
     width: "100%",
     margin: 5,
   },
-  titleCol: {
-    flexDirection: "column",
-  },
   title: {
     fontSize: 18,
     fontWeight: "bold",
   },
   subTitle: {
     fontSize: 16,
-    fontWeight: "bolder",
+    fontWeight: "bold",
     alignItems: "flex-start",
+  },
+  subTitle2: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: "100",
   },
   date: {
     fontSize: 14,
@@ -184,14 +182,48 @@ const styles = StyleSheet.create({
   headerText2: {
     fontSize: 8,
     textAlign: "left",
+  },
+  containerShipping: {
+    borderStyle: "solid",
+    borderWidth: "1",
+    borderRadius: "10",
+    borderColor: "black",
+    width: "90%",
+    marginTop: "10",
+  },
+  vCol: {
+    display: "flex",
+    flexDirection: "column",
+    width: "45%",
+  },
+  vCol2: {
+    display: "flex",
+    flexDirection: "column",
+    width: "60%",
+    marginLeft: "10",
+    marginBottom: "20",
+  },
+  vCol3: {
+    display: "flex",
+    flexDirection: "column",
+    width: "54%",
+    marginLeft: "10",
+    marginBottom: "20",
+    alignItems: "flex-end",
+  },
+  vRow: {
+    display: "flex",
     flexDirection: "row",
   },
-  lowSec: {
-    display: "flex",
-    borderStyle: "solid",
-    borderWidth: "1px",
-    borderRadius: "10px",
-    borderColor: "darkgrey",
+  vSign: {
+    marginTop: "150",
+    alignItems: "center",
+    borderTop: "1",
+    borderTopStyle: "solid",
+    borderTopColor: "black",
+  },
+  table: {
+    marginBottom: "10",
   },
 });
 
