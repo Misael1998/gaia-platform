@@ -114,3 +114,5 @@ DECLARE @tmpIdProduct TABLE (idProduct INT)
         SET @msj = 'success'
         SET @err = 'None'
         RETURN
+
+GO
