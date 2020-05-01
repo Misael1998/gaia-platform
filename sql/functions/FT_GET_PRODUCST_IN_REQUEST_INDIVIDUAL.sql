@@ -1,4 +1,4 @@
-IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL;  
 GO  
 CREATE FUNCTION FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL (@requestId int, @user int)  
@@ -40,6 +40,7 @@ BEGIN
     INNER JOIN TBL_INDIVIDUAL_CLIENTS ic
         on ic.idIndividualClients = rq.idIndividualClient
     and ic.idUser = @user
+    and rhp.idRequest = @requestId
     and ct.name = 'restaurante';
 
     select @quantity = count(*) from @products
