@@ -1,7 +1,7 @@
 
   USE pyflor
   GO
-  IF OBJECT_ID (N'dbo.getUserRoleID', N'FN') IS NOT NULL  
+  IF OBJECT_ID (N'dbo.getUserRoleID') IS NOT NULL  
     DROP FUNCTION getUserRoleID;  
 GO
 CREATE FUNCTION [dbo].[getUserRoleID](@userId int)  
@@ -49,7 +49,7 @@ BEGIN
     return null
 END;
 GO
-IF OBJECT_ID (N'FT_COMPANY_TYPES', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_COMPANY_TYPES') IS NOT NULL  
     DROP FUNCTION FT_COMPANY_TYPES;  
 GO
 create function FT_COMPANY_TYPES()
@@ -60,7 +60,7 @@ RETURN(
 FROM TBL_COMPANY_TYPE
 )
 go
-IF OBJECT_ID (N'FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE') IS NOT NULL  
     DROP FUNCTION FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE;  
 GO
 CREATE FUNCTION [dbo].[FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE](@id INT)
@@ -102,7 +102,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID (N'FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL') IS NOT NULL  
     DROP FUNCTION FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL;  
 GO
 CREATE FUNCTION [dbo].[FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL]()
@@ -123,7 +123,7 @@ WHERE ct.name = 'restaurante'
 )
 
 GO
-IF OBJECT_ID (N'FT_GET_CATEGORIES', N'IF') IS NOT NULL
+IF OBJECT_ID (N'FT_GET_CATEGORIES') IS NOT NULL
     DROP FUNCTION [FT_GET_CATEGORIES];
 GO
 CREATE FUNCTION [FT_GET_CATEGORIES] ()
@@ -135,7 +135,7 @@ RETURN(
 FROM [pyflor].[dbo].[TBL_CATEGORIES]
 )
 GO
-IF OBJECT_ID (N'FT_GET_DATA_ENTERPRISE', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_DATA_ENTERPRISE') IS NOT NULL  
     DROP FUNCTION FT_GET_DATA_ENTERPRISE;  
 GO
 
@@ -153,7 +153,7 @@ GO
   
 
 
-IF OBJECT_ID (N'FT_GET_DELIVERY_TYPE', N'IF') IS NOT NULL
+IF OBJECT_ID (N'FT_GET_DELIVERY_TYPE') IS NOT NULL
     DROP FUNCTION [FT_GET_DELIVERY_TYPE];
 GO
 CREATE FUNCTION [FT_GET_DELIVERY_TYPE] ()
@@ -165,7 +165,7 @@ RETURN(
 FROM [pyflor].[dbo].[TBL_DELIVERY_TYPES]
 )
 GO
-IF OBJECT_ID (N'FT_GET_DEPARTMENTS', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_DEPARTMENTS') IS NOT NULL  
     DROP FUNCTION FT_GET_DEPARTMENTS;  
 GO
 create FUNCTION FT_GET_DEPARTMENTS()
@@ -178,7 +178,7 @@ SELECT
 FROM
     TBL_DEPARTMENTS
 GO
-IF OBJECT_ID (N'FT_GET_EMPLOYEES_DATA', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_EMPLOYEES_DATA') IS NOT NULL  
     DROP FUNCTION FT_GET_EMPLOYEES_DATA;  
 GO
 CREATE FUNCTION [dbo].[FT_GET_EMPLOYEES_DATA]()
@@ -202,7 +202,7 @@ FROM TBL_EMPLOYEES e
 )
 
 GO
-IF OBJECT_ID (N'FT_GET_INDIVIDUAL_USER_DATA', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_INDIVIDUAL_USER_DATA') IS NOT NULL  
     DROP FUNCTION [FT_GET_INDIVIDUAL_USER_DATA];  
 GO
 CREATE FUNCTION [FT_GET_INDIVIDUAL_USER_DATA] (@id INT)  
@@ -217,75 +217,85 @@ WHERE
         idUser = @id
 )
 GO
-IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL;  
-GO  
+GO
 CREATE FUNCTION FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL (@requestId int, @user int)  
 RETURNS @products TABLE (
-    name VARCHAR(45), 
-    description VARCHAR(200), 
-    quantity int, 
+    name VARCHAR(45),
+    description VARCHAR(200),
+    quantity int,
     unit_price float,
     control int
 ) 
 AS
 BEGIN
-    declare @control table (request int, url VARCHAR(200), state int)
+    declare @control table (request int,
+        url VARCHAR(200),
+        state int)
     declare @isValid int
     declare @state int
     declare @quantity int
-    
-    insert into @products
-    select  pr.name, 
-            pr.description, 
-            rhp.quantity, 
-            ps.unit_price,
-            0 control
-    FROM REQUESTS_has_PRODUCTS rhp
-    INNER JOIN TBL_PRODUCTS pr
-        on pr.idProducts = rhp.idProducts
-    INNER JOIN PRODUCTS_has_CATEGORIES phc
-        on phc.idProducts = pr.idProducts
-    INNER JOIN TBL_CATEGORIES c
-        on c.idCategories = phc.idCategories
-    INNER JOIN TBL_PRODUCT_HAS_PRICES php
-        on php.idProduct = pr.idProducts
-    INNER JOIN TBL_PRICES ps
-        on ps.idPrices = php.idPrice
-    INNER JOIN TBL_COMPANY_TYPE ct
-        on ct.idCompanyType = php.idCompanyType
-    INNER JOIN TBL_REQUESTS rq
-        on rq.idRequests = rhp.idRequest
-    INNER JOIN TBL_INDIVIDUAL_CLIENTS ic
-        on ic.idIndividualClients = rq.idIndividualClient
-    and ic.idUser = @user
-    and ct.name = 'restaurante';
+    declare @token varchar(150)
 
-    select @quantity = count(*) from @products
+    insert into @products
+    select pr.name,
+        pr.description,
+        rhp.quantity,
+        ps.unit_price,
+        0 control
+    FROM REQUESTS_has_PRODUCTS rhp
+        INNER JOIN TBL_PRODUCTS pr
+        on pr.idProducts = rhp.idProducts
+        INNER JOIN PRODUCTS_has_CATEGORIES phc
+        on phc.idProducts = pr.idProducts
+        INNER JOIN TBL_CATEGORIES c
+        on c.idCategories = phc.idCategories
+        INNER JOIN TBL_PRODUCT_HAS_PRICES php
+        on php.idProduct = pr.idProducts
+        INNER JOIN TBL_PRICES ps
+        on ps.idPrices = php.idPrice
+        INNER JOIN TBL_COMPANY_TYPE ct
+        on ct.idCompanyType = php.idCompanyType
+        INNER JOIN TBL_REQUESTS rq
+        on rq.idRequests = rhp.idRequest
+        INNER JOIN TBL_INDIVIDUAL_CLIENTS ic
+        on ic.idIndividualClients = rq.idIndividualClient
+            and rhp.idRequest = @requestId
+            and ic.idUser = @user
+            and ct.name = 'restaurante';
+
+    select @quantity = count(*)
+    from @products
     if @quantity >= 1
     BEGIN
         insert into @control
-        select  idRequests request, 
-            urlWithToken url, 
-            idState state 
+        select idRequests request,
+            urlWithToken url,
+            idState state
         from bill_has_state bhs
-        inner join TBL_BILLS b
+            inner join TBL_BILLS b
             on b.idBills = bhs.idBill
         where idRequests = @requestId
 
-        select @isValid = COUNT(*) from @control
+        select @isValid = COUNT(*)
+        from @control
         IF @isValid > 0
         BEGIN
-            select @state = state from @control
-            IF @state = 1
+            select @state = state
+            from @control
+            select @token = url
+            from @control
+            IF @state = 1 AND @token is not null
             BEGIN
                 delete from @products
                 insert into @products
-                select  null name,
-                        (select url from @control) description,
-                        null quantity,
-                        null unit_price,
-                        1 control
+                select null name,
+                    (select url
+                    from @control) description,
+                    null quantity,
+                    null unit_price,
+                    1 control
                 RETURN
             END;
 
@@ -293,11 +303,11 @@ BEGIN
             BEGIN
                 delete from @products
                 insert into @products
-                select  null name,
-                        'request alredy payed' description,
-                        null quantity,
-                        null unit_price,
-                        2 control
+                select null name,
+                    'request alredy payed' description,
+                    null quantity,
+                    null unit_price,
+                    2 control
                 RETURN
             END;
         END;
@@ -307,7 +317,7 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE;  
 GO  
 CREATE FUNCTION FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE (@requestId int, @user int)  
@@ -324,6 +334,7 @@ BEGIN
     declare @isValid int
     declare @state int
     declare @quantity int
+    declare @token varchar(150)
 
     insert into @products
     select  pr.name, 
@@ -369,7 +380,8 @@ BEGIN
         IF @isValid > 0
         BEGIN
             select @state = state from @control
-            IF @state = 1
+            select @token = url from @control
+            IF @state = 1 AND @token is not null
             BEGIN
                 delete from @products
                 insert into @products
@@ -399,7 +411,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID (N'FT_GET_PROVIDER', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_PROVIDER') IS NOT NULL  
     DROP FUNCTION [FT_GET_PROVIDER];  
 GO
 CREATE FUNCTION [FT_GET_PROVIDER] (
@@ -416,7 +428,7 @@ FROM [pyflor].[dbo].[TBL_PROVIDERS]
 WHERE idProviders = @id
 )
 GO
-IF OBJECT_ID (N'FT_GET_REQUEST_DATA', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_REQUEST_DATA') IS NOT NULL  
     DROP FUNCTION [FT_GET_REQUEST_DATA];  
 GO
 CREATE FUNCTION FT_GET_REQUEST_DATA()
@@ -825,7 +837,7 @@ FROM TBL_REQUESTS r
 WHERE us.idUser=@id
 )
 GO
-IF OBJECT_ID (N'FT_GET_REQUEST_TYPE', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_REQUEST_TYPE') IS NOT NULL  
     DROP FUNCTION [FT_GET_REQUEST_TYPE];  
 GO
 CREATE FUNCTION [FT_GET_REQUEST_TYPE] ()  
@@ -837,7 +849,7 @@ RETURN(
 FROM [pyflor].[dbo].[TBL_REQUEST_TYPES]
 )
 GO
-IF OBJECT_ID (N'FT_GET_SINGLE_PRODUCT_DATA', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_SINGLE_PRODUCT_DATA') IS NOT NULL  
     DROP FUNCTION [FT_GET_SINGLE_PRODUCT_DATA];  
 GO
 CREATE FUNCTION [dbo].[FT_GET_SINGLE_PRODUCT_DATA](@id int)
@@ -858,7 +870,7 @@ WHERE @id = p.idProducts
 )
 
 GO
-IF OBJECT_ID (N'FT_PROVIDERS', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_PROVIDERS') IS NOT NULL  
     DROP FUNCTION [FT_PROVIDERS];  
 GO
 CREATE FUNCTION [FT_PROVIDERS] ()  
@@ -872,7 +884,7 @@ RETURN(
 FROM [pyflor].[dbo].[TBL_PROVIDERS]
 )
 GO
-IF OBJECT_ID (N'FT_REFFERALS', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_REFFERALS') IS NOT NULL  
     DROP FUNCTION FT_REFFERALS;  
 GO
 CREATE FUNCTION FT_REFFERALS()
@@ -927,7 +939,7 @@ FROM
     on 
         addresseeUser.idUser = addresseeEmployee.idEmployees
 GO
-IF OBJECT_ID (N'FT_getJobtitles', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_getJobtitles') IS NOT NULL  
     DROP FUNCTION FT_getJobtitles;  
 GO
 create FUNCTION FT_getJobtitles()
@@ -940,7 +952,7 @@ SELECT
 FROM
     TBL_JOB_TITLES
 GO
-IF OBJECT_ID (N'dbo.getUserRole', N'FN') IS NOT NULL  
+IF OBJECT_ID (N'dbo.getUserRole') IS NOT NULL  
     DROP FUNCTION getUserRole;  
 GO
 CREATE FUNCTION [dbo].[getUserRole](@userId int)  
@@ -991,7 +1003,7 @@ BEGIN
     return @role;
 END; 
 GO
-IF OBJECT_ID (N'getCompaniesNumber', N'FN') IS NOT NULL  
+IF OBJECT_ID (N'getCompaniesNumber') IS NOT NULL  
     DROP FUNCTION getCompaniesNumber;  
 GO
 CREATE FUNCTION getCompaniesNumber()  
@@ -1002,7 +1014,7 @@ RETURN
 FROM TBL_COMPANY_TYPE
 GO
 
-IF OBJECT_ID (N'F_Get_Supplies_Inventory', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'F_Get_Supplies_Inventory') IS NOT NULL  
     DROP FUNCTION F_Get_Supplies_Inventory;  
 GO
 CREATE FUNCTION F_Get_Supplies_Inventory ()  
@@ -1018,7 +1030,7 @@ FROM TBL_ORDERS ord
     INNER JOIN TBL_USERS us ON us.idUser=em.idUser
 );  
 GO
-IF OBJECT_ID (N'F_SUPPLIES', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'F_SUPPLIES') IS NOT NULL  
     DROP FUNCTION F_SUPPLIES;  
 GO
 create function F_SUPPLIES()
