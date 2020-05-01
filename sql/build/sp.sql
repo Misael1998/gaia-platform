@@ -144,7 +144,7 @@ AS
     set @msj = 'success'
     set @err = 'none'
     RETURN 
-
+GO
 
 -- Create a new stored procedure called 'SP_ADD_ORDER' in schema 'dbo'
 -- Drop the stored procedure if it already exists
@@ -522,7 +522,7 @@ AS
     RETURN 
 
 
-
+GO
 -- Create a new stored procedure called 'SP_ADD_USER_ENTERPRISE' in schema 'dbo'
 -- Drop the stored procedure if it already exists
 IF EXISTS (
@@ -1467,6 +1467,7 @@ DECLARE @tmpIdProduct TABLE (idProduct INT)
         SET @err = 'None'
         RETURN
 
+GO
 -- Create a new stored procedure called 'SP_INSERT_PRICE_PRODUCT' in schema 'dbo'
 -- Drop the stored procedure if it already exists
 IF EXISTS (
@@ -1548,7 +1549,7 @@ DECLARE @idP INT,
     SET @msj = 'success'
     SET @err = 'None'
     RETURN
-
+GO
 -- Create a new stored procedure called 'SP_INSERT_PRODUCTS_IN_ORDER' in schema 'dbo'
 -- Drop the stored procedure if it already exists
 IF EXISTS (
