@@ -3,24 +3,24 @@ import {
   MdHome,
   MdShoppingBasket,
   MdExitToApp,
-  MdAddShoppingCart
+  MdAddShoppingCart,
 } from "react-icons/md";
 import { GoPackage } from "react-icons/go";
-import { FaExchangeAlt, FaShoppingBag } from 'react-icons/fa'
-import { logout } from '../modules/helper'
+import { FaExchangeAlt, FaShoppingBag } from "react-icons/fa";
+import { logout } from "../modules/helper";
 
 const items = [
   {
     name: "home",
     label: "Inicio",
     icon: <MdHome size={30} />,
-    link: "/portal"
+    link: "/portal/",
   },
   {
-    name: 'requests',
-    label: 'Pedidos',
+    name: "requests",
+    label: "Pedidos",
     icon: <FaShoppingBag size={30} />,
-    link: '/portal/requests-summary'
+    link: "/portal/requests-summary",
   },
   {
     name: "purchases",
@@ -31,13 +31,13 @@ const items = [
         name: "addPurchase",
         label: "Ingresar compra",
         icon: <MdAddShoppingCart size={30} />,
-        link: "/portal/purchases-request"
+        link: "/portal/purchases-request",
       },
       {
         name: "referrals",
         label: "Remisiones",
         icon: <FaExchangeAlt size={30} />,
-        link: "/portal/referrals"
+        link: "/portal/referrals",
       },
     ],
   },
@@ -45,9 +45,14 @@ const items = [
     name: "inventory",
     label: "Inventario",
     icon: <GoPackage size={30} />,
-    link: "/portal/inventory"
+    link: "/portal/inventory",
   },
-  { name: 'logout', label: 'Cerrar sesion', icon: <MdExitToApp size={30} />, onClick: logout }
+  {
+    name: "logout",
+    label: "Cerrar sesion",
+    icon: <MdExitToApp size={30} />,
+    onClick: logout,
+  },
 ];
 
 export default items;
