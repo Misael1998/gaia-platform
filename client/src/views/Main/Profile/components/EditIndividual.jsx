@@ -22,13 +22,22 @@ const EditIndividual = ({ data }) => {
   //Funcion que captura los datos:
   const handleData = (e) => {
     handleError(false);
-
+    validarEmail();
     setSaveEdit({
       ...saveEdit,
       [e.target.name]: e.target.value,
     });
   };
 
+  //Funcion para validar el correo:
+  const validarEmail = () => {
+    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (patron.test(document.getElementById("emailInput").value)) {
+      handleErrorEmail(false);
+    } else {
+      handleErrorEmail(true);
+    }
+  };
 
   //Destructuting:
   const { email, phone, address } = saveEdit;
@@ -40,7 +49,6 @@ const EditIndividual = ({ data }) => {
   //Funcion que manda los datos:
   const submitRequest = (e) => {
     e.preventDefault();
-    
 
     //Validacion:
     if (email.trim() === "" || phone.trim() === "" || address.trim() === "") {
@@ -48,40 +56,37 @@ const EditIndividual = ({ data }) => {
       return;
     }
 
-    //validacion de correo
-    if (email.includes("@") === false){
-      handleErrorEmail(true);
+    if (errorEmail === false) {
+      updateIndividualData(email, phone, address)
+        .then((res) => {
+          Swal.fire(
+            "Datos Actualizados",
+            "Se han actualizados los datos exitosamente",
+            "success"
+          );
+          if (res === 1) {
+            window.location.reload();
+          } else {
+            Swal.fire(
+              "Datos sin Modificar",
+              "No se hicieron cambios en los datos",
+              "success"
+            );
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: error.title,
+            text: error.text,
+          });
+        });
+      return;
+
       return;
     }
 
     handleError(false);
-
-    //Funcion que establecera los valores a editar traidos de la BD:
-
-    updateIndividualData(email, phone, address)
-      .then((res) => {
-        Swal.fire(
-          "Datos Actualizados",
-          "Se han actualizados los datos exitosamente",
-          "success"
-        );
-        if (res === 1) {
-          window.location.reload();
-        } else {
-          Swal.fire(
-            "Datos sin Modificar",
-            "No se hicieron cambios en los datos",
-            "success"
-          );
-        }
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: error.title,
-          text: error.text,
-        });
-      });
   };
 
   return (
@@ -93,6 +98,7 @@ const EditIndividual = ({ data }) => {
         <div className=" centrado">
           <label className="font-weight-bold mt-3">Correo</label>
           <input
+            id="emailInput"
             type="text"
             name="email"
             className="form-control inpt-edit"
@@ -103,7 +109,7 @@ const EditIndividual = ({ data }) => {
 
           {errorEmail ? (
             <p className="alert alert-danger error-p text-white">
-              El correo ingresado no es valido!!!
+              El correo ingresado no es válido!!!
             </p>
           ) : null}
 
