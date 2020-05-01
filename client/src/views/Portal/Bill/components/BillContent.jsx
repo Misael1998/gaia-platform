@@ -110,12 +110,31 @@ const BillContent = () => {
 
       <div className="row">
         <div className="col-lg-6">
-          <div className="containerShipping2 row m-l-5 p-2">
-            <span className="col-lg-12">N° ORDEN DE COMPRA EXENTA</span>
-            <span className="col-lg-12">
-              N° CONSTANCIA DE REGISTRO DE EXONERADO
-            </span>
-            <span className="col-lg-12">N° REGISTRO DE LA SAG</span>
+          <div className="containerShipping2">
+            <div className="row">
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">N° ORDEN DE COMPRA EXENTA</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">N° CONSTANCIA REGISTRO EXONERADO</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">N° REGISTRO DE LA SAG</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
+            </div>
           </div>
 
           <div className="col-12">
@@ -123,61 +142,110 @@ const BillContent = () => {
             <p className="text-center m-0 p-0">FIRMA AUTORIZADA</p>
           </div>
         </div>
+
         <div className="col-lg-6">
-          <div className="containerShipping2 pay-info-cont p-3">
+          <div className="containerShipping2 pay-info-cont">
             <span className="row">
-              <div className="col-lg-6">DESCUENTOS OTORGADOS L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">DESCUENTOS OTORGADOS L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">REBAJAS OTORGADAS L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">REBAJAS OTORGADAS L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">FLETE L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">FLETE L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">SUB-TOTAL L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">SUB-TOTAL L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">IMPORTE EXENTO L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">IMPORTE EXENTO L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">IMPORTE GRAVADO 18% L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">IMPORTE GRAVADO 18% L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">IMPORTE GRAVADO 15% L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">IMPORTE GRAVADO 15% L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">TASA ALÍCUOTA L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">TASA ALÍCUOTA L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">I.S.V 15% L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">I.S.V 15% L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">I.S.V 18% L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">I.S.V 18% L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">IMOPRTE EXONERADO L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">IMOPRTE EXONERADO L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
             <span className="row">
-              <div className="col-lg-6">TOTAL A PAGAR L.</div>
-              <div className="col-lg-6"></div>
+              <div className="col-lg-6 verticalLine">
+                <p className="p-bill-info">TOTAL A PAGAR L.</p>
+              </div>
+              <div className="col-lg-6">
+                <p className="p-bill-info"></p>
+              </div>
             </span>
           </div>
         </div>
       </div>
 
-      <div className="row">
+      <div className="row mt-4">
         <span>
           <p className="txt-num-fac">FACTURA N° 000-111-22-33 444444</p>
         </span>

@@ -88,11 +88,20 @@ const PDFBillCreator = ({ data, title }) => {
         <View style={styles.vRow}>
           <View style={styles.vCol}>
             <View style={styles.containerShipping}>
-              <Text style={styles.nText}>N° ORDEN DE COMPRA EXENTA</Text>
-              <Text style={styles.nText}>
-                N° CONSTANCIA DE REGISTRO DE EXONERADO
-              </Text>
-              <Text style={styles.nText}>N° REGISTRO DE LA SAG</Text>
+              <View style={styles.vRow}>
+                <View style={styles.vCol4L}>
+                  <Text style={styles.nText}>N° ORDEN DE COMPRA EXENTA</Text>
+                  <Text style={styles.nText}>
+                    N° CONSTANCIA REGISTRO EXONERADO
+                  </Text>
+                  <Text style={styles.nText}>N° REGISTRO DE LA SAG</Text>
+                </View>
+                <View style={styles.vCol4}>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                </View>
+              </View>
             </View>
 
             <View style={styles.vSign}>
@@ -101,18 +110,36 @@ const PDFBillCreator = ({ data, title }) => {
           </View>
           <View style={styles.vCol3}>
             <View style={styles.containerShipping}>
-              <Text style={styles.nText}>DESCUENTOS OTORGADOS L.</Text>
-              <Text style={styles.nText}>REBAJAS OTORGADAS L.</Text>
-              <Text style={styles.nText}>FLETE L.</Text>
-              <Text style={styles.nText}>SUB-TOTAL L.</Text>
-              <Text style={styles.nText}>IMPORTE EXENTO L.</Text>
-              <Text style={styles.nText}>IMPORTE GRAVADO 18% L.</Text>
-              <Text style={styles.nText}>IMPORTE GRAVADO 15% L.</Text>
-              <Text style={styles.nText}>TASA ALÍCUOTA L.</Text>
-              <Text style={styles.nText}>I.S.V 15% L.</Text>
-              <Text style={styles.nText}>I.S.V 18% L.</Text>
-              <Text style={styles.nText}>IMOPRTE EXONERADO L.</Text>
-              <Text style={styles.nText}>TOTAL A PAGAR L.</Text>
+              <View style={styles.vRow}>
+                <View style={styles.vColPayDescL}>
+                  <Text style={styles.nText}>DESCUENTOS OTORGADOS L.</Text>
+                  <Text style={styles.nText}>REBAJAS OTORGADAS L.</Text>
+                  <Text style={styles.nText}>FLETE L.</Text>
+                  <Text style={styles.nText}>SUB-TOTAL L.</Text>
+                  <Text style={styles.nText}>IMPORTE EXENTO L.</Text>
+                  <Text style={styles.nText}>IMPORTE GRAVADO 18% L.</Text>
+                  <Text style={styles.nText}>IMPORTE GRAVADO 15% L.</Text>
+                  <Text style={styles.nText}>TASA ALÍCUOTA L.</Text>
+                  <Text style={styles.nText}>I.S.V 15% L.</Text>
+                  <Text style={styles.nText}>I.S.V 18% L.</Text>
+                  <Text style={styles.nText}>IMOPRTE EXONERADO L.</Text>
+                  <Text style={styles.nText}>TOTAL A PAGAR L.</Text>
+                </View>
+                <View style={styles.vColPayDesc}>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}></Text>
+                </View>
+              </View>
             </View>
           </View>
         </View>
@@ -188,7 +215,7 @@ const styles = StyleSheet.create({
     borderWidth: "1",
     borderRadius: "10",
     borderColor: "black",
-    width: "90%",
+    width: "95%",
     marginTop: "10",
   },
   vCol: {
@@ -211,6 +238,44 @@ const styles = StyleSheet.create({
     marginBottom: "20",
     alignItems: "flex-end",
   },
+  vCol4: {
+    display: "flex",
+    flexDirection: "column",
+    width: "60%",
+    marginTop: "0",
+    marginBottom: "0",
+    marginLeft: "10",
+    marginRight: "10",
+  },
+  vCol4L: {
+    display: "flex",
+    flexDirection: "column",
+    width: "60%",
+    marginTop: "0",
+    marginBottom: "0",
+    marginLeft: "10",
+    marginRight: "10",
+    borderRight: "1",
+  },
+  vColPayDescL: {
+    display: "flex",
+    flexDirection: "column",
+    width: "50%",
+    marginTop: "0",
+    marginBottom: "0",
+    marginLeft: "10",
+    marginRight: "10",
+    borderRight: "1",
+  },
+  vColPayDesc: {
+    display: "flex",
+    flexDirection: "column",
+    width: "50%",
+    marginTop: "0",
+    marginBottom: "0",
+    marginLeft: "10",
+    marginRight: "10",
+  },
   vRow: {
     display: "flex",
     flexDirection: "row",
@@ -221,9 +286,6 @@ const styles = StyleSheet.create({
     borderTop: "1",
     borderTopStyle: "solid",
     borderTopColor: "black",
-  },
-  table: {
-    marginBottom: "10",
   },
 });
 
