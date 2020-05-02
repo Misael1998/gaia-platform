@@ -145,6 +145,15 @@ exports.newProduct = async (req, res) => {
 exports.getProductDetail = async (req, res) => {
   const { id } = req.params;
 
+  if (isNaN(id)) {
+    return errorResponse(
+      400,
+      "invalid id",
+      [{ msg: "id must be a number" }],
+      res
+    );
+  }
+
   try {
     request = await new mssql.Request()
       .input("id", mssql.Int, id)
