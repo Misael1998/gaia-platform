@@ -208,8 +208,45 @@ exports.getProductDetail = async (req, res) => {
 //@access   Private (Admin)
 exports.updateProduct = async (req, res) => {
   const { prices, productId, description, sarType } = req.body;
+  const transaction = new mssql.Transaction();
   try {
-    let request = await new mssql.Request()
+    let request;
+    if (prices) {
+      let ids = [];
+      if (!Array.isArray(prices)) {
+        return errorResponse(
+          400,
+          "bad request",
+          [{ err: "prices must be an array" }],
+          res
+        );
+      }
+      for (item of prices) {
+        if (!(item.companyType && item.price)) {
+          return errorResponse(
+            400,
+            "bad request",
+            [{ err: "prices must contain companyType & price fields" }],
+            res
+          );
+        }
+        if (item.price <= 0) {
+          return errorResponse(400, "bad request", [
+            { err: "price must be greater than 0" }
+          ]);
+        }
+        ids.push(item.companyType);
+      }
+      if (new Set(ids).size !== prices.length) {
+        return errorResponse(
+          400,
+          "bad request",
+          [{ err: "CompanyType cant be duplicate" }],
+          res
+        );
+      }
+    }
+    request = await new mssql.Request(transaction)
       .input("productId", mssql.Int, productId)
       .input("sarType", mssql.Int, sarType)
       .input("description", mssql.VarChar(200), description)
@@ -218,6 +255,7 @@ exports.updateProduct = async (req, res) => {
       .execute("SP_UPDATE_PRODUCT");
 
     if (request.output.msg !== "success") {
+      await transaction.rollback();
       return errorResponse(
         400,
         "bad request",
@@ -226,6 +264,27 @@ exports.updateProduct = async (req, res) => {
       );
     }
 
+    for (price of prices) {
+      request = await new mssql.Request(transaction)
+        .input("productId", mssql.Int, productId)
+        .input("companyType", mssql.Int, price.companyType)
+        .input("price", mssql.Float, price.price)
+        .output("msg", mssql.VarChar(20))
+        .output("err", mssql.VarChar(30))
+        .execute("SP_UPDATE_PRODUCT_PRICE");
+
+      if (request.output.msg !== "success") {
+        await transaction.rollback();
+        return errorResponse(
+          400,
+          "bad request",
+          [{ err: request.output.err }],
+          res
+        );
+      }
+    }
+
+    await transaction.commit();
     res.status(201).json({ msg: "product updated" });
   } catch (err) {
     console.log(err);
