@@ -1,4 +1,4 @@
-IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE;  
 GO  
 CREATE FUNCTION FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE (@requestId int, @user int)  
@@ -15,6 +15,7 @@ BEGIN
     declare @isValid int
     declare @state int
     declare @quantity int
+    declare @token varchar(150)
 
     insert into @products
     select  pr.name, 
@@ -60,7 +61,8 @@ BEGIN
         IF @isValid > 0
         BEGIN
             select @state = state from @control
-            IF @state = 1
+            select @token = url from @control
+            IF @state = 1 AND @token is not null
             BEGIN
                 delete from @products
                 insert into @products

@@ -1,4 +1,4 @@
-IF OBJECT_ID (N'getCompaniesNumber', N'FN') IS NOT NULL  
+IF OBJECT_ID (N'getCompaniesNumber') IS NOT NULL  
     DROP FUNCTION getCompaniesNumber;  
 GO
 CREATE FUNCTION getCompaniesNumber()  

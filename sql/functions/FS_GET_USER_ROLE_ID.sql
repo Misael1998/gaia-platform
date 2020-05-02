@@ -1,4 +1,4 @@
-IF OBJECT_ID (N'dbo.getUserRoleID', N'FN') IS NOT NULL  
+IF OBJECT_ID (N'dbo.getUserRoleID') IS NOT NULL  
     DROP FUNCTION getUserRoleID;  
 GO
 CREATE FUNCTION [dbo].[getUserRoleID](@userId int)  

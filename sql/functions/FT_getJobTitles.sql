@@ -1,4 +1,4 @@
-IF OBJECT_ID (N'FT_getJobtitles', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_getJobtitles') IS NOT NULL  
     DROP FUNCTION FT_getJobtitles;  
 GO
 create FUNCTION FT_getJobtitles()

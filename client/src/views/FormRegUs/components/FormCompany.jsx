@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { registerCompanyUser } from "../../../services/Register";
 import { selectSectors } from "../../../services/Sectors";
 import Spinner from "../../../components/Spinner";
+import { getCompanyTypes } from "../../../services/Data";
 
 const FormCompany = ({ history }) => {
   //Creando el state para leer los inputs:
@@ -27,6 +28,7 @@ const FormCompany = ({ history }) => {
   //State de los sectores
   const [sectors, handleSector] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [types, setTypes] = useState([]);
 
   //State para el error:
   const [error, handleError] = useState(false);
@@ -53,12 +55,21 @@ const FormCompany = ({ history }) => {
   } = infoCompany;
 
   useEffect(() => {
-    selectSectors()
-      .then((res) => {
-        handleSector(res);
+    const getData = async () => {
+      debugger;
+      try {
+        const sectors = await selectSectors();
+        handleSector(sectors);
+        const types = await getCompanyTypes();
+        setTypes(types);
         setLoading(false);
-      })
-      .catch((err) => console.log(err));
+      } catch (error) {
+        setLoading(false);
+        await Swal.fire('Error', 'Ocurrió un error al conectarse al servidor', 'error')
+        window.location.href = '/'
+      }
+    }
+    getData();
   }, []);
 
   useEffect(() => {
@@ -346,10 +357,11 @@ const FormCompany = ({ history }) => {
                   value={companyType}
                 >
                   <option value="0">Tipo de Compañía</option>
-                  <option type="number" value={parseInt("1")}>
-                    Restuarante
-                  </option>
-                  <option value={parseInt("2", 10)}>Hotel</option>
+                  {
+                    types.map(type => (
+                      <option key={type.id} value={type.id}>{type.name}</option>
+                    ))
+                  }
                 </select>
 
                 <span className="focus-input100"></span>
