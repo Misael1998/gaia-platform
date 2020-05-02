@@ -4,6 +4,7 @@ import Route from "../../modules/Route";
 import items from "../../constants/adminNavigation";
 import FormRegEmp from "./FormEmployee/components/FormRegEmp";
 import FormProduct from "./FormProduct/FormProduct";
+import ProductList from "./ProductList/ProductList";
 import FormProvider from './FormProvider/FormProvider';
 
 import Title from "../../components/Title";
@@ -26,7 +27,7 @@ const Portal = ({ match }) => {
         />
         <Route
           path={`${match.path}/formulario-productos`}
-          component={FormProduct}
+          component={ProductList}
           isPrivate
         />
 
