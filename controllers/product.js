@@ -191,7 +191,11 @@ exports.getProductDetail = async (req, res) => {
         price: pr.price
       };
     });
-    return res.send(product);
+
+    return res.status(200).json({
+      success: true,
+      data: product
+    });
   } catch (err) {
     console.log(err);
     return errorResponse(
@@ -285,7 +289,7 @@ exports.updateProduct = async (req, res) => {
     }
 
     await transaction.commit();
-    res.status(201).json({ msg: "product updated" });
+    res.status(201).json({ success: true, msg: "product updated" });
   } catch (err) {
     console.log(err);
     return errorResponse(
