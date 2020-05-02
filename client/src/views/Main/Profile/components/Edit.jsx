@@ -22,10 +22,22 @@ const Edit = ({ data }) => {
   //Funcion que captura los datos:
   const handleData = (e) => {
     handleError(false);
+    validarEmail();
+
     setSaveEdit({
       ...saveEdit,
       [e.target.name]: e.target.value,
     });
+  };
+
+  //Funcion para validar el correo:
+  const validarEmail = () => {
+    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (patron.test(document.getElementById("emailInput").value)) {
+      handleErrorEmail(false);
+    } else {
+      handleErrorEmail(true);
+    }
   };
 
   useEffect(() => {
@@ -51,40 +63,36 @@ const Edit = ({ data }) => {
       return;
     }
 
-    //validacion de correo
-    if (email.includes("@") === false) {
-      handleErrorEmail(true);
+    //condición si no hay problemas con el correo
+    if (errorEmail === false) {
+      updateEnterpriseData(email, phone, address)
+        .then((res) => {
+          Swal.fire(
+            "Datos Actualizados",
+            "Se han actualizados los datos exitosamente",
+            "success"
+          );
+          if (res === 1) {
+            window.location.reload();
+          } else {
+            Swal.fire(
+              "Datos sin Modificar",
+              "No se hicieron cambios en los datos",
+              "success"
+            );
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: error.title,
+            text: error.text,
+          });
+        });
       return;
     }
 
-
     handleError(false);
-
-    //Funcion que establecera los valores a editar traidos de la BD:
-    updateEnterpriseData(email, phone, address, contact_name, contact_number)
-      .then((res) => {
-        Swal.fire(
-          "Datos Actualizados",
-          "Se han actualizados los datos exitosamente",
-          "success"
-        );
-        if (res === 1) {
-          window.location.reload();
-        } else {
-          Swal.fire(
-            "Datos sin Modificar",
-            "No se hicieron cambios en los datos",
-            "success"
-          );
-        }
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: error.title,
-          text: error.text,
-        });
-      });
   };
 
   return (

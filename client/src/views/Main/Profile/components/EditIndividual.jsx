@@ -23,6 +23,7 @@ const EditIndividual = ({ data }) => {
   const handleData = (e) => {
     handleError(false);
     validarEmail();
+
     setSaveEdit({
       ...saveEdit,
       [e.target.name]: e.target.value,
@@ -56,6 +57,7 @@ const EditIndividual = ({ data }) => {
       return;
     }
 
+    //Condición si no existen problemas con el correo
     if (errorEmail === false) {
       updateIndividualData(email, phone, address)
         .then((res) => {
@@ -81,8 +83,6 @@ const EditIndividual = ({ data }) => {
             text: error.text,
           });
         });
-      return;
-
       return;
     }
 
