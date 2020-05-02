@@ -27,6 +27,6 @@ router.route("/").post(
 );
 
 router.route("/:id").get(auth, authorize("admin"), getProductDetail);
-router.route("/:id").put(auth, authorize("admin"), updateProduct);
+router.route("/").put(auth, authorize("admin"), updateProduct);
 
 module.exports = router;

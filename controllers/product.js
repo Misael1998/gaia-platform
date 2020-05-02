@@ -250,6 +250,7 @@ exports.updateProduct = async (req, res) => {
         );
       }
     }
+    await transaction.begin();
     request = await new mssql.Request(transaction)
       .input("productId", mssql.Int, productId)
       .input("sarType", mssql.Int, sarType)
