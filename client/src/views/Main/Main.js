@@ -50,6 +50,20 @@ const Main = ({ match }) => {
                 <div className='primary-color'>
                   <h4 className='text-white'>Mira nuestros ultimos post</h4>
                 </div>
+                <div
+                  className="fb-page"
+                  data-href="https://www.facebook.com/Pyflor"
+                  data-tabs="timeline"
+                  data-small-header="false"
+                  data-adapt-container-width="true"
+                  data-hide-cover="false"
+                >
+                  <blockquote
+                    cite="https://www.facebook.com/Pyflor"
+                    className="fb-xfbml-parse-ignore">
+                    <a href="https://www.facebook.com/Pyflor">Pyflor</a>
+                  </blockquote>
+                </div>
               </div>
 
             </div>
