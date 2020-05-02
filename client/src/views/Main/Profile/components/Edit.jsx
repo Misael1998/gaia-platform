@@ -63,9 +63,10 @@ const Edit = ({ data }) => {
       return;
     }
 
-    //condición si no hay problemas con el correo
+    //Condición si el correo no tiene ningún problema
     if (errorEmail === false) {
-      updateEnterpriseData(email, phone, address)
+      //Funcion que establecera los valores a editar traidos de la BD:
+      updateEnterpriseData(email, phone, address, contact_name, contact_number)
         .then((res) => {
           Swal.fire(
             "Datos Actualizados",
