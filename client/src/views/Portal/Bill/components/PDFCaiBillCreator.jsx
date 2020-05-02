@@ -18,7 +18,7 @@ import {
 import moment from "moment";
 import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
 
-const PDFBillCreator = ({ data, title }) => {
+const PDFCaiBillCreator = ({ data, title }) => {
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
       <Page size="RA3" wrap={false} style={styles.page}>
@@ -289,4 +289,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PDFBillCreator;
+export default PDFCaiBillCreator;

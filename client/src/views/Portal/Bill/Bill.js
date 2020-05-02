@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Title from "../../../components/Title";
-import BillContent from "./components/BillContent";
+import CaiBillContent from "./components/CaiBillContent";
+import ProBillContent from "./components/ProBillContent";
 import PDFBillView from "./components/PDFBillView";
 import { FaClipboardCheck } from "react-icons/fa";
 import { showRequestDetails } from "../../../services/RequestDetails";
@@ -12,6 +13,9 @@ const Bill = ({ match }) => {
 
   //State para guardar la info de la factura:
   const [billInfo, setBillInfo] = useState({});
+
+  //state para guardar el tipo de factura que es:
+  const [billType, setBillType] = useState(false);
 
   //Funcion para envarle la factura al cliente:
   const sendBill = () => {
@@ -28,6 +32,9 @@ const Bill = ({ match }) => {
       .catch((error) => {
         console.log("Ocurrio un error al conectar con el servidor");
       });
+
+    //Aqui se hace el cambio del contenido segun sea el tipo de la factura:
+    setBillType(false);
   }, []);
 
   if (showPDF) {
@@ -35,6 +42,7 @@ const Bill = ({ match }) => {
       <PDFBillView
         data={""}
         docTitle={"PILONES Y FLORED DE HONDURAS S.A. DE C.V"}
+        billType={billType}
       />
     );
   } else {
@@ -63,7 +71,7 @@ const Bill = ({ match }) => {
 
         <div className="col-lg-12 p-4">
           <div className="containerShipping2 p-2">
-            <BillContent />
+            {billType ? <CaiBillContent /> : <ProBillContent />}
           </div>
         </div>
       </div>

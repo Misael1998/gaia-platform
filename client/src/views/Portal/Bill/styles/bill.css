@@ -6,6 +6,8 @@
 .billHeader {
   width: 100%;
   margin: 0px 0px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .txt-h-b {
@@ -49,6 +51,17 @@
   border-color: black;
   width: auto;
   padding: 0px 15px 0px 10px;
+}
+
+.containerGreen {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: black;
+  width: auto;
+  padding: 0px 15px 0px 10px;
+  background-color: #27ae60 !important;
+  color: white;
 }
 
 .p-main {

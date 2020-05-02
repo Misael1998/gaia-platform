@@ -1,14 +1,22 @@
 import React from "react";
 import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
-import PDFBillCreator from "./PDFBillCreator";
-import BillContent from "./BillContent";
+import PDFCaiBillCreator from "./PDFCaiBillCreator";
+import PDFProBillCreator from "./PDFProBillCreator";
 
-const PDFBillView = ({ data, docTitle }) => {
-  return (
-    <PDFViewer style={styles.viewer}>
-      <PDFBillCreator data={data} title={docTitle} />
-    </PDFViewer>
-  );
+const PDFBillView = ({ data, docTitle, billType }) => {
+  if (billType) {
+    return (
+      <PDFViewer style={styles.viewer}>
+        <PDFCaiBillCreator data={data} title={docTitle} />
+      </PDFViewer>
+    );
+  } else {
+    return (
+      <PDFViewer style={styles.viewer}>
+        <PDFProBillCreator data={data} title={docTitle} />
+      </PDFViewer>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
