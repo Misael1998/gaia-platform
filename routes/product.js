@@ -29,7 +29,7 @@ router.route("/").post(
 
 router.route("/products-admin").get(auth, authorize("admin"), productsAdmin);
 
-module.exports = router;
+
 router.route("/:id").get(auth, authorize("admin"), getProductDetail);
 router.route("/").put(auth, authorize("admin"), updateProduct);
 
