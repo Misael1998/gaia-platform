@@ -22,8 +22,6 @@ router.route("/").post(
   newProduct
 );
 
-router
-  .route("/:id")
-  .get(auth, authorize("admin", "employee"), getProductDetail);
+router.route("/:id").get(auth, authorize("admin"), getProductDetail);
 
 module.exports = router;
