@@ -5,7 +5,6 @@ const mssql = require("mssql");
 //@desc     Save a new product
 //@route    POST    /api/newproduct
 //@access   Private (Admin)
-
 exports.newProduct = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -137,5 +136,60 @@ exports.newProduct = async (req, res) => {
       success: false,
       msg: "Server Error"
     });
+  }
+};
+
+//@desc     Get products details
+//@route    GET    /api/product/:id
+//@access   Private (Admin, Employee)
+exports.getProductDetail = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    request = await new mssql.Request()
+      .input("id", mssql.Int, id)
+      .query("select * from FT_GET_PRODUCT_BY_ID(@id)");
+
+    const data = request.recordset;
+    if (data.length === 0) {
+      return errorResponse(
+        400,
+        "Product not found",
+        [{ err: "no record for prodruct" }],
+        res
+      );
+    }
+
+    let product = [
+      ...new Set(
+        data.map(pr => {
+          return JSON.stringify({
+            productId: pr.productId,
+            name: pr.name,
+            description: pr.description,
+            sarId: pr.sarId,
+            sarType: pr.sarType
+          });
+        })
+      )
+    ];
+
+    product = JSON.parse(product);
+    product.prices = data.map(pr => {
+      return {
+        companyId: pr.companyId,
+        companyDescription: pr.companyDescription,
+        price: pr.price
+      };
+    });
+    return res.send(product);
+  } catch (err) {
+    console.log(err);
+    return errorResponse(
+      500,
+      "server error",
+      [{ err: "internal server error" }],
+      res
+    );
   }
 };
