@@ -141,7 +141,7 @@ exports.newProduct = async (req, res) => {
 
 //@desc     Get products details
 //@route    GET    /api/product/:id
-//@access   Private (Admin, Employee)
+//@access   Private (Admin)
 exports.getProductDetail = async (req, res) => {
   const { id } = req.params;
 
@@ -191,7 +191,106 @@ exports.getProductDetail = async (req, res) => {
         price: pr.price
       };
     });
-    return res.send(product);
+
+    return res.status(200).json({
+      success: true,
+      data: product
+    });
+  } catch (err) {
+    console.log(err);
+    return errorResponse(
+      500,
+      "server error",
+      [{ err: "internal server error" }],
+      res
+    );
+  }
+};
+
+//@desc     Update product
+//@route    PUT    /api/product
+//@access   Private (Admin)
+exports.updateProduct = async (req, res) => {
+  const { prices, productId, description, sarType } = req.body;
+  const transaction = new mssql.Transaction();
+  try {
+    let request;
+    if (prices) {
+      let ids = [];
+      if (!Array.isArray(prices)) {
+        return errorResponse(
+          400,
+          "bad request",
+          [{ err: "prices must be an array" }],
+          res
+        );
+      }
+      for (item of prices) {
+        if (!(item.companyType && item.price)) {
+          return errorResponse(
+            400,
+            "bad request",
+            [{ err: "prices must contain companyType & price fields" }],
+            res
+          );
+        }
+        if (item.price <= 0) {
+          return errorResponse(400, "bad request", [
+            { err: "price must be greater than 0" }
+          ]);
+        }
+        ids.push(item.companyType);
+      }
+      if (new Set(ids).size !== prices.length) {
+        return errorResponse(
+          400,
+          "bad request",
+          [{ err: "CompanyType cant be duplicate" }],
+          res
+        );
+      }
+    }
+    await transaction.begin();
+    request = await new mssql.Request(transaction)
+      .input("productId", mssql.Int, productId)
+      .input("sarType", mssql.Int, sarType)
+      .input("description", mssql.VarChar(200), description)
+      .output("msg", mssql.VarChar(20))
+      .output("err", mssql.VarChar(20))
+      .execute("SP_UPDATE_PRODUCT");
+
+    if (request.output.msg !== "success") {
+      await transaction.rollback();
+      return errorResponse(
+        400,
+        "bad request",
+        [{ err: request.output.err }],
+        res
+      );
+    }
+
+    for (price of prices) {
+      request = await new mssql.Request(transaction)
+        .input("productId", mssql.Int, productId)
+        .input("companyType", mssql.Int, price.companyType)
+        .input("price", mssql.Float, price.price)
+        .output("msg", mssql.VarChar(20))
+        .output("err", mssql.VarChar(30))
+        .execute("SP_UPDATE_PRODUCT_PRICE");
+
+      if (request.output.msg !== "success") {
+        await transaction.rollback();
+        return errorResponse(
+          400,
+          "bad request",
+          [{ err: request.output.err }],
+          res
+        );
+      }
+    }
+
+    await transaction.commit();
+    res.status(201).json({ success: true, msg: "product updated" });
   } catch (err) {
     console.log(err);
     return errorResponse(

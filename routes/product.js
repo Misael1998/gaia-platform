@@ -3,7 +3,11 @@ const router = express.Router();
 const { check } = require("express-validator");
 const auth = require("../middleware/auth");
 const authorize = require("../middleware/authorize");
-const { newProduct, getProductDetail } = require("../controllers/product");
+const {
+  newProduct,
+  getProductDetail,
+  updateProduct
+} = require("../controllers/product");
 
 router.route("/").post(
   [
@@ -23,5 +27,6 @@ router.route("/").post(
 );
 
 router.route("/:id").get(auth, authorize("admin"), getProductDetail);
+router.route("/").put(auth, authorize("admin"), updateProduct);
 
 module.exports = router;
