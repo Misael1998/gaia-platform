@@ -22,6 +22,8 @@ const Edit = ({ data }) => {
   //Funcion que captura los datos:
   const handleData = (e) => {
     handleError(false);
+    validarEmail();
+
     setSaveEdit({
       ...saveEdit,
       [e.target.name]: e.target.value,
@@ -48,7 +50,6 @@ const Edit = ({ data }) => {
   //Funcion que manda los datos:
   const submitRequest = (e) => {
     e.preventDefault();
-    validarEmail();
 
     //Validacion:
     if (
@@ -62,39 +63,37 @@ const Edit = ({ data }) => {
       return;
     }
 
-    //validacion de correo
+    //Condición si el correo no tiene ningún problema
     if (errorEmail === false) {
-      handleErrorEmail(true);
+      //Funcion que establecera los valores a editar traidos de la BD:
+      updateEnterpriseData(email, phone, address, contact_name, contact_number)
+        .then((res) => {
+          Swal.fire(
+            "Datos Actualizados",
+            "Se han actualizados los datos exitosamente",
+            "success"
+          );
+          if (res === 1) {
+            window.location.reload();
+          } else {
+            Swal.fire(
+              "Datos sin Modificar",
+              "No se hicieron cambios en los datos",
+              "success"
+            );
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: error.title,
+            text: error.text,
+          });
+        });
       return;
     }
 
     handleError(false);
-
-    //Funcion que establecera los valores a editar traidos de la BD:
-    updateEnterpriseData(email, phone, address, contact_name, contact_number)
-      .then((res) => {
-        Swal.fire(
-          "Datos Actualizados",
-          "Se han actualizados los datos exitosamente",
-          "success"
-        );
-        if (res === 1) {
-          window.location.reload();
-        } else {
-          Swal.fire(
-            "Datos sin Modificar",
-            "No se hicieron cambios en los datos",
-            "success"
-          );
-        }
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: error.title,
-          text: error.text,
-        });
-      });
   };
 
   return (

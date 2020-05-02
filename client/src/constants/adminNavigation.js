@@ -3,6 +3,7 @@ import { MdHome, MdExitToApp } from "react-icons/md";
 import { logout } from "../modules/helper";
 import { IoIosPerson } from "react-icons/io";
 import { FiPackage } from "react-icons/fi";
+import { FaTruckMoving } from 'react-icons/fa'
 
 const items = [
   {
@@ -15,13 +16,19 @@ const items = [
     name: "employees",
     label: "Empleados",
     icon: <IoIosPerson size={30} />,
-    link: "/admin/formEmp",
+    link: "/admin/formulario-empleado",
   },
   {
     name: "products",
     label: "Productos",
     icon: <FiPackage size={30} />,
-    link: "/admin/formProduct",
+    link: "/admin/formulario-productos",
+  },
+  {
+    name: "providers",
+    label: "Proveedores",
+    icon: <FaTruckMoving size={30} />,
+    link: "/admin/formulario-proveedores",
   },
   {
     name: "logout",

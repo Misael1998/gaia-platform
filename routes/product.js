@@ -3,7 +3,12 @@ const router = express.Router();
 const { check } = require("express-validator");
 const auth = require("../middleware/auth");
 const authorize = require("../middleware/authorize");
-const { newProduct, productsAdmin } = require("../controllers/product");
+const {
+    newProduct,
+    getProductDetail,
+    updateProduct,
+    productsAdmin
+} = require("../controllers/product");
 
 router.route("/").post(
     [
@@ -15,11 +20,17 @@ router.route("/").post(
             .isArray()
             .not()
             .isEmpty()
-        ], auth, authorize("admin")
+        ],
+        auth,
+        authorize("admin")
     ],
     newProduct
 );
 
 router.route("/products-admin").get(auth, authorize("admin"), productsAdmin);
+
+module.exports = router;
+router.route("/:id").get(auth, authorize("admin"), getProductDetail);
+router.route("/").put(auth, authorize("admin"), updateProduct);
 
 module.exports = router;

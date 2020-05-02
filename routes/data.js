@@ -54,7 +54,7 @@ router
     .route("/individualuser")
     .get(auth, authorize("individual"), getIndividualData);
 
-router.route('/companytypes').get(auth, authorize("employee", "admin"), companyTypes);
+router.route('/companytypes').get(companyTypes);
 
 
 module.exports = router;
