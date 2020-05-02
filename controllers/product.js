@@ -141,7 +141,7 @@ exports.newProduct = async (req, res) => {
 
 //@desc     Get products details
 //@route    GET    /api/product/:id
-//@access   Private (Admin, Employee)
+//@access   Private (Admin)
 exports.getProductDetail = async (req, res) => {
   const { id } = req.params;
 
@@ -192,6 +192,41 @@ exports.getProductDetail = async (req, res) => {
       };
     });
     return res.send(product);
+  } catch (err) {
+    console.log(err);
+    return errorResponse(
+      500,
+      "server error",
+      [{ err: "internal server error" }],
+      res
+    );
+  }
+};
+
+//@desc     Update product
+//@route    PUT    /api/product
+//@access   Private (Admin)
+exports.updateProduct = async (req, res) => {
+  const { prices, productId, description, sarType } = req.body;
+  try {
+    let request = await new mssql.Request()
+      .input("productId", mssql.Int, productId)
+      .input("sarType", mssql.Int, sarType)
+      .input("description", mssql.VarChar(200), description)
+      .output("msg", mssql.VarChar(20))
+      .output("err", mssql.VarChar(20))
+      .execute("SP_UPDATE_PRODUCT");
+
+    if (request.output.msg !== "success") {
+      return errorResponse(
+        400,
+        "bad request",
+        [{ err: request.output.err }],
+        res
+      );
+    }
+
+    res.status(201).json({ msg: "product updated" });
   } catch (err) {
     console.log(err);
     return errorResponse(
