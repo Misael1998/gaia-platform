@@ -26,7 +26,19 @@ DECLARE
     set @msj = ' ';
     set @error = ' ';
 
-/* Validation of fields EMPTY when ADD user*/
+/* Validation of fields EMPTY when ADD provider*/
+
+    SET @VNcount = (
+        SELECT count(*)
+        FROM TBL_PROVIDERS
+        where email = @email
+    );
+
+    IF @VNcount> 0 BEGIN
+        SET @msj = 'ERROR';
+        SET @error = 'EXISTING PROVIDER';
+        RETURN;
+    END;
 
     IF @name = ' ' OR @name IS NULL BEGIN
         SET @msj ='ERROR';
@@ -46,17 +58,6 @@ DECLARE
         RETURN;
     END;
 
-    SET @VNcount = (
-        SELECT count(*)
-        FROM TBL_PROVIDERS
-        where email = @email
-    );
-
-    IF @VNcount> 0 BEGIN
-        SET @msj = 'ERROR';
-        SET @error = 'EXISTING PROVIDER';
-        RETURN;
-    END;
 
     INSERT INTO TBL_PROVIDERS (
         name,

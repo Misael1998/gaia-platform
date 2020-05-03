@@ -12,7 +12,7 @@ router.route("/").post(
             check("name", "submit at least 2 characters for Name").isLength({
                 min: 2
             }),
-            check("phone", "submit a valid phone number").isNumeric(),
+            check("phone", "submit a valid phone number").exists(),
             check("email", "submit a valid email").isEmail(),
         ],
         auth,
