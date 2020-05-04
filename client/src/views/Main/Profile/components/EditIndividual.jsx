@@ -22,6 +22,7 @@ const EditIndividual = ({ data }) => {
   //Funcion que captura los datos:
   const handleData = (e) => {
     handleError(false);
+    validarEmail();
 
     setSaveEdit({
       ...saveEdit,
@@ -49,7 +50,6 @@ const EditIndividual = ({ data }) => {
   //Funcion que manda los datos:
   const submitRequest = (e) => {
     e.preventDefault();
-    validarEmail();
 
     //Validacion:
     if (email.trim() === "" || phone.trim() === "" || address.trim() === "") {
@@ -57,40 +57,36 @@ const EditIndividual = ({ data }) => {
       return;
     }
 
-    //validacion de correo
+    //Condición si no existen problemas con el correo
     if (errorEmail === false) {
-      handleErrorEmail(true);
+      updateIndividualData(email, phone, address)
+        .then((res) => {
+          Swal.fire(
+            "Datos Actualizados",
+            "Se han actualizados los datos exitosamente",
+            "success"
+          );
+          if (res === 1) {
+            window.location.reload();
+          } else {
+            Swal.fire(
+              "Datos sin Modificar",
+              "No se hicieron cambios en los datos",
+              "success"
+            );
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: error.title,
+            text: error.text,
+          });
+        });
       return;
     }
 
     handleError(false);
-
-    //Funcion que establecera los valores a editar traidos de la BD:
-
-    updateIndividualData(email, phone, address)
-      .then((res) => {
-        Swal.fire(
-          "Datos Actualizados",
-          "Se han actualizados los datos exitosamente",
-          "success"
-        );
-        if (res === 1) {
-          window.location.reload();
-        } else {
-          Swal.fire(
-            "Datos sin Modificar",
-            "No se hicieron cambios en los datos",
-            "success"
-          );
-        }
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: error.title,
-          text: error.text,
-        });
-      });
   };
 
   return (
@@ -113,7 +109,7 @@ const EditIndividual = ({ data }) => {
 
           {errorEmail ? (
             <p className="alert alert-danger error-p text-white">
-              El correo ingresado no es valido!!!
+              El correo ingresado no es válido!!!
             </p>
           ) : null}
 

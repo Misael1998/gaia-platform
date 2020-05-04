@@ -6,6 +6,7 @@ import "../../../styles/fonts/Linearicons-Free-v1.0.0/icon-font.min.css";
 import Swal from "sweetalert2";
 import Title from "../../../components/Title";
 import { FaWpforms } from "react-icons/fa";
+import { insertProvider } from '../../../services/Providers'
 
 const FormRegEmp = ({ history }) => {
 
@@ -53,7 +54,7 @@ const FormRegEmp = ({ history }) => {
     };
 
     //Funcion para el boton de login:
-    const submitEmp = e => {
+    const submitProvider = e => {
         e.preventDefault();
         validarEmail();
 
@@ -68,7 +69,18 @@ const FormRegEmp = ({ history }) => {
         }
 
         handleError(false);
-
+        const payload = { name, phone, email };
+        insertProvider(payload)
+            .then(res => {
+                Swal.fire('Proveedor registrado', 'Se registró el proveedor con exito', 'success');
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: "error",
+                    title: error.title,
+                    text: error.text,
+                });
+            })
 
         //Reiniciando el state:
         setName('');
@@ -84,7 +96,7 @@ const FormRegEmp = ({ history }) => {
             </div>
             <div className="container-login100 min-height p-t-0">
                 <div className="wrap-login300 p-l-20 p-t-0 p-r-20 p-b-30">
-                    <form className="login100-form validate-form" onSubmit={submitEmp}>
+                    <form className="login100-form validate-form" onSubmit={submitProvider}>
                         <span className="login100-form-title p-b-25"></span>
 
                         {/*Primera Columna*/}
@@ -145,7 +157,8 @@ const FormRegEmp = ({ history }) => {
                                     type="phone"
                                     name="phone"
                                     placeholder="Telefono"
-                                    onChange={(e)=>setPhone(e.target.value)}
+                                    maxLength={8}
+                                    onChange={(e) => setPhone(e.target.value)}
                                     value={phone}
                                 />
                                 <span className="focus-input100"></span>

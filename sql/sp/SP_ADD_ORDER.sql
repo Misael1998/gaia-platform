@@ -234,6 +234,9 @@ DECLARE
         WHERE  idOrders=@VN_TempID_order
         AND idProviders=@idProviders
 
+        INSERT INTO TBL_REFFERALS
+        VALUES(@emissionDate,@VN_TempID_order)
+
         INSERT INTO TBL_ORDER_DETAILS(
             idSupplies,
             idOrders,

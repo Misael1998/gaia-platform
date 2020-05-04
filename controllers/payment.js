@@ -126,18 +126,15 @@ exports.pay = async (req, res) => {
     };
   });
 
-  
   const amount = {
     currency: "USD",
     total: items.reduce(
-      (total, item) => (total += (item.price * item.quantity)),
+      (total, item) => (total += item.price * item.quantity),
       0
     )
   };
 
   amount.total = amount.total.toFixed(2);
-  
- 
 
   //formating request to paypal standar
   const createPaymentJson = {
@@ -185,33 +182,14 @@ exports.pay = async (req, res) => {
       );
     }
 
-    let sp;
-    if (role === "individual") {
-      sp = "SP_CREATE_BILL_INDIVIDUAL";
-    }
-
-    if (role === "enterprise") {
-      sp = "SP_CREATE_BILL_ENTERPRISE";
-    }
-
-    if (!sp) {
-      errorResponse(
-        500,
-        "server error",
-        [{ msg: "role has been modified, cant proceed with payment" }],
-        res
-      );
-    }
-
     //creating a new bill in db with paypal payment parameters
     query = await new mssql.Request()
       .input("requestId", mssql.Int, userRequest)
-      .input("userId", mssql.Int, userId)
       .input("urlWithToken", mssql.VarChar(150), tokenUrl)
       .input("idPayment", mssql.VarChar(150), payment.result.id)
       .output("msg", mssql.VarChar(20))
       .output("err", mssql.VarChar(20))
-      .execute(`${sp}`);
+      .execute(`SP_UPDATE_PAYPAL`);
 
     if (query.output.msg !== "success") {
       return errorResponse(
