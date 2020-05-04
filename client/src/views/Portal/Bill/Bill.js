@@ -4,7 +4,8 @@ import CaiBillContent from "./components/CaiBillContent";
 import ProBillContent from "./components/ProBillContent";
 import PDFBillView from "./components/PDFBillView";
 import { FaClipboardCheck } from "react-icons/fa";
-import { showRequestDetails } from "../../../services/RequestDetails";
+import { getBillInfo } from "../../../services/BillInfo";
+import { getBillType } from "../../../services/BillType";
 import "./styles/bill.css";
 
 const Bill = ({ match }) => {
@@ -25,26 +26,32 @@ const Bill = ({ match }) => {
   //Funcion para traer la data para mostrar en la factura:
   useEffect(() => {
     const { id } = match.params;
-    showRequestDetails(id)
+
+    //Aqui se hace el cambio del contenido segun sea el tipo de la factura:
+    getBillType(id)
+      .then((res) => {
+        if (res === "c") {
+          setBillType(true);
+        } else {
+          setBillType(false);
+        }
+      })
+      .catch((error) => {
+        console.log("Ocurrio un error al conectar con el servidor");
+      });
+
+    //Obteniendo la informacion de la factura:
+    getBillInfo(id)
       .then((res) => {
         setBillInfo(res);
       })
       .catch((error) => {
         console.log("Ocurrio un error al conectar con el servidor");
       });
-
-    //Aqui se hace el cambio del contenido segun sea el tipo de la factura:
-    setBillType(false);
   }, []);
 
   if (showPDF) {
-    return (
-      <PDFBillView
-        data={""}
-        docTitle={"PILONES Y FLORED DE HONDURAS S.A. DE C.V"}
-        billType={billType}
-      />
-    );
+    return <PDFBillView data={""} billType={billType} />;
   } else {
     return (
       <div className="row p-main">
@@ -71,7 +78,11 @@ const Bill = ({ match }) => {
 
         <div className="col-lg-12 p-4">
           <div className="containerShipping2 p-2">
-            {billType ? <CaiBillContent /> : <ProBillContent />}
+            {billType ? (
+              <CaiBillContent billInfo={billInfo} />
+            ) : (
+              <ProBillContent billInfo={billInfo} />
+            )}
           </div>
         </div>
       </div>
