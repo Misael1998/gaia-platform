@@ -1,4 +1,4 @@
-IF OBJECT_ID (N'F_Get_Supplies_Inventory', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'F_Get_Supplies_Inventory') IS NOT NULL  
     DROP FUNCTION F_Get_Supplies_Inventory;  
 GO
 CREATE FUNCTION F_Get_Supplies_Inventory ()  
