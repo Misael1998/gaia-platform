@@ -1,6 +1,10 @@
 const sendEmail = require("../utils/sendEmail.js");
 const errorResponse = require("../utils/errorResponse");
 
+
+//@desc     Send bill via email
+//@route    post     /api/bills
+//@access   Private 
 exports.sendBill = async (req, res) => {
   if (
     process.env.NODE_ENV === "development" ||
