@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 
 const role = sessionStorage.getItem("role");
-console.log("El rol de este usuario es: ", role);
 
 const ShippingDetails = ({ match }) => {
   const [requestDetail, setRequestDetail] = useState({});
