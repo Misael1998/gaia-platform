@@ -1,4 +1,5 @@
 const express = require("express");
+const fileupload = require('express-fileupload');
 require("dotenv").config({ path: "./config/config.env" });
 const cors = require("cors");
 const db = require("./config/db");
@@ -7,6 +8,7 @@ const path = require("path");
 const server = express();
 
 //init middleware
+server.use(fileupload());
 server.use(express.json({ extended: false }));
 server.use(cors());
 
@@ -19,6 +21,7 @@ const request = require("./routes/request");
 const employees = require("./routes/employees");
 const payment = require("./routes/payment");
 const product = require("./routes/product");
+const bills = require('./routes/bill');
 
 //mount routes
 server.use("/api/auth", auth);
@@ -29,6 +32,7 @@ server.use("/api/request", request);
 server.use("/api/employees", employees);
 server.use("/api/payment", payment);
 server.use("/api/product", product);
+server.use("/api/bills",bills);
 
 //init database
 db();
