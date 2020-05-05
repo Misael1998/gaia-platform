@@ -5,6 +5,7 @@ import Carousel from "react-bootstrap/Carousel";
 import { IoIosPerson } from "react-icons/io";
 import { getOrdersToday } from "../../../services/OrdersToday";
 import SessionStorageService from "../../../services/Storage";
+import Swal from "sweetalert2";
 import "./style/styleME.css";
 
 const MainEmployee = () => {
@@ -44,7 +45,12 @@ const MainEmployee = () => {
         setNumPed(res);
       })
       .catch((error) => {
-        console.log("Ocurrio un error con el servidor.");
+        Swal.fire({
+          icon: "error",
+          title: error.title,
+          text: error.text,
+        });
+        setNumPed(0);
       });
   }, []);
 
