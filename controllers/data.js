@@ -704,18 +704,19 @@ exports.companyTypes = async (req,res)=>{
 
 
 //@desc     Get  pro bill for clients 
-//@route    GET /api/data/probill/:id
+//@route    GET /api/data/bill/:id
 //@access   Private (Employee)
-exports.probill = async (req,res) => {
+exports.bill = async (req,res) => {
   const idRequests = req.params.id;
     try {
-      const request = await new mssql.Request()
+        const request = await new mssql.Request()
         .input("idRequests", mssql.Int, idRequests)
-        .query("SELECT * from FT_GET_PRO_BILL(@idRequests)");
+        .query("SELECT * from FT_GET_BILL(@idRequests)");
   
-      const data = request.recordset;
-  
-      if (data.length === 0) {
+        const type = request.recordset[0].typeBill;
+        const data = request.recordset;
+    
+      if (data.length === 0 || type =='none') {
         return errorResponse(
           404,
           "No data",
@@ -723,15 +724,17 @@ exports.probill = async (req,res) => {
           res
         );
       }
+      if (type==='P'){
       let dataReq = [
         ...new Set(
           data.map(dr => {
             return JSON.stringify({
-              numBill: dr.num_bill,
-              emissionDate: dr.emission_date,
-              nameClient:dr.nameClient,
-              subtotal: dr.sub_total,
-              total: dr.total
+            type:dr.typeBill,    
+            numBill: dr.num_bill,
+            emissionDate: dr.emission_date,
+            nameClient:dr.nameClient,
+            subtotal: dr.sub_total,
+            total: dr.total
             });
           })
         )
@@ -747,6 +750,38 @@ exports.probill = async (req,res) => {
         };
       });
       return res.send(dataReq);
+    }
+    if (type==='C'){
+        let dataReq = [
+            ...new Set(
+              data.map(dr => {
+                return JSON.stringify({
+                type:dr.typeBill, 
+                numBill: dr.num_bill,
+                emissionDate: dr.emission_date,
+                shipping: dr.shipping,
+                exent:dr.exent,
+                import:dr.import,
+                aliquotRate:dr.aliquot_rate,
+                nameClient:dr.nameClient,
+                subtotal: dr.sub_total,
+                total: dr.total
+                });
+              })
+            )
+          ];
+      
+          dataReq = JSON.parse(dataReq);
+          dataReq.products= data.map(dr => {
+            return {
+              nameProduct: dr.nameProduct,
+              quantity: dr.quantity,
+              price: dr.unit_price,
+              importTotal:dr.importeTotal
+            };
+          });
+          return res.send(dataReq);
+    }
     } catch (err) {
       console.log(err.message);
       return errorResponse(
@@ -757,99 +792,3 @@ exports.probill = async (req,res) => {
       );
     }
   };
-
-
-//@desc     Get  cai bill for clients 
-//@route    GET /api/data/caibill/:id
-//@access   Private (Employee)
-exports.caibill = async (req,res) => {
-  const idRequests = req.params.id;
-    try {
-      const request = await new mssql.Request()
-        .input("idRequests", mssql.Int, idRequests)
-        .query("SELECT * from FT_GET_CAI_BILL(@idRequests)");
-  
-      const data = request.recordset;
-      if (data.length === 0) {
-        return errorResponse(
-          404,
-          "No data",
-          [{ msg: "Cant find any data" }],
-          res
-        );
-      }
-      let dataReq = [
-        ...new Set(
-          data.map(dr => {
-            return JSON.stringify({
-              numBill: dr.num_bill,
-              emissionDate: dr.emission_date,
-              shipping: dr.shipping,
-              exent:dr.exent,
-              import:dr.import,
-              aliquotRate:dr.aliquot_rate,
-              nameClient:dr.nameClient,
-              subtotal: dr.sub_total,
-              total: dr.total
-            });
-          })
-        )
-      ];
-  
-      dataReq = JSON.parse(dataReq);
-      dataReq.products= data.map(dr => {
-        return {
-          nameProduct: dr.nameProduct,
-          quantity: dr.quantity,
-          price: dr.unit_price,
-          importTotal:dr.importeTotal
-        };
-      });
-      return res.send(dataReq);
-    } catch (err) {
-      console.log(err.message);
-      return errorResponse(
-        500,
-        "sever error",
-        [{ msg: "internal server error" }],
-        res
-      );
-    }
-  };
- 
-//@desc     Get  type bill 
-//@route    GET /api/data/billtype/:id
-//@access   Private (Employee)
-exports.billtype = async (req, res) => {
-  const idRequests = req.params.id;
-  try {
-    const request = await new mssql.Request()
-      .input("idRequests", mssql.Int, idRequests)
-      .query("select dbo.FN_GET_BILL_TYPE(@idRequests)");
-
-    const data = request.recordset;
-    if (data.length === 0  ) {
-      return errorResponse(
-        404,
-        "No data",
-        [{ msg: "Cant find any data" }],
-        res
-      );
-    }
-
-    return res.status(200).json({
-      success: true,
-      msg: " bill type",
-      data: data
-    });
-  } catch (err) {
-    console.log(err.message);
-    return errorResponse(
-      500,
-      "sever error",
-      [{ msg: "internal server error" }],
-      res
-    );
-  }
-};
-

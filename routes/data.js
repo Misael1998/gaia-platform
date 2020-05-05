@@ -24,9 +24,7 @@ const {
   categories,
   getIndividualData,
   companyTypes,
-  caibill,
-  probill,
-  billtype
+  bill,
 } = require("../controllers/data");
 
 router.route("/supplies").get(auth, supplies);
@@ -34,7 +32,7 @@ router.route("/sectors").get(sectors);
 router.route("/providers").get(auth, providers);
 router.route("/providers/:id").get(auth, getProvider);
 router.route("/sartype").get(sartype);
-router.route("/inventory").get(inventory);
+router.route("/inventory").get(auth, authorize("employee"),inventory);
 router.route("/employees").get(employees);
 router.route("/products/:id").get(individualProduct);
 router.route("/refferals").get(auth, refferals);
@@ -59,14 +57,8 @@ router
 
 router.route('/companytypes').get(companyTypes);
 router
-  .route("/caibill/:id")
-  .get(auth, authorize("employee"), caibill);
-router
-  .route("/probill/:id")
-  .get(auth, authorize("employee"), probill);
-router
-  .route("/billtype/:id")
-  .get(auth, authorize("employee"), billtype);
+  .route("/bill/:id")
+  .get(auth, authorize("employee"), bill);
 
 
 module.exports = router;
