@@ -146,6 +146,95 @@ AS
     RETURN 
 GO
 
+-- Create a new stored procedure called 'SP_ADD_NEW_PROVIDER' in schema 'dbo'
+-- Drop the stored procedure if it already exists
+IF EXISTS (
+SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+WHERE SPECIFIC_SCHEMA = N'dbo'
+    AND SPECIFIC_NAME = N'SP_ADD_NEW_PROVIDER'
+    AND ROUTINE_TYPE = N'PROCEDURE'
+)
+DROP PROCEDURE dbo.SP_ADD_NEW_PROVIDER
+GO
+-- Create the stored procedure in the specified schema
+CREATE PROCEDURE dbo.SP_ADD_NEW_PROVIDER(
+    @name VARCHAR(45),
+    @phone VARCHAR(12),
+    @email VARCHAR(150),
+    @msj VARCHAR  (50) out,
+    @error VARCHAR (100) out
+    )
+AS
+BEGIN
+DECLARE
+    @VNcount int,
+    @VProvider int;
+    set @VNcount = 0;
+    set @msj = ' ';
+    set @error = ' ';
+
+/* Validation of fields EMPTY when ADD provider*/
+
+    SET @VNcount = (
+        SELECT count(*)
+        FROM TBL_PROVIDERS
+        where email = @email
+    );
+
+    IF @VNcount> 0 BEGIN
+        SET @msj = 'ERROR';
+        SET @error = 'EXISTING PROVIDER';
+        RETURN;
+    END;
+
+    IF @name = ' ' OR @name IS NULL BEGIN
+        SET @msj ='ERROR';
+        SET @error = 'EMPTY FIELD';
+        RETURN;
+    END;
+
+    IF @phone = ' ' OR @phone IS NULL BEGIN
+        SET @msj ='ERROR';
+        SET @error = 'EMPTY FIELD';
+        RETURN;
+    END;
+
+    IF @email = ' ' OR @email IS NULL BEGIN
+        SET @msj = 'ERROR';
+        SET @error = 'EMPTY FIELD';
+        RETURN;
+    END;
+
+
+    INSERT INTO TBL_PROVIDERS (
+        name,
+        phone_contact,
+        email
+    )
+    VALUES(
+        @name,
+        @phone,
+        @email
+    );
+
+    SET @VProvider =(
+        SELECT MAX(idProviders)
+        From TBL_PROVIDERS where
+        @email=email
+    );
+    IF @VProvider IS NULL BEGIN
+        SET @msj = 'ERROR';
+        SET @error = 'PROVIDER REGISTRATION ERROR';
+        RETURN;
+    END
+    ELSE BEGIN
+        SET @msj = 'SUCCESS';
+        SET @error = 'NONE';
+    END;
+END;
+GO
+
 -- Create a new stored procedure called 'SP_ADD_ORDER' in schema 'dbo'
 -- Drop the stored procedure if it already exists
 IF EXISTS (
@@ -381,6 +470,9 @@ DECLARE
                total = @VN_total_TEMP
         WHERE  idOrders=@VN_TempID_order
         AND idProviders=@idProviders
+
+        INSERT INTO TBL_REFFERALS
+        VALUES(@emissionDate,@VN_TempID_order)
 
         INSERT INTO TBL_ORDER_DETAILS(
             idSupplies,
@@ -910,7 +1002,7 @@ if @hasGrass > 0
             (select id
             from @idBill),
             @total,
-            @total
+            @total + (@total * 0.15)
         )
     INSERT INTO [pyflor].[dbo].[BILL_HAS_STATE]
         (
@@ -971,7 +1063,7 @@ VALUES
         (select id
         from @idBill),
         @total,
-        @total,
+        @total + (@total * 0.15),
         'factura proforma'
     )
 INSERT INTO [pyflor].[dbo].[BILL_HAS_STATE]
@@ -1090,7 +1182,7 @@ if @hasGrass > 0
             (select id
             from @idBill),
             @total,
-            @total
+            @total + (@total * 0.15)
         )
     INSERT INTO [pyflor].[dbo].[BILL_HAS_STATE]
         (
@@ -1151,7 +1243,7 @@ VALUES
         (select id
         from @idBill),
         @total,
-        @total,
+        @total + (@total * 0.15),
         'factura proforma'
     )
 INSERT INTO [pyflor].[dbo].[BILL_HAS_STATE]
@@ -2261,6 +2353,132 @@ AS
     WHERE idBill = @billId
     SET @msg = 'success'
     SET @err = 'none'
+    RETURN
+GO
+
+-- Create a new stored procedure called 'SP_UPDATE_PRODUCT' in schema 'dbo'
+-- Drop the stored procedure if it already exists
+IF EXISTS (
+SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+WHERE SPECIFIC_SCHEMA = N'dbo'
+    AND SPECIFIC_NAME = N'SP_UPDATE_PRODUCT'
+    AND ROUTINE_TYPE = N'PROCEDURE'
+)
+DROP PROCEDURE dbo.SP_UPDATE_PRODUCT
+GO
+-- Create the stored procedure in the specified schema
+CREATE PROCEDURE dbo.SP_UPDATE_PRODUCT
+    @productId INT,
+    @sarType INT,
+    @description VARCHAR(200),
+    @msg VARCHAR(20) OUTPUT,
+    @err VARCHAR(20) OUTPUT
+AS
+    declare @product INT = 0
+    declare @sar INT = 0
+    select @product = count(idProducts) 
+        FROM TBL_PRODUCTS
+        where idProducts = @productId
+    IF @product < 1
+    BEGIN
+        set @msg = 'cant find product'
+        set @err = 'no product for id'
+        RETURN
+    END;
+    IF @sarType is not NULL
+    BEGIN
+        select @sar = count(idSarTypes) 
+            FROM TBL_SAR_TYPES
+            WHERE idSarTypes = @sarType
+        IF @sar < 1
+        BEGIN
+            set @msg = 'invalid id'
+            set @err = 'invalid sarType id'
+            RETURN
+        END;
+        -- Update rows in table '[TBL_PRODUCTS]' in schema '[dbo]'
+        UPDATE [dbo].[TBL_PRODUCTS]
+        SET
+            [idSarTypes] = @sarType 
+        WHERE idProducts = @productId
+    END;
+    IF @description is not NULL
+    BEGIN
+        -- Update rows in table '[TBL_PRODUCTS]' in schema '[dbo]'
+        UPDATE [dbo].[TBL_PRODUCTS]
+        SET
+            [description] = @description
+        WHERE idProducts = @productId
+    END;
+    set @msg = 'success'
+    set @err = 'none'
+    RETURN
+GO
+
+-- Create a new stored procedure called 'SP_UPDATE_PRODUCT_PRICE' in schema 'dbo'
+-- Drop the stored procedure if it already exists
+IF EXISTS (
+SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+WHERE SPECIFIC_SCHEMA = N'dbo'
+    AND SPECIFIC_NAME = N'SP_UPDATE_PRODUCT_PRICE'
+    AND ROUTINE_TYPE = N'PROCEDURE'
+)
+DROP PROCEDURE dbo.SP_UPDATE_PRODUCT_PRICE
+GO
+-- Create the stored procedure in the specified schema
+CREATE PROCEDURE dbo.SP_UPDATE_PRODUCT_PRICE
+    @productId INT,
+    @companyType INT,
+    @price FLOAT,
+    @msg VARCHAR(20) OUTPUT,
+    @err VARCHAR(30) OUTPUT
+AS
+    declare @product int = 0
+    declare @company int = 0
+    select @product = count(idProducts) 
+        from TBL_PRODUCTS
+        where idProducts = @productId
+
+    IF @product = 0
+    BEGIN
+        set @msg = 'cant find product'
+        set @err = 'invalid product id'
+        RETURN
+    END;
+
+    select @company = count(idCompanyType)
+        from TBL_COMPANY_TYPE
+        where idCompanyType = @companyType
+
+    IF @company = 0
+    BEGIN
+        set @msg = 'cant find company'
+        set @err = 'invalid company id'
+        RETURN
+    END;
+
+    IF @price < 0 OR @price = 0
+    BEGIN
+        set @msg = 'invalid price'
+        set @err = 'price must be greater than 0'
+        RETURN
+    END;
+
+    -- Update rows in table '[TableName]' in schema '[dbo]'
+    UPDATE [dbo].[TBL_PRICES]
+    SET
+        [unit_price] = @price
+    WHERE idPrices = (
+        select p.idPrices from TBL_PRICES p
+        INNER JOIN TBL_PRODUCT_HAS_PRICES php on php.idPrice = p.idPrices
+        WHERE php.idProduct = @productId
+        AND php.idCompanyType = @companyType
+    )
+    
+    set @msg = 'success'
+    set @err = 'none'
     RETURN
 GO
 

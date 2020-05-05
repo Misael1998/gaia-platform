@@ -1,7 +1,57 @@
 
   USE pyflor
   GO
-  IF OBJECT_ID (N'dbo.getUserRoleID') IS NOT NULL  
+  IF OBJECT_ID (N'FN_GET_BILL_TYPE') IS NOT NULL
+    DROP FUNCTION [FN_GET_BILL_TYPE];
+GO
+CREATE FUNCTION [FN_GET_BILL_TYPE] 
+ (@idRequest INT)
+RETURNS varchar(10) -- P para probill y C para caibill
+AS
+BEGIN
+    DECLARE @count INT
+    DECLARE @type VARCHAR(10)
+
+    SET @type='none';
+
+
+    SET @count = (
+        SELECT COUNT(*)
+    FROM TBL_BILLS b
+        INNER JOIN TBL_PRO_BILL pb
+        ON pb.idBills=b.idBills
+    WHERE b.idRequests= @idRequest
+        )
+    IF (@count = 1 ) 
+        return 'P';
+
+    SET @count = (
+        SELECT COUNT(*)
+    FROM TBL_BILLS b
+        INNER JOIN TBL_CAI_BILL cb
+        ON cb.idBills=b.idBills
+    WHERE b.idRequests= @idRequest
+        )
+    IF (@count = 1 ) 
+        return 'C';
+    RETURN @type;
+
+END;
+GO
+
+IF OBJECT_ID (N'FS_GET_REQUEST_QT') IS NOT NULL  
+    DROP FUNCTION FS_GET_REQUEST_QT;  
+GO
+create function FS_GET_REQUEST_QT()
+returns INT
+as
+BEGIN
+    DECLARE @qt int
+    select @qt = count(idRequests) from TBL_REQUESTS
+    RETURN @qt
+END;
+GO
+IF OBJECT_ID (N'dbo.getUserRoleID') IS NOT NULL  
     DROP FUNCTION getUserRoleID;  
 GO
 CREATE FUNCTION [dbo].[getUserRoleID](@userId int)  
@@ -224,21 +274,22 @@ CREATE FUNCTION [FT_GET_PRODUCT_BY_ID] (@id int)
 RETURNS TABLE
 AS
 RETURN(
-    select  p.idProducts productId,
-        p.name name, 
-        p.[description] description,
-        php.idCompanyType companyId,
-        cp.name companyDescription,
-        ps.unit_price price,
-        st.idSarTypes sarId,
-        st.[description] sarType
-    FROM TBL_PRODUCTS p
+    select p.idProducts productId,
+    p.name name,
+    p.[description] description,
+    php.idCompanyType companyId,
+    cp.name companyDescription,
+    ps.unit_price price,
+    st.idSarTypes sarId,
+    st.[description] sarType
+FROM TBL_PRODUCTS p
     INNER JOIN TBL_PRODUCT_HAS_PRICES php on php.idProduct = p.idProducts
     INNER JOIN TBL_PRICES ps on ps.idPrices = php.idPrice
     INNER JOIN TBL_SAR_TYPES st on st.idSarTypes = p.idSarTypes
     INNER JOIN TBL_COMPANY_TYPE cp on cp.idCompanyType = php.idCompanyType
-    WHERE p.idProducts = @id
+WHERE p.idProducts = @id
 )
+GO
 IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL;  
 GO
@@ -339,6 +390,27 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID (N'FT_GET_PRODUCTS_ADMIN') IS NOT NULL  
+    DROP FUNCTION FT_GET_PRODUCTS_ADMIN;  
+GO
+CREATE FUNCTION [dbo].[FT_GET_PRODUCTS_ADMIN]()
+RETURNS TABLE
+AS
+RETURN
+(
+    select p.idProducts idProducts, p.name productName, p.description description,
+    pr.unit_price unitPrice, c.name category, st.description sarType,
+    p.productImage productImage, ct.name company
+from TBL_PRODUCTS p
+    inner join TBL_PRODUCT_HAS_PRICES php on p.idProducts=php.idProduct
+    inner join TBL_COMPANY_TYPE ct on ct.idCompanyType=php.idCompanyType
+    inner join TBL_PRICES pr on pr.idPrices = php.idPrice
+    inner join PRODUCTS_has_CATEGORIES phc on phc.idProducts=p.idProducts
+    inner join TBL_CATEGORIES c on c.idCategories = phc.idCategories
+    inner join TBL_SAR_TYPES st on st.idSarTypes=p.idSarTypes
+)
+
+GO
 IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE;  
 GO  
