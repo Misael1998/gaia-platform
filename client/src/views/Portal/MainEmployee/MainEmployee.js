@@ -3,8 +3,9 @@ import Title from "../../../components/Title";
 import CardHello from "./components/CardHello";
 import Carousel from "react-bootstrap/Carousel";
 import { IoIosPerson } from "react-icons/io";
+import { getOrdersToday } from "../../../services/OrdersToday";
 import SessionStorageService from "../../../services/Storage";
-//import "react-multi-carousel/lib/styles.css";
+import Swal from "sweetalert2";
 import "./style/styleME.css";
 
 const MainEmployee = () => {
@@ -38,7 +39,19 @@ const MainEmployee = () => {
   //Funcion que muestra el mensaje de bienvenida:
   useEffect(() => {
     hiFunction();
-    setNumPed(150);
+
+    getOrdersToday()
+      .then((res) => {
+        setNumPed(res);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Ocurrio un error al traer los pedidos realizados del día.",
+        });
+        setNumPed(0);
+      });
   }, []);
 
   return (
@@ -56,7 +69,7 @@ const MainEmployee = () => {
         <Carousel>
           <Carousel.Item>
             <img
-              className="d-block w- img-dim"
+              className="d-block w-100 img-dim"
               src={require("../../../assets/img/pyflor1.jpg")}
               alt="First slide"
             />
