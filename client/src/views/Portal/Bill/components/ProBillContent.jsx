@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../../../assets/img/logo.png";
 import "../styles/bill.css";
 import { Table } from "@david.kucsai/react-pdf-table";
 import moment from "moment";
 
 const ProBillContent = ({ billInfo }) => {
+  //State para guardar los productos
+  const [prod, setProd] = useState([]);
+
+  useEffect(() => {
+    setProd(billInfo.products);
+  }, []);
+
+  let cont = 0;
+
+  for (var i = 0; i < prod.length; i++) {
+    cont = cont + parseInt(prod[i].importTotal, 10);
+  }
+
   return (
     <div className="billHeader">
       <div className="row">
@@ -87,7 +100,7 @@ const ProBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">TOTAL L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info">{cont} Lps.</p>
               </div>
             </span>
           </div>

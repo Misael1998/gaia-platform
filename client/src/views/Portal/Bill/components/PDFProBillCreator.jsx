@@ -19,6 +19,19 @@ import moment from "moment";
 import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
 
 const PDFCaiBillCreator = ({ billInfo, title }) => {
+  //State para guardar los productos
+  const [prod, setProd] = useState([]);
+
+  useEffect(() => {
+    setProd(billInfo.products);
+  }, []);
+
+  let cont = 0;
+
+  for (var i = 0; i < prod.length; i++) {
+    cont = cont + parseInt(prod[i].importTotal, 10);
+  }
+
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
       <Page size="RA3" wrap={false} style={styles.page}>
@@ -48,7 +61,7 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
           </View>
         </View>
 
-        <Table style={styles.table}>
+        <Table style={styles.table} data={billInfo.products}>
           <TableHeader>
             <TableCell style={styles.headerText}>ARTÍCULO</TableCell>
             <TableCell style={styles.headerText}>CANTIDAD</TableCell>
@@ -56,14 +69,10 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
             <TableCell style={styles.headerText}>IMPORTE</TableCell>
           </TableHeader>
           <TableBody>
-            {billInfo.products.map((reg) => (
-              <TableRow>
-                <TableCell>{reg.nameProduct}</TableCell>
-                <TableCell>{reg.quantity} LPS.</TableCell>
-                <TableCell>{reg.price} LPS.</TableCell>
-                <TableCell>{reg.importTotal} LPS.</TableCell>
-              </TableRow>
-            ))}
+            <DataTableCell getContent={(r) => r.nameProduct} />
+            <DataTableCell getContent={(r) => r.quantity} />
+            <DataTableCell getContent={(r) => r.price + "Lps."} />
+            <DataTableCell getContent={(r) => r.importTotal + "Lps."} />
           </TableBody>
         </Table>
 
@@ -78,7 +87,7 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
                 </View>
                 <View style={styles.vColPayDesc}>
                   <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
+                  <Text style={styles.nText}>{cont} Lps.</Text>
                 </View>
               </View>
             </View>
