@@ -47,8 +47,8 @@ const MainEmployee = () => {
       .catch((error) => {
         Swal.fire({
           icon: "error",
-          title: error.title,
-          text: error.text,
+          title: "Error",
+          text: "Ocurrio un error al traer los pedidos realizados del día.",
         });
         setNumPed(0);
       });
