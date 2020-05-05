@@ -6,6 +6,7 @@ import FormRegEmp from "./FormEmployee/components/FormRegEmp";
 import FormProduct from "./FormProduct/FormProduct";
 import ProductList from "./ProductList/ProductList";
 import FormProvider from './FormProvider/FormProvider';
+import NDProducts from "./ProductList/Components/NDProducts"
 import Home from './Home'
 
 const Portal = ({ match }) => {
@@ -28,13 +29,23 @@ const Portal = ({ match }) => {
           isPrivate
         />
         <Route
-          path={`${match.path}/formulario-productos`}
+          path={`${match.path}/lista-productos`}
           component={ProductList}
+          isPrivate
+        />
+        <Route
+          path={`${match.path}/formulario-productos`}
+          component={FormProduct}
           isPrivate
         />
         <Route
           path={`${match.path}/formulario-proveedores`}
           component={FormProvider}
+          isPrivate
+        />
+        <Route
+          path={`${match.path}/productov`}
+          component={NDProducts}
           isPrivate
         />
       </div>

@@ -22,7 +22,7 @@ const items = [
     name: "products",
     label: "Productos",
     icon: <FiPackage size={30} />,
-    link: "/admin/formulario-productos",
+    link: "/admin/lista-productos",
   },
   {
     name: "providers",
