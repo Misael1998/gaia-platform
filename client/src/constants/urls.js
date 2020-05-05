@@ -29,6 +29,7 @@ export const URL_POST_NEW_PRODUCT = "/api/product";
 export const URL_GET_COMPANY_TYPES = "/api/data/companytypes";
 export const URL_POST_NEW_PROVIDER = "/api/provider"
 export const URL_GET_ALL_PRODUCTS_ADMIN = "/api/product/products-admin";
+export const URL_GET_CATEGORIES = "/api/data/categories";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = (token) =>

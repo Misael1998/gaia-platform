@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import {getCategories} from "../../../../services/Categories";
 
 const EditProducts = ({ data }) => {
   //State para almacenar los cambios:
@@ -13,6 +14,9 @@ const EditProducts = ({ data }) => {
 
   //State para el error:
   const [error, handleError] = useState(false);
+  //state para las categorías
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   //Funcion que captura los datos:
   const handleData = (e) => {
@@ -30,6 +34,16 @@ const EditProducts = ({ data }) => {
   useEffect(() => {
     setSaveEdit(data);
   }, []);
+
+    //función para traer las categorías
+    useEffect(() => {
+      getCategories()
+        .then((res) => {
+          setCategories(res);
+          setLoading(false);
+        })
+        .catch((err) => console.log("El error es:", err));
+    }, []);
 
   //Funcion que manda los datos:
   const submitRequest = (e) => {
@@ -105,9 +119,11 @@ const EditProducts = ({ data }) => {
             value={address}
           >
             <option value="0">Seleccione una Categoria</option>
-            <option value="1">Hierbas</option>
-            <option value="2">Verdura</option>
-            <option value="3">Plantas</option>
+            {
+                    categories.map(cat => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))
+                  }
           </select>
         </div>
 
