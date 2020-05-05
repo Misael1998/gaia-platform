@@ -34,5 +34,6 @@ export const URL_POST_RESET_PASSWORD = (token) =>
   `/api/auth/resetpassword/${token}`;
 export const URL_GET_PRODUCT_BY_ID = (id) => `/api/data/products/${id}`;
 export const URL_GET_REQUEST_DETAILS = (id) => `/api/request/${id}/details`;
-export const URL_GET_BILL_INFO = (id) => ``;
+export const URL_GET_CAI_BILL_INFO = (id) => ``;
+export const URL_GET_PRO_BILL_INFO = (id) => ``;
 export const URL_GET_BILL_TYPE = (id) => ``;

@@ -3,7 +3,7 @@ import logo from "../../../../assets/img/logo.png";
 import "../styles/bill.css";
 import { Table } from "@david.kucsai/react-pdf-table";
 
-const ProBillContent = ({ billInfo }) => {
+const ProBillContent = ({ ProBillInfo }) => {
   return (
     <div className="billHeader">
       <div className="row">
