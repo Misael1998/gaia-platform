@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import EditProducts from "./EditProducts";
 import NoneEditProducts from "./NoneEditProducts";
 
-
 const NDProducts = () => {
   //State para alternar entre modo editar y ver info:
 
@@ -49,44 +48,39 @@ const NDProducts = () => {
     setGoEdit(false);
   };
 
-  
-    return (
-      <div className="row justify-content-center mt-2">
-        <div className="container mt-5">
-          <Title
-            icon={<FiShoppingBag size={40} />}
-            title="Producto"
-          />
-        </div>
+  return (
+    <div className="row justify-content-center mt-2">
+      <div className="container mt-5">
+        <Title icon={<FiShoppingBag size={40} />} title="Producto" />
+      </div>
 
-        <div className="col-md-8 mt-3 containerShipping">
-          {goEdit ? (
-            <EditProducts data={data} />
-          ) : (
-            <NoneEditProducts data={data} />
-          )}
+      <div className="col-md-8 mt-3 containerShipping">
+        {goEdit ? (
+          <EditProducts data={data} />
+        ) : (
+          <NoneEditProducts data={data} />
+        )}
 
-          <div className="row justify-content-center mt-4">
-            <Link
-              to={'lista-productos'}
-              type="button"
-              className="btn btn-lg btn-success btn-perfil m-r-10 mb-4"
-            >
-              Regresar
-            </Link>
+        <div className="row justify-content-center mt-4">
+          <Link
+            to={"lista-productos"}
+            type="button"
+            className="btn btn-lg btn-success btn-perfil m-r-10 mb-4"
+          >
+            Regresar
+          </Link>
 
-            <button
-              onClick={goToEdit}
-              type="button"
-              className="btn btn-lg btn-success btn-edit m-l-10 mb-4"
-            >
-              Editar Información
-            </button>
-          </div>
+          <button
+            onClick={goToEdit}
+            type="button"
+            className="btn btn-lg btn-success btn-edit m-l-10 mb-4"
+          >
+            Editar Información
+          </button>
         </div>
       </div>
-    );
-  
+    </div>
+  );
 };
 
 export default NDProducts;

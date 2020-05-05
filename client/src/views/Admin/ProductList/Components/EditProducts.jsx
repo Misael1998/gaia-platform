@@ -1,9 +1,9 @@
-import React,{useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
-const EditProducts = ({data}) => {
-//State para almacenar los cambios:
-const [saveEdit, setSaveEdit] = useState({
+const EditProducts = ({ data }) => {
+  //State para almacenar los cambios:
+  const [saveEdit, setSaveEdit] = useState({
     name: "",
     lastname: "",
     email: "",
@@ -14,7 +14,6 @@ const [saveEdit, setSaveEdit] = useState({
   //State para el error:
   const [error, handleError] = useState(false);
 
-
   //Funcion que captura los datos:
   const handleData = (e) => {
     handleError(false);
@@ -24,8 +23,6 @@ const [saveEdit, setSaveEdit] = useState({
       [e.target.name]: e.target.value,
     });
   };
-
- 
 
   //Destructuting:
   const { email, phone, address } = saveEdit;
@@ -70,7 +67,6 @@ const [saveEdit, setSaveEdit] = useState({
     //       });
     //     });
     //   return;
-    
 
     handleError(false);
   };
@@ -80,10 +76,9 @@ const [saveEdit, setSaveEdit] = useState({
       className="form-group justify-content-center"
       onSubmit={submitRequest}
     >
-    <div className="row ">
+      <div className="row ">
         <div className="col-md-6 cl-sm-4 ">
-            
-        <label className="font-weight-bold mt-3">Nombre Producto</label>
+          <label className="font-weight-bold mt-3">Nombre Producto</label>
           <input
             type="text"
             name="productName"
@@ -93,7 +88,7 @@ const [saveEdit, setSaveEdit] = useState({
             value={address}
           />
 
-        <label className="font-weight-bold mt-3">Descripción</label>
+          <label className="font-weight-bold mt-3">Descripción</label>
           <input
             type="text"
             name="address"
@@ -103,22 +98,21 @@ const [saveEdit, setSaveEdit] = useState({
             value={address}
           />
 
-        <label className="font-weight-bold mt-3">Categoría</label>
-          <input
-            type="text"
-            name="address"
+          <label className="font-weight-bold mt-3">Categoría</label>
+          <select
             className="form-control inpt-edit"
-            placeholder="Categoría"
             onChange={handleData}
             value={address}
-          />
-
-          
+          >
+            <option value="0">Seleccione una Categoria</option>
+            <option value="1">Hierbas</option>
+            <option value="2">Verdura</option>
+            <option value="3">Plantas</option>
+          </select>
         </div>
 
         <div className="col-md-6 cl-sm-4">
-
-        <label className="font-weight-bold mt-3">Precio Hotel</label>
+          <label className="font-weight-bold mt-3">Precio Hotel</label>
           <input
             id="emailInput"
             type="number"
@@ -129,7 +123,7 @@ const [saveEdit, setSaveEdit] = useState({
             value={email}
           />
 
-        <label className="font-weight-bold mt-3">Precio Restaurante</label>
+          <label className="font-weight-bold mt-3">Precio Restaurante</label>
           <input
             type="number"
             name="address"
@@ -139,7 +133,7 @@ const [saveEdit, setSaveEdit] = useState({
             value={address}
           />
 
-        <label className="font-weight-bold mt-3">Precio Supermercado</label>
+          <label className="font-weight-bold mt-3">Precio Supermercado</label>
           <input
             type="number"
             name="address"
@@ -148,10 +142,8 @@ const [saveEdit, setSaveEdit] = useState({
             onChange={handleData}
             value={address}
           />
-
         </div>
-
-    </div>
+      </div>
 
       {error ? (
         <p className="alert alert-danger error-p text-white text-center mt-4">
@@ -163,6 +155,6 @@ const [saveEdit, setSaveEdit] = useState({
       </button>
     </form>
   );
-}
- 
+};
+
 export default EditProducts;
