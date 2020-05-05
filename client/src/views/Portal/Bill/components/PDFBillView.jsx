@@ -3,17 +3,17 @@ import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
 import PDFCaiBillCreator from "./PDFCaiBillCreator";
 import PDFProBillCreator from "./PDFProBillCreator";
 
-const PDFBillView = ({ CaiBillInfo, ProBillInfo, billType }) => {
+const PDFBillView = ({ billInfo, billType }) => {
   if (billType) {
     return (
       <PDFViewer style={styles.viewer}>
-        <PDFCaiBillCreator CaiBillInfo={CaiBillInfo} />
+        <PDFCaiBillCreator billInfo={billInfo} />
       </PDFViewer>
     );
   } else {
     return (
       <PDFViewer style={styles.viewer}>
-        <PDFProBillCreator ProBillInfo={ProBillInfo} />
+        <PDFProBillCreator billInfo={billInfo} />
       </PDFViewer>
     );
   }

@@ -5,11 +5,7 @@ import ProBillContent from "./components/ProBillContent";
 import PDFBillView from "./components/PDFBillView";
 import Spinner from "../../../components/Spinner";
 import { FaClipboardCheck } from "react-icons/fa";
-import {
-  getCaiBillInfo,
-  getProBillInfo,
-  getBillType,
-} from "../../../services/BillInfo";
+import { getBillInfo } from "../../../services/BillInfo";
 import "./styles/bill.css";
 import Swal from "sweetalert2";
 
@@ -17,11 +13,8 @@ const Bill = ({ match }) => {
   //State para mostrar el pdf:
   const [showPDF, setShowPDF] = useState(false);
 
-  //State para guardar la info de la factura cai:
-  const [CaiBillInfo, setCaiBillInfo] = useState({});
-
-  //State para guardar la info de la factura pro:
-  const [ProBillInfo, setProBillInfo] = useState({});
+  //State para guardar la informacion de la factura:
+  const [billInfo, setBillInfo] = useState({});
 
   //state para guardar el tipo de factura que es:
   const [billType, setBillType] = useState(false);
@@ -38,14 +31,9 @@ const Bill = ({ match }) => {
   useEffect(() => {
     const { id } = match.params;
 
-    //Aqui se hace el cambio del contenido segun sea el tipo de la factura:
-    getBillType(id)
+    getBillInfo(id)
       .then((res) => {
-        if (res === "c") {
-          setBillType(true);
-        } else {
-          setBillType(false);
-        }
+        console.log("El resultado de bill info es: ", res);
       })
       .catch((error) => {
         Swal.fire({
@@ -54,41 +42,13 @@ const Bill = ({ match }) => {
           text: "Ocurrio un problema al traer el tipo de factura.",
         });
       });
-
-    //Obteniendo la informacion de las facturas:
-    getCaiBillInfo(id)
-      .then((res) => {
-        setCaiBillInfo(res);
-        setLoading(false);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Ocurrio un problema al traer la información de la factura.",
-        });
-      });
-    getProBillInfo(id)
-      .then((res) => {
-        setProBillInfo(res);
-        setLoading(false);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Ocurrio un problema al traer la información de la factura.",
-        });
-      });
   }, []);
 
   if (loading) {
     return <Spinner />;
   } else {
     if (showPDF) {
-      return (
-        <PDFBillView CaiBillInfo={""} ProBillInfo={""} billType={billType} />
-      );
+      return <PDFBillView billInfo={billInfo} billType={billType} />;
     } else {
       return (
         <div className="row p-main">
@@ -116,9 +76,9 @@ const Bill = ({ match }) => {
           <div className="col-lg-12 p-4">
             <div className="containerShipping2 p-2">
               {billType ? (
-                <CaiBillContent CaiBillInfo={CaiBillInfo} />
+                <CaiBillContent billInfo={billInfo} />
               ) : (
-                <ProBillContent ProBillInfo={ProBillInfo} />
+                <ProBillContent billInfo={billInfo} />
               )}
             </div>
           </div>
