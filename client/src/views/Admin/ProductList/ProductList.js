@@ -1,5 +1,4 @@
 import React,{useState, useEffect} from "react";
-import Swal from "sweetalert2";
 import Title from "../../../components/Title";
 import Spinner from "../../../components/Spinner";
 import { MdShoppingBasket } from "react-icons/md";
@@ -49,7 +48,7 @@ const ProductList = ( ) => {
         <Title title="Productos" icon={<MdShoppingBasket size={40} />} />
         
         
-        <div className="offset-10 col-2 mt-4">
+        <div className="offset-10 col-2 mt-4 mb-3">
           <Link className="btn btn-success btn-block" to ={`formulario-productos`}>
               + Crear Nuevo Producto
           </Link>

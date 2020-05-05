@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Spinner from "../../../../components/Spinner";
 import Title from "../../../../components/Title";
 import { FiShoppingBag } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import EditProducts from "./EditProducts";
 import NoneEditProducts from "./NoneEditProducts";
 
@@ -14,15 +15,15 @@ const NDProducts = () => {
   //State para guardar los datos que vienen de la BD:
 
   const [data, setData] = useState({
-    name: "",
+    productName: "",
 
-    lastname: "",
+    description: "",
 
-    email: "",
+    category: "",
 
     address: "",
 
-    phone: "9734747",
+    phone: "",
   });
 
   /* useEffect(() => {
@@ -66,13 +67,13 @@ const NDProducts = () => {
           )}
 
           <div className="row justify-content-center mt-4">
-            <button
-              onClick={goToInfo}
+            <Link
+              to={'lista-productos'}
               type="button"
               className="btn btn-lg btn-success btn-perfil m-r-10 mb-4"
             >
               Regresar
-            </button>
+            </Link>
 
             <button
               onClick={goToEdit}
