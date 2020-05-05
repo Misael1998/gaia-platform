@@ -15,12 +15,16 @@
 }
 
 .container-card {
-  padding-left: 20%;
-  padding-right: 20%;
+  padding-left: 6%;
+  padding-right: 6%;
 }
 
 .card-hi {
   background-color: #58cc5f !important;
   border-width: 0.4rem;
   border-color: #008a09;
+}
+
+.card-text-cus {
+  font-size: 18px;
 }

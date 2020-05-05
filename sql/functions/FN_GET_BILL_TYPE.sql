@@ -34,4 +34,5 @@ BEGIN
     RETURN @type;
 
 END;
+
 GO
