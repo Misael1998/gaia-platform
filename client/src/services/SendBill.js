@@ -1,10 +1,15 @@
 import axios from "../modules/axios";
-import { URL_GET_BILL_INFO } from "../constants/urls";
+import { URL_POST_SEND_BILL } from "../constants/urls";
 
-export const getBillInfo = async (id) => {
+export const sendBill = async (file) => {
+  const payload = {
+    file,
+  };
+
   try {
-    const response = await axios.get(URL_GET_BILL_INFO(id));
-    if (response.status === 200) {
+    const response = await axios.post(URL_POST_SEND_BILL, payload);
+
+    if (response.status === 201) {
       return response.data;
     } else {
       throw new Error(response);

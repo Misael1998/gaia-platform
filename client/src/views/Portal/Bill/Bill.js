@@ -6,6 +6,7 @@ import PDFBillView from "./components/PDFBillView";
 import Spinner from "../../../components/Spinner";
 import { FaClipboardCheck } from "react-icons/fa";
 import { getBillInfo } from "../../../services/BillInfo";
+import { sendBill } from "../../../services/SendBill";
 import "./styles/bill.css";
 import Swal from "sweetalert2";
 
@@ -23,8 +24,23 @@ const Bill = ({ match }) => {
   const [loading, setLoading] = useState(true);
 
   //Funcion para envarle la factura al cliente:
-  const sendBill = () => {
+  const sendBillFn = () => {
     alert("Enviando la factura al cliente!!!");
+    sendBill(file)
+      .then((res) => {
+        Swal.fire(
+          "Envio Exitoso..",
+          "Se ha enviado la factura exitosamente",
+          "success"
+        );
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: error.title,
+          text: error.text,
+        });
+      });
   };
 
   //Funcion para traer la data para mostrar en la factura:
@@ -75,7 +91,7 @@ const Bill = ({ match }) => {
 
             <button
               className="btn btn-lg btn-success float-right mr-3"
-              onClick={() => sendBill()}
+              onClick={() => sendBillFn()}
             >
               Enviar al Cliente
             </button>
