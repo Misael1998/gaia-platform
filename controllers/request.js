@@ -339,3 +339,23 @@ exports.requestData = async (req, res, next) => {
     }
   }
 };
+
+exports.getRequestQT = async (req, res) => {
+  try {
+    const request = await new mssql.Request().query(
+      "select dbo.FS_GET_REQUEST_QT() quantity"
+    );
+    res.status(200).json({
+      success: true,
+      data: request.recordset[0]
+    });
+  } catch (err) {
+    console.log(err);
+    return errorResponse(
+      500,
+      "server error",
+      [{ err: "internal server error" }],
+      res
+    );
+  }
+};
