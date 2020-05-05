@@ -682,21 +682,113 @@ exports.getIndividualData = async(req, res) => {
 //@desc     Get all company types
 //@route    GET     /api/data/companytypes
 //@access   Private
-exports.companyTypes = async(req, res) => {
-    try {
-        const query = await new mssql.Request()
-            .query("select * from FT_COMPANY_TYPES()");
-        data = query.recordset;
-        return res.status(200).json({
-            success: true,
-            msg: "Company data",
-            data
-        })
-    } catch (e) {
-        console.error(e.message);
-        return errorResponse(
-            500,
-            "Server error", [{ msg: "Internal server error" }],
-            res);
-    }
+exports.companyTypes = async (req,res)=>{
+  try{
+    const query = await new mssql.Request()
+      .query("select * from FT_COMPANY_TYPES()");
+    data = query.recordset;
+    return res.status(200).json({
+      success:true,
+      msg:"Company data",
+      data
+    })
+  }catch(e){
+    console.error(e.message);
+    return errorResponse(
+      500,
+      "Server error",
+      [{msg:"Internal server error"}],
+      res);
+  }
 }
+
+
+//@desc     Get  pro bill for clients 
+//@route    GET /api/data/bill/:id
+//@access   Private (Employee)
+exports.bill = async (req,res) => {
+  const idRequests = req.params.id;
+    try {
+        const request = await new mssql.Request()
+        .input("idRequests", mssql.Int, idRequests)
+        .query("SELECT * from FT_GET_BILL(@idRequests)");
+  
+        const type = request.recordset[0].typeBill;
+        const data = request.recordset;
+    
+      if (data.length === 0 || type =='none') {
+        return errorResponse(
+          404,
+          "No data",
+          [{ msg: "Cant find any data" }],
+          res
+        );
+      }
+      if (type==='P'){
+      let dataReq = [
+        ...new Set(
+          data.map(dr => {
+            return JSON.stringify({
+            type:dr.typeBill,    
+            numBill: dr.num_bill,
+            emissionDate: dr.emission_date,
+            nameClient:dr.nameClient,
+            subtotal: dr.sub_total,
+            total: dr.total
+            });
+          })
+        )
+      ];
+  
+      dataReq = JSON.parse(dataReq);
+      dataReq.products= data.map(dr => {
+        return {
+          nameProduct: dr.nameProduct,
+          quantity: dr.quantity,
+          price: dr.unit_price,
+          importTotal:dr.importeTotal
+        };
+      });
+      return res.send(dataReq);
+    }
+    if (type==='C'){
+        let dataReq = [
+            ...new Set(
+              data.map(dr => {
+                return JSON.stringify({
+                type:dr.typeBill, 
+                numBill: dr.num_bill,
+                emissionDate: dr.emission_date,
+                shipping: dr.shipping,
+                exent:dr.exent,
+                import:dr.import,
+                aliquotRate:dr.aliquot_rate,
+                nameClient:dr.nameClient,
+                subtotal: dr.sub_total,
+                total: dr.total
+                });
+              })
+            )
+          ];
+      
+          dataReq = JSON.parse(dataReq);
+          dataReq.products= data.map(dr => {
+            return {
+              nameProduct: dr.nameProduct,
+              quantity: dr.quantity,
+              price: dr.unit_price,
+              importTotal:dr.importeTotal
+            };
+          });
+          return res.send(dataReq);
+    }
+    } catch (err) {
+      console.log(err.message);
+      return errorResponse(
+        500,
+        "sever error",
+        [{ msg: "internal server error" }],
+        res
+      );
+    }
+  };
