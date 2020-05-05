@@ -5,6 +5,22 @@ import { Table } from "@david.kucsai/react-pdf-table";
 import moment from "moment";
 
 const CaiBillContent = ({ billInfo }) => {
+  //State para guardar los productos
+  const [prod, setProd] = useState([]);
+
+  useEffect(() => {
+    setProd(billInfo.products);
+  }, []);
+
+  let cont = 0;
+  let isv15 = 0;
+
+  for (var i = 0; i < prod.length; i++) {
+    cont = cont + parseInt(prod[i].importTotal, 10);
+  }
+
+  isv15 = cont * 0.15;
+
   return (
     <div className="billHeader">
       <div className="row">
@@ -92,9 +108,9 @@ const CaiBillContent = ({ billInfo }) => {
             <tr>
               <th className="text-center">{reg.quantity}</th>
               <th className="text-center">{reg.nameProduct}</th>
-              <th className="text-center">{reg.price} LPS.</th>
+              <th className="text-center">{reg.price} Lps.</th>
               <th className="text-center"></th>
-              <th className="text-center">{reg.importTotal} LPS.</th>
+              <th className="text-center">{reg.importTotal} Lps.</th>
             </tr>
           ))}
 
@@ -102,9 +118,9 @@ const CaiBillContent = ({ billInfo }) => {
             <th className="text-center" colSpan="2">
               La Factura es beneficio de todos "EXIJALA"
             </th>
-            <th className="text-center">TOTAL L.</th>
+            <th className="text-center">TOTAL Lps.</th>
             <th className="text-center"></th>
-            <th className="text-center">Total LPS.</th>
+            <th className="text-center">{cont} Lps.</th>
           </tr>
         </tbody>
       </table>
@@ -151,7 +167,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">DESCUENTOS OTORGADOS L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -159,7 +175,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">REBAJAS OTORGADAS L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -167,7 +183,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">FLETE L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -175,7 +191,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">SUB-TOTAL L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -183,7 +199,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">IMPORTE EXENTO L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -191,7 +207,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">IMPORTE GRAVADO 18% L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -199,7 +215,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">IMPORTE GRAVADO 15% L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -207,7 +223,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">TASA ALÍCUOTA L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -215,7 +231,9 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">I.S.V 15% L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">
+                  {isv15.toFixed(2)} Lps.
+                </p>
               </div>
             </span>
             <span className="row">
@@ -223,7 +241,7 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">I.S.V 18% L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
             <span className="row">
@@ -231,15 +249,17 @@ const CaiBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">IMOPRTE EXONERADO L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+                <p className="p-bill-info text-center">0.00 Lps.</p>
               </div>
             </span>
-            <span className="row">
-              <div className="col-lg-6 verticalLine">
-                <p className="p-bill-info">TOTAL A PAGAR L.</p>
+            <span className="row hLine">
+              <div className="col-lg-6 verticalLine ">
+                <p className="p-bill-info pB">TOTAL A PAGAR L.</p>
               </div>
-              <div className="col-lg-6">
-                <p className="p-bill-info"></p>
+              <div className="col-lg-6 ">
+                <p className="p-bill-info text-center pB">
+                  {(isv15 + cont).toFixed(2)} Lps.
+                </p>
               </div>
             </span>
           </div>

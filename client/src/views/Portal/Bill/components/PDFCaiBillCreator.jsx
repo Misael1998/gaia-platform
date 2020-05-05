@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Page,
   View,
@@ -14,11 +14,28 @@ import {
   TableCell,
   TableBody,
   DataTableCell,
+  TableRow,
 } from "@david.kucsai/react-pdf-table";
 import moment from "moment";
-import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
+//import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
 
 const PDFCaiBillCreator = ({ billInfo, title }) => {
+  //State para guardar los productos
+  const [prod, setProd] = useState([]);
+
+  useEffect(() => {
+    setProd(billInfo.products);
+  }, []);
+
+  let cont = 0;
+  let isv15 = 0;
+
+  for (var i = 0; i < prod.length; i++) {
+    cont = cont + parseInt(prod[i].importTotal, 10);
+  }
+
+  isv15 = cont * 0.15;
+
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
       <Page size="RA3" wrap={false} style={styles.page}>
@@ -76,7 +93,7 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
           </View>
         </View>
 
-        <Table style={styles.table}>
+        <Table style={styles.table} data={billInfo.products}>
           <TableHeader>
             <TableCell style={styles.headerText}>CANT.</TableCell>
             <TableCell style={styles.headerText}>DESCRIPCIÓN</TableCell>
@@ -86,15 +103,24 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
             </TableCell>
             <TableCell style={styles.headerText}>TOTAL</TableCell>
           </TableHeader>
-          <TableBody>
-            {billInfo.products.map((reg) => (
-              <TableRow>
-                <TableCell>{reg.quantity}</TableCell>
-                <TableCell>{reg.nameProduct} LPS.</TableCell>
-                <TableCell></TableCell>
-                <TableCell>{reg.price} LPS.</TableCell>
-              </TableRow>
-            ))}
+          <TableBody style={styles.tBody}>
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.quantity}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.nameProduct}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.price + " Lps."}
+            />
+            <DataTableCell style={styles.infoCell} getContent={(r) => ""} />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.importTotal + "Lps."}
+            />
           </TableBody>
         </Table>
 
@@ -136,21 +162,28 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
                   <Text style={styles.nText}>I.S.V 15% L.</Text>
                   <Text style={styles.nText}>I.S.V 18% L.</Text>
                   <Text style={styles.nText}>IMOPRTE EXONERADO L.</Text>
-                  <Text style={styles.nText}>TOTAL A PAGAR L.</Text>
+                  <View>
+                    <Text style={styles.nText}>TOTAL A PAGAR L.</Text>
+                  </View>
                 </View>
+
                 <View style={styles.vColPayDesc}>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>{isv15.toFixed(2)} Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <View>
+                    <Text style={styles.text2}>
+                      {(isv15 + cont).toFixed(2)} Lps.
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -203,6 +236,11 @@ const styles = StyleSheet.create({
     padding: 5,
     textAlign: "center",
   },
+  text2: {
+    fontSize: 10,
+    padding: 5,
+    textAlign: "center",
+  },
   nText: {
     fontSize: 10,
     padding: 5,
@@ -222,6 +260,11 @@ const styles = StyleSheet.create({
   headerText2: {
     fontSize: 8,
     textAlign: "left",
+  },
+  infoCell: {
+    padding: 5,
+    fontSize: 10,
+    textAlign: "center",
   },
   containerShipping: {
     borderStyle: "solid",
@@ -296,6 +339,14 @@ const styles = StyleSheet.create({
   vSign: {
     marginTop: "150",
     alignItems: "center",
+    borderTop: "1",
+    borderTopStyle: "solid",
+    borderTopColor: "black",
+  },
+  tBody: {
+    flex: "1",
+  },
+  vHL: {
     borderTop: "1",
     borderTopStyle: "solid",
     borderTopColor: "black",
