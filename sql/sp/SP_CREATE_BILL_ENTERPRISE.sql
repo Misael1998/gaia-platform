@@ -90,7 +90,7 @@ if @hasGrass > 0
             (select id
             from @idBill),
             @total,
-            @total
+            @total + (@total * 0.15)
         )
     INSERT INTO [pyflor].[dbo].[BILL_HAS_STATE]
         (
@@ -151,7 +151,7 @@ VALUES
         (select id
         from @idBill),
         @total,
-        @total,
+        @total + (@total * 0.15),
         'factura proforma'
     )
 INSERT INTO [pyflor].[dbo].[BILL_HAS_STATE]

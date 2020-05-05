@@ -120,7 +120,10 @@ exports.pay = async (req, res) => {
   const items = products.map(product => {
     return {
       name: product.name,
-      price: (product.unit_price * process.env.CHNAGE_HNL_TO_USD).toFixed(2),
+      price: (
+        (product.unit_price + product.unit_price * 0.15) *
+        process.env.CHNAGE_HNL_TO_USD
+      ).toFixed(2),
       currency: "USD",
       quantity: product.quantity
     };
