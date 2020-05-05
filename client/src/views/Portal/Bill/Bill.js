@@ -34,6 +34,16 @@ const Bill = ({ match }) => {
     getBillInfo(id)
       .then((res) => {
         console.log("El resultado de bill info es: ", res);
+
+        if (res.type === "C") {
+          setBillType(true);
+        } else {
+          setBillType(false);
+        }
+
+        setBillInfo(res);
+
+        setLoading(false);
       })
       .catch((error) => {
         Swal.fire({

@@ -18,7 +18,7 @@ import {
 import moment from "moment";
 import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
 
-const PDFCaiBillCreator = ({ data, title }) => {
+const PDFCaiBillCreator = ({ billInfo, title }) => {
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
       <Page size="RA3" wrap={false} style={styles.page}>
@@ -34,12 +34,17 @@ const PDFCaiBillCreator = ({ data, title }) => {
 
         <View style={styles.vRow2}>
           <View style={styles.vCol2}>
-            <Text style={styles.nText}>PARA: Juan Perez</Text>
+            <Text style={styles.nText}>PARA: {billInfo.nameClient}</Text>
           </View>
           <View style={styles.vCol2}>
-            <Text style={styles.nText}>FACTURA #: 000-111-22-33 444444</Text>
-            <Text style={styles.nText}>FECHA: 1/5/2020</Text>
-            <Text style={styles.nText}>FECHA VENCIMIENTO: 3/5/2020</Text>
+            <Text style={styles.nText}>FACTURA #: {billInfo.numBill}</Text>
+            <Text style={styles.nText}>
+              FECHA: {moment(billInfo.emissionDate).format("DD/MM/YYYY")}
+            </Text>
+            <Text style={styles.nText}>
+              FECHA VENCIMIENTO:
+              {moment(billInfo.emissionDate).add(7, "d").format("DD/MM/YYYY")}
+            </Text>
           </View>
         </View>
 
@@ -50,7 +55,16 @@ const PDFCaiBillCreator = ({ data, title }) => {
             <TableCell style={styles.headerText}>PRECIO</TableCell>
             <TableCell style={styles.headerText}>IMPORTE</TableCell>
           </TableHeader>
-          <TableBody></TableBody>
+          <TableBody>
+            {billInfo.products.map((reg) => (
+              <TableRow>
+                <TableCell>{reg.nameProduct}</TableCell>
+                <TableCell>{reg.quantity} LPS.</TableCell>
+                <TableCell>{reg.price} LPS.</TableCell>
+                <TableCell>{reg.importTotal} LPS.</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
 
         <View style={styles.vRow}>

@@ -18,7 +18,7 @@ import {
 import moment from "moment";
 import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
 
-const PDFCaiBillCreator = ({ data, title }) => {
+const PDFCaiBillCreator = ({ billInfo, title }) => {
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
       <Page size="RA3" wrap={false} style={styles.page}>
@@ -41,9 +41,7 @@ const PDFCaiBillCreator = ({ data, title }) => {
             <Text style={styles.nText}>
               Banco Banpais Cuenta de Cheque: 015990008396
             </Text>
-            <Text style={styles.bText}>
-              CAI: XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX
-            </Text>
+            <Text style={styles.bText}>CAI #: {billInfo.numBill}</Text>
           </View>
           <View style={styles.vCol}>
             <Text style={styles.nText}>
@@ -61,13 +59,19 @@ const PDFCaiBillCreator = ({ data, title }) => {
 
         <View style={styles.vRow}>
           <View style={styles.vCol2}>
-            <Text style={styles.nText}>CLIENTE: Juan Perez</Text>
+            <Text style={styles.nText}>CLIENTE: {billInfo.nameClient}</Text>
             <Text style={styles.nText}>R.T.N: 0801-1900-112233</Text>
             <Text style={styles.nText}>DIRECCIÓN: Col. Las Uvas</Text>
           </View>
           <View style={styles.vCol2}>
-            <Text style={styles.nText}>FECHA DEL DÍA: 29/4/2020</Text>
-            <Text style={styles.nText}>FECHA DE VENCIMIENTO: 3/5/2020</Text>
+            <Text style={styles.nText}>
+              FECHA DEL DÍA:{" "}
+              {moment(billInfo.emissionDate).format("DD/MM/YYYY")}
+            </Text>
+            <Text style={styles.nText}>
+              FECHA DE VENCIMIENTO:{" "}
+              {moment(billInfo.emissionDate).add(7, "d").format("DD/MM/YYYY")}
+            </Text>
             <Text style={styles.nText}>VENDEDOR: PYFLOR</Text>
           </View>
         </View>
@@ -82,7 +86,16 @@ const PDFCaiBillCreator = ({ data, title }) => {
             </TableCell>
             <TableCell style={styles.headerText}>TOTAL</TableCell>
           </TableHeader>
-          <TableBody></TableBody>
+          <TableBody>
+            {billInfo.products.map((reg) => (
+              <TableRow>
+                <TableCell>{reg.quantity}</TableCell>
+                <TableCell>{reg.nameProduct} LPS.</TableCell>
+                <TableCell></TableCell>
+                <TableCell>{reg.price} LPS.</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
 
         <View style={styles.vRow}>
@@ -145,7 +158,7 @@ const PDFCaiBillCreator = ({ data, title }) => {
         </View>
 
         <View style={styles.vRow}>
-          <Text>FACTURA N° 000-111-22-33 444444</Text>
+          <Text>FACTURA N° {billInfo.numBill}</Text>
         </View>
       </Page>
     </Document>

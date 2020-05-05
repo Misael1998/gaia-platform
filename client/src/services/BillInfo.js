@@ -5,7 +5,7 @@ export const getBillInfo = async (id) => {
   try {
     const response = await axios.get(URL_GET_BILL_INFO(id));
     if (response.status === 200) {
-      return response.data.data;
+      return response.data;
     } else {
       throw new Error(response);
     }

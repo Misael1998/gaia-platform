@@ -2,8 +2,9 @@ import React from "react";
 import logo from "../../../../assets/img/logo.png";
 import "../styles/bill.css";
 import { Table } from "@david.kucsai/react-pdf-table";
+import moment from "moment";
 
-const ProBillContent = ({ ProBillInfo }) => {
+const ProBillContent = ({ billInfo }) => {
   return (
     <div className="billHeader">
       <div className="row">
@@ -20,23 +21,29 @@ const ProBillContent = ({ ProBillInfo }) => {
         <div className="col-lg-6 p-r-0">
           <span className="row">
             <label className="txt-info-c txt-b">PARA:</label>
-            <p className="txt-info-c col-lg-6 p-l-3 p-r-0">Juan Perez</p>
+            <p className="txt-info-c col-lg-6 p-l-3 p-r-0">
+              {billInfo.nameClient}
+            </p>
           </span>
         </div>
         <div className="col-lg-6 p-r-0">
           <span className="row">
             <label className="txt-info-c txt-b">FACTURA #:</label>
             <p className="txt-info-c col-lg-6 p-l-3 p-r-0">
-              000-111-22-33 444444
+              {billInfo.numBill}
             </p>
           </span>
           <span className="row">
             <label className="txt-info-c txt-b">FECHA:</label>
-            <p className="txt-info-c col-lg-6 p-l-3 p-r-0">1/5/2020</p>
+            <p className="txt-info-c col-lg-6 p-l-3 p-r-0">
+              {moment(billInfo.emissionDate).format("DD/MM/YYYY")}
+            </p>
           </span>
           <span className="row">
             <label className="txt-info-c txt-b">FECHA VENCIMIENTO:</label>
-            <p className="txt-info-c col-lg-6 p-l-3 p-r-0">3/5/2020</p>
+            <p className="txt-info-c col-lg-6 p-l-3 p-r-0">
+              {moment(billInfo.emissionDate).add(7, "d").format("DD/MM/YYYY")}
+            </p>
           </span>
         </div>
       </div>
@@ -51,18 +58,14 @@ const ProBillContent = ({ ProBillInfo }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th className="text-center">Tomate Cherry</th>
-            <th className="text-center">4</th>
-            <th className="text-center">20 LPS.</th>
-            <th className="text-center"></th>
-          </tr>
-          <tr>
-            <th className="text-center">Papaya</th>
-            <th className="text-center">5</th>
-            <th className="text-center">40 LPS.</th>
-            <th className="text-center"></th>
-          </tr>
+          {billInfo.products.map((reg) => (
+            <tr>
+              <th className="text-center">{reg.nameProduct}</th>
+              <th className="text-center">{reg.quantity}</th>
+              <th className="text-center">{reg.price} LPS.</th>
+              <th className="text-center">{reg.importTotal} LPS.</th>
+            </tr>
+          ))}
         </tbody>
       </table>
 
