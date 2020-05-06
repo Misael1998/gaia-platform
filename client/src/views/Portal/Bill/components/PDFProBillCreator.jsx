@@ -26,10 +26,10 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
     setProd(billInfo.products);
   }, []);
 
-  let cont = 0;
+  let totalIm = 0;
 
   for (var i = 0; i < prod.length; i++) {
-    cont = cont + parseInt(prod[i].importTotal, 10);
+    totalIm = totalIm + parseInt(prod[i].importTotal, 10);
   }
 
   return (
@@ -99,7 +99,7 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
                 </View>
                 <View style={styles.vColPayDesc}>
                   <Text style={styles.infoCellDNone}></Text>
-                  <Text style={styles.infoCell}>{cont} Lps.</Text>
+                  <Text style={styles.infoCell}>{totalIm} Lps.</Text>
                 </View>
               </View>
             </View>

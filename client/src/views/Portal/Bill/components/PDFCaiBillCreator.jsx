@@ -27,14 +27,14 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
     setProd(billInfo.products);
   }, []);
 
-  let cont = 0;
+  let totalIm = 0;
   let isv15 = 0;
 
   for (var i = 0; i < prod.length; i++) {
-    cont = cont + parseInt(prod[i].importTotal, 10);
+    totalIm = totalIm + parseInt(prod[i].importTotal, 10);
   }
 
-  isv15 = cont * 0.15;
+  isv15 = totalIm * 0.15;
 
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
@@ -181,7 +181,7 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
                   <Text style={styles.text2}>0.00 Lps.</Text>
                   <View>
                     <Text style={styles.text2}>
-                      {(isv15 + cont).toFixed(2)} Lps.
+                      {(isv15 + totalIm).toFixed(2)} Lps.
                     </Text>
                   </View>
                 </View>
