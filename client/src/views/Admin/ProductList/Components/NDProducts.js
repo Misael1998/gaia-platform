@@ -6,9 +6,9 @@ import { FiShoppingBag } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import EditProducts from "./EditProducts";
 import NoneEditProducts from "./NoneEditProducts";
-import { getProductByID2 } from "../../../../services/Products"
+import { getProductByID2 } from "../../../../services/Products";
 
-const NDProducts = ({ match, history }) => {
+const NDProducts = ({ match }) => {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -67,10 +67,14 @@ const NDProducts = ({ match, history }) => {
         </div>
 
         <div className="col-md-8 mt-3 containerShipping">
-          {goEdit ? <EditProducts product={product} /> : <NoneEditProducts product={product} />}
+          {goEdit ? (
+            <EditProducts product={product} />
+          ) : (
+            <NoneEditProducts product={product} />
+          )}
           <div className="row justify-content-center mt-4">
             <Link
-              to={history.back()}
+              to={"lista-productos"}
               type="button"
               className="btn btn-lg btn-success btn-perfil m-r-10 mb-4"
             >
