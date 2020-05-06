@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import Spinner from "../../../../components/Spinner";
 import Title from "../../../../components/Title";
 import { FiShoppingBag } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import EditProducts from "./EditProducts";
 import NoneEditProducts from "./NoneEditProducts";
+import { getProductByID } from "../../../../services/Products";
 
-const NDProducts = () => {
-  //State para alternar entre modo editar y ver info:
+const NDProducts = ( { match } ) => {
 
+  const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  //State para alternar entre modo editar y ver info
   const [goEdit, setGoEdit] = useState(false);
 
   //State para guardar los datos que vienen de la BD:
 
-  const [data, setData] = useState({
-    productName: "",
+  
 
-    description: "",
+  //componente didmount
+  useEffect(() => {
+    const { id } = match.params
+    getProductByID(id)
+      .then(res => { setProduct(res); setLoading(false);
+      })
+      .catch(err => {
+        Swal.fire(
+          'Oh',
+          'Ocurrió un error al intentar conectar con el servidor',
+          'error')
+      });
+  }, [])
 
-    category: "",
-
-    address: "",
-
-    phone: "",
-  });
+  console.log(product);
 
   /* useEffect(() => {
     getIndividualData()
@@ -53,14 +64,13 @@ const NDProducts = () => {
       <div className="container mt-5">
         <Title icon={<FiShoppingBag size={40} />} title="Producto" />
       </div>
-
+      
       <div className="col-md-8 mt-3 containerShipping">
         {goEdit ? (
-          <EditProducts data={data} />
+          <EditProducts />
         ) : (
-          <NoneEditProducts data={data} />
+          <NoneEditProducts product={product} />
         )}
-
         <div className="row justify-content-center mt-4">
           <Link
             to={"lista-productos"}

@@ -8,6 +8,7 @@ const EditProducts = ({ data }) => {
     name: "",
     lastname: "",
     email: "",
+    category: "",
     phone: "",
     address: "",
   });

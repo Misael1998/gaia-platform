@@ -5,7 +5,7 @@ import { MdShoppingBasket } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { getAllProductsData } from "../../../services/ProductsAdmin";
 
-const ProductList = ( ) => {
+const ProductList = ( {match} ) => {
 
   //State de los productos
   const [products, handleProducts] = useState([]);
@@ -79,8 +79,8 @@ const ProductList = ( ) => {
 
                       ))}
                       </td> 
-                      <td>
-                      <Link className="btn btn-success btn-block" to ={`productov`} onClick={captureData()}>
+                      <td className="text-center">
+                      <Link className="btn btn-success btn-block" to ={`productov/${product.idProduct}`} onClick={captureData()}>
                         Ver más  
                       </Link>
                       </td>

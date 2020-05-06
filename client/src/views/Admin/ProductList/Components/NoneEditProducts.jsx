@@ -1,17 +1,17 @@
 import React from 'react'
 
-const NoneEditProducts = ({data}) => {
+const NoneEditProducts = ({product}) => {
     return ( 
         <div className="container-nonEdit">
       <div className="row mt-4">
         <div className="col-md-5 p-r-0 p-l-0">
           <span className="lnr lnr-store txt-info icon-info">
-            <span className="spn-icon">Producto:</span>
+            <span className="spn-icon">Producto:</span> 
           </span>
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.productName}</p>
+          <p className="txt-info">{product.productName}</p>
         </div>
       </div>
 
@@ -23,7 +23,7 @@ const NoneEditProducts = ({data}) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.description}</p>
+          <p className="txt-info">{product.productDescription}</p>
         </div>
       </div>
 
@@ -35,9 +35,23 @@ const NoneEditProducts = ({data}) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.category}</p>
+          <p className="txt-info">{product.category}</p>
         </div>
       </div>
+
+      {product.prices.map((precio) => (
+        <div className="row mt-4">
+        <div className="col-md-5 p-r-0 p-l-0">
+          <span className="lnr lnr-menu txt-info icon-info">
+            <span className="spn-icon">precio:</span>
+          </span>
+        </div>
+
+        <div className="col-md-7 p-l-30">
+          <p className="txt-info">{precio.price}</p>
+        </div>
+      </div>
+      ))}
 
       <div className="row mt-4">
         <div className="col-md-5 p-r-0 p-l-0">
@@ -47,7 +61,7 @@ const NoneEditProducts = ({data}) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.address}</p>
+          <p className="txt-info">{product.prices.price}</p>
         </div>
       </div>
 
@@ -59,7 +73,7 @@ const NoneEditProducts = ({data}) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.contact_name}</p>
+          <p className="txt-info">{product.unit_price}</p>
         </div>
       </div>
 
@@ -71,7 +85,7 @@ const NoneEditProducts = ({data}) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{data.contact_number}</p>
+          <p className="txt-info">{product.contact_number}</p>
         </div>
       </div>
     </div>

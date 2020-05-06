@@ -44,7 +44,7 @@ const Portal = ({ match }) => {
           isPrivate
         />
         <Route
-          path={`${match.path}/productov`}
+          path={`${match.path}/productov/:id`}
           component={NDProducts}
           isPrivate
         />
