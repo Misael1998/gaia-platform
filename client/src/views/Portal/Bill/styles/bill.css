@@ -117,7 +117,15 @@
   border-right: 1px solid black;
 }
 
+.hLine {
+  border-top: 1px solid black;
+}
+
 .p-bill-info {
   margin: 0px 0px;
   font-size: 15px;
+}
+
+.pB {
+  font-weight: bold;
 }

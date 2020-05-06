@@ -76,8 +76,6 @@ const RequestTable = ({ match }) => {
     setFilterData(requestByDate);
   };
   const cleanData = () => {
-    setFilter("0");
-    setInitialDate("");
     setFinalDate("");
     setFilterData(requestData);
   };

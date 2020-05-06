@@ -1,7 +1,232 @@
 
   USE pyflor
   GO
-  IF OBJECT_ID (N'dbo.getUserRoleID') IS NOT NULL  
+  IF OBJECT_ID (N'FT_GET_BILL') IS NOT NULL
+    DROP FUNCTION [FT_GET_BILL];
+GO
+CREATE FUNCTION [FT_GET_BILL] (@idRequest INT)
+ RETURNS  @bill  TABLE
+ (            num_bill VARCHAR(100),      emission_date DATE,
+              nameProduct VARCHAR(45),    quantity INT ,
+              unit_price FLOAT,           importeTotal FLOAT,
+              sub_total FLOAT,            total FLOAT,
+              shipping FLOAT,             exent FLOAT,
+              import FLOAT,               aliquot_rate FLOAT,
+              nameClient VARCHAR(45), typeBill VARCHAR(10))
+ AS 
+ BEGIN
+ DECLARE @userTMP INT
+DECLARE  @type VARCHAR(10)
+
+ set @type = (select dbo.FN_GET_BILL_TYPE(@idRequest))
+
+ SET @userTMP =(SELECT ec.idEnterpriseClients
+                  FROM TBL_ENTERPRISE_CLIENTS ec 
+                  INNER JOIN TBL_REQUESTS r 
+                  ON r.idEnterpriseClient=ec.idEnterpriseClients
+                  WHERE r.idRequests=@idRequest )
+IF (@type = 'C')
+
+IF (@userTMP IS NOT NULL)
+ 
+    INSERT @bill
+    SELECT    b.num_bill,     b.emission_date,
+              p.name,         rp.quantity,
+              pr.unit_price,  (pr.unit_price*rp.quantity) as importeTotal,
+              cb.sub_total,   cb.total,
+              rq.shipping,    cb.exent,
+              cb.import,      cb.aliquot_rate, us.name+' '+us.lastname as nameClient,@type typeBill
+    FROM TBL_REQUESTS rq 
+    INNER JOIN TBL_ENTERPRISE_CLIENTS ec 
+    ON ec.idEnterpriseClients=rq.idEnterpriseClient
+    INNER JOIN TBL_USERS us 
+    ON us.idUser=ec.idUser
+    INNER JOIN TBL_COMPANY_TYPE ct 
+    ON ct.idCompanyType=ec.idCompanyType
+    INNER JOIN TBL_BILLS b 
+    ON b.idRequests=rq.idRequests
+    INNER JOIN TBL_CAI_BILL cb 
+    ON cb.idBills=b.idBills
+    INNER JOIN REQUESTS_has_PRODUCTS rp 
+    ON rp.idRequest=rq.idRequests
+    INNER JOIN TBL_PRODUCTS p 
+    ON p.idProducts=rp.idProducts
+    INNER JOIN TBL_PRODUCT_HAS_PRICES pp 
+    ON pp.idProduct=p.idProducts
+    INNER JOIN TBL_PRICES pr 
+    ON pr.idPrices=pp.idPrice
+    WHERE rq.idRequests=@idRequest and ct.idCompanyType=pp.idCompanyType
+ELSE 
+    SET @userTMP =(SELECT ic.idIndividualClients 
+                  FROM TBL_INDIVIDUAL_CLIENTS ic 
+                  INNER JOIN TBL_REQUESTS r 
+                  ON r.idIndividualClient=ic.idIndividualClients
+                  WHERE r.idRequests=@idRequest )
+
+IF (@userTMP IS NOT NULL)   
+  INSERT @bill
+    SELECT    b.num_bill,     b.emission_date,
+              p.name,         rp.quantity,
+              pr.unit_price,  (pr.unit_price*rp.quantity) as importeTotal,
+              cb.sub_total,   cb.total,
+              rq.shipping,    cb.exent,
+              cb.import,      cb.aliquot_rate,us.name+' '+us.lastname as nameClient,@type typeBill
+    FROM TBL_REQUESTS rq 
+    INNER JOIN TBL_INDIVIDUAL_CLIENTS ic 
+    ON ic.idIndividualClients=rq.idIndividualClient
+    INNER JOIN TBL_USERS us 
+    ON us.idUser=ic.idUser
+    INNER JOIN TBL_BILLS b 
+    ON b.idRequests=rq.idRequests
+    INNER JOIN TBL_CAI_BILL cb 
+    ON cb.idBills=b.idBills
+    INNER JOIN REQUESTS_has_PRODUCTS rp 
+    ON rp.idRequest=rq.idRequests
+    INNER JOIN TBL_PRODUCTS p 
+    ON p.idProducts=rp.idProducts
+    INNER JOIN TBL_PRODUCT_HAS_PRICES pp 
+    ON pp.idProduct=p.idProducts
+    INNER JOIN TBL_COMPANY_TYPE ct 
+    ON ct.idCompanyType=pp.idCompanyType
+    INNER JOIN TBL_PRICES pr 
+    ON pr.idPrices=pp.idPrice
+    WHERE rq.idRequests=@idRequest and ct.name = 'restaurante'
+
+ELSE
+IF (@type = 'P')
+
+IF (@userTMP IS NOT NULL)
+ 
+    INSERT @bill
+    SELECT    b.num_bill,     b.emission_date,
+              p.name,         rp.quantity,
+              pr.unit_price,  (pr.unit_price*rp.quantity) as importeTotal,
+              pb.sub_total,   pb.total,
+              null shipping,    null exent,
+              null import,    null aliquot_rate,us.name+' '+us.lastname as nameClient,@type typeBill
+    FROM TBL_REQUESTS rq 
+    INNER JOIN TBL_ENTERPRISE_CLIENTS ec 
+    ON ec.idEnterpriseClients=rq.idEnterpriseClient
+    INNER JOIN TBL_USERS us 
+    ON us.idUser=ec.idUser
+    INNER JOIN TBL_COMPANY_TYPE ct 
+    ON ct.idCompanyType=ec.idCompanyType
+    INNER JOIN TBL_BILLS b 
+    ON b.idRequests=rq.idRequests
+    INNER JOIN TBL_CAI_BILL cb 
+    ON cb.idBills=b.idBills
+    INNER JOIN TBL_PRO_BILL pb 
+    ON b.idBills=pb.idBills
+    INNER JOIN REQUESTS_has_PRODUCTS rp 
+    ON rp.idRequest=rq.idRequests
+    INNER JOIN TBL_PRODUCTS p 
+    ON p.idProducts=rp.idProducts
+    INNER JOIN TBL_PRODUCT_HAS_PRICES pp 
+    ON pp.idProduct=p.idProducts
+    INNER JOIN TBL_PRICES pr 
+    ON pr.idPrices=pp.idPrice
+    WHERE rq.idRequests=@idRequest and ct.idCompanyType=pp.idCompanyType
+ELSE 
+    SET @userTMP =(SELECT ic.idIndividualClients 
+                  FROM TBL_INDIVIDUAL_CLIENTS ic 
+                  INNER JOIN TBL_REQUESTS r 
+                  ON r.idIndividualClient=ic.idIndividualClients
+                  WHERE r.idRequests=@idRequest )
+
+IF (@userTMP IS NOT NULL)   
+  INSERT @bill
+    SELECT    b.num_bill,     b.emission_date,
+              p.name,         rp.quantity,
+              pr.unit_price,  (pr.unit_price*rp.quantity) as importeTotal,
+              pb.sub_total,   pb.total,
+              null shipping,  null exent,
+              null import,    null aliquot_rate,us.name+' '+us.lastname as nameClient,@type typeBill
+    FROM TBL_REQUESTS rq 
+    INNER JOIN TBL_INDIVIDUAL_CLIENTS ic 
+    ON ic.idIndividualClients=rq.idIndividualClient
+    INNER JOIN TBL_USERS us 
+    ON us.idUser=ic.idUser
+    INNER JOIN TBL_BILLS b 
+    ON b.idRequests=rq.idRequests
+    INNER JOIN TBL_PRO_BILL pb 
+    ON b.idBills=pb.idBills
+    INNER JOIN REQUESTS_has_PRODUCTS rp 
+    ON rp.idRequest=rq.idRequests
+    INNER JOIN TBL_PRODUCTS p 
+    ON p.idProducts=rp.idProducts
+    INNER JOIN TBL_PRODUCT_HAS_PRICES pp 
+    ON pp.idProduct=p.idProducts
+    INNER JOIN TBL_COMPANY_TYPE ct 
+    ON ct.idCompanyType=pp.idCompanyType
+    INNER JOIN TBL_PRICES pr 
+    ON pr.idPrices=pp.idPrice
+    WHERE rq.idRequests=@idRequest and ct.name = 'restaurante'
+
+IF (@type = 'none')
+INSERT @bill
+    SELECT    null num_bill,    null emission_date,
+              null name,         null quantity,
+              null unit_price,  null  importeTotal,
+              null sub_total,   null total,
+              null shipping,  null exent,
+              null import,    null aliquot_rate,null nameClient,@type typeBill
+    FROM TBL_REQUESTS 
+
+RETURN
+END
+GO
+
+IF OBJECT_ID (N'FN_GET_BILL_TYPE') IS NOT NULL
+    DROP FUNCTION [FN_GET_BILL_TYPE];
+GO
+CREATE FUNCTION [FN_GET_BILL_TYPE] 
+ (@idRequest INT)
+RETURNS varchar(10) -- P para probill y C para caibill
+AS
+BEGIN
+    DECLARE @count INT
+    DECLARE @type VARCHAR(10)
+
+    SET @type='none';
+
+
+    SET @count = (
+        SELECT COUNT(*)
+    FROM TBL_BILLS b
+        INNER JOIN TBL_PRO_BILL pb
+        ON pb.idBills=b.idBills
+    WHERE b.idRequests= @idRequest
+        )
+    IF (@count = 1 ) 
+        return 'P';
+
+    SET @count = (
+        SELECT COUNT(*)
+    FROM TBL_BILLS b
+        INNER JOIN TBL_CAI_BILL cb
+        ON cb.idBills=b.idBills
+    WHERE b.idRequests= @idRequest
+        )
+    IF (@count = 1 ) 
+        return 'C';
+    RETURN @type;
+
+END;
+
+GO
+IF OBJECT_ID (N'FS_GET_REQUEST_QT') IS NOT NULL  
+    DROP FUNCTION FS_GET_REQUEST_QT;  
+GO
+create function FS_GET_REQUEST_QT()
+returns INT
+as
+BEGIN
+    DECLARE @qt int
+    select @qt = count(idRequests) from TBL_REQUESTS
+    RETURN @qt
+END;
+GO
+IF OBJECT_ID (N'dbo.getUserRoleID') IS NOT NULL  
     DROP FUNCTION getUserRoleID;  
 GO
 CREATE FUNCTION [dbo].[getUserRoleID](@userId int)  
@@ -224,21 +449,26 @@ CREATE FUNCTION [FT_GET_PRODUCT_BY_ID] (@id int)
 RETURNS TABLE
 AS
 RETURN(
-    select  p.idProducts productId,
-        p.name name, 
-        p.[description] description,
-        php.idCompanyType companyId,
-        cp.name companyDescription,
-        ps.unit_price price,
-        st.idSarTypes sarId,
-        st.[description] sarType
-    FROM TBL_PRODUCTS p
+    select p.idProducts productId,
+    p.name name,
+    p.[description] description,
+    c.idCategories categorId,
+    c.name categoryName,
+    php.idCompanyType companyId,
+    cp.name companyDescription,
+    ps.unit_price price,
+    st.idSarTypes sarId,
+    st.[description] sarType
+FROM TBL_PRODUCTS p
     INNER JOIN TBL_PRODUCT_HAS_PRICES php on php.idProduct = p.idProducts
     INNER JOIN TBL_PRICES ps on ps.idPrices = php.idPrice
     INNER JOIN TBL_SAR_TYPES st on st.idSarTypes = p.idSarTypes
     INNER JOIN TBL_COMPANY_TYPE cp on cp.idCompanyType = php.idCompanyType
-    WHERE p.idProducts = @id
+    INNER JOIN PRODUCTS_has_CATEGORIES phc on phc.idProducts = p.idProducts
+    INNER JOIN TBL_CATEGORIES c on c.idCategories = phc.idCategories
+WHERE p.idProducts = @id
 )
+GO
 IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_INDIVIDUAL;  
 GO
@@ -339,6 +569,27 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID (N'FT_GET_PRODUCTS_ADMIN') IS NOT NULL  
+    DROP FUNCTION FT_GET_PRODUCTS_ADMIN;  
+GO
+CREATE FUNCTION [dbo].[FT_GET_PRODUCTS_ADMIN]()
+RETURNS TABLE
+AS
+RETURN
+(
+    select p.idProducts idProducts, p.name productName, p.description description,
+    pr.unit_price unitPrice, c.name category, st.description sarType,
+    p.productImage productImage, ct.name company
+from TBL_PRODUCTS p
+    inner join TBL_PRODUCT_HAS_PRICES php on p.idProducts=php.idProduct
+    inner join TBL_COMPANY_TYPE ct on ct.idCompanyType=php.idCompanyType
+    inner join TBL_PRICES pr on pr.idPrices = php.idPrice
+    inner join PRODUCTS_has_CATEGORIES phc on phc.idProducts=p.idProducts
+    inner join TBL_CATEGORIES c on c.idCategories = phc.idCategories
+    inner join TBL_SAR_TYPES st on st.idSarTypes=p.idSarTypes
+)
+
+GO
 IF OBJECT_ID (N'FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE') IS NOT NULL  
     DROP FUNCTION FT_GET_PRODUCTS_IN_REQUEST_ENTERPRISE;  
 GO  

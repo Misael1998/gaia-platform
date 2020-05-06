@@ -32,6 +32,7 @@ export const URL_GET_ALL_PRODUCTS_ADMIN = "/api/product/products-admin";
 export const URL_GET_CATEGORIES = "/api/data/categories";
 export const URL_GET_ORDERS_TODAY = "/api/request/qt";
 export const URL_PUT_PRODUCTS = "/api/product";;
+export const URL_POST_SEND_BILL = "/api/bills/";
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = (token) =>
@@ -39,3 +40,4 @@ export const URL_POST_RESET_PASSWORD = (token) =>
 export const URL_GET_PRODUCT_BY_ID = (id) => `/api/data/products/${id}`;
 export const URL_GET_REQUEST_DETAILS = (id) => `/api/request/${id}/details`;
 export const URL_PRODUCT_ID = (id) => `/api/product/${id}`;
+export const URL_GET_BILL_INFO = (id) => `/api/data/bill/${id}`;
