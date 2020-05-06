@@ -14,11 +14,14 @@ CREATE PROCEDURE dbo.SP_UPDATE_PRODUCT
     @productId INT,
     @sarType INT,
     @description VARCHAR(200),
+    @name VARCHAR(45),
+    @categoryId INT,
     @msg VARCHAR(20) OUTPUT,
     @err VARCHAR(20) OUTPUT
 AS
     declare @product INT = 0
     declare @sar INT = 0
+    declare @category INT = 0
     select @product = count(idProducts) 
         FROM TBL_PRODUCTS
         where idProducts = @productId
@@ -45,12 +48,36 @@ AS
             [idSarTypes] = @sarType 
         WHERE idProducts = @productId
     END;
+    IF @category is not NULL
+    BEGIN
+        select @category = count(idCategories) 
+            from TBL_CATEGORIES
+            where idCategories = @categoryId
+        IF @category < 1
+        BEGIN
+            set @msg = 'invalid id'
+            set @err = 'invalid category id'
+            RETURN
+        END;
+        UPDATE [dbo].[PRODUCTS_has_CATEGORIES]
+        SET
+            idCategories = @categoryId
+        WHERE idProducts = @productId
+    END;
     IF @description is not NULL
     BEGIN
         -- Update rows in table '[TBL_PRODUCTS]' in schema '[dbo]'
         UPDATE [dbo].[TBL_PRODUCTS]
         SET
             [description] = @description
+        WHERE idProducts = @productId
+    END;
+    IF @name is not NULL
+    BEGIN
+        -- Update rows in table '[TBL_PRODUCTS]' in schema '[dbo]'
+        UPDATE [dbo].[TBL_PRODUCTS]
+        SET
+            name = @name
         WHERE idProducts = @productId
     END;
     set @msg = 'success'

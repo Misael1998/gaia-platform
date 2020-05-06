@@ -6,13 +6,14 @@
 GO
 CREATE FUNCTION [FT_GET_BILL] (@idRequest INT)
  RETURNS  @bill  TABLE
- (            num_bill VARCHAR(100),      emission_date DATE,
-              nameProduct VARCHAR(45),    quantity INT ,
-              unit_price FLOAT,           importeTotal FLOAT,
-              sub_total FLOAT,            total FLOAT,
-              shipping FLOAT,             exent FLOAT,
-              import FLOAT,               aliquot_rate FLOAT,
-              nameClient VARCHAR(45), typeBill VARCHAR(10))
+ (          rtn   VARCHAR(14),          addressClient VARCHAR(100),  
+            num_bill VARCHAR(100),      emission_date DATE,
+            nameProduct VARCHAR(45),    quantity INT ,
+            unit_price FLOAT,           importeTotal FLOAT,
+            sub_total FLOAT,            total FLOAT,
+            shipping FLOAT,             exent FLOAT,
+            import FLOAT,               aliquot_rate FLOAT,
+            nameClient VARCHAR(45), typeBill VARCHAR(10))
  AS 
  BEGIN
  DECLARE @userTMP INT
@@ -25,17 +26,19 @@ DECLARE  @type VARCHAR(10)
                   INNER JOIN TBL_REQUESTS r 
                   ON r.idEnterpriseClient=ec.idEnterpriseClients
                   WHERE r.idRequests=@idRequest )
-IF (@type = 'C')
+IF (@type = 'C') 
 
-IF (@userTMP IS NOT NULL)
+   IF (@userTMP IS NOT NULL)
  
     INSERT @bill
-    SELECT    b.num_bill,     b.emission_date,
+    SELECT    ec.RTN,         us.address,
+              b.num_bill,     b.emission_date,
               p.name,         rp.quantity,
               pr.unit_price,  (pr.unit_price*rp.quantity) as importeTotal,
               cb.sub_total,   cb.total,
               rq.shipping,    cb.exent,
-              cb.import,      cb.aliquot_rate, us.name+' '+us.lastname as nameClient,@type typeBill
+              cb.import,      cb.aliquot_rate, ec.company_name as nameClient,@type typeBill
+              
     FROM TBL_REQUESTS rq 
     INNER JOIN TBL_ENTERPRISE_CLIENTS ec 
     ON ec.idEnterpriseClients=rq.idEnterpriseClient
@@ -62,10 +65,10 @@ ELSE
                   INNER JOIN TBL_REQUESTS r 
                   ON r.idIndividualClient=ic.idIndividualClients
                   WHERE r.idRequests=@idRequest )
-
 IF (@userTMP IS NOT NULL)   
   INSERT @bill
-    SELECT    b.num_bill,     b.emission_date,
+    SELECT    null rtn,         us.address,
+              b.num_bill,     b.emission_date,
               p.name,         rp.quantity,
               pr.unit_price,  (pr.unit_price*rp.quantity) as importeTotal,
               cb.sub_total,   cb.total,
@@ -92,18 +95,19 @@ IF (@userTMP IS NOT NULL)
     ON pr.idPrices=pp.idPrice
     WHERE rq.idRequests=@idRequest and ct.name = 'restaurante'
 
-ELSE
+
 IF (@type = 'P')
 
 IF (@userTMP IS NOT NULL)
  
     INSERT @bill
-    SELECT    b.num_bill,     b.emission_date,
+    SELECT    ec.RTN,         us.address,
+              b.num_bill,     b.emission_date,
               p.name,         rp.quantity,
               pr.unit_price,  (pr.unit_price*rp.quantity) as importeTotal,
               pb.sub_total,   pb.total,
-              null shipping,    null exent,
-              null import,    null aliquot_rate,us.name+' '+us.lastname as nameClient,@type typeBill
+              null shipping,   null exent,
+              null import,    null aliquot_rate,ec.company_name nameClient,@type typeBill
     FROM TBL_REQUESTS rq 
     INNER JOIN TBL_ENTERPRISE_CLIENTS ec 
     ON ec.idEnterpriseClients=rq.idEnterpriseClient
@@ -113,8 +117,6 @@ IF (@userTMP IS NOT NULL)
     ON ct.idCompanyType=ec.idCompanyType
     INNER JOIN TBL_BILLS b 
     ON b.idRequests=rq.idRequests
-    INNER JOIN TBL_CAI_BILL cb 
-    ON cb.idBills=b.idBills
     INNER JOIN TBL_PRO_BILL pb 
     ON b.idBills=pb.idBills
     INNER JOIN REQUESTS_has_PRODUCTS rp 
@@ -135,7 +137,8 @@ ELSE
 
 IF (@userTMP IS NOT NULL)   
   INSERT @bill
-    SELECT    b.num_bill,     b.emission_date,
+    SELECT    null rtn,         us.address,
+              b.num_bill,     b.emission_date,
               p.name,         rp.quantity,
               pr.unit_price,  (pr.unit_price*rp.quantity) as importeTotal,
               pb.sub_total,   pb.total,
@@ -164,8 +167,9 @@ IF (@userTMP IS NOT NULL)
 
 IF (@type = 'none')
 INSERT @bill
-    SELECT    null num_bill,    null emission_date,
-              null name,         null quantity,
+    SELECT    null RTN,         null addressClient,
+              null num_bill,    null emission_date,
+              null nameC,         null quantity,
               null unit_price,  null  importeTotal,
               null sub_total,   null total,
               null shipping,  null exent,
@@ -175,6 +179,8 @@ INSERT @bill
 RETURN
 END
 GO
+
+
 
 IF OBJECT_ID (N'FN_GET_BILL_TYPE') IS NOT NULL
     DROP FUNCTION [FN_GET_BILL_TYPE];
