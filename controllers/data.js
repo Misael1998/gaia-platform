@@ -756,6 +756,8 @@ exports.bill = async (req,res) => {
             ...new Set(
               data.map(dr => {
                 return JSON.stringify({
+                address: dr.addressClient,
+                rtn:dr.rtn,
                 type:dr.typeBill, 
                 numBill: dr.num_bill,
                 emissionDate: dr.emission_date,
@@ -770,7 +772,6 @@ exports.bill = async (req,res) => {
               })
             )
           ];
-      
           dataReq = JSON.parse(dataReq);
           dataReq.products= data.map(dr => {
             return {
