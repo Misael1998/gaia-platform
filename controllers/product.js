@@ -213,7 +213,14 @@ exports.getProductDetail = async (req, res) => {
 //@route    PUT    /api/product
 //@access   Private (Admin)
 exports.updateProduct = async (req, res) => {
-  const { prices, productId, description, sarType } = req.body;
+  const {
+    prices,
+    productId,
+    description,
+    sarType,
+    name,
+    categoryId
+  } = req.body;
   const transaction = new mssql.Transaction();
   try {
     let request;
@@ -257,6 +264,8 @@ exports.updateProduct = async (req, res) => {
       .input("productId", mssql.Int, productId)
       .input("sarType", mssql.Int, sarType)
       .input("description", mssql.VarChar(200), description)
+      .input("name", mssql.VarChar(45), name)
+      .input("categoryId", mssql.Int, categoryId)
       .output("msg", mssql.VarChar(20))
       .output("err", mssql.VarChar(20))
       .execute("SP_UPDATE_PRODUCT");
