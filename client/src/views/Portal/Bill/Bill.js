@@ -26,7 +26,8 @@ const Bill = ({ match }) => {
   //Funcion para envarle la factura al cliente:
   const onClickHandler = (e) => {
     const data = new FormData();
-    data.append("file", e.target.files[0]);
+    data.append("bill", e.target.files[0]);
+    data.append("email", "janet.vonrueden@ethereal.email");
     sendBill(data)
       .then((res) => {
         Swal.fire(
