@@ -8,6 +8,8 @@ RETURN(
     select p.idProducts productId,
     p.name name,
     p.[description] description,
+    c.idCategories categorId,
+    c.name categoryName,
     php.idCompanyType companyId,
     cp.name companyDescription,
     ps.unit_price price,
@@ -18,6 +20,8 @@ FROM TBL_PRODUCTS p
     INNER JOIN TBL_PRICES ps on ps.idPrices = php.idPrice
     INNER JOIN TBL_SAR_TYPES st on st.idSarTypes = p.idSarTypes
     INNER JOIN TBL_COMPANY_TYPE cp on cp.idCompanyType = php.idCompanyType
+    INNER JOIN PRODUCTS_has_CATEGORIES phc on phc.idProducts = p.idProducts
+    INNER JOIN TBL_CATEGORIES c on c.idCategories = phc.idCategories
 WHERE p.idProducts = @id
 )
 GO
