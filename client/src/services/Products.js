@@ -64,33 +64,33 @@ export const editProduct = async (
     prices,
   };
 
-  return payload;
+  //return payload;
 
-  // try {
-  //   const response = await axios.post(URL_PUT_PRODUCTS, payload);
+  try {
+    const response = await axios.put(URL_PUT_PRODUCTS, payload);
 
-  //   if (response.status === 201) {
-  //     // return {
-  //     //   status: response.status,
-  //     //   ...response.data
-  //     // };
-  //   } else {
-  //     throw new Error(response);
-  //   }
-  // } catch (error) {
-  //   let errorObj;
-  //   const { response } = error;
-  //   if (response.status === 400) {
-  //     errorObj = {
-  //       title: "Error 400",
-  //       text: "Ocurrió un error al intentar crear producto",
-  //     };
-  //   } else {
-  //     errorObj = {
-  //       title: "Error",
-  //       text: "Ocurrió un error con el servidor, intente de nuevo",
-  //     };
-  //   }
-  //   throw errorObj;
-  // }
+    if (response.status === 201) {
+      return {
+        status: response.status,
+        ...response.data,
+      };
+    } else {
+      throw new Error(response);
+    }
+  } catch (error) {
+    let errorObj;
+    const { response } = error;
+    if (response.status === 400) {
+      errorObj = {
+        title: "Error 400",
+        text: error.response,
+      };
+    } else {
+      errorObj = {
+        title: "Error",
+        text: "Ocurrió un error con el servidor, intente de nuevo",
+      };
+    }
+    throw errorObj;
+  }
 };

@@ -33,20 +33,20 @@ const EditProducts = ({ product }) => {
 
   //Funcio para capturar el precio por compañia:
   const getPriceCom = (c, p) => {
-    let searchPrice = productPrices.find((price) => price.companyId === c);
+    let searchPrice = productPrices.find((price) => price.companyType === c);
 
     let arrP;
 
     let newPricePro;
 
     arrP = {
-      companyId: c,
+      companyType: c,
       price: p,
     };
 
     if (searchPrice) {
       searchPrice.price = p;
-      newPricePro = productPrices.filter((price) => price.companyId !== c);
+      newPricePro = productPrices.filter((price) => price.companyType !== c);
       newPricePro.push(searchPrice);
     } else {
       newPricePro = [...productPrices];
@@ -67,20 +67,12 @@ const EditProducts = ({ product }) => {
     editProduct(productId, prodDesc, prodName, parseInt(proCat), productPrices)
       .then((res) => {
         console.log("el payload pa actualizar producto es: ", res);
-        // Swal.fire(
-        //   "Datos Actualizados",
-        //   "Se han actualizados los datos exitosamente",
-        //   "success"
-        // );
-        // if (res === 1) {
-        //   window.location.reload();
-        // } else {
-        //   Swal.fire(
-        //     "Datos sin Modificar",
-        //     "No se hicieron cambios en los datos",
-        //     "success"
-        //   );
-        // }
+        Swal.fire(
+          "Datos Actualizados",
+          "Se han actualizados los datos exitosamente",
+          "success"
+        );
+        window.location = "/admin/lista-productos";
       })
       .catch((error) => {
         Swal.fire({
