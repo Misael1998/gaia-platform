@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Page,
   View,
@@ -18,7 +18,20 @@ import {
 import moment from "moment";
 import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
 
-const PDFCaiBillCreator = ({ data, title }) => {
+const PDFCaiBillCreator = ({ billInfo, title }) => {
+  //State para guardar los productos
+  const [prod, setProd] = useState([]);
+
+  useEffect(() => {
+    setProd(billInfo.products);
+  }, []);
+
+  let totalIm = 0;
+
+  for (var i = 0; i < prod.length; i++) {
+    totalIm = totalIm + parseInt(prod[i].importTotal, 10);
+  }
+
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
       <Page size="RA3" wrap={false} style={styles.page}>
@@ -34,23 +47,45 @@ const PDFCaiBillCreator = ({ data, title }) => {
 
         <View style={styles.vRow2}>
           <View style={styles.vCol2}>
-            <Text style={styles.nText}>PARA: Juan Perez</Text>
+            <Text style={styles.nText}>PARA: {billInfo.nameClient}</Text>
           </View>
           <View style={styles.vCol2}>
-            <Text style={styles.nText}>FACTURA #: 000-111-22-33 444444</Text>
-            <Text style={styles.nText}>FECHA: 1/5/2020</Text>
-            <Text style={styles.nText}>FECHA VENCIMIENTO: 3/5/2020</Text>
+            <Text style={styles.nText}>FACTURA #: {billInfo.numBill}</Text>
+            <Text style={styles.nText}>
+              FECHA: {moment(billInfo.emissionDate).format("DD/MM/YYYY")}
+            </Text>
+            <Text style={styles.nText}>
+              FECHA VENCIMIENTO:
+              {moment(billInfo.emissionDate).add(7, "d").format("DD/MM/YYYY")}
+            </Text>
           </View>
         </View>
 
-        <Table style={styles.table}>
+        <Table style={styles.table} data={billInfo.products}>
           <TableHeader>
             <TableCell style={styles.headerText}>ARTÍCULO</TableCell>
             <TableCell style={styles.headerText}>CANTIDAD</TableCell>
             <TableCell style={styles.headerText}>PRECIO</TableCell>
             <TableCell style={styles.headerText}>IMPORTE</TableCell>
           </TableHeader>
-          <TableBody></TableBody>
+          <TableBody>
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.nameProduct}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.quantity}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.price + "Lps."}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.importTotal + "Lps."}
+            />
+          </TableBody>
         </Table>
 
         <View style={styles.vRow}>
@@ -63,8 +98,8 @@ const PDFCaiBillCreator = ({ data, title }) => {
                   <Text style={styles.nText}>TOTAL L.</Text>
                 </View>
                 <View style={styles.vColPayDesc}>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
+                  <Text style={styles.infoCellDNone}></Text>
+                  <Text style={styles.infoCell}>{totalIm} Lps.</Text>
                 </View>
               </View>
             </View>
@@ -154,6 +189,17 @@ const styles = StyleSheet.create({
   headerText2: {
     fontSize: 8,
     textAlign: "left",
+  },
+  infoCell: {
+    padding: 5,
+    fontSize: 10,
+    textAlign: "center",
+  },
+  infoCellDNone: {
+    padding: 5,
+    fontSize: 10,
+    textAlign: "center",
+    flex: "none",
   },
   containerShipping: {
     borderStyle: "solid",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Page,
   View,
@@ -14,11 +14,28 @@ import {
   TableCell,
   TableBody,
   DataTableCell,
+  TableRow,
 } from "@david.kucsai/react-pdf-table";
 import moment from "moment";
-import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
+//import { TableRow } from "@david.kucsai/react-pdf-table/lib/TableRow";
 
-const PDFCaiBillCreator = ({ data, title }) => {
+const PDFCaiBillCreator = ({ billInfo, title }) => {
+  //State para guardar los productos
+  const [prod, setProd] = useState([]);
+
+  useEffect(() => {
+    setProd(billInfo.products);
+  }, []);
+
+  let totalIm = 0;
+  let isv15 = 0;
+
+  for (var i = 0; i < prod.length; i++) {
+    totalIm = totalIm + parseInt(prod[i].importTotal, 10);
+  }
+
+  isv15 = totalIm * 0.15;
+
   return (
     <Document title={`${title} - ${moment().format("DD/MM/YYYY")}`}>
       <Page size="RA3" wrap={false} style={styles.page}>
@@ -41,9 +58,7 @@ const PDFCaiBillCreator = ({ data, title }) => {
             <Text style={styles.nText}>
               Banco Banpais Cuenta de Cheque: 015990008396
             </Text>
-            <Text style={styles.bText}>
-              CAI: XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX
-            </Text>
+            <Text style={styles.bText}>CAI #: {billInfo.numBill}</Text>
           </View>
           <View style={styles.vCol}>
             <Text style={styles.nText}>
@@ -61,18 +76,24 @@ const PDFCaiBillCreator = ({ data, title }) => {
 
         <View style={styles.vRow}>
           <View style={styles.vCol2}>
-            <Text style={styles.nText}>CLIENTE: Juan Perez</Text>
+            <Text style={styles.nText}>CLIENTE: {billInfo.nameClient}</Text>
             <Text style={styles.nText}>R.T.N: 0801-1900-112233</Text>
             <Text style={styles.nText}>DIRECCIÓN: Col. Las Uvas</Text>
           </View>
           <View style={styles.vCol2}>
-            <Text style={styles.nText}>FECHA DEL DÍA: 29/4/2020</Text>
-            <Text style={styles.nText}>FECHA DE VENCIMIENTO: 3/5/2020</Text>
+            <Text style={styles.nText}>
+              FECHA DEL DÍA:{" "}
+              {moment(billInfo.emissionDate).format("DD/MM/YYYY")}
+            </Text>
+            <Text style={styles.nText}>
+              FECHA DE VENCIMIENTO:{" "}
+              {moment(billInfo.emissionDate).add(7, "d").format("DD/MM/YYYY")}
+            </Text>
             <Text style={styles.nText}>VENDEDOR: PYFLOR</Text>
           </View>
         </View>
 
-        <Table style={styles.table}>
+        <Table style={styles.table} data={billInfo.products}>
           <TableHeader>
             <TableCell style={styles.headerText}>CANT.</TableCell>
             <TableCell style={styles.headerText}>DESCRIPCIÓN</TableCell>
@@ -82,7 +103,25 @@ const PDFCaiBillCreator = ({ data, title }) => {
             </TableCell>
             <TableCell style={styles.headerText}>TOTAL</TableCell>
           </TableHeader>
-          <TableBody></TableBody>
+          <TableBody style={styles.tBody}>
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.quantity}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.nameProduct}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.price + " Lps."}
+            />
+            <DataTableCell style={styles.infoCell} getContent={(r) => ""} />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.importTotal + "Lps."}
+            />
+          </TableBody>
         </Table>
 
         <View style={styles.vRow}>
@@ -123,21 +162,28 @@ const PDFCaiBillCreator = ({ data, title }) => {
                   <Text style={styles.nText}>I.S.V 15% L.</Text>
                   <Text style={styles.nText}>I.S.V 18% L.</Text>
                   <Text style={styles.nText}>IMOPRTE EXONERADO L.</Text>
-                  <Text style={styles.nText}>TOTAL A PAGAR L.</Text>
+                  <View>
+                    <Text style={styles.nText}>TOTAL A PAGAR L.</Text>
+                  </View>
                 </View>
+
                 <View style={styles.vColPayDesc}>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}></Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>{isv15.toFixed(2)} Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <Text style={styles.text2}>0.00 Lps.</Text>
+                  <View>
+                    <Text style={styles.text2}>
+                      {(isv15 + totalIm).toFixed(2)} Lps.
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -145,7 +191,7 @@ const PDFCaiBillCreator = ({ data, title }) => {
         </View>
 
         <View style={styles.vRow}>
-          <Text>FACTURA N° 000-111-22-33 444444</Text>
+          <Text>FACTURA N° {billInfo.numBill}</Text>
         </View>
       </Page>
     </Document>
@@ -190,6 +236,11 @@ const styles = StyleSheet.create({
     padding: 5,
     textAlign: "center",
   },
+  text2: {
+    fontSize: 10,
+    padding: 5,
+    textAlign: "center",
+  },
   nText: {
     fontSize: 10,
     padding: 5,
@@ -209,6 +260,11 @@ const styles = StyleSheet.create({
   headerText2: {
     fontSize: 8,
     textAlign: "left",
+  },
+  infoCell: {
+    padding: 5,
+    fontSize: 10,
+    textAlign: "center",
   },
   containerShipping: {
     borderStyle: "solid",
@@ -283,6 +339,14 @@ const styles = StyleSheet.create({
   vSign: {
     marginTop: "150",
     alignItems: "center",
+    borderTop: "1",
+    borderTopStyle: "solid",
+    borderTopColor: "black",
+  },
+  tBody: {
+    flex: "1",
+  },
+  vHL: {
     borderTop: "1",
     borderTopStyle: "solid",
     borderTopColor: "black",
