@@ -32,7 +32,7 @@ const IndividualProfile = () => {
 
     address: "",
 
-    phone: "9734747"
+    phone: ""
   });
 
   useEffect(() => {

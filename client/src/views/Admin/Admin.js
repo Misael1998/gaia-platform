@@ -4,7 +4,9 @@ import Route from "../../modules/Route";
 import items from "../../constants/adminNavigation";
 import FormRegEmp from "./FormEmployee/components/FormRegEmp";
 import FormProduct from "./FormProduct/FormProduct";
+import ProductList from "./ProductList/ProductList";
 import FormProvider from './FormProvider/FormProvider';
+import NDProducts from "./ProductList/Components/NDProducts"
 import Home from './Home'
 
 const Portal = ({ match }) => {
@@ -27,6 +29,11 @@ const Portal = ({ match }) => {
           isPrivate
         />
         <Route
+          path={`${match.path}/lista-productos`}
+          component={ProductList}
+          isPrivate
+        />
+        <Route
           path={`${match.path}/formulario-productos`}
           component={FormProduct}
           isPrivate
@@ -34,6 +41,11 @@ const Portal = ({ match }) => {
         <Route
           path={`${match.path}/formulario-proveedores`}
           component={FormProvider}
+          isPrivate
+        />
+        <Route
+          path={`${match.path}/productov/:id`}
+          component={NDProducts}
           isPrivate
         />
       </div>

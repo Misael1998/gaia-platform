@@ -78,7 +78,7 @@ const Cartg = ({ match }) => {
           </div>
           <div className="mt-5">
 
-            <Link className="btn btn-success btn-block" to={`${match.path}/shipping`}>
+          <Link className="btn btn-success btn-block" to={`${match.path}/shipping`}>
               Proceder con el pago
           </Link>
 
