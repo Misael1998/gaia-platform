@@ -34,26 +34,24 @@ const NoneEditProducts = ({ product }) => {
           </span>
         </div>
 
-
-        {product.prices.map((reg) => (
-        <div className="row mt-4">
-        <div className="col-md-5 p-r-0 p-l-0">
-          <span className="lnr lnr-pencil txt-info icon-info">
-            <span className="spn-icon">{reg.companyDescription}:</span>
-          </span>
-        </div>
-
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{reg.price}</p>
+          <p className="txt-info"></p>
         </div>
       </div>
+
+      {product.prices.map((reg) => (
+        <div className="row mt-4">
+          <div className="col-md-5 p-r-0 p-l-0">
+            <span className="lnr lnr-apartment txt-info icon-info">
+              <span className="spn-icon">{reg.companyDescription}:</span>
+            </span>
+          </div>
+
+          <div className="col-md-7 p-l-30">
+            <p className="txt-info">{reg.price} LPS</p>
+          </div>
+        </div>
       ))}
-
-          
-        
-      </div>
-
-      
     </div>
   );
 };

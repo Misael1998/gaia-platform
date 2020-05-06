@@ -8,7 +8,7 @@ import EditProducts from "./EditProducts";
 import NoneEditProducts from "./NoneEditProducts";
 import { getProductByID2 } from "../../../../services/Products"
 
-const NDProducts = ({ match }) => {
+const NDProducts = ({ match, history }) => {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,14 +22,13 @@ const NDProducts = ({ match }) => {
     const { id } = match.params;
     getProductByID2(id)
       .then((res) => {
-        console.log("El resultado del pato es:", res);
         setProduct(res);
         setLoading(false);
       })
       .catch((err) => {
         Swal.fire(
           "Oh",
-          "Ocurrió un error al intentar conectar con el servidor. Saludos",
+          "Ocurrió un error al intentar conectar con el servidor.",
           "error"
         );
       });
@@ -71,7 +70,7 @@ const NDProducts = ({ match }) => {
           {goEdit ? <EditProducts product={product} /> : <NoneEditProducts product={product} />}
           <div className="row justify-content-center mt-4">
             <Link
-              to={"lista-productos"}
+              to={history.back()}
               type="button"
               className="btn btn-lg btn-success btn-perfil m-r-10 mb-4"
             >

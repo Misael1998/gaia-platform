@@ -61,10 +61,10 @@ const EditProducts = ({ product }) => {
     e.preventDefault();
 
     //Validacion:
-    // if (email.trim() === "" || phone.trim() === "" || address.trim() === "") {
-    //   handleError(true);
-    //   return;
-    // }
+     if (name.trim() === "" || description.trim() === "") {
+       handleError(true);
+       return;
+     }
 
     //guardar los cambios
     //   updateIndividualData(email, phone, address)
@@ -136,7 +136,7 @@ const EditProducts = ({ product }) => {
               name="prices"
               className="form-control inpt-edit"
               placeholder="Precio Hotel"
-              onChange={fnPrices(reg.companyId,reg.price)}
+              //onChange={fnPrices(reg.companyId,reg.price)}
               value={reg.price}
             />
             </div>

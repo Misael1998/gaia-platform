@@ -54,12 +54,14 @@ export const getProductByID2 = async (id) => {
 export const editProduct = async (
   productId,
   description,
-  
   prices
+  
 ) => {
     const payload = {
-      companyType,
-      price
+      productId,
+      description,
+      prices
+      
       
     };
 
@@ -82,7 +84,7 @@ export const editProduct = async (
       if (response.status === 400) {
         errorObj = {
           title: "Error 400",
-          text: "Ocurrió un error al intentar crear la orden"
+          text: "Ocurrió un error al intentar crear producto"
         };
       } else {
         errorObj = {

@@ -11,21 +11,7 @@ const ProductList = ( {match} ) => {
   const [products, handleProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  //state para guardar los datos
-  const [data, setData] = useState({
-    productName: "",
 
-    description: "",
-
-    category: "",
-
-    
-  });
-
-  //FUNCION AL AHCER CLICK EN VER MAS
-  const captureData = () => {
-   
-  }
 
   //función para traer todos los productos
   useEffect(() => {
@@ -84,7 +70,7 @@ const ProductList = ( {match} ) => {
                       ))}
                       </td> 
                       <td className="text-center">
-                      <Link className="btn btn-success btn-block" to ={`productov/${product.idProduct}`} onClick={captureData()}>
+                      <Link className="btn btn-success btn-block" to ={`productov/${product.idProduct}`}>
                         Ver más  
                       </Link>
                       </td>
