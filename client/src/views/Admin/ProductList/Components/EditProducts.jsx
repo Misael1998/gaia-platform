@@ -60,15 +60,15 @@ const EditProducts = ({ product }) => {
   const submitRequest = (e) => {
     e.preventDefault();
 
-    //validación
-    if (
-      prodName.trim() === "" ||
-      prodDesc.trim() === "" ||
-      proCat.trim() === ""
-    ) {
-      handleError(true);
-      return;
-    }
+    // //validación
+    // if (
+    //   prodName.trim() === "" ||
+    //   prodDesc.trim() === "" ||
+    //   proCat.trim() === ""
+    // ) {
+    //   handleError(true);
+    //   return;
+    // }
     handleError(false);
 
     if (isNaN(parseInt(proCat))) {
