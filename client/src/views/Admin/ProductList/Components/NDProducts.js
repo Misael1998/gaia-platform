@@ -74,7 +74,7 @@ const NDProducts = ({ match }) => {
           )}
           <div className="row justify-content-center mt-4">
             <Link
-              to={"lista-productos"}
+              to={"/admin/lista-productos"}
               type="button"
               className="btn btn-lg btn-success btn-perfil m-r-10 mb-4"
             >
