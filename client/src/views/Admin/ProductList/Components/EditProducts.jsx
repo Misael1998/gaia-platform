@@ -91,6 +91,8 @@ const EditProducts = ({ product }) => {
       .then((res) => {
         setCategories(res);
         setProdCat(categorId);
+        setProdName(name);
+        setProdDesc(description);
         setLoading(false);
       })
       .catch((err) => console.log("El error es:", err));
