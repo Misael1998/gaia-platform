@@ -24,7 +24,7 @@ const ProductList = ( {match} ) => {
 
   //FUNCION AL AHCER CLICK EN VER MAS
   const captureData = () => {
-    console.log("jejejeje");
+   
   }
 
   //función para traer todos los productos
@@ -36,6 +36,10 @@ const ProductList = ( {match} ) => {
       })
       .catch((err) => console.log("El error es:", err));
   }, []);
+
+
+//filtro
+
 
 
 

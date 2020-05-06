@@ -35,23 +35,12 @@ const NoneEditProducts = ({product}) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{product.category}</p>
+          <p className="txt-info">{}</p>
         </div>
       </div>
 
-      {product.prices.map((precio) => (
-        <div className="row mt-4">
-        <div className="col-md-5 p-r-0 p-l-0">
-          <span className="lnr lnr-menu txt-info icon-info">
-            <span className="spn-icon">precio:</span>
-          </span>
-        </div>
-
-        <div className="col-md-7 p-l-30">
-          <p className="txt-info">{precio.price}</p>
-        </div>
-      </div>
-      ))}
+      
+     
 
       <div className="row mt-4">
         <div className="col-md-5 p-r-0 p-l-0">
@@ -61,7 +50,7 @@ const NoneEditProducts = ({product}) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{product.prices.price}</p>
+          <p className="txt-info">{product.unit_price}</p>
         </div>
       </div>
 

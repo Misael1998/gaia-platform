@@ -7,24 +7,35 @@ import { Link } from "react-router-dom";
 import EditProducts from "./EditProducts";
 import NoneEditProducts from "./NoneEditProducts";
 import { getProductByID } from "../../../../services/Products";
+import { getAllProductsData } from "../../../../services/ProductsAdmin";
 
 const NDProducts = ( { match } ) => {
 
-  const [product, setProduct] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
 
   //State para alternar entre modo editar y ver info
   const [goEdit, setGoEdit] = useState(false);
 
-  //State para guardar los datos que vienen de la BD:
-
   
+
+   //función para traer todos los productos
+   useEffect(() => {
+    getAllProductsData()
+      .then((res) => {
+        handleProducts(res);
+        setLoading(false);
+      })
+      .catch((err) => console.log("El error es:", err));
+  }, []);
+
 
   //componente didmount
   useEffect(() => {
     const { id } = match.params
     getProductByID(id)
-      .then(res => { setProduct(res); setLoading(false);
+      .then(res => { console.log(res); setProduct(res); setLoading(false);
       })
       .catch(err => {
         Swal.fire(
@@ -34,7 +45,7 @@ const NDProducts = ( { match } ) => {
       });
   }, [])
 
-  console.log(product);
+  
 
   /* useEffect(() => {
     getIndividualData()
