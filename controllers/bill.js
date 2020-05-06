@@ -6,8 +6,12 @@ const errorResponse = require("../utils/errorResponse");
 //@route    post     /api/bills
 //@access   Private
 exports.sendBill = async (req, res) => {
+  const email = req.body.email;
   let attachments;
-  const message = `Está recibiendo este correo porque ha solicitado que se le envíe su factura a través de este medio.`;
+  const message =
+    "Estimado cliente, a continuación se le adjunta la factura de su pedido" +
+    " realizado a pyflor, pronto nos pondremos en contacto con usted para entregarle" +
+    " su pedido.";
   if (
     !req.files ||
     req.files.bill.name
@@ -67,32 +71,6 @@ exports.sendBill = async (req, res) => {
       );
     }
   } else {
-    const { userId, role } = req.user;
-    let email;
-    try {
-      let query;
-      if (role === "individual") {
-        query = await new mssql.Request()
-          .input("id", mssql.Int, userId)
-          .query("select * from FT_GET_INDIVIDUAL_USER_DATA(@id)");
-      } else if (role === "enterprise") {
-        query = await new mssql.Request()
-          .input("id", mssql.Int, userId)
-          .query("select * from FT_GET_DATA_ENTERPRISE(@id)");
-      } else {
-        return errorResponse(
-          401,
-          "Unathorized",
-          [{ msg: "You can't access this resource" }],
-          res
-        );
-      }
-      email = query.recordset[0].email;
-    } catch (error) {
-      console.error(error.message);
-      return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
-    }
-
     try {
       await sendEmail({
         email,

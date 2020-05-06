@@ -4,6 +4,6 @@ const auth = require("../middleware/auth");
 const authorize = require("../middleware/authorize");
 const { sendBill } = require("../controllers/bill");
 
-router.route("/").post(auth, authorize("individual", "enterprise"), sendBill);
+router.route("/").post(auth, authorize("employee", "admin"), sendBill);
 
 module.exports = router;
