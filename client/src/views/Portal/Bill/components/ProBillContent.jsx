@@ -100,7 +100,7 @@ const ProBillContent = ({ billInfo }) => {
                 <p className="p-bill-info">TOTAL L.</p>
               </div>
               <div className="col-lg-6">
-                <p className="p-bill-info">{cont} Lps.</p>
+                <p className="p-bill-info text-center">{cont} Lps.</p>
               </div>
             </span>
           </div>

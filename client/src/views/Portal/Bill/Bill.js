@@ -24,9 +24,10 @@ const Bill = ({ match }) => {
   const [loading, setLoading] = useState(true);
 
   //Funcion para envarle la factura al cliente:
-  const sendBillFn = () => {
-    alert("Enviando la factura al cliente!!!");
-    sendBill(file)
+  const onClickHandler = (e) => {
+    const data = new FormData();
+    data.append("file", e.target.files[0]);
+    sendBill(data)
       .then((res) => {
         Swal.fire(
           "Envio Exitoso..",
@@ -41,6 +42,7 @@ const Bill = ({ match }) => {
           text: error.text,
         });
       });
+    //console.log("el nombre del archivo es", e.target.files[0]);
   };
 
   //Funcion para traer la data para mostrar en la factura:
@@ -89,12 +91,19 @@ const Bill = ({ match }) => {
               Guardar como PDF
             </button>
 
-            <button
+            <label
+              for="file-upload"
               className="btn btn-lg btn-success float-right mr-3"
-              onClick={() => sendBillFn()}
             >
               Enviar al Cliente
-            </button>
+            </label>
+            <input
+              className="d-none"
+              id="file-upload"
+              type="file"
+              name="file"
+              onChange={onClickHandler}
+            />
           </div>
 
           <div className="col-lg-12 p-4">

@@ -69,10 +69,22 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
             <TableCell style={styles.headerText}>IMPORTE</TableCell>
           </TableHeader>
           <TableBody>
-            <DataTableCell getContent={(r) => r.nameProduct} />
-            <DataTableCell getContent={(r) => r.quantity} />
-            <DataTableCell getContent={(r) => r.price + "Lps."} />
-            <DataTableCell getContent={(r) => r.importTotal + "Lps."} />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.nameProduct}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.quantity}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.price + "Lps."}
+            />
+            <DataTableCell
+              style={styles.infoCell}
+              getContent={(r) => r.importTotal + "Lps."}
+            />
           </TableBody>
         </Table>
 
@@ -86,8 +98,8 @@ const PDFCaiBillCreator = ({ billInfo, title }) => {
                   <Text style={styles.nText}>TOTAL L.</Text>
                 </View>
                 <View style={styles.vColPayDesc}>
-                  <Text style={styles.nText}></Text>
-                  <Text style={styles.nText}>{cont} Lps.</Text>
+                  <Text style={styles.infoCellDNone}></Text>
+                  <Text style={styles.infoCell}>{cont} Lps.</Text>
                 </View>
               </View>
             </View>
@@ -177,6 +189,17 @@ const styles = StyleSheet.create({
   headerText2: {
     fontSize: 8,
     textAlign: "left",
+  },
+  infoCell: {
+    padding: 5,
+    fontSize: 10,
+    textAlign: "center",
+  },
+  infoCellDNone: {
+    padding: 5,
+    fontSize: 10,
+    textAlign: "center",
+    flex: "none",
   },
   containerShipping: {
     borderStyle: "solid",

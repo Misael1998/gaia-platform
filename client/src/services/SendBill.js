@@ -2,12 +2,12 @@ import axios from "../modules/axios";
 import { URL_POST_SEND_BILL } from "../constants/urls";
 
 export const sendBill = async (file) => {
-  const payload = {
-    file,
-  };
-
   try {
-    const response = await axios.post(URL_POST_SEND_BILL, payload);
+    const response = await axios.post(URL_POST_SEND_BILL, file, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     if (response.status === 201) {
       return response.data;
