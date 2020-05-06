@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
 
-const NoneEditProducts = ({product}) => {
-    return ( 
-        <div className="container-nonEdit">
+const NoneEditProducts = ({ product }) => {
+  return (
+    <div className="container-nonEdit">
       <div className="row mt-4">
         <div className="col-md-5 p-r-0 p-l-0">
           <span className="lnr lnr-store txt-info icon-info">
-            <span className="spn-icon">Producto:</span> 
+            <span className="spn-icon">Producto:</span>
           </span>
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{product.productName}</p>
+          <p className="txt-info">{product.name}</p>
         </div>
       </div>
 
@@ -23,7 +23,7 @@ const NoneEditProducts = ({product}) => {
         </div>
 
         <div className="col-md-7 p-l-30">
-          <p className="txt-info">{product.productDescription}</p>
+          <p className="txt-info">{product.description}</p>
         </div>
       </div>
 
@@ -34,51 +34,28 @@ const NoneEditProducts = ({product}) => {
           </span>
         </div>
 
-        <div className="col-md-7 p-l-30">
-          <p className="txt-info">{}</p>
+
+        {product.prices.map((reg) => (
+        <div className="row mt-4">
+        <div className="col-md-5 p-r-0 p-l-0">
+          <span className="lnr lnr-pencil txt-info icon-info">
+            <span className="spn-icon">{reg.companyDescription}:</span>
+          </span>
         </div>
+
+        <div className="col-md-7 p-l-30">
+          <p className="txt-info">{reg.price}</p>
+        </div>
+      </div>
+      ))}
+
+          
+        
       </div>
 
       
-     
-
-      <div className="row mt-4">
-        <div className="col-md-5 p-r-0 p-l-0">
-          <span className="lnr lnr-apartment txt-info icon-info">
-            <span className="spn-icon">Precio Hotel:</span>
-          </span>
-        </div>
-
-        <div className="col-md-7 p-l-30">
-          <p className="txt-info">{product.unit_price}</p>
-        </div>
-      </div>
-
-      <div className="row mt-4">
-        <div className="col-md-5 p-r-0 p-l-0">
-          <span className="lnr lnr-coffee-cup txt-info icon-info">
-            <span className="spn-icon">Precio Restaurante:</span>
-          </span>
-        </div>
-
-        <div className="col-md-7 p-l-30">
-          <p className="txt-info">{product.unit_price}</p>
-        </div>
-      </div>
-
-      <div className="row mt-4">
-        <div className="col-md-5 p-r-0 p-l-0">
-          <span className="lnr lnr-cart txt-info icon-info">
-            <span className="spn-icon">Precio Supermercado:</span>
-          </span>
-        </div>
-
-        <div className="col-md-7 p-l-30">
-          <p className="txt-info">{product.contact_number}</p>
-        </div>
-      </div>
     </div>
-     );
-}
- 
+  );
+};
+
 export default NoneEditProducts;

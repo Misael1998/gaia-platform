@@ -31,9 +31,11 @@ export const URL_POST_NEW_PROVIDER = "/api/provider"
 export const URL_GET_ALL_PRODUCTS_ADMIN = "/api/product/products-admin";
 export const URL_GET_CATEGORIES = "/api/data/categories";
 export const URL_GET_ORDERS_TODAY = "/api/request/qt";
+export const URL_PUT_PRODUCTS = "/api/product";;
 
 //URL dinamicas
 export const URL_POST_RESET_PASSWORD = (token) =>
   `/api/auth/resetpassword/${token}`;
 export const URL_GET_PRODUCT_BY_ID = (id) => `/api/data/products/${id}`;
 export const URL_GET_REQUEST_DETAILS = (id) => `/api/request/${id}/details`;
+export const URL_PRODUCT_ID = (id) => `/api/product/${id}`;

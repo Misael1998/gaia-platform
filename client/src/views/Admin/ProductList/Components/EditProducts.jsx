@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import {getCategories} from "../../../../services/Categories";
 
-const EditProducts = ({ data }) => {
+const EditProducts = ({ product }) => {
   //State para almacenar los cambios:
   const [saveEdit, setSaveEdit] = useState({
     name: "",
-    lastname: "",
-    email: "",
-    category: "",
-    phone: "",
-    address: "",
+    description: ""
+    
   });
+
+  const [prices, setPrices] = useState([]);
 
   //State para el error:
   const [error, handleError] = useState(false);
@@ -29,11 +28,22 @@ const EditProducts = ({ data }) => {
     });
   };
 
+
+  const fnPrices = (id, p) => {
+    setPrices([
+      ...prices,
+      {
+        "companyType": id,
+        "price": p
+      }
+    ])
+  }
+
   //Destructuting:
-  const { email, phone, address } = saveEdit;
+  const { name, description } = saveEdit;
 
   useEffect(() => {
-    setSaveEdit(data);
+    setSaveEdit(product);
   }, []);
 
     //función para traer las categorías
@@ -51,10 +61,10 @@ const EditProducts = ({ data }) => {
     e.preventDefault();
 
     //Validacion:
-    if (email.trim() === "" || phone.trim() === "" || address.trim() === "") {
-      handleError(true);
-      return;
-    }
+    // if (email.trim() === "" || phone.trim() === "" || address.trim() === "") {
+    //   handleError(true);
+    //   return;
+    // }
 
     //guardar los cambios
     //   updateIndividualData(email, phone, address)
@@ -96,70 +106,44 @@ const EditProducts = ({ data }) => {
           <label className="font-weight-bold mt-3">Nombre Producto</label>
           <input
             type="text"
-            name="productName"
+            name="name"
             className="form-control inpt-edit"
             placeholder="nombre del producto"
             onChange={handleData}
-            value={address}
+            value={name}
           />
 
           <label className="font-weight-bold mt-3">Descripción</label>
           <input
             type="text"
-            name="address"
+            name="description"
             className="form-control inpt-edit"
             placeholder="Descripción"
             onChange={handleData}
-            value={address}
+            value={description}
           />
 
-          <label className="font-weight-bold mt-3">Categoría</label>
-          <select
-            className="form-control inpt-edit"
-            onChange={handleData}
-            value={address}
-          >
-            <option value="0">Seleccione una Categoria</option>
-            {
-                    categories.map(cat => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))
-                  }
-          </select>
+          
         </div>
 
-        <div className="col-md-6 cl-sm-4">
-          <label className="font-weight-bold mt-3">Precio Hotel</label>
-          <input
-            id="emailInput"
-            type="number"
-            name="email"
-            className="form-control inpt-edit"
-            placeholder="Precio Hotel"
-            onChange={handleData}
-            value={email}
-          />
+         <div className="col-md-6 cl-sm-4">
+          {product.prices.map((reg) =>(
+            <div>
+              <label className="font-weight-bold mt-3">Precio {reg.companyDescription}</label>
+            <input
+              id="emailInput"
+              type="number"
+              name="prices"
+              className="form-control inpt-edit"
+              placeholder="Precio Hotel"
+              onChange={fnPrices(reg.companyId,reg.price)}
+              value={reg.price}
+            />
+            </div>
+          ))}
 
-          <label className="font-weight-bold mt-3">Precio Restaurante</label>
-          <input
-            type="number"
-            name="address"
-            className="form-control inpt-edit"
-            placeholder="Precio Restaurante"
-            onChange={handleData}
-            value={address}
-          />
-
-          <label className="font-weight-bold mt-3">Precio Supermercado</label>
-          <input
-            type="number"
-            name="address"
-            className="form-control inpt-edit"
-            placeholder="Precio Supermercado"
-            onChange={handleData}
-            value={address}
-          />
-        </div>
+          
+        </div> 
       </div>
 
       {error ? (
