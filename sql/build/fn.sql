@@ -291,19 +291,6 @@ RETURN(
 FROM TBL_COMPANY_TYPE
 )
 go
-IF OBJECT_ID (N'FT_getJobtitles') IS NOT NULL  
-    DROP FUNCTION FT_getJobtitles;  
-GO
-create FUNCTION FT_getJobtitles()
-RETURNS TABLE
-AS
-RETURN
-SELECT
-    idJobTitle as id,
-    [name]
-FROM
-    TBL_JOB_TITLES
-GO
 IF OBJECT_ID (N'FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE') IS NOT NULL  
     DROP FUNCTION FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE;  
 GO
@@ -1230,6 +1217,19 @@ FROM
     TBL_USERS AS addresseeUser
     on 
         addresseeUser.idUser = addresseeEmployee.idEmployees
+GO
+IF OBJECT_ID (N'FT_getJobtitles') IS NOT NULL  
+    DROP FUNCTION FT_getJobtitles;  
+GO
+create FUNCTION FT_getJobtitles()
+RETURNS TABLE
+AS
+RETURN
+SELECT
+    idJobTitle as id,
+    [name]
+FROM
+    TBL_JOB_TITLES
 GO
 IF OBJECT_ID (N'dbo.getUserRole') IS NOT NULL  
     DROP FUNCTION getUserRole;  
