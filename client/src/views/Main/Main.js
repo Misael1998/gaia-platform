@@ -19,7 +19,7 @@ const Main = ({ match }) => {
 
   return (
     <div className="row">
-      <div className="col-2 bg-gray clg-container">
+      <div className=" col-xl-2 col-lg-2 col-md-1 col-sm-1 col-1 bg-gray clg-container">
         <SideNavbar items={items} />
       </div>
       <div className="col-10">
