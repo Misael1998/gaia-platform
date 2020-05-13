@@ -165,6 +165,7 @@ const EditProducts = ({ product }) => {
                   id="emailInput"
                   type="number"
                   name="prices"
+                  step="any"
                   className="form-control inpt-edit"
                   placeholder={reg.price}
                   onChange={(e) => getPriceCom(reg.companyId, e.target.value)}
