@@ -7595,9 +7595,18 @@
 
 /*form provider*/
 
-@media screen and (min-width: 780px) and (max-width: 1080px) {
+@media screen and (min-width: 780px) and (max-width: 1024px) {
   .min-height {
     min-height: 30vh;
+  }
+
+  .botonProd{
+    width: 200px;
+  }
+
+  .margiBoton{
+    margin-left: 200px;
+  
   }
 }
 
@@ -7605,12 +7614,34 @@
   .min-height {
     min-height: 20vh;
   }
+
+  .botonProd{
+    width: 200px;
+    
+  }
+
+  .marginBoton{
+    margin-left: 357px;
+  }
+
 }
 
 @media screen and (max-width: 480px) {
   .min-height {
     min-height: 20vh;
   }
+
+  .botonProd{
+    width: 200px;
+    
+  }
+
+  .marginBoton{
+    margin-left: 280px;
+  }
 }
+
+
+
 
 
