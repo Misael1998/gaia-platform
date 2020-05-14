@@ -7591,6 +7591,24 @@
   margin-bottom: 2%;
 }
 
-.min-height {
-  min-height: 60vh!important;
+
+
+/*form provider*/
+
+@media screen and (min-width: 780px) and (max-width: 1080px) {
+  .min-height {
+    min-height: 30vh;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 780px) {
+  .min-height {
+    min-height: 20vh;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .min-height {
+    min-height: 20vh;
+  }
 }
