@@ -294,8 +294,14 @@ iframe {
   }
 }
 
-.login100-form {
+.login-form{
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 
