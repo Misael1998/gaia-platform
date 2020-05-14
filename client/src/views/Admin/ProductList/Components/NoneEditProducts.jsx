@@ -2,7 +2,7 @@ import React from "react";
 
 const NoneEditProducts = ({ product }) => {
   return (
-    <div className="container-nonEdit">
+    <div className="">
       <div className="row mt-4">
         <div className="col-lg-6">
           <span className="lnr lnr-store txt-info icon-info">
