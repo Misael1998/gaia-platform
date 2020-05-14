@@ -22,25 +22,21 @@ const items = [
     icon: <FaShoppingBag size={30} />,
     link: "/portal/requests-summary",
   },
+
   {
-    name: "purchases",
+    name: "addPurchase",
     label: "Compras",
-    icon: <MdShoppingBasket size={30} />,
-    subitems: [
-      {
-        name: "addPurchase",
-        label: "Ingresar compra",
-        icon: <MdAddShoppingCart size={30} />,
-        link: "/portal/purchases-request",
-      },
-      {
-        name: "referrals",
-        label: "Remisiones",
-        icon: <FaExchangeAlt size={30} />,
-        link: "/portal/referrals",
-      },
-    ],
+    icon: <MdAddShoppingCart size={30} />,
+    link: "/portal/purchases-request",
   },
+  {
+    name: "referrals",
+    label: "Remisiones",
+    icon: <FaExchangeAlt size={30} />,
+    link: "/portal/referrals",
+  },
+
+
   {
     name: "inventory",
     label: "Inventario",
