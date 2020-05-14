@@ -7638,7 +7638,8 @@
     border-width: 1px;
     border-radius: 10px;
     border-color: darkgrey;
-    margin: auto;
+    margin-left: 30px;
+    margin-right: 20px;
   }
 
 }
@@ -7658,7 +7659,8 @@
   }
 
   .container-edit{
-    margin-left: 30px;
+    margin-left: 40px;
+    margin-right: 20px;
     border-style: solid;
     border-width: 1px;
     border-radius: 10px;
