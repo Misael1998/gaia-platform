@@ -711,3 +711,13 @@ input[type="radio"] {
 .radio-user {
   font-size: 1.1rem;
 }
+
+
+/* login */
+
+.wrap-login500 {
+  width: 450px;
+  background: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+}
