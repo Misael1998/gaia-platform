@@ -42,10 +42,34 @@
   font-family: Roboto, sans-serif;
 }
 
-.container-nonEdit {
-  margin-left: 10%;
-}
+
 
 body {
   font-family: Roboto, sans-serif;
+}
+
+
+
+@media screen and (min-width: 780px) and (max-width: 1680px){
+
+  .container-nonEdit {
+    margin-left: 10%;
+  }
+
+}
+
+@media screen and (min-width: 480px) and (max-width: 780px){
+
+  .container-nonEdit {
+    margin-left: 15%;
+  }
+
+}
+
+@media screen and (max-width: 480px){
+
+  .container-nonEdit {
+    margin-left: 25%;
+  }
+
 }

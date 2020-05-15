@@ -7534,13 +7534,7 @@
 
 /*Formularios de envío pago etc... */
 
-.containerShipping {
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 10px;
-  border-color: darkgrey;
-  margin: auto;
-}
+
 
 .containerPayment {
   border-style: solid;
@@ -7595,7 +7589,7 @@
 
 /*form provider*/
 
-@media screen and (min-width: 780px) and (max-width: 1366px) {
+@media screen and (min-width: 780px) and (max-width: 1680px) {
   .min-height {
     min-height: 30vh;
   }
@@ -7616,6 +7610,13 @@
   margin: auto;
   }
 
+  .containerShipping {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin: auto;
+  }
   
 }
 
@@ -7640,6 +7641,14 @@
     border-color: darkgrey;
     margin-left: 30px;
     margin-right: 20px;
+  }
+
+  .containerShipping {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin-left: 50PX;
   }
 
 }
@@ -7667,6 +7676,13 @@
     border-color: darkgrey;
   }
 
+  .containerShipping {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin-left: 50px;
+  }
   
 
   
