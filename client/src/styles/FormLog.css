@@ -152,7 +152,7 @@ iframe {
 
 .container-login100 {
   width: 100%;
-  min-height: 100vh;
+  min-height: 50vh;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -273,7 +273,7 @@ iframe {
 
 /*------------------------------------------------------------------
   [  ]*/
-@media screen and (min-width: 780px) and (max-width: 1080px) {
+@media screen and (min-width: 780px) and (max-width: 1680px) {
   .login100-form {
     width: 100%;
     display: flex;
@@ -294,7 +294,7 @@ iframe {
   }
 }
 
-.login-form{
+.login-form {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -711,7 +711,6 @@ input[type="radio"] {
 .radio-user {
   font-size: 1.1rem;
 }
-
 
 /* login */
 
