@@ -122,7 +122,7 @@ const RequestTable = ({ match }) => {
       case "1":
         filterComponent = (
           <div className="row">
-            <div className="col-6">
+            <div className="col-lg-6 col-md-12 col-sm-12 col-12">
               Fecha de inicio
               <input
                 type="date"
@@ -130,7 +130,7 @@ const RequestTable = ({ match }) => {
                 onChange={(e) => setInitialDate(e.target.value)}
               />
             </div>
-            <div className="col-6">
+            <div className="col-lg-6 col-md-12 col-sm-12 col-12">
               Fecha fin
               <input
                 type="date"
@@ -138,13 +138,15 @@ const RequestTable = ({ match }) => {
                 onChange={(e) => setFinalDate(e.target.value)}
               />
             </div>
-            <button
-              onClick={filterByDate}
-              type="button"
-              className="btn btn-success mt-3 m-l-250"
-            >
-              Buscar
+            <div className='col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center'>
+              <button
+                onClick={filterByDate}
+                type="button"
+                className="btn btn-success mt-3"
+              >
+                Buscar
             </button>
+            </div>
           </div>
         );
         break;
@@ -153,7 +155,7 @@ const RequestTable = ({ match }) => {
           <input
             name="client"
             placeholder="Nombre de cliente"
-            className="form-control"
+            className="form-control mt-lg-0 mt-md-0 mt-2"
             onChange={filterValue}
           />
         );
@@ -161,7 +163,7 @@ const RequestTable = ({ match }) => {
       case "3":
         filterComponent = (
           <select
-            className="form-control"
+            className="form-control mt-lg-0 mt-md-0 mt-2"
             name="payment"
             onChange={filterValue}
           >
@@ -177,7 +179,7 @@ const RequestTable = ({ match }) => {
       case "4":
         filterComponent = (
           <select
-            className="form-control"
+            className="form-control mt-lg-0 mt-md-0 mt-2"
             name="shipping"
             onChange={filterValue}
           >
@@ -195,9 +197,9 @@ const RequestTable = ({ match }) => {
   return (
     <div className="row p-5">
       <Title title="Pedidos" icon={<FaShoppingBag size={40} />} />
-      <div className="col-6">
+      <div className="col-lg-6 col-md-6 col-sm-12 col-12">
         <div className="row">
-          <div className="col-9">
+          <div className="col-lg-9 col-md-10 col-sm-10 col-10">
             <select
               className="form-control"
               value={filter}
@@ -210,16 +212,16 @@ const RequestTable = ({ match }) => {
               <option value="4">Tipo de envío</option>
             </select>
           </div>
-          <div className="col-3">
+          <div className="col-lg-3 col-md-2 col-sm-6 col-6 mt-2 mt-lg-0 mt-md-0">
             <button className="btn btn-success" onClick={cleanData}>
               Limpiar
             </button>
           </div>
         </div>
       </div>
-      <div className="col-6">{filter !== "" ? filterComponent : null}</div>
+      <div className="col-lg-6 col-md-10 col-sm-12 col-12">{filter !== "" ? filterComponent : null}</div>
       <div className="col-12 mt-5">
-        <table className="table table-bordered table-striped">
+        <table className="table table-responsive-md table-bordered table-striped">
           <thead className="primary-color text-white">
             <tr>
               <th scope="col">N° de pedido</th>
@@ -233,7 +235,7 @@ const RequestTable = ({ match }) => {
           <tbody>
             {filterData.map((request) => (
               <tr key={request.idRequest}>
-                <td>{request.idRequest}</td>
+                <th>{request.idRequest}</th>
                 <td>{request.client}</td>
                 <td>{request.deliveryType}</td>
                 <td>{request.paymentMethod}</td>
