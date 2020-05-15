@@ -129,3 +129,36 @@
 .pB {
   font-weight: bold;
 }
+
+
+@media only screen and (max-width: 700px){
+  .txt-sa {
+    margin: 0, 0, 0, 0;
+    text-align: center;
+  }
+
+  .txt-h-b {
+    margin: 0;
+    text-align: center;
+  }
+  
+  .txt-2bill {
+    text-align: center;
+  }
+  .txt-r {
+    text-align: center;
+  }
+
+  .txt-info-c {
+    text-align: center;
+  }
+
+  .txt-b {
+    text-align: center;
+  }
+
+  .r-i {
+    margin: 0;
+    text-align: center;
+  }
+}

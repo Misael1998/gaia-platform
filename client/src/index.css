@@ -90,7 +90,9 @@ body {
 
   .form-wrap {
     width: 220%!important;
-    align-items: start!important;
+    display: flex;
+    align-items: center!important;
+    justify-content: start;
   }
 
 }

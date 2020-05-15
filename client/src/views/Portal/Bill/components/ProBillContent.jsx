@@ -61,7 +61,7 @@ const ProBillContent = ({ billInfo }) => {
         </div>
       </div>
 
-      <table className="table table-bordered table-striped">
+      <table className="table table-responsive-sm table-bordered table-striped">
         <thead className="primary-color text-white text-center">
           <tr>
             <th>ARTÍCULO</th>
