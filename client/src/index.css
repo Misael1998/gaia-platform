@@ -88,4 +88,9 @@ body {
     justify-content: center;
   }
 
+  .form-wrap {
+    width: 220%!important;
+    align-items: start!important;
+  }
+
 }

@@ -216,8 +216,8 @@ const FormRequest = () => {
   } else {
     return (
       <div className="limiter">
-        <div className="container-login200">
-          <div className="wrap-login200  p-l-40 pl-sm-0 p-r-40 pr-sm-0 p-t-5 p-b-30">
+        <div className="container-login200 form-wrap">
+          <div className="wrap-login200  p-l-40 pl-sm-0 p-r-40 pr-sm-0 p-t-5 p-b-30 ">
             <form className="login100-form" onSubmit={submitRequest}>
               <div className="col-lg-6">
                 
