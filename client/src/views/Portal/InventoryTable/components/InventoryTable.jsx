@@ -3,7 +3,7 @@ import moment from "moment";
 const InventoryTable = ({ regInventory, full }) => {
   return (
     <div className="">
-      <table className="table table-bordered table-striped">
+      <table className="table table-responsive-sm table-bordered table-striped">
         <thead className="primary-color text-white">
           <tr>
             <th scope="col">N° de Orden</th>

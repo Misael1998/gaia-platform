@@ -217,27 +217,10 @@ const FormRequest = () => {
     return (
       <div className="limiter">
         <div className="container-login200">
-          <div className="wrap-login200 p-l-40 p-r-40 p-t-5 p-b-30">
+          <div className="wrap-login200  p-l-40 pl-sm-0 p-r-40 pr-sm-0 p-t-5 p-b-30">
             <form className="login100-form" onSubmit={submitRequest}>
               <div className="col-lg-6">
-                {/* <div
-                  className="wrap-input100 validate-input m-b-16"
-                  data-validate="Password is required"
-                >
-                  <input
-                    className="input100"
-                    type="number"
-                    name="precioUnitario"
-                    placeholder="Precio Unitario"
-                  // onChange={handleChangeInfo}
-                  // value={precioUnitario}
-                  />
-                  <span className="focus-input100"></span>
-                  <span className="symbol-input100">
-                    <span className="lnr lnr-tag"></span>
-                  </span>
-                </div> */}
-
+                
                 <div
                   className="wrap-input100 validate-input m-b-16"
                   data-validate="Password is required"
