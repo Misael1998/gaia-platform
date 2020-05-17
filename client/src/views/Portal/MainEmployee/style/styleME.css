@@ -6,11 +6,11 @@
 .slide-text {
   font-weight: bold;
   font-family: monospace;
-  font-size: 28px;
+  font-size: 1.8rem;
 }
 .h-card {
   font-family: monospace;
-  font-size: 45px;
+  font-size: 3rem;
   font-weight: bold;
 }
 
@@ -23,8 +23,29 @@
   background-color: #58cc5f !important;
   border-width: 0.4rem;
   border-color: #008a09;
+  font-size: 2rem;
 }
 
 .card-text-cus {
   font-size: 18px;
+}
+
+
+.black-fade {
+  font-size: 1em;
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+@media only screen and (max-width: 600px){
+  .carrousel {
+    display: none;
+  }
+
+  .container-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

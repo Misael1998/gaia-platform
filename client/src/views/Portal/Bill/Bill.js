@@ -84,27 +84,33 @@ const Bill = ({ match }) => {
             icon={<FaClipboardCheck size={40} />}
           />
 
-          <div className="col-lg-12 mb-3">
-            <button
-              className="btn btn-lg btn-success float-right"
-              onClick={() => setShowPDF(!showPDF)}
-            >
-              Guardar como PDF
+          <div className="col-lg-12 col-12 mb-3 d-flex flex-row justify-content-end">
+            <div className='m-lg-2 m-md-2 m-1'>
+              <button
+                className="btn btn-lg btn-success float-right"
+                onClick={() => setShowPDF(!showPDF)}
+              >
+                Guardar como PDF
             </button>
 
-            <label
-              for="file-upload"
-              className="btn btn-lg btn-success float-right mr-3"
-            >
-              Enviar al Cliente
+            </div>
+
+            <div className=' m-lg-2 m-md-2 m-1'>
+
+              <label
+                for="file-upload"
+                className="btn btn-lg btn-success float-right mr-3"
+              >
+                Enviar al Cliente
             </label>
-            <input
-              className="d-none"
-              id="file-upload"
-              type="file"
-              name="file"
-              onChange={onClickHandler}
-            />
+              <input
+                className="d-none"
+                id="file-upload"
+                type="file"
+                name="file"
+                onChange={onClickHandler}
+              />
+            </div>
           </div>
 
           <div className="col-lg-12 p-4">
@@ -112,8 +118,8 @@ const Bill = ({ match }) => {
               {billType ? (
                 <CaiBillContent billInfo={billInfo} />
               ) : (
-                <ProBillContent billInfo={billInfo} />
-              )}
+                  <ProBillContent billInfo={billInfo} />
+                )}
             </div>
           </div>
         </div>

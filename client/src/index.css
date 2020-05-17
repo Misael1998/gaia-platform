@@ -76,3 +76,23 @@ body {
 .div-radius {
   border-radius: 5%;
 }
+
+
+@media only screen and (max-width: 780px) {
+  
+  .header-title {
+    text-align: center;
+  }
+
+  .title-container {
+    justify-content: center;
+  }
+
+  .form-wrap {
+    width: 220%!important;
+    display: flex;
+    align-items: center!important;
+    justify-content: start;
+  }
+
+}

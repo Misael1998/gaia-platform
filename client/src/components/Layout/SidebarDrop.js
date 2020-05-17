@@ -9,13 +9,19 @@ const SidebarDrop = ({ name, subitems, icon }) => {
   return (
     <Dropdown drop="right">
       <Dropdown.Toggle as={CustomToggle} id="sidebarDrop">
-        {icon} {name}
+        {icon}
+        <span className='nav-text'>
+          {name}
+        </span>
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {subitems.map(item => (
 
           <Dropdown.Item as={CustomLink} key={item.name} link={item.link}>
-            {item.icon} {item.label}
+            {item.icon}
+            <span className='nav-text'>
+              {item.label}
+            </span>
           </Dropdown.Item>
 
         ))}

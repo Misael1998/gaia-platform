@@ -27,13 +27,13 @@ const CaiBillContent = ({ billInfo }) => {
         <div className="col-lg-6 p-r-0 m-t-5">
           <img className="billLogo" src={logo} />
         </div>
-        <div className="col-lg-6 p-r-0 m-t-5">
+        <div className="col-lg-6 col-12 p-r-0 m-t-5">
           <p className="txt-h-b text-center">PILONES Y FLORES DE HONDURAS</p>
           <p className="txt-h-b txt-sa">S.A DE C.V</p>
         </div>
       </div>
       <div className="row r-a">
-        <div className="col-lg-6 p-r-0">
+        <div className="col-lg-6 col-12 p-r-0">
           <p className="txt-2bill">
             Puede hacer su depósito a nombre de PYFLOR en
           </p>
@@ -43,7 +43,7 @@ const CaiBillContent = ({ billInfo }) => {
           </p>
           <p className="txt-2bill txt-b">CAI #: {billInfo.numBill}</p>
         </div>
-        <div className="col-lg-6 p-r-0">
+        <div className="col-lg-6 col-12 p-r-0">
           <p className="txt-2bill txt-r">
             Aldea El Molino, Contiguo a Campo Scout, Valle de Angeles, F.M
           </p>
@@ -55,7 +55,7 @@ const CaiBillContent = ({ billInfo }) => {
         </div>
       </div>
       <div className="row r-i">
-        <div className="col-lg-6 p-r-0">
+        <div className="col-lg-6 col-12 p-r-0">
           <span className="row">
             <label className="txt-info-c txt-b">CLIENTE:</label>
             <p className="txt-info-c col-lg-6 p-l-3 p-r-0">
@@ -64,11 +64,11 @@ const CaiBillContent = ({ billInfo }) => {
           </span>
           <span className="row">
             <label className="txt-info-c txt-b">R.T.N:</label>
-            <p className="txt-info-c col-lg-6 p-l-3 p-r-0">08011900112233</p>
+            <p className="txt-info-c col-lg-6 col-12 p-l-3 p-r-0">08011900112233</p>
           </span>
           <span className="row">
             <label className="txt-info-c txt-b">DIRECCIÓN:</label>
-            <p className="txt-info-c col-lg-6 p-l-3 p-r-0">
+            <p className="txt-info-c col-lg-6 col-12 p-l-3 p-r-0">
               Res. C.A Bloque 22
             </p>
           </span>
@@ -93,7 +93,7 @@ const CaiBillContent = ({ billInfo }) => {
         </div>
       </div>
 
-      <table className="table table-bordered table-striped">
+      <table className="table table-responsive-sm table-bordered table-striped">
         <thead className="primary-color text-white text-center">
           <tr>
             <th>CANT.</th>
