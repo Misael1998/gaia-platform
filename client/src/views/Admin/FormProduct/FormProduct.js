@@ -128,8 +128,8 @@ const FormProduct = () => {
           />
         </div>
 
-        <div className="container-login100 p-t-0 container-prod">
-          <div className="wrap-login300 p-l-20 p-t-0 p-r-20 p-b-30">
+        <div className="container-login100 min-height p-t-0 container-prod">
+          <div className="wrap-login100 p-l-20 p-t-0 p-r-20 p-b-30">
             <form
               className="login100-form validate-form"
               onSubmit={submitProduct}

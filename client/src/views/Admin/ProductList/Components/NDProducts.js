@@ -66,7 +66,7 @@ const NDProducts = ({ match }) => {
           <Title icon={<FiShoppingBag size={40} />} title="Producto" />
         </div>
 
-        <div className="col-md-8 mt-3 containerShipping">
+        <div className="col-md-8 mt-3  container-edit">
           {goEdit ? (
             <EditProducts product={product} />
           ) : (

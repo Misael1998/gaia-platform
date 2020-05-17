@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "../../../styles/util.css";
 import Title from "../../../components/Title";
 import Spinner from "../../../components/Spinner";
 import { MdShoppingBasket } from "react-icons/md";
@@ -29,9 +30,9 @@ const ProductList = ({ match }) => {
       <div className="row p-5">
         <Title title="Productos" icon={<MdShoppingBasket size={40} />} />
 
-        <div className="offset-10 col-2 mt-4 mb-3">
+        <div className="marginBoton ml-3 mb-2">
           <Link
-            className="btn btn-success btn-block"
+            className="btn btn-success btn-block botonProd"
             to={`formulario-productos`}
           >
             + Crear Nuevo Producto
@@ -39,7 +40,7 @@ const ProductList = ({ match }) => {
         </div>
         <div className="col-12 mt-2">
           <table className="table table-bordered table-striped">
-            <thead className="primary-color text-white">
+            <thead className="primary-color text-white tex-center">
               <tr>
                 <th scope="col">N° de producto</th>
                 <th scope="col">Nombre del producto</th>

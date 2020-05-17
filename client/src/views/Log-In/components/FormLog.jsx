@@ -92,8 +92,8 @@ const FormLog = ({ history }) => {
   return (
     <div className="limiter">
       <div className="container-login100 bkgImgLogIn">
-        <div className="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
-          <form className="login100-form validate-form" onSubmit={submitUser}>
+        <div className="wrap-login500 p-l-50 p-r-50 p-t-77 p-b-30">
+          <form className="login-form validate-form" onSubmit={submitUser}>
             <span className="login100-form-title p-b-55">Login PyFlor</span>
 
             <div

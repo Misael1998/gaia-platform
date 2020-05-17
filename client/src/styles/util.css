@@ -7591,6 +7591,88 @@
   margin-bottom: 2%;
 }
 
-.min-height {
-  min-height: 60vh!important;
+
+
+/*form provider*/
+
+@media screen and (min-width: 780px) and (max-width: 1366px) {
+  .min-height {
+    min-height: 30vh;
+  }
+
+  .botonProd{
+    width: 200px;
+  }
+
+  .margiBoton{
+    margin-left: 200px;
+  }
+
+  .container-edit{
+    border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: darkgrey;
+  margin: auto;
+  }
+
+  
 }
+
+@media screen and (min-width: 480px) and (max-width: 780px) {
+  .min-height {
+    min-height: 20vh;
+  }
+
+  .botonProd{
+    width: 200px;
+    
+  }
+
+  .marginBoton{
+    margin-left: 357px;
+  }
+
+  .container-edit{
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin-left: 30px;
+    margin-right: 20px;
+  }
+
+}
+
+@media screen and (max-width: 480px) {
+  .min-height {
+    min-height: 20vh;
+  }
+
+  .botonProd{
+    width: 200px;
+    
+  }
+
+  .marginBoton{
+    margin-left: 280px;
+  }
+
+  .container-edit{
+    margin-left: 40px;
+    margin-right: 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+  }
+
+  
+
+  
+}
+
+
+
+
+
