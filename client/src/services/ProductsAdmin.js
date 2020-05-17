@@ -10,6 +10,6 @@ export const getAllProductsData = async () => {
       throw new Error(response);
     }
   } catch (error) {
-    return error.response;
+    return [];
   }
 };

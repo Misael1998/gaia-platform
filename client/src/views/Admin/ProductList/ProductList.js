@@ -49,7 +49,7 @@ const ProductList = ({ match }) => {
               </tr>
             </thead>
             <tbody className="">
-              {products.map((product) => (
+              {products.length !== 0 ? products.map((product) => (
                 <tr key={product.idProduct}>
                   <th scope="row">{product.idProduct}</th>
                   <td>{product.productName}</td>
@@ -70,7 +70,9 @@ const ProductList = ({ match }) => {
                     </Link>
                   </td>
                 </tr>
-              ))}
+              )) : <tr>
+                  <td className='text-center'>No hay productos registrados</td>
+                </tr>}
             </tbody>
           </table>
         </div>
