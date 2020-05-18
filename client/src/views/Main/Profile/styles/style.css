@@ -42,34 +42,38 @@
   font-family: Roboto, sans-serif;
 }
 
-
-
 body {
   font-family: Roboto, sans-serif;
 }
 
-
-
-@media screen and (min-width: 780px) and (max-width: 1680px){
-
+@media screen and (min-width: 780px) and (max-width: 1680px) {
   .container-nonEdit {
     margin-left: 10%;
   }
-
 }
 
-@media screen and (min-width: 480px) and (max-width: 780px){
-
+@media screen and (min-width: 480px) and (max-width: 780px) {
   .container-nonEdit {
     margin-left: 15%;
   }
-
 }
 
-@media screen and (max-width: 480px){
-
+@media screen and (max-width: 480px) {
   .container-nonEdit {
     margin-left: 25%;
   }
+}
 
+/*********/
+
+@media screen and (min-width: 780px) and (max-width: 1680px) {
+  .container-nonEdit2 {
+    margin-left: 10%;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 780px) {
+  .container-nonEdit2 {
+    margin-left: 5%;
+  }
 }
