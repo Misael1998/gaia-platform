@@ -198,7 +198,7 @@ const FormCompany = ({ history }) => {
     return (
       <div className="limiter">
         <div className="container-login100 imgFormRegUs">
-          <div className="wrap-login100 p-l-50 p-r-50 p-t-50 p-b-30">
+          <div className="wrap-loginRegEmpresa p-l-50 p-r-50 p-t-50 p-b-30">
             <form className="login100-form validate-form" onSubmit={submitUser}>
               <span className="login100-form-title p-b-25">
                 Registro Empresa

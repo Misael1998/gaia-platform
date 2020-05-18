@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ImgList from "./ImgList";
 import { getProducts } from "../../../services/Products";
 import Spinner from "../../../components/Spinner";
+import "../../../styles/util.css"
 
 const Search = () => {
     //State de los productos
@@ -147,7 +148,7 @@ const Search = () => {
               <div className="form group col-md-4 ">
                 <input
                   type="submit"
-                  className="btn- btn-lg btn-success btn-block"
+                  className="btn- btn-lg btn-success btn-block botonProductosEspaciado"
                   value="Buscar"
                 />
               </div>
