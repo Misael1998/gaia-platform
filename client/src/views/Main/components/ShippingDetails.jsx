@@ -46,17 +46,7 @@ const ShippingDetails = ({ match }) => {
           icon={<FaClipboardCheck size={40} />}
         />
 
-        <div className="col-7 mt-3">
-          <div className="row">
-            <div className="col-12">
-              <ul className="list-group">
-                <ItemsShippingDetails data={requestDetail} role={role} />
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-5 mt-3 ">
+        <div className="col-lg-5 col-sm-12 mt-3 ">
           <table className="table table-borderless table-striped  ">
             <tbody className="text-center">
               <tr>
@@ -106,6 +96,16 @@ const ShippingDetails = ({ match }) => {
               </p>
             </div>
           ) : null}
+        </div>
+
+        <div className="col-lg-7 col-sm-12 mt-3">
+          <div className="row">
+            <div className="col-12">
+              <ul className="list-group">
+                <ItemsShippingDetails data={requestDetail} role={role} />
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div className="col-12 text-center d-flex flex-row justify-content-center mt-5">
