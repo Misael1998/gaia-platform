@@ -46,7 +46,7 @@ const ShippingDetails = ({ match }) => {
           icon={<FaClipboardCheck size={40} />}
         />
 
-        <div className="col-lg-5 col-sm-12 mt-3 ">
+        <div className="col-lg-5 col-sm-12 mt-3 info-reorder">
           <table className="table table-borderless table-striped  ">
             <tbody className="text-center">
               <tr>
