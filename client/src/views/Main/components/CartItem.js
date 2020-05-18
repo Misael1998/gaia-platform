@@ -33,7 +33,7 @@ const CartItem = ({ product }) => {
           {product.quantity} {product.quantity === 1 ? "paquete" : "paquetes"}
         </h4>
 
-        <div className="ml-3 mr-3">
+        <div className="col-4 ml-3 mr-3 p-0">
           <button className="btn btn-success btn-sm mb-4 mr-3" onClick={add}>
             <MdAdd size={25} />
           </button>
