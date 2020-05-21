@@ -68,7 +68,6 @@ const ConfirmRequest = ({ history }) => {
           dispatch(deleteCart());
           history.push("/app/products");
         } else if (res.code === 2) {
-          dispatch(deleteCart());
           setPaypalURL(res.paypal.url);
           await Swal.fire(
             "Pedido creado",
