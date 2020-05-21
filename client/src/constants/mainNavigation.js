@@ -1,5 +1,5 @@
 import React from "react";
-import { MdHome, MdShoppingCart, MdPerson, MdExitToApp } from "react-icons/md";
+import { MdHome, MdShoppingCart, MdPerson, MdExitToApp, MdShoppingBasket } from "react-icons/md";
 import { IoMdCalendar } from "react-icons/io";
 import { logout } from "../modules/helper";
 
@@ -8,6 +8,12 @@ export default [
     name: "home",
     label: "Inicio",
     icon: <MdHome size={30} />,
+    link: "/app/",
+  },
+  {
+    name: "catalog",
+    label: "Productos",
+    icon: <MdShoppingBasket size={30} />,
     link: "/app/products",
   },
   {

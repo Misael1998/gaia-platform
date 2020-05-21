@@ -4,7 +4,12 @@ const { check } = require("express-validator");
 const auth = require("../middleware/auth");
 const authorize = require("../middleware/authorize");
 
-const { request, requestDetails } = require("../controllers/request");
+const {
+  request,
+  requestDetails,
+  requestData,
+  getRequestQT
+} = require("../controllers/request");
 
 router.route("/").post(
   [
@@ -29,6 +34,10 @@ router.route("/").post(
 
 router
   .route("/:id/details")
-  .get(auth, authorize("individual", "enterprise"), requestDetails);
+  .get(auth, authorize("individual", "enterprise", "employee"), requestDetails);
+
+router.route("/requests-data").get(auth, authorize("employee"), requestData);
+
+router.route("/qt").get(auth, authorize("employee", "admin"), getRequestQT);
 
 module.exports = router;

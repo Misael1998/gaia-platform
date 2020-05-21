@@ -152,7 +152,7 @@ iframe {
 
 .container-login100 {
   width: 100%;
-  min-height: 100vh;
+  min-height: 50vh;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -165,12 +165,16 @@ iframe {
   background-size: 100% auto;
   background-repeat: no-repeat;
   /*background: #27ae60;*/
-  background: -webkit-linear-gradient(bottom, #27ae60, #2ecc71);
+  /* background: -webkit-linear-gradient(bottom, #27ae60, #2ecc71);
   background: -o-linear-gradient(bottom, #27ae60, #2ecc71);
   background: -moz-linear-gradient(bottom, #27ae60, #2ecc71);
-  background: linear-gradient(bottom, #27ae60, #2ecc71);
+  background: linear-gradient(bottom, #27ae60, #2ecc71); */
   position: relative;
   z-index: 1;
+}
+
+.container-prod {
+  min-height: 75vh;
 }
 
 .container-login200 {
@@ -234,7 +238,6 @@ iframe {
 }
 
 .wrap-login100 {
-  width: 450px;
   background: #fff;
   border-radius: 3px;
   overflow: hidden;
@@ -251,7 +254,7 @@ iframe {
 }
 
 .wrap-login300 {
-  width: 1000x;
+  width: 1000px;
   /* height: 800px; */
   background: #fff;
   border-radius: 3px;
@@ -270,7 +273,28 @@ iframe {
 
 /*------------------------------------------------------------------
   [  ]*/
-.login100-form {
+@media screen and (min-width: 780px) and (max-width: 1680px) {
+  .login100-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 780px) {
+  .login100-form {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .login100-form {
+    width: 100%;
+  }
+}
+
+.login-form {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -687,3 +711,23 @@ input[type="radio"] {
 .radio-user {
   font-size: 1.1rem;
 }
+
+/* login */
+
+.wrap-login500 {
+  width: 450px;
+  background: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+
+.wrap-loginRegEmpresa {
+  width: 450px;
+  background: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+
+

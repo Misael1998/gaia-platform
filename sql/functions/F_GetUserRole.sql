@@ -1,4 +1,4 @@
-IF OBJECT_ID (N'dbo.getUserRole', N'FN') IS NOT NULL  
+IF OBJECT_ID (N'dbo.getUserRole') IS NOT NULL  
     DROP FUNCTION getUserRole;  
 GO
 CREATE FUNCTION [dbo].[getUserRole](@userId int)  
@@ -48,3 +48,4 @@ BEGIN
 
     return @role;
 END; 
+GO

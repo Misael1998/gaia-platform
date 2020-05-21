@@ -127,20 +127,17 @@ exports.sartype = async(req, res, next) => {
     }
 };
 
-
 //@desc     database all products
 //@route    GET     /api/data/products
 //@access   Private
 exports.products = async(req, res) => {
-    const { userId, role } = req.user
+    const { userId, role } = req.user;
 
-    if (role === 'individual') {
+    if (role === "individual") {
         try {
             const query = await new mssql.Request()
                 //.input("id", mssql.Int, userId)
-                .query(
-                    "SELECT * FROM [dbo].[FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL]();"
-                );
+                .query("SELECT * FROM [dbo].[FT_GET_ALL_PRODUCTS_DATA_INDIVIDUAL]();");
             const data = query.recordset;
             if (data.length === 0) {
                 return res.status(404).json({
@@ -162,7 +159,7 @@ exports.products = async(req, res) => {
         }
     }
 
-    if (role === 'enterprise') {
+    if (role === "enterprise") {
         try {
             const query = await new mssql.Request()
                 .input("id", mssql.Int, userId)
@@ -189,7 +186,6 @@ exports.products = async(req, res) => {
             });
         }
     }
-
 };
 
 //@desc     database single products
@@ -493,9 +489,8 @@ exports.departments = async(req, res) => {
 //@Route    GET /api/data/requesthistory
 //@access   PRIVATE
 exports.requestHistory = async(req, res) => {
-
     const { userId, role } = req.user;
-    if (role === 'enterprise') {
+    if (role === "enterprise") {
         try {
             const query = await new mssql.Request()
                 .input("idUser", mssql.Int, userId)
@@ -515,8 +510,6 @@ exports.requestHistory = async(req, res) => {
                 msg: "Success",
                 data: data
             });
-
-
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -524,9 +517,9 @@ exports.requestHistory = async(req, res) => {
                 msg: "Server error"
             });
         }
-    };
+    }
 
-    if (role === 'individual') {
+    if (role === "individual") {
         try {
             const query = await new mssql.Request()
                 .input("idUser", mssql.Int, userId)
@@ -591,33 +584,212 @@ exports.paymentMethod = async(req, res, next) => {
 //@desc     data of enterprise clients
 //@route    GET /api/data/dataenterprise
 //@access   private
-exports.dataEnterprise = async (req,res) =>{
+exports.dataEnterprise = async(req, res) => {
     try {
-            const {role,userId} = req.user;
-            const query= await new mssql.Request()
+        const { role, userId } = req.user;
+        const query = await new mssql.Request()
             .input("idUser", mssql.Int, userId)
-            .query("SELECT * FROM FT_GET_DATA_ENTERPRISE(@idUser)");  
-            
-        const data =query.recordset
+            .query("SELECT * FROM FT_GET_DATA_ENTERPRISE(@idUser)");
+
+        const data = query.recordset;
 
         if (data === 0) {
-            return res.status(404),json({
-                success:false,
-                msg: "Data not found"
-            })
+            return (
+                res.status(404),
+                json({
+                    success: false,
+                    msg: "Data not found"
+                })
+            );
         }
 
         return res.status(200).json({
-            success:true,
+            success: true,
             msg: "Successful",
             data: data
-        })
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            success:false,
+            success: false,
             msg: "Server error"
-        })
-            
-        }
+        });
+    }
 };
+
+//@desc     get categories
+//@route    GET /api/data/categories
+//@access   private
+exports.categories = async(req, res) => {
+    try {
+        const request = await new mssql.Request().query(
+            "select * from FT_GET_CATEGORIES()"
+        );
+
+        data = request.recordset;
+
+        if (data.length === 0) {
+            return errorResponse(
+                404,
+                "Not found", [{ msg: "No data found for categories" }],
+                res
+            );
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: request.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        return errorResponse(
+            500,
+            "server error", [{ msg: "internal server error" }],
+            res
+        );
+    }
+};
+
+//@desc     Get data of an individual client
+//@route    GET /api/data/individualUser
+//@access   private
+exports.getIndividualData = async(req, res) => {
+    const { userId } = req.user;
+    try {
+        const query = await new mssql.Request()
+            .input("id", mssql.Int, userId)
+            .query("select * from FT_GET_INDIVIDUAL_USER_DATA(@id)");
+
+        if (query.recordset.length == 0) {
+            errorResponse(
+                404,
+                "No user found", [{ msg: "Theres is no user registered with this id" }],
+                id
+            );
+        }
+
+        const data = query.recordset[0];
+        return res.status(200).json({
+            success: true,
+            data
+        })
+    } catch (error) {
+        console.error(error.message);
+        return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
+    }
+};
+
+//@desc     Get all company types
+//@route    GET     /api/data/companytypes
+//@access   Private
+exports.companyTypes = async (req,res)=>{
+  try{
+    const query = await new mssql.Request()
+      .query("select * from FT_COMPANY_TYPES()");
+    data = query.recordset;
+    return res.status(200).json({
+      success:true,
+      msg:"Company data",
+      data
+    })
+  }catch(e){
+    console.error(e.message);
+    return errorResponse(
+      500,
+      "Server error",
+      [{msg:"Internal server error"}],
+      res);
+  }
+}
+
+
+//@desc     Get  pro bill for clients 
+//@route    GET /api/data/bill/:id
+//@access   Private (Employee)
+exports.bill = async (req,res) => {
+  const idRequests = req.params.id;
+    try {
+        const request = await new mssql.Request()
+        .input("idRequests", mssql.Int, idRequests)
+        .query("SELECT * from FT_GET_BILL(@idRequests)");
+  
+        const type = request.recordset[0].typeBill;
+        const data = request.recordset;
+    
+      if (data.length === 0 || type =='none') {
+        return errorResponse(
+          404,
+          "No data",
+          [{ msg: "Cant find any data" }],
+          res
+        );
+      }
+      if (type==='P'){
+      let dataReq = [
+        ...new Set(
+          data.map(dr => {
+            return JSON.stringify({
+            type:dr.typeBill,    
+            numBill: dr.num_bill,
+            emissionDate: dr.emission_date,
+            nameClient:dr.nameClient,
+            subtotal: dr.sub_total,
+            total: dr.total
+            });
+          })
+        )
+      ];
+  
+      dataReq = JSON.parse(dataReq);
+      dataReq.products= data.map(dr => {
+        return {
+          nameProduct: dr.nameProduct,
+          quantity: dr.quantity,
+          price: dr.unit_price,
+          importTotal:dr.importeTotal
+        };
+      });
+      return res.send(dataReq);
+    }
+    if (type==='C'){
+        let dataReq = [
+            ...new Set(
+              data.map(dr => {
+                return JSON.stringify({
+                address: dr.addressClient,
+                rtn:dr.rtn,
+                type:dr.typeBill, 
+                numBill: dr.num_bill,
+                emissionDate: dr.emission_date,
+                shipping: dr.shipping,
+                exent:dr.exent,
+                import:dr.import,
+                aliquotRate:dr.aliquot_rate,
+                nameClient:dr.nameClient,
+                subtotal: dr.sub_total,
+                total: dr.total
+                });
+              })
+            )
+          ];
+          dataReq = JSON.parse(dataReq);
+          dataReq.products= data.map(dr => {
+            return {
+              nameProduct: dr.nameProduct,
+              quantity: dr.quantity,
+              price: dr.unit_price,
+              importTotal:dr.importeTotal
+            };
+          });
+          return res.send(dataReq);
+    }
+    } catch (err) {
+      console.log(err.message);
+      return errorResponse(
+        500,
+        "sever error",
+        [{ msg: "internal server error" }],
+        res
+      );
+    }
+  };

@@ -22,8 +22,10 @@ const Inventory = () => {
   const [regInventory, handleRegInventory] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [full, setFull] = useState(false);
+
   //Funcion que toma el filtro:
-  const takeFilter = filter => {
+  const takeFilter = (filter) => {
     //console.log("Desde app, la opcion de filtro es: ", filter);
     saveOption(filter);
     if (filter !== " ") {
@@ -33,7 +35,7 @@ const Inventory = () => {
   };
 
   //Funcion para el filtrado
-  const filterData = filtro => {
+  const filterData = (filtro) => {
     let filterArray;
     let regex;
 
@@ -43,21 +45,21 @@ const Inventory = () => {
       switch (option) {
         case "1":
           regex = new RegExp(filtro, "i");
-          filterArray = regInventory.filter(item => {
+          filterArray = regInventory.filter((item) => {
             if (regex.test(item.Supplie_Name)) return item;
           });
           break;
 
         case "2":
           let numConvert = parseInt(filtro);
-          filterArray = regInventory.filter(item => {
+          filterArray = regInventory.filter((item) => {
             if (item.No_Orden === numConvert) return item;
           });
           break;
 
         case "3":
           regex = new RegExp(filtro, "i");
-          filterArray = regInventory.filter(item => {
+          filterArray = regInventory.filter((item) => {
             if (regex.test(item.Receiver_Employee)) return item;
           });
           break;
@@ -65,7 +67,7 @@ const Inventory = () => {
         case "4":
           let fechaI = moment(filtro.fechaInicio);
           let fechaF = moment(filtro.fechaFin);
-          filterArray = regInventory.filter(item => {
+          filterArray = regInventory.filter((item) => {
             let fecha = moment(item.emission_date);
             if (fecha.isBetween(fechaI, fechaF)) return item;
           });
@@ -79,12 +81,17 @@ const Inventory = () => {
   //Funcion para traer la info del inventario:
   useEffect(() => {
     getInventory()
-      .then(res => {
+      .then((res) => {
         handleRegInventory(res);
+        if (res.length > 0) {
+          setFull(true);
+        } else {
+          setFull(false);
+        }
         handleFilteredInventory(res);
         setLoading(false);
       })
-      .catch(err => console.log("El error es:", err));
+      .catch((err) => console.log("El error es:", err));
   }, []);
 
   if (loading) {
@@ -99,7 +106,7 @@ const Inventory = () => {
             {show ? (
               <FilterForm option={option} filterData={filterData} />
             ) : null}
-            <InventoryTable regInventory={filteredInventory} />
+            <InventoryTable regInventory={filteredInventory} full={full} />
           </div>
         </div>
       </Fragment>

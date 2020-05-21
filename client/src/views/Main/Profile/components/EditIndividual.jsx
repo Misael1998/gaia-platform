@@ -1,24 +1,43 @@
 import React, { useState, useEffect } from "react";
 import "../styles/style.css";
-import "../../../../styles/util.css"
+import "../../../../styles/util.css";
+import { updateIndividualData } from "../../../../services/UpdateIndividualProfile";
+import Swal from "sweetalert2";
 
 const EditIndividual = ({ data }) => {
   //State para almacenar los cambios:
   const [saveEdit, setSaveEdit] = useState({
+    name: "",
+    lastname: "",
     email: "",
     phone: "",
-    address: ""
+    address: "",
   });
 
   //State para el error:
   const [error, handleError] = useState(false);
+  //State para el error de correo
+  const [errorEmail, handleErrorEmail] = useState(false);
 
   //Funcion que captura los datos:
-  const handleData = e => {
+  const handleData = (e) => {
+    handleError(false);
+    validarEmail();
+
     setSaveEdit({
       ...saveEdit,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
+  };
+
+  //Funcion para validar el correo:
+  const validarEmail = () => {
+    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (patron.test(document.getElementById("emailInput").value)) {
+      handleErrorEmail(false);
+    } else {
+      handleErrorEmail(true);
+    }
   };
 
   //Destructuting:
@@ -29,7 +48,7 @@ const EditIndividual = ({ data }) => {
   }, []);
 
   //Funcion que manda los datos:
-  const submitRequest = e => {
+  const submitRequest = (e) => {
     e.preventDefault();
 
     //Validacion:
@@ -38,11 +57,36 @@ const EditIndividual = ({ data }) => {
       return;
     }
 
+    //Condición si no existen problemas con el correo
+    if (errorEmail === false) {
+      updateIndividualData(email, phone, address)
+        .then((res) => {
+          Swal.fire(
+            "Datos Actualizados",
+            "Se han actualizados los datos exitosamente",
+            "success"
+          );
+          if (res === 1) {
+            window.location.reload();
+          } else {
+            Swal.fire(
+              "Datos sin Modificar",
+              "No se hicieron cambios en los datos",
+              "success"
+            );
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: error.title,
+            text: error.text,
+          });
+        });
+      return;
+    }
+
     handleError(false);
-
-    //Funcion que establecera los valores a editar traidos de la BD:
-
-    console.log("Los datos a editar son: ", email, phone, address);
   };
 
   return (
@@ -54,6 +98,7 @@ const EditIndividual = ({ data }) => {
         <div className=" centrado">
           <label className="font-weight-bold mt-3">Correo</label>
           <input
+            id="emailInput"
             type="text"
             name="email"
             className="form-control inpt-edit"
@@ -61,6 +106,12 @@ const EditIndividual = ({ data }) => {
             onChange={handleData}
             value={email}
           />
+
+          {errorEmail ? (
+            <p className="alert alert-danger error-p text-white">
+              El correo ingresado no es válido!!!
+            </p>
+          ) : null}
 
           <label className="font-weight-bold mt-3">Teléfono</label>
           <input

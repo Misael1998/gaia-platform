@@ -6,7 +6,7 @@ export const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     onClick={onClick}
     ref={ref}
   >
-    <div className="side-icon">
+    <div className="side-icon drop-nav">
       {children}
       <span className="ml-2">
         <TiChevronRight size={26} />

@@ -20,7 +20,11 @@ const {
   departments,
   paymentMethod,
   requestHistory,
-  dataEnterprise
+  dataEnterprise,
+  categories,
+  getIndividualData,
+  companyTypes,
+  bill,
 } = require("../controllers/data");
 
 router.route("/supplies").get(auth, supplies);
@@ -28,8 +32,7 @@ router.route("/sectors").get(sectors);
 router.route("/providers").get(auth, providers);
 router.route("/providers/:id").get(auth, getProvider);
 router.route("/sartype").get(sartype);
-router.route("/inventory").get(inventory);
-//router.route("/products").get(products);
+router.route("/inventory").get(auth, authorize("employee"),inventory);
 router.route("/employees").get(employees);
 router.route("/products/:id").get(individualProduct);
 router.route("/refferals").get(auth, refferals);
@@ -39,13 +42,23 @@ router.route("/jobtitles").get(auth, jobTitles);
 router.route("/departments").get(auth, departments);
 router.route("/payment-method").get(paymentMethod);
 router
-  .route("/products")
-  .get(auth, authorize("individual", "enterprise"), products);
+    .route("/products")
+    .get(auth, authorize("individual", "enterprise"), products);
 router
-  .route("/requesthistory")
-  .get(auth, authorize("individual", "enterprise"), requestHistory);
+    .route("/requesthistory")
+    .get(auth, authorize("individual", "enterprise"), requestHistory);
 router
-  .route("/dataenterprise")
-  .get(auth, authorize("enterprise"), dataEnterprise);
+    .route("/dataenterprise")
+    .get(auth, authorize("enterprise"), dataEnterprise);
+router.route("/categories").get(auth, categories);
+router
+    .route("/individualuser")
+    .get(auth, authorize("individual"), getIndividualData);
+
+router.route('/companytypes').get(companyTypes);
+router
+  .route("/bill/:id")
+  .get(auth, authorize("employee"), bill);
+
 
 module.exports = router;

@@ -9,7 +9,8 @@
     "sprint": "NODE_ENV=sprint node server",
     "server": "nodemon server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"nodemon run server\" \"npm run client\""
+    "dev": "concurrently \"nodemon run server\" \"npm run client\"",
+    "build:db": "node scripts/build-db-scripts.js"
   },
   "repository": {
     "type": "git",
@@ -23,12 +24,12 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/is-802-ing-software/gaia-platform#readme",
   "dependencies": {
-    "@david.kucsai/react-pdf-table": "^0.3.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.1.7-alpha.3",
     "express-validator": "^6.4.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
