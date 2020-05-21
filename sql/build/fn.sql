@@ -296,7 +296,7 @@ IF OBJECT_ID (N'FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE') IS NOT NULL
 GO
 CREATE FUNCTION [dbo].[FT_GET_ALL_PRODUCTS_DATA_ENTERPRISE](@id INT)
 RETURNS @allProductsData TABLE(
-    idProduct INT NULL,
+    idProducts INT NULL,
     productName VARCHAR(45) NULL,
     productImage IMAGE NULL,
     productDescription VARCHAR(200) NULL,
