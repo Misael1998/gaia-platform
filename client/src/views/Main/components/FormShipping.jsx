@@ -24,6 +24,7 @@ const FormShipping = ({ updateShowShipping, history }) => {
   const [shippingTypes, setShippingTypes] = useState([]);
   const [showInput, setShowInput] = useState(false);
   const [address, setAddress] = useState('');
+  const [errorP,handleErrorP] =useState(false);
 
   useEffect(() => {
     getDeliveryTypes()
@@ -51,6 +52,8 @@ const FormShipping = ({ updateShowShipping, history }) => {
       handleError(true);
       return;
     }
+
+    
     //Objeto a enviar al store
     let shippingObject = shippingTypes.find(type => type.id === Number(infoShipping.ShippingType))
     shippingObject = {...shippingObject, address}
@@ -72,9 +75,17 @@ const FormShipping = ({ updateShowShipping, history }) => {
 
     });
 
+    const address ="";
     
     if(Number(e.target.value) === customShipping){
       setShowInput(true);
+
+      if(address === "") {
+        handleErrorP(true);
+        handleError(false);
+        return;
+      }
+
     }else {
       setShowInput(false);
     }
@@ -140,15 +151,19 @@ const FormShipping = ({ updateShowShipping, history }) => {
                     className="wrap-input100 validate-input m-b-16"
                     data-validate="Password is required"
                   >
+                   
 
                     <input
                       className="input100"
                       type="text"
+                      name="address"
                       onChange={(e) => setAddress(e.target.value)}
                       placeholder="Direccion de envio"
                       value={address}
 
                     />
+
+                  
 
                     <span className="focus-input100"></span>
                     <span className="symbol-input100">
@@ -156,8 +171,16 @@ const FormShipping = ({ updateShowShipping, history }) => {
                     </span>
 
                   </div>
+
+
                 ) : null
               }
+
+                  {errorP ? (
+                    <p className="alert alert-danger error-p text-white">
+                      Debe llenar el campo
+                    </p>
+                  ) : null}
 
               {error ? (
                 <p className="alert alert-danger error-p text-white">
