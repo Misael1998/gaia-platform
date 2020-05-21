@@ -25,6 +25,7 @@ const FormShipping = ({ updateShowShipping, history }) => {
   const [showInput, setShowInput] = useState(false);
   const [address, setAddress] = useState('');
   const [errorP,handleErrorP] =useState(false);
+  const [idSaved, setIdSaved] = useState(0);
 
 
 
@@ -54,11 +55,17 @@ const FormShipping = ({ updateShowShipping, history }) => {
       handleError(true);
       return;
     }
-
-    if (address===""){
-      handleErrorP(true);
-      return;
+    
+    
+    if(idSaved===3){
+      if(address===""){
+        handleErrorP(true);
+        return;
+      }
+      handleErrorP(false);
     }
+    
+    
 
     
     //Objeto a enviar al store
@@ -82,16 +89,12 @@ const FormShipping = ({ updateShowShipping, history }) => {
 
     });
 
-    const address ="";
+    setIdSaved(Number(e.target.value));
     
     if(Number(e.target.value) === customShipping){
       setShowInput(true);
 
-      if(address === "") {
-        handleErrorP(true);
-        handleError(false);
-        return;
-      }
+      setIdSaved(customShipping);
 
     }else {
       setShowInput(false);
