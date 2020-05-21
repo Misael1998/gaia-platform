@@ -24,7 +24,7 @@ const FormRequest = () => {
     expireDate: "",
     idAddressEmployee: "",
     idSenderEmployee: "",
-    idCreatedEmployee: ""
+    idCreatedEmployee: "",
   });
 
   const [supply, setSupply] = useState("");
@@ -50,10 +50,10 @@ const FormRequest = () => {
   const [payment, setPayment] = useState([]);
 
   //Funcion que se ejecuta cuando se escribe en un input:
-  const handleChangeInfo = e => {
+  const handleChangeInfo = (e) => {
     handleRequest({
       ...infoRequest,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -69,7 +69,7 @@ const FormRequest = () => {
     expireDate,
     idAddressEmployee,
     idSenderEmployee,
-    idCreatedEmployee
+    idCreatedEmployee,
   } = infoRequest;
 
   //Funcion que toma el insumo y la cantidad:
@@ -77,7 +77,7 @@ const FormRequest = () => {
     let supplyToAdd = {
       idSupply: supply,
       quantity,
-      supUnit
+      supUnit,
     };
 
     let newSupplies = [...infoRequest.supplies, supplyToAdd];
@@ -92,24 +92,24 @@ const FormRequest = () => {
   const [enableButton, setEnableButton] = useState(true);
 
   useEffect(() => {
-    selectSupplies().then(res => {
+    selectSupplies().then((res) => {
       handleSupplyArray(res);
     });
-    selectEmployee().then(res => {
+    selectEmployee().then((res) => {
       handleEmployees(res);
     });
-    selectSar().then(res => {
+    selectSar().then((res) => {
       handleSar(res);
     });
-    getPaymentMethods().then(res => {
+    getPaymentMethods().then((res) => {
       setPayment(res);
     });
     selectProviders()
-      .then(res => {
+      .then((res) => {
         handleProviders(res);
         setLoading(false);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   //Funcion para los campos requeridos hasta habilitar el boton:
@@ -135,7 +135,7 @@ const FormRequest = () => {
     idProvider,
     expireDate,
     idAddressEmployee,
-    idSenderEmployee
+    idSenderEmployee,
   ]);
 
   //Formateando las fechas:
@@ -143,7 +143,7 @@ const FormRequest = () => {
   const formatExpire = moment(expireDate);
 
   //Funcion para el boton Realizar Solicitud:
-  const submitRequest = e => {
+  const submitRequest = (e) => {
     e.preventDefault();
 
     //Validacion:
@@ -180,12 +180,12 @@ const FormRequest = () => {
       numBill,
       supplies
     )
-      .then(res => {
+      .then((res) => {
         Swal.fire(
           "Creacion de Orden Exitosa",
           "La orden se ha creado",
           "success"
-        ).then(e => {
+        ).then((e) => {
           handleRequest({
             supplies: [],
             idPaymentMethod: "",
@@ -197,16 +197,16 @@ const FormRequest = () => {
             expireDate: "",
             idAddressEmployee: "",
             idSenderEmployee: "",
-            idCreatedEmployee: ""
+            idCreatedEmployee: "",
           });
         });
       })
 
-      .catch(error => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: error.title,
-          text: error.text
+          text: error.text,
         });
       });
   };
@@ -220,7 +220,6 @@ const FormRequest = () => {
           <div className="wrap-login200  p-l-40 pl-sm-0 p-r-40 pr-sm-0 p-t-5 p-b-30 ">
             <form className="login100-form" onSubmit={submitRequest}>
               <div className="col-lg-6">
-                
                 <div
                   className="wrap-input100 validate-input m-b-16"
                   data-validate="Password is required"
@@ -271,7 +270,7 @@ const FormRequest = () => {
                     value={idReceiverEmployee}
                   >
                     <option value="0">Empleado Recibe</option>
-                    {employees.map(emp => (
+                    {employees.map((emp) => (
                       <option key={emp.idEmployees} value={emp.idEmployees}>
                         {emp.userName + " " + emp.lastname}
                       </option>
@@ -296,7 +295,7 @@ const FormRequest = () => {
                     value={idCreatedEmployee}
                   >
                     <option value="0">Empleado Crea</option>
-                    {employees.map(emp => (
+                    {employees.map((emp) => (
                       <option key={emp.idEmployees} value={emp.idEmployees}>
                         {emp.userName + " " + emp.lastname}
                       </option>
@@ -321,7 +320,7 @@ const FormRequest = () => {
                     value={idSenderEmployee}
                   >
                     <option value="0">Empleado Envia</option>
-                    {employees.map(emp => (
+                    {employees.map((emp) => (
                       <option key={emp.idEmployees} value={emp.idEmployees}>
                         {emp.userName + " " + emp.lastname}
                       </option>
@@ -350,7 +349,7 @@ const FormRequest = () => {
                     value={idProvider}
                   >
                     <option value="0">Nombre Proveedor</option>
-                    {providers.map(prov => {
+                    {providers.map((prov) => {
                       return (
                         <option key={prov.id} value={prov.id}>
                           {prov.name}
@@ -396,7 +395,7 @@ const FormRequest = () => {
                     value={idSarType}
                   >
                     <option value="0">Tipo de SAR</option>
-                    {sarArray.map(s => {
+                    {sarArray.map((s) => {
                       return (
                         <option key={s.idSarTypes} value={s.idSarTypes}>
                           {s.description}
@@ -423,7 +422,7 @@ const FormRequest = () => {
                     value={idPaymentMethod}
                   >
                     <option value="0">Forma de Pago</option>
-                    {payment.map(pm => {
+                    {payment.map((pm) => {
                       return (
                         <option
                           key={pm.idPaymentMethods}
@@ -453,7 +452,7 @@ const FormRequest = () => {
                     value={idAddressEmployee}
                   >
                     <option value="0">Empleado Solicita</option>
-                    {employees.map(emp => (
+                    {employees.map((emp) => (
                       <option key={emp.idEmployees} value={emp.idEmployees}>
                         {emp.userName + " " + emp.lastname}
                       </option>
@@ -477,12 +476,12 @@ const FormRequest = () => {
                       type="text"
                       name="idSupply"
                       placeholder="Nombre del Insumo"
-                      onChange={e => setSupply(e.target.value)}
+                      onChange={(e) => setSupply(e.target.value)}
                       value={supply}
                     >
                       <option value="0">Nombre Insumo</option>
-                      {supplyarray.map(supp => (
-                        <option key={supp.idSupplies} value={supp.idSupplies}>
+                      {supplyarray.map((supp) => (
+                        <option key={supp.id} value={supp.id}>
                           {supp.name}
                         </option>
                       ))}
@@ -504,7 +503,7 @@ const FormRequest = () => {
                       type="number"
                       name="quantity"
                       placeholder="Cantidad"
-                      onChange={e => setQuantity(e.target.value)}
+                      onChange={(e) => setQuantity(e.target.value)}
                       value={quantity}
                     />
                     <span className="focus-input100"></span>
@@ -522,7 +521,7 @@ const FormRequest = () => {
                       className="input100"
                       type="text"
                       name="unit"
-                      onChange={e => setUnit(e.target.value)}
+                      onChange={(e) => setUnit(e.target.value)}
                       value={supUnit}
                     >
                       <option value="0">Medida Insumo</option>
@@ -549,7 +548,7 @@ const FormRequest = () => {
                 <div className="col-12">
                   <ul className="list-group">
                     {supplies.length !== 0 ? (
-                      supplies.map(supply => {
+                      supplies.map((supply) => {
                         return (
                           <li className="list-group-item" key={supply.idSupply}>
                             Codigo del insumo: {` ${supply.idSupply}`}

@@ -303,7 +303,7 @@ RETURNS @allProductsData TABLE(
     category VARCHAR(45) NULL,
     sarType VARCHAR(45) NULL,
     companyType VARCHAR(45),
-    unitPrice FLOAT NULL
+    unit_price FLOAT NULL
 )
 AS
 BEGIN
