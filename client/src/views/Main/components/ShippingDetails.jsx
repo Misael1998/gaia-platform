@@ -14,9 +14,10 @@ import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 
-const role = sessionStorage.getItem("role");
+
 
 const ShippingDetails = ({ match }) => {
+  const role = sessionStorage.getItem("role");
   const [requestDetail, setRequestDetail] = useState({});
   const [loading, setLoading] = useState(true);
 
