@@ -26,6 +26,8 @@ const FormShipping = ({ updateShowShipping, history }) => {
   const [address, setAddress] = useState('');
   const [errorP,handleErrorP] =useState(false);
 
+
+
   useEffect(() => {
     getDeliveryTypes()
       .then(res => {
@@ -50,6 +52,11 @@ const FormShipping = ({ updateShowShipping, history }) => {
     //validacion
     if (ShippingType === "") {
       handleError(true);
+      return;
+    }
+
+    if (address===""){
+      handleErrorP(true);
       return;
     }
 
@@ -88,6 +95,7 @@ const FormShipping = ({ updateShowShipping, history }) => {
 
     }else {
       setShowInput(false);
+      handleErrorP(false);
     }
 
     if (e.target.value === "0") {
