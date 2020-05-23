@@ -1019,7 +1019,7 @@ BEGIN
 			p.idProducts idProduct,
 			p.name product,
 			rhp.quantity,
-			(pb.maquila + pb.net_plant) subtotal,
+			pb.sub_total subtotal,
 			1
 		FROM TBL_REQUESTS r
 		INNER JOIN TBL_INDIVIDUAL_CLIENTS ic ON r.idIndividualClient = ic.idIndividualClients
