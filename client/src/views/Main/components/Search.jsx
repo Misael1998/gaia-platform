@@ -58,7 +58,9 @@ const Search = () => {
             return item;
         });
         break;
-        defaul: filterArray = products;
+
+      default:
+        filterArray = products;
     }
 
     handleFilter(filterArray);
