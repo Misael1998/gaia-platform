@@ -3,9 +3,9 @@ import fresas from "../../../assets/img/fresas.png";
 import { Link } from "react-router-dom";
 
 const Image = ({ product }) => {
-  const {productName, unit_price} = product;
+  const { productName, unit_price } = product;
   return (
-    <div className="col-16 col-sm-6 col-md-4 col-lg-3 mb-5">
+    <div className="mr-5 mb-5">
       <Link to={`product/${product.idProducts}`}>
         <div className="card p-2">
           <img src={fresas} alt={productName} className="card-img-top " />
