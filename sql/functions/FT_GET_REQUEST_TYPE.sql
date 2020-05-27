@@ -1,11 +1,12 @@
-IF OBJECT_ID (N'FT_GET_REQUEST_TYPE', N'IF') IS NOT NULL  
+IF OBJECT_ID (N'FT_GET_REQUEST_TYPE') IS NOT NULL  
     DROP FUNCTION [FT_GET_REQUEST_TYPE];  
-GO  
+GO
 CREATE FUNCTION [FT_GET_REQUEST_TYPE] ()  
 RETURNS TABLE  
 AS  
 RETURN(
-    SELECT  idRequestType as id,
-            name as name
-    FROM [pyflor].[dbo].[TBL_REQUEST_TYPES]
+    SELECT idRequestType as id,
+    name as name
+FROM [pyflor].[dbo].[TBL_REQUEST_TYPES]
 )
+GO

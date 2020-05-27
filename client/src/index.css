@@ -21,13 +21,16 @@ body {
   font-size: 1rem;
 }
 
+.font-xl {
+  font-size: 1.5rem;
+}
+
 .side-icon:hover {
   color: #2ecc71;
 }
 
 .logo {
-  min-width: 30%;
-  padding: 10px;
+  padding: 0.5rem;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 200px;
   z-index: 2;
@@ -68,4 +71,28 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
+}
+
+.div-radius {
+  border-radius: 5%;
+}
+
+
+@media only screen and (max-width: 780px) {
+  
+  .header-title {
+    text-align: center;
+  }
+
+  .title-container {
+    justify-content: center;
+  }
+
+  .form-wrap {
+    width: 220%!important;
+    display: flex;
+    align-items: center!important;
+    justify-content: start;
+  }
+
 }

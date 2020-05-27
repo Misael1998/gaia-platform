@@ -7534,51 +7534,153 @@
 
 /*Formularios de envío pago etc... */
 
-.containerShipping{
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 10px;
-  border-color: darkgrey;
-  margin: auto;
-
-}
-.containerPayment{
+.containerPayment {
   border-style: solid;
   border-width: 1px;
   border-radius: 10px;
   border-color: darkgrey;
   max-width: 100%;
-
 }
 
-.iconCenter{
-  margin:auto;
-}
-
-.espaciado{
-  margin:5%;
-}
-
-.botones{
+.iconCenter {
   margin: auto;
 }
 
-.Left{
+.espaciado {
+  margin: 5%;
+}
+
+.botones {
+  margin: auto;
+}
+
+.Left {
   text-align: left;
   margin-bottom: 2%;
 }
 
-.ContainerDetail{
+.ContainerDetail {
   text-align: left;
   width: 100%;
   margin-top: 8%;
 }
 
-.btnDetail{
+.btnDetail {
   float: left;
   width: 25%;
 }
 
-.centrado{
+.centrado {
   margin: auto;
+}
+
+.BorderProfile {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: darkgrey;
+  margin: auto;
+  margin-bottom: 2%;
+}
+
+/*form provider*/
+
+@media screen and (min-width: 780px) and (max-width: 1680px) {
+  .min-height {
+    min-height: 30vh;
+  }
+
+  .botonProd {
+    width: 200px;
+  }
+
+  .margiBoton {
+    margin-left: 200px;
+  }
+
+  .container-edit {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin: auto;
+  }
+
+  .containerShipping {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin: auto;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 780px) {
+  .min-height {
+    min-height: 20vh;
+  }
+
+  .botonProd {
+    width: 200px;
+  }
+
+  .marginBoton {
+    margin-left: 357px;
+  }
+
+  .container-edit {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin-left: 30px;
+    margin-right: 20px;
+  }
+
+  .containerShipping {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin-left: 50px;
+  }
+
+  .botonProductosEspaciado {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .min-height {
+    min-height: 20vh;
+  }
+
+  .botonProd {
+    width: 200px;
+  }
+
+  .marginBoton {
+    margin-left: 280px;
+  }
+
+  .container-edit {
+    margin-left: 40px;
+    margin-right: 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+  }
+
+  .containerShipping {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: darkgrey;
+    margin-left: 50px;
+  }
+
+  .botonProductosEspaciado {
+    margin-top: 20px;
+  }
 }

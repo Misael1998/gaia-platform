@@ -22,7 +22,7 @@ const FormRegEmp = ({ history }) => {
     jobTitle: "",
     department: "",
     admissionDate: "",
-    password: ""
+    password: "",
   });
 
   //State para el boton:
@@ -53,7 +53,7 @@ const FormRegEmp = ({ history }) => {
     jobTitle,
     department,
     admissionDate,
-    password
+    password,
   } = infoEmp;
 
   useEffect(() => {
@@ -78,27 +78,27 @@ const FormRegEmp = ({ history }) => {
     phone,
     jobTitle,
     department,
-    admissionDate
+    admissionDate,
   ]);
 
   //Funcion para traer de la bd los jobtitles y los departments
   useEffect(() => {
-    getJobTitles().then(res => {
+    getJobTitles().then((res) => {
       handleJobArray(res);
     });
     getDepartments()
-      .then(res => {
+      .then((res) => {
         handleDepartArray(res);
         setLoading(false);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   //Funcion que se ejecuta cuando se escribe en un input:
-  const handleChangeInfo = e => {
+  const handleChangeInfo = (e) => {
     handleEnpInfo({
       ...infoEmp,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -113,7 +113,7 @@ const FormRegEmp = ({ history }) => {
   };
 
   //Funcion para el boton de login:
-  const submitEmp = e => {
+  const submitEmp = (e) => {
     e.preventDefault();
 
     validarEmail();
@@ -148,18 +148,18 @@ const FormRegEmp = ({ history }) => {
       admissionDate,
       password
     )
-      .then(res => {
+      .then((res) => {
         Swal.fire(
           "Registro Exitoso",
           "Se ha creado el empleado exitosamente",
           "success"
         );
       })
-      .catch(error => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: error.title,
-          text: error.text
+          text: error.text,
         });
       });
 
@@ -173,7 +173,7 @@ const FormRegEmp = ({ history }) => {
       jobTitle: "",
       department: "",
       admissionDate: "",
-      password: ""
+      password: "",
     });
   };
 
@@ -185,15 +185,15 @@ const FormRegEmp = ({ history }) => {
         <div className="m-l-30">
           <Title icon={<FaWpforms size={40} />} title="Registro de Empleado" />
         </div>
-        <div className="container-login100 p-t-0">
-          <div className="wrap-login300 p-l-20 p-t-0 p-r-20 p-b-30">
+        <div className="container-login100 min-height p-t-0">
+          <div className="wrap-login100">
             <form className="login100-form validate-form" onSubmit={submitEmp}>
               <span className="login100-form-title p-b-25"></span>
 
               {/*Primera Columna*/}
               <div className="col-lg-6">
                 <div
-                  className="wrap-input100 validate-input m-b-16"
+                  className="wrap-input100 m-b-16"
                   data-validate="Valid email is required: ex@abc.xyz"
                 >
                   <input
@@ -323,7 +323,7 @@ const FormRegEmp = ({ history }) => {
                     value={jobTitle}
                   >
                     <option value="0">Puesto de Trabajo</option>
-                    {jobArray.map(job => (
+                    {jobArray.map((job) => (
                       <option key={job.id} value={job.id}>
                         {job.name}
                       </option>
@@ -348,7 +348,7 @@ const FormRegEmp = ({ history }) => {
                     value={department}
                   >
                     <option value="0">Departamento de Trabajo</option>
-                    {departArray.map(d => (
+                    {departArray.map((d) => (
                       <option key={d.id} value={d.id}>
                         {d.name}
                       </option>

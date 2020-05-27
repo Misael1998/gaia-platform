@@ -1,6 +1,5 @@
 const { validationResult } = require("express-validator");
 const errorResponse = require("../utils/errorResponse");
-const moment = require("moment");
 const mssql = require("mssql");
 
 //@desc     insert request with products into DB
@@ -18,6 +17,16 @@ exports.request = async (req, res, next) => {
     deliveryType,
     payment
   } = req.body;
+
+  let deliveryDescription = req.body.deliveryDescription;
+  if (
+    !deliveryDescription ||
+    typeof deliveryDescription !== "string" ||
+    deliveryDescription.length === 0
+  ) {
+    deliveryDescription = null;
+  }
+
   let products = req.body.products.map(product => {
     if (product.quantity < 1 || product.quantity === null) {
       return errorResponse(
@@ -35,10 +44,11 @@ exports.request = async (req, res, next) => {
     return tmp;
   });
   try {
-    const { userId } = req.user;
+    const { userId, role } = req.user;
 
     const request = await new mssql.Request()
       .input("deliveryID", mssql.Int, deliveryType)
+      .input("deliveryDescription", mssql.VarChar(150), deliveryDescription)
       .input("requestTypeID", mssql.Int, requestType)
       .input("date", mssql.DateTime, emissionDate)
       .input("shipping", mssql.Float, shipping)
@@ -49,6 +59,7 @@ exports.request = async (req, res, next) => {
       .output("id", mssql.Int)
       .execute("SP_INSERT_REQUEST");
 
+    const requestId = request.output.id;
     const { msj } = request.output;
     if (msj !== "success") {
       return errorResponse(400, "Bad request", [{ msj: msj }], res);
@@ -69,10 +80,41 @@ exports.request = async (req, res, next) => {
       }
     }
 
+    let sp;
+    if (role === "individual") {
+      sp = "SP_CREATE_BILL_INDIVIDUAL";
+    }
+
+    if (role === "enterprise") {
+      sp = "SP_CREATE_BILL_ENTERPRISE";
+    }
+
+    if (!sp) {
+      errorResponse(
+        500,
+        "server error",
+        [{ msg: "role has been modified, cant proceed with payment" }],
+        res
+      );
+    }
+
+    //creating a new bill in db with paypal payment parameters
+    query = await new mssql.Request()
+      .input("requestId", mssql.Int, requestId)
+      .input("userId", mssql.Int, userId)
+      .input("urlWithToken", mssql.VarChar(150), null)
+      .input("idPayment", mssql.VarChar(150), null)
+      .output("msg", mssql.VarChar(20))
+      .output("err", mssql.VarChar(20))
+      .execute(`${sp}`);
+
     return res.status(201).json({
       success: true,
-      msg: "request palced",
-      data: products
+      msg: "request placed",
+      data: {
+        requestId,
+        products
+      }
     });
   } catch (err) {
     console.log(err.message);
@@ -128,10 +170,24 @@ exports.requestDetails = async (req, res, next) => {
           msg: "Not Found "
         });
       }
-      data = data.map(tmp => {
-        delete tmp["success"];
-        return tmp;
-      });
+      let products = getProductsFromRequest(data);
+      let tmpRequest = [
+        ...new Set(
+          data.map(x => {
+            return JSON.stringify({
+              idRequest: x.idRequest,
+              emissionDate: x.emissionDate,
+              deliveryType: x.deliveryType,
+              deliveryDescription: x.deliveryDescription,
+              paymentMethod: x.paymentMethod,
+              subtotal: x.subtotal
+            });
+          })
+        )
+      ];
+      tmpRequest = JSON.parse(tmpRequest);
+      tmpRequest.products = products;
+      data = tmpRequest;
       return res.status(200).json({
         success: true,
         msg: "Successful",
@@ -161,10 +217,24 @@ exports.requestDetails = async (req, res, next) => {
           msg: "Not Found "
         });
       }
-      data = data.map(tmp => {
-        delete tmp["success"];
-        return tmp;
-      });
+      let products = getProductsFromRequest(data);
+      let tmpRequest = [
+        ...new Set(
+          data.map(x => {
+            return JSON.stringify({
+              idRequest: x.idRequest,
+              emissionDate: x.emissionDate,
+              deliveryType: x.deliveryType,
+              deliveryDescription: x.deliveryDescription,
+              paymentMethod: x.paymentMethod,
+              subtotal: x.subtotal
+            });
+          })
+        )
+      ];
+      tmpRequest = JSON.parse(tmpRequest);
+      tmpRequest.products = products;
+      data = tmpRequest;
       return res.status(200).json({
         success: true,
         msg: "Successful",
@@ -177,5 +247,115 @@ exports.requestDetails = async (req, res, next) => {
         msg: "server error"
       });
     }
+  }
+
+  if (role === "employee") {
+    try {
+      const query = await new mssql.Request()
+        .input("idReq", mssql.Int, req.params.id)
+        .query("SELECT * FROM [dbo].[FT_GET_REQUEST_DETAIL_EMPLOYEE](@idReq)");
+      let data = query.recordset;
+      if (data.length === 0) {
+        return res.status(404).json({
+          success: false,
+          msg: "Not Found "
+        });
+      }
+      let products = getProductsFromRequest(data);
+      let tmpRequest = [
+        ...new Set(
+          data.map(x => {
+            return JSON.stringify({
+              idRequest: x.idRequest,
+              idClient: x.idClient,
+              client: x.client,
+              emissionDate: x.emissionDate,
+              deliveryType: x.deliveryType,
+              deliveryDescription: x.deliveryDescription,
+              paymentMethod: x.paymentMethod,
+              subtotal: x.subtotal
+            });
+          })
+        )
+      ];
+      tmpRequest = JSON.parse(tmpRequest);
+      tmpRequest.products = products;
+      data = tmpRequest;
+      return res.status(200).json({
+        success: true,
+        msg: "Successful",
+        data: data
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        msg: "server error"
+      });
+    }
+  }
+};
+
+const getProductsFromRequest = data => {
+  return data.map(product => {
+    return {
+      idProduct: product.idProduct,
+      product: product.products,
+      quantity: product.quantity
+    };
+  });
+};
+
+//@desc     request data
+//@route    GET     /api/request/requests-data
+//@access   Private, employee
+
+exports.requestData = async (req, res, next) => {
+  const { userId, role } = req.user;
+
+  if (role === "employee") {
+    try {
+      const query = await new mssql.Request().query(
+        "SELECT * FROM [dbo].[FT_GET_REQUEST_DATA]()"
+      );
+      const data = query.recordset;
+      if (data.length === 0) {
+        return res.status(404).json({
+          success: false,
+          msg: "Not Found "
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        msg: "Successful",
+        data: data
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        msg: "server error"
+      });
+    }
+  }
+};
+
+exports.getRequestQT = async (req, res) => {
+  try {
+    const request = await new mssql.Request().query(
+      "select dbo.FS_GET_REQUEST_QT() quantity"
+    );
+    res.status(200).json({
+      success: true,
+      data: request.recordset[0]
+    });
+  } catch (err) {
+    console.log(err);
+    return errorResponse(
+      500,
+      "server error",
+      [{ err: "internal server error" }],
+      res
+    );
   }
 };

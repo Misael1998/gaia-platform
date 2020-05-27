@@ -12,14 +12,14 @@ const FormLog = ({ history }) => {
   //Creando el state para leer los inputs:
   const [information, handleInformation] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   //Funcion que se ejecuta cuando se escribe en un input:
-  const handleChangeInfo = e => {
+  const handleChangeInfo = (e) => {
     handleInformation({
       ...information,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -43,7 +43,7 @@ const FormLog = ({ history }) => {
   const { email, password } = information;
 
   //Funcion para el boton de login:
-  const submitUser = e => {
+  const submitUser = (e) => {
     e.preventDefault();
 
     validarEmail();
@@ -58,18 +58,19 @@ const FormLog = ({ history }) => {
 
     //Peticion a endpoint de user
     loginUser(email, password)
-      .then(res => {
+      .then((res) => {
         const { user } = res;
 
         SessionStorageService.setToken(res.token);
         SessionStorageService.setItem("role", user.role);
+        SessionStorageService.setItem("uName", user.firstName);
         Swal.fire(
           "Login exitoso",
           `Bienvenido ${user.firstName}`,
           "success"
-        ).then(res => {
+        ).then((res) => {
           if (user.role === "employee") {
-            history.push("/portal");
+            history.push("/portal/");
           } else {
             if (user.role === "admin") {
               history.push("/admin");
@@ -79,11 +80,11 @@ const FormLog = ({ history }) => {
           }
         });
       })
-      .catch(error => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: error.title,
-          text: error.text
+          text: error.text,
         });
       });
   };
@@ -91,8 +92,8 @@ const FormLog = ({ history }) => {
   return (
     <div className="limiter">
       <div className="container-login100 bkgImgLogIn">
-        <div className="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
-          <form className="login100-form validate-form" onSubmit={submitUser}>
+        <div className="wrap-login500 p-l-50 p-r-50 p-t-77 p-b-30">
+          <form className="login-form validate-form" onSubmit={submitUser}>
             <span className="login100-form-title p-b-55">Login PyFlor</span>
 
             <div

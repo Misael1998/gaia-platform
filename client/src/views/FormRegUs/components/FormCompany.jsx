@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { registerCompanyUser } from "../../../services/Register";
 import { selectSectors } from "../../../services/Sectors";
 import Spinner from "../../../components/Spinner";
+import { getCompanyTypes } from "../../../services/Data";
 
 const FormCompany = ({ history }) => {
   //Creando el state para leer los inputs:
@@ -21,12 +22,13 @@ const FormCompany = ({ history }) => {
     contactNumber: "",
     businessName: "",
     companyType: "",
-    sector: ""
+    sector: "",
   });
 
   //State de los sectores
   const [sectors, handleSector] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [types, setTypes] = useState([]);
 
   //State para el error:
   const [error, handleError] = useState(false);
@@ -49,16 +51,25 @@ const FormCompany = ({ history }) => {
     contactNumber,
     businessName,
     companyType,
-    sector
+    sector,
   } = infoCompany;
 
   useEffect(() => {
-    selectSectors()
-      .then(res => {
-        handleSector(res);
+    const getData = async () => {
+      debugger;
+      try {
+        const sectors = await selectSectors();
+        handleSector(sectors);
+        const types = await getCompanyTypes();
+        setTypes(types);
         setLoading(false);
-      })
-      .catch(err => console.log(err));
+      } catch (error) {
+        setLoading(false);
+        await Swal.fire('Error', 'Ocurrió un error al conectarse al servidor', 'error')
+        window.location.href = '/'
+      }
+    }
+    getData();
   }, []);
 
   useEffect(() => {
@@ -90,20 +101,20 @@ const FormCompany = ({ history }) => {
     contactName,
     rtn,
     contactNumber,
-    businessName
+    businessName,
   ]);
 
   //Funcion que se ejecuta cuando se escribe en un input:
-  const handleChangeInfo = e => {
+  const handleChangeInfo = (e) => {
     handleCompanyInfo({
       ...infoCompany,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   //Funcion para validar el correo:
   const validarEmail = () => {
-    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^  <>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const patron = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (patron.test(document.getElementById("emailInput").value)) {
       handleErrorEmail(false);
     } else {
@@ -112,7 +123,7 @@ const FormCompany = ({ history }) => {
   };
 
   //Funcion para el boton de login:
-  const submitUser = e => {
+  const submitUser = (e) => {
     e.preventDefault();
 
     validarEmail();
@@ -158,21 +169,21 @@ const FormCompany = ({ history }) => {
       contactNumber,
       businessName
     )
-      .then(res => {
+      .then((res) => {
         Swal.fire(
           "Registro Exitoso",
           "Se ha creado el usuario exitosamente",
           "success"
-        ).then(e => {
+        ).then((e) => {
           history.push("/login");
         });
       })
 
-      .catch(error => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: error.title,
-          text: error.text
+          text: error.text,
         });
       });
 
@@ -187,7 +198,7 @@ const FormCompany = ({ history }) => {
     return (
       <div className="limiter">
         <div className="container-login100 imgFormRegUs">
-          <div className="wrap-login100 p-l-50 p-r-50 p-t-50 p-b-30">
+          <div className="wrap-loginRegEmpresa p-l-50 p-r-50 p-t-50 p-b-30">
             <form className="login100-form validate-form" onSubmit={submitUser}>
               <span className="login100-form-title p-b-25">
                 Registro Empresa
@@ -321,7 +332,7 @@ const FormCompany = ({ history }) => {
                 >
                   <option value="0">Tipo de Sector</option>
 
-                  {sectors.map(sector => (
+                  {sectors.map((sector) => (
                     <option key={sector.id} value={sector.id}>
                       {sector.sector}
                     </option>
@@ -346,10 +357,11 @@ const FormCompany = ({ history }) => {
                   value={companyType}
                 >
                   <option value="0">Tipo de Compañía</option>
-                  <option type="number" value={parseInt("1")}>
-                    Restuarante
-                  </option>
-                  <option value={parseInt("2", 10)}>Hotel</option>
+                  {
+                    types.map(type => (
+                      <option key={type.id} value={type.id}>{type.name}</option>
+                    ))
+                  }
                 </select>
 
                 <span className="focus-input100"></span>

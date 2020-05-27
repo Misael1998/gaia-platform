@@ -10,7 +10,6 @@ export const selectSupplies = async () => {
       Headers: { "x-auth-token": token }
     });
     if (response.status === 200) {
-      console.log("Respuesta de Services/Supplies", response);
       return response.data.data;
     } else {
       throw new Error(response);

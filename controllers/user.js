@@ -42,7 +42,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
       .input("contact_number", mssql.VarChar(12), contact_number)
       .input("idCompanyType", mssql.Int, company_type)
       .input("idSector", mssql.Int, sector)
-      .input("business_name", mssql.NVarChar(45), business_name)
+      .input("business_name", mssql.VarChar(45), business_name)
       .output("pcMsj", mssql.VarChar(45))
       .output("id_user", mssql.Int)
       .output("CodeState", mssql.Int)
@@ -60,7 +60,7 @@ exports.registerEnterpriseUser = async (req, res, next) => {
       case 1:
         payload = {
           id: id_user,
-          role: "enterpise"
+          role: "enterprise"
         };
 
         const user = {
@@ -118,15 +118,15 @@ exports.registerIndividualClient = async (req, res, next) => {
     const hashPassword = await bcrypt.hash(password, salt);
 
     const query = await new mssql.Request()
-      .input("email", mssql.NVarChar(100), email)
-      .input("password", mssql.NVarChar(100), hashPassword)
-      .input("phone", mssql.NVarChar(12), phone)
-      .input("address", mssql.NVarChar(150), address)
-      .input("name", mssql.NVarChar(45), name)
-      .input("lastName", mssql.NVarChar(45), lastName)
+      .input("email", mssql.VarChar(100), email)
+      .input("password", mssql.VarChar(100), hashPassword)
+      .input("phone", mssql.VarChar(12), phone)
+      .input("address", mssql.VarChar(150), address)
+      .input("name", mssql.VarChar(45), name)
+      .input("lastName", mssql.VarChar(45), lastName)
       .input("birth_date", mssql.VarChar(45), birth_date)
-      .input("register_id", mssql.NVarChar(14), register_id)
-      .output("pcMsj", mssql.NVarChar(100))
+      .input("register_id", mssql.VarChar(14), register_id)
+      .output("pcMsj", mssql.VarChar(100))
       .output("id_user", mssql.Int)
       .output("CodeState", mssql.Int)
       .execute("SP_ADD_USER_INDIVIDUAL");
@@ -166,6 +166,149 @@ exports.registerIndividualClient = async (req, res, next) => {
     success: true,
     msg: "register client route"
   });
+};
+
+//@desc     update basic info of users
+//@route    POST     /api/user/updateuser
+//@access   Private
+exports.updateUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return errorResponse(400, "Validaton errors", errors.array(), res);
+  }
+
+  const { email, address, phone, cNumber, cName } = req.body;
+  const empty = !email && !phone && !address && !cName && !cNumber;
+  if (empty) {
+    return errorResponse(
+      400,
+      "No parameters",
+      [{ msg: "The request has no paramters" }],
+      res
+    );
+  }
+
+  const { userId, role } = req.user;
+  if (role == "individual") {
+    try {
+      const query = await new mssql.Request()
+        .input("id", mssql.Int, userId)
+        .input("email", mssql.VarChar(100), email)
+        .input("phone", mssql.VarChar(100), phone)
+        .input("address", mssql.VarChar(100), address)
+        .output("code", mssql.Int)
+        .execute("SP_UPDATE_INDIVIDUAL_USER");
+      const { code } = query.output;
+      switch (code) {
+        case 0:
+          return errorResponse(
+            404,
+            "No user found.",
+            [{ msg: "There is no user registered with this id." }],
+            res
+          );
+          break;
+        case 1:
+          return errorResponse(
+            403,
+            "Access denied.",
+            [{ msg: "This user is not individual." }],
+            res
+          );
+          break;
+        case 2:
+          return errorResponse(
+            400,
+            "Nothing to update",
+            [
+              {
+                msg:
+                  "No changes were made due to empty fields or all data sent was repeated",
+              },
+            ],
+            res
+          );
+          break;
+        case 3:
+          return res.status(200).json({
+            success: true,
+            msg: "Fields have been updated.",
+          });
+          break;
+        case 4:
+          return errorResponse(
+            400,
+            "Email occupied",
+            [{ msg: "There is an existing user with this email." }],
+            res
+          );
+          break;
+      }
+    } catch (error) {
+      console.log(error);
+      return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
+    }
+  }
+  try {
+    const query = await new mssql.Request()
+      .input("id", mssql.Int, userId)
+      .input("email", mssql.VarChar(100), email)
+      .input("phone", mssql.VarChar(100), phone)
+      .input("address", mssql.VarChar(100), address)
+      .input("contact_number", mssql.VarChar(12), cNumber)
+      .input("contact_name", mssql.VarChar(45), cName)
+      .output("code", mssql.Int)
+      .execute("SP_UPDATE_ENTERPRISE_USER");
+    const { code } = query.output;
+    switch (code) {
+      case 0:
+        return errorResponse(
+          404,
+          "No user found",
+          [{ msg: "There is no user registered with this id" }],
+          res
+        );
+        break;
+      case 1:
+        return errorResponse(
+          403,
+          "Access denied",
+          [{ msg: "This user is not enterprise." }],
+          res
+        );
+        break;
+      case 2:
+        return errorResponse(
+          400,
+          "Nothing to update",
+          [
+            {
+              msg:
+                "No changes were made due to empty fields or all data sent was repeated",
+            },
+          ],
+          res
+        );
+        break;
+      case 3:
+        return res.status(200).json({
+          success: true,
+          msg: "Fields have been updated",
+        });
+        break;
+      case 4:
+        return errorResponse(
+          400,
+          "Email occupied",
+          [{ msg: "There is an existing user with this email." }],
+          res
+        );
+        break;
+    }
+  } catch (error) {
+    console.log(error);
+    return errorResponse(500, "Server error", [{ msg: "Server error" }], res);
+  }
 };
 
 //send response

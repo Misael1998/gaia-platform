@@ -5,8 +5,9 @@ import {
     REMOVE_PRODUCT_FROM_CART,
     //tipo de envio y tipo de pago
     ADD_SHIPPING_TYPE,
-    ADD_PAYMENT_TYPE
-    
+    ADD_PAYMENT_TYPE,
+    DELETE_CART
+
 } from '../constants/actionTypes'
 
 const initialState = {
@@ -27,7 +28,7 @@ export default (state = initialState, action) => {
 
             let productToEdit = state.cart.find(product => product.idProducts === action.payload);
             let filterCart = state.cart.filter(product => product.idProducts !== action.payload);
-            let sortArray = [productToEdit,...filterCart].sort((item, item2) => item.idProducts - item2.idProducts);
+            let sortArray = [productToEdit, ...filterCart].sort((item, item2) => item.idProducts - item2.idProducts);
             productToEdit.quantity = productToEdit.quantity + 1
             return {
                 ...state,
@@ -36,7 +37,7 @@ export default (state = initialState, action) => {
         case SUBSTRACT_QUANTITY_PRODUCT:
             let productToSubstract = state.cart.find(product => product.idProducts === action.payload);
             let filterCartSub = state.cart.filter(product => product.idProducts !== action.payload);
-            let sortArraySub = [productToSubstract,...filterCartSub].sort((item, item2) => item.idProducts - item2.idProducts);
+            let sortArraySub = [productToSubstract, ...filterCartSub].sort((item, item2) => item.idProducts - item2.idProducts);
             if (productToSubstract.quantity !== 0) {
                 productToSubstract.quantity = productToSubstract.quantity - 1
             } else {
@@ -55,12 +56,14 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 shippingType: action.payload
-                };
+            };
         case ADD_PAYMENT_TYPE:
             return {
-                    ...state,
-                    paymentType: action.payload
-                    };
+                ...state,
+                paymentType: action.payload
+            };
+        case DELETE_CART:
+            return { ...state, cart: [] };
         default:
             return state;
     }

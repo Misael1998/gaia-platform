@@ -2,7 +2,7 @@
 -- Drop the stored procedure if it already exists
 IF EXISTS (
 SELECT *
-    FROM INFORMATION_SCHEMA.ROUTINES
+FROM INFORMATION_SCHEMA.ROUTINES
 WHERE SPECIFIC_SCHEMA = N'dbo'
     AND SPECIFIC_NAME = N'SP_SET_FORGOT_PASSWORD_TOKEN'
     AND ROUTINE_TYPE = N'PROCEDURE'
@@ -16,10 +16,11 @@ CREATE PROCEDURE dbo.SP_SET_FORGOT_PASSWORD_TOKEN
     @idUser         INT,
     @status         VARCHAR(7) OUTPUT
 AS
-    INSERT INTO [pyflor].[dbo].[TBL_FORGOT_PASSWORD_TOKENS]
-    VALUES
+declare @fecha datetime = dateadd(hh, 2, getdate())
+INSERT INTO [pyflor].[dbo].[TBL_FORGOT_PASSWORD_TOKENS]
+VALUES
     (
-     @token, @expireDate, @idUser
+        @token, @fecha, @idUser
     )
-    SET @status = 'success'
+SET @status = 'success'
 GO
