@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Image = ({ product }) => {
   const { productName, unit_price } = product;
   return (
-    <div className="mr-5 mb-5">
+    <div className="mr-auto ml-auto mb-5">
       <Link to={`product/${product.idProducts}`}>
         <div className="card p-2">
           <img src={fresas} alt={productName} className="card-img-top " />
